@@ -1,0 +1,5 @@
+mutation createFriend($id: String!) {
+  createFriend(id: $id) {
+    id
+  }
+}

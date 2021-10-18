@@ -1,0 +1,5 @@
+mutation DeleteKoi($id: String!) {
+  deleteKoi(id: $id) {
+    id
+  }
+}

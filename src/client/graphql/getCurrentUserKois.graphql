@@ -1,0 +1,22 @@
+query GetCurrentUserKois {
+  currentUser {
+    id
+    kois {
+      modifiedAt
+      variety
+      id
+      birthDate
+      breeder
+      bloodline
+      skinType
+      sex
+      youtube
+      updates {
+        image
+        length
+        date
+        id
+      }
+    }
+  }
+}

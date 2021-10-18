@@ -1,0 +1,12 @@
+query getPond($id: String!) {
+  pond(id: $id) {
+    id
+    name
+    size
+    # updates {
+    #   ph
+    #   kh
+    #   temp
+    # }
+  }
+}

@@ -1,0 +1,9 @@
+query GetCurrentUserFriends {
+  currentUser {
+    id
+    referrals {
+      name
+      id
+    }
+  }
+}

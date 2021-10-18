@@ -1,0 +1,98 @@
+{
+  "_args": [
+    [
+      "formik-material-ui@4.0.0-alpha.1",
+      "C:\\bloomui\\tokyo\\tokyo-react-admin-dashboard"
+    ]
+  ],
+  "_from": "formik-material-ui@4.0.0-alpha.1",
+  "_id": "formik-material-ui@4.0.0-alpha.1",
+  "_inBundle": false,
+  "_integrity": "sha512-R0nBKoeoRcXuZJEcTD4bJIHA/kL4SJDuXe9s8/vQ7RT+aMY04D7noB8WEnX/hWQPWJ3UAkoX1/HDErxsQG11qA==",
+  "_location": "/formik-material-ui",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "formik-material-ui@4.0.0-alpha.1",
+    "name": "formik-material-ui",
+    "escapedName": "formik-material-ui",
+    "rawSpec": "4.0.0-alpha.1",
+    "saveSpec": null,
+    "fetchSpec": "4.0.0-alpha.1"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/formik-material-ui/-/formik-material-ui-4.0.0-alpha.1.tgz",
+  "_spec": "4.0.0-alpha.1",
+  "_where": "C:\\bloomui\\tokyo\\tokyo-react-admin-dashboard",
+  "bugs": {
+    "url": "https://github.com/stackworx/formik-material-ui/issues"
+  },
+  "description": "![](https://github.com/stackworx/formik-material-ui/workflows/Build%20formik-material-ui/badge.svg) ![](https://github.com/stackworx/formik-material-ui/workflows/Build%20formik-material-ui-pickers/badge.svg) ![](https://github.com/stackworx/formik-material-ui/workflows/Build%20formik-material-ui-lab/badge.svg) [![license](https://badgen.now.sh/badge/license/MIT)](./LICENSE)",
+  "files": [
+    "dist"
+  ],
+  "gitHead": "674f7a14c576be5cfbee2806d7d277d02364c2e5",
+  "homepage": "https://github.com/stackworx/formik-material-ui#readme",
+  "jest": {
+    "globals": {
+      "__DEV__": "boolean"
+    },
+    "testEnvironment": "jsdom",
+    "testURL": "http://localhost/",
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "roots": [
+      "src"
+    ],
+    "testRegex": "(/src/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
+    ]
+  },
+  "keywords": [
+    "react",
+    "formik",
+    "material-ui",
+    "form"
+  ],
+  "license": "MIT",
+  "main": "./dist/main.js",
+  "module": "./dist/esm/main.js",
+  "name": "formik-material-ui",
+  "peerDependencies": {
+    "@material-ui/core": ">=4.0.0",
+    "formik": ">=2.0.0",
+    "react": ">=16.8.0",
+    "tiny-warning": ">=1.0.2"
+  },
+  "prettier": {
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/stackworx/formik-material-ui.git"
+  },
+  "scripts": {
+    "build": "cross-env NODE_ENV=production tsc --noEmit --project ./tsconfig.package.json",
+    "lint": "eslint \"./{src,stories}/**/*.{tsx,ts,js}\"",
+    "lint:fix": "eslint --fix \"./{src,stories}/**/*.{tsx,ts,js}\"",
+    "package": "rimraf build dist && cross-env NODE_ENV=production tsc -p ./tsconfig.package.json && rollup -c && rimraf .rpt2_cache dist/.rpt2_cache",
+    "prepublishOnly": "yarn test && yarn build && yarn package",
+    "test": "jest",
+    "test:updateSnapshot": "jest --updateSnapshot",
+    "typecheck": "tsc"
+  },
+  "sideEffects": false,
+  "typings": "dist/main.d.ts",
+  "version": "4.0.0-alpha.1"
+}

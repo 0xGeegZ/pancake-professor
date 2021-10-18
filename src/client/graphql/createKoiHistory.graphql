@@ -1,0 +1,13 @@
+mutation CreateKoiHistory(
+  $id: String!
+  $length: Int
+  $image: String
+  $date: String
+) {
+  createKoiHistory(id: $id, length: $length, image: $image, date: $date) {
+    length
+    image
+    date
+    id
+  }
+}

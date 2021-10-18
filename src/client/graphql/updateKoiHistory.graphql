@@ -1,0 +1,12 @@
+mutation UpdateKoiHistory(
+  $id: String!
+  $length: Int
+  $image: String
+  $date: String
+) {
+  updateKoiHistory(id: $id, length: $length, image: $image, date: $date) {
+    length
+    image
+    date
+  }
+}
