@@ -1,12 +1,12 @@
 # Projects
 
-Projects are at the core of Bedrock. Many users can be members of a single project, and each user can be a member of many projects. Each project has it's own billing, and you should attach your business-specific data to projects.
+Projects are at the core of Pancake Professor. Many users can be members of a single project, and each user can be a member of many projects. Each project has it's own billing, and you should attach your business-specific data to projects.
 
 For example, [Feedback Fish](https://feedback.fish) adds `Project.feedbacks` (all the feedback a project has received) and [Changefeed](https://changefeed.app) `Project.releases` (all the releases a project has published). If you were building a collaborative team todo app you would add something like `Project.todos`, a customer support tool something like `Project.requests`, etc.
 
 ## URL structure
 
-From a user perspective, all the URLs in Bedrock are already set up to be human-readable and memorable:
+From a user perspective, all the URLs in Pancake Professor are already set up to be human-readable and memorable:
 
 - `/app` is the user's own dashboard
 - `/app/settings` are the user's settings
@@ -17,11 +17,11 @@ Assuming your users remember their (human-readable!) slug, they can quickly open
 
 ## Payments
 
-Bedrock uses [Stripe Checkout](https://stripe.com/docs/payments/checkout) for subscription payments.
+Pancake Professor uses [Stripe Checkout](https://stripe.com/docs/payments/checkout) for subscription payments.
 
 Once a customer checks out and pays for your product, and then every billing period when they pay again, Stripe pings the webhook endpoint (`src/pages/api/stripe/webhooks.ts`) and we store the following data in the database:
 
-- `Project.stripeCustomerId`: Every "project" in Bedrock is a single "customer" in Stripe...
+- `Project.stripeCustomerId`: Every "project" in Pancake Professor is a single "customer" in Stripe...
 - `Project.stripeSubscriptionId`: ...each of whom can have one "subscription"...
 - `Project.stripePriceId`: ...to a specific "price" (i.e. plan)...
 - `Project.stripeCurrentPeriodEnd`: ...that gets billed at this point in time.
@@ -42,7 +42,7 @@ To add multiple plans like "Pro" and "Enterprise" or "Monthly" and "Yearly":
 
 ### Subscription cancellations
 
-There is no code to handle cancellation or non-payment of subscriptions. That is implicitly handled in the Stripe webhook listener and how Bedrock syncs `Project.stripeCurrentPeriodEnds` on `payment_succeeded` with Stripe.
+There is no code to handle cancellation or non-payment of subscriptions. That is implicitly handled in the Stripe webhook listener and how Pancake Professor syncs `Project.stripeCurrentPeriodEnds` on `payment_succeeded` with Stripe.
 
 If a project cancels or doesn't pay their subscription, i.e. there is no `payment_succeeded` webhook call, `Project.stripeCurrentPeriodEnds` is never updated beyond the amount of time that the project has paid for.
 

@@ -102,7 +102,7 @@ function Logo() {
   const { t }: { t: any } = useTranslation();
 
   return (
-    <LogoWrapper href="/">
+    <LogoWrapper href="/app">
       <LogoSignWrapper>
         <LogoSign>
           <LogoSignInner />
@@ -110,10 +110,10 @@ function Logo() {
       </LogoSignWrapper>
       <Hidden smDown>
         <LogoTextWrapper>
-          <Tooltip title={t('Version') + ' 1.0.0'} arrow placement="right">
-            <VersionBadge>1.0</VersionBadge>
+          <Tooltip title={t('Version') + ' 0.0.1'} arrow placement="right">
+            <VersionBadge>0.0.1</VersionBadge>
           </Tooltip>
-          <LogoText>Tokyo</LogoText>
+          <LogoText>Pancake Professor</LogoText>
         </LogoTextWrapper>
       </Hidden>
     </LogoWrapper>

@@ -1,7 +1,7 @@
 import { mock } from 'src/client/utils/axios';
 import type { User } from 'src/client/models/user';
 
-let users: User[] = [
+const users: User[] = [
   {
     id: '1',
     name: 'Rafael Kunde',

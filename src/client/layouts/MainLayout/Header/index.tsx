@@ -1,26 +1,20 @@
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
-import { Box, Hidden, IconButton, Tooltip } from '@mui/material';
+import { Box, Button, CircularProgress, Grid, Hidden, IconButton, Tooltip } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { FC, useRef, useState, useEffect, useContext} from 'react';
-import Logo from 'src/client/components/Logo';
-import { SidebarContext } from 'src/client/contexts/SidebarContext';
-import { CircularProgress, Grid ,Button} from '@mui/material';
-import { useSnackbar } from 'notistack';
-import { useTranslation } from 'react-i18next';
 import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
-
-
-import HeaderButtons from './Buttons';
-import HeaderMenu from './Menu';
-import HeaderSearch from './Buttons/Search';
-import LanguageSwitcher from './Buttons/LanguageSwitcher';
-
-import HeaderNotifications from './Buttons/Notifications';
-import HeaderUserbox from './Userbox';
-import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated';
+import { useSnackbar } from 'notistack';
+import { FC, useContext, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Link from 'src/client/components/Link';
+import Logo from 'src/client/components/Logo';
+import { SidebarContext } from 'src/client/contexts/SidebarContext';
+import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated';
+
+import LanguageSwitcher from './Buttons/LanguageSwitcher';
+import HeaderUserbox from './Userbox';
+
 
 const HeaderWrapper : FC = styled(Box)(
   ({ theme }) => `
@@ -38,30 +32,42 @@ const Header = () => {
   const { t }: { t: any } = useTranslation();
 
   const [{ data, fetching, error }] = useGetCurrentUserQuery();
-    const router = useRouter();
-    const [address, setAddress] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
-    const [name, setName] = useState<string>("");
-    const [user, setCurrentUser] = useState<string>("");
-    const [account, setAccount] = useState<string>("");
 
-    const { enqueueSnackbar } = useSnackbar();
+  const router = useRouter();
+  const [address, setAddress] = useState<string>("");
+  const [balance, setBalance] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [name, setName] = useState<string>("");
+  const [user, setCurrentUser] = useState<string>("");
 
-    const currentUser = data?.currentUser;
+  const { enqueueSnackbar } = useSnackbar();
+
+  const currentUser = data?.currentUser;
   
-     // Once we load the current user, default the name input to their name
-     useEffect(() => {
-      if (currentUser?.address) setAddress(currentUser.address);
+    useEffect(() => {
+      if (currentUser?.address) {
+        setAddress(currentUser.address);
+        if (!localStorage.getItem("address")) {
+          window.localStorage.setItem('address', currentUser.address);
+        }
+      }
       if (currentUser?.name) setName(currentUser.name);
       if (currentUser?.email) setEmail(currentUser.email);
+      
     }, [currentUser]);
   
     useEffect(() => {
       if (data?.currentUser) {
         // setCurrentUser(data.currentUser)
-        if (currentUser?.address) setAddress(data?.currentUser.address);
-        if (currentUser?.name) setName(data?.currentUser.name);
-        if (currentUser?.email) setEmail(data?.currentUser.email);
+        if (data?.currentUser.address) {
+          setAddress(data?.currentUser.address);
+          if (!localStorage.getItem("address")) {
+            // @ts-ignore: test
+            window.localStorage.setItem('address', data?.currentUser.address);
+          }
+        }
+        if (data?.currentUser.name) setName(data?.currentUser.name);
+        if (data?.currentUser.email) setEmail(data?.currentUser.email);
       }
     }, [data]);
 
@@ -83,9 +89,10 @@ const Header = () => {
         method: "eth_requestAccounts",
       });
       setProvider(provider);
-      setAccount(accounts[0]);
-  
-     
+      setAddress(accounts[0]);
+      
+      window.localStorage.setItem('address', accounts[0]);
+
       const msg = "Pancake Professor Application Sign Up";
       const signer = provider.getSigner()
       const signed = await signer.signMessage(msg);
@@ -127,9 +134,9 @@ const Header = () => {
         {/* <HeaderButtons /> */}
         <Box sx={{ mr: 1.5 }}>
           {/* <HeaderSearch /> */}
-          <Box sx={{ mx: .5 }} component="span">
+          {/* <Box sx={{ mx: .5 }} component="span">
           {currentUser ? (<HeaderNotifications />) : (<></>)}
-        </Box>
+        </Box> */}
         <Hidden smDown>
           <LanguageSwitcher />
         </Hidden>
@@ -146,7 +153,7 @@ const Header = () => {
              </Grid>
          </Grid>) : currentUser ? 
         (<> 
-        <HeaderUserbox />
+        <HeaderUserbox address={address}/>
         <Hidden lgUp>
           <Tooltip arrow title="Toggle Menu">
             <IconButton color="primary" onClick={toggleSidebar}>

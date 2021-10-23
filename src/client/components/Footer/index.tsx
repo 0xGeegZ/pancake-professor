@@ -20,11 +20,11 @@ function Footer() {
       >
         <Box>
           <Typography variant="subtitle1">
-            &copy; 2021 - Tokyo NextJS Admin Dashboard
+            &copy; 2021 - Pancake Professor
           </Typography>
         </Box>
         <Typography sx={{ pt: { xs: 2, md: 0 } }} variant="subtitle1">
-          Crafted by <Link underline="hover" href="https://bloomui.com" target="_blank" rel="noopener noreferrer">BloomUI.com</Link>
+          Crafted by <Link underline="hover" href="#" target="_blank" rel="noopener noreferrer">Pancake Professor</Link>
         </Typography>
       </Box>
     </FooterWrapper>

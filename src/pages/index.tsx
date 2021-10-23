@@ -82,7 +82,7 @@ const Overview : FC = () => {
           enqueueSnackbar(t('Redirecting to application dashboard!'), {
             variant: 'success'
           });
-          router.push("/dashboards/analytics", 
+          router.push("/app", 
           undefined, { shallow: true })
         }
       });

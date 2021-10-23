@@ -1,13 +1,13 @@
 # Architecture
 
-The tools you will interact with most frequently when using Bedrock are:
+The tools you will interact with most frequently when using Pancake Professor are:
 
 1. **[Next.js](https://nextjs.org) as the base framework** to render pages with React
 1. **[Prisma](https://prisma.io) as the ORM** to manage the database and migrations
 1. **[Nexus](https://nexusjs.org) to build the GraphQL schema** code-first
 1. **[GraphQL Codegen](https://www.graphql-code-generator.com/) with [urql](https://formidable.com/open-source/urql/)** to fetch data on the client
 
-I would recommend having basic familiarity with these tools before trying to use Bedrock. If you're unfamiliar with any of them, read their "intro" or "basic" documentation to get an overview of how they work!
+I would recommend having basic familiarity with these tools before trying to use Pancake Professor. If you're unfamiliar with any of them, read their "intro" or "basic" documentation to get an overview of how they work!
 
 ## General workflow
 

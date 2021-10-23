@@ -2,7 +2,7 @@ import { mock } from 'src/client/utils/axios';
 import type { Invoice } from 'src/client/models/invoice';
 import { subHours } from 'date-fns';
 
-let invoices: Invoice[] = [
+const invoices: Invoice[] = [
   {
     id: '1',
     number: 'INV 5262',

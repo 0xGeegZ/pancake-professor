@@ -79,7 +79,7 @@ function Logo() {
   return (
 
     <LogoWrapper href="/">
-      <Tooltip arrow placement="right" title="Tokyo NextJS Admin Dashboard">
+      <Tooltip arrow placement="right" title="Pancake Professor Application">
         <LogoSignWrapper>
           <LogoSign>
             <LogoSignInner />

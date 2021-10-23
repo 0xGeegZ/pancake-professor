@@ -1,6 +1,4 @@
 import { useRef, useState } from 'react';
-
-import Link from 'src/client/components/Link';
 import { useRouter } from 'next/router';
 
 import {
@@ -21,6 +19,7 @@ import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+import Link from 'src/client/components/Link';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -62,7 +61,9 @@ const UserBoxDescription = styled(Typography)(
 `
 );
 
-function HeaderUserbox() {
+const HeaderUserbox = () => {
+
+  
   const { t }: { t: any } = useTranslation();
 
   const router = useRouter();
@@ -83,12 +84,14 @@ function HeaderUserbox() {
   const handleLogout = async (): Promise<void> => {
     try {
       handleClose();
-      // await logout();
+      await logout();
       router.push('/');
     } catch (err) {
       console.error(err);
     }
   };
+
+
 
   return (
     <Hidden smDown>

@@ -1,27 +1,16 @@
-import { useRef, useState } from 'react';
-
-import Link from 'src/client/components/Link';
-import { useRouter } from 'next/router';
-
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  Hidden,
-  List,
-  ListItem,
-  ListItemText,
-  Popover,
-  Typography
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+import { Avatar, Box, Button, Divider, Hidden, List, ListItem, ListItemText, Popover, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { ethers } from 'ethers';
+import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import Link from 'src/client/components/Link';
+import { Erc20__factory } from 'src/client/contracts/types';
+import useRefMounted from 'src/client/hooks/useRefMounted';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
@@ -58,8 +47,49 @@ const UserBoxDescription = styled(Typography)(
 `
 );
 
-function HeaderUserbox() {
+function HeaderUserbox({address}) {
+  const [balance, setBalance] = useState<string>("");
+  const isMountedRef = useRefMounted();
 
+  const [provider, setProvider] = useState<ethers.providers.Web3Provider>();
+  
+
+  const checkBalance = useCallback(async () => {
+    if (!window.ethereum?.request)
+       return;
+
+    if (!isMountedRef.current) {
+      return;
+    }
+
+    if(!provider){
+      return;
+    }
+  
+
+    const TOKEN_ADDR = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
+    const token = Erc20__factory.connect(TOKEN_ADDR, provider.getSigner());
+
+    const rawBalance = await token.balanceOf(address);
+    const decimals = await token.decimals();
+
+    const balance = ethers.utils.formatUnits(rawBalance, decimals);
+    setBalance(balance);
+
+    window.localStorage.setItem('balance', balance);
+  }, [address, provider])
+
+  useEffect(() => {
+    const provider = new ethers.providers.Web3Provider(window.ethereum);
+    setProvider(provider);
+    
+    // if (window.localStorage.getItem("balance"))
+    //   setBalance(window.localStorage.getItem("balance"));
+    // else
+      checkBalance()
+  }, [checkBalance])
+
+  
   const { enqueueSnackbar } = useSnackbar();
 
   const { t }: { t: any } = useTranslation();
@@ -110,9 +140,9 @@ function HeaderUserbox() {
         <Avatar variant="rounded" alt="Margaret Gale" src="/static/images/avatars/1.jpg" />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">Margaret Gale</UserBoxLabel>
+            <UserBoxLabel variant="body1">{address.substring(0,10)}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              Lead Developer
+             {balance || 0 }BNB
             </UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -136,9 +166,9 @@ function HeaderUserbox() {
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
           <Avatar variant="rounded" alt="Margaret Gale" src="/static/images/avatars/1.jpg" />
           <UserBoxText>
-            <UserBoxLabel variant="body1">Margaret Gale</UserBoxLabel>
+            <UserBoxLabel variant="body1">{address.substring(0,10)}</UserBoxLabel>
             <UserBoxDescription variant="body2">
-              Lead Developer
+            {balance}BNB
             </UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
@@ -146,7 +176,7 @@ function HeaderUserbox() {
         <List sx={{ p: 1 }} component="nav">
           <ListItem
             onClick={() => { handleClose() }}
-            button href="/account" component={Link}>
+            button href="/app/account" component={Link}>
             <AccountBoxTwoToneIcon fontSize="small" />
             <ListItemText primary={t('Profile')} />
           </ListItem>

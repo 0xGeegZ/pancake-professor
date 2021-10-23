@@ -1,7 +1,7 @@
 import { mock } from 'src/client/utils/axios';
 import type { Product } from 'src/client/models/product';
 
-let products: Product[] = [
+const products: Product[] = [
   {
     id: '1',
     name: 'Amazon Dot Echo 3',

@@ -2,7 +2,7 @@ import { mock } from 'src/client/utils/axios';
 import type { Project } from 'src/client/models/project';
 import { subDays } from 'date-fns';
 
-let projects: Project[] = [
+const projects: Project[] = [
   {
     id: '1',
     name: 'Cebus apella',

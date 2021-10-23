@@ -1,33 +1,12 @@
-# Bedrock (early access)
+# Pancake Professor (early access)
 
-Welcome to Bedrock! 👋
-
-Before you get started, please **join the community** where you can chat with other folks using Bedrock, ask questions and get help:
-
-https://discord.gg/XKU3jArbm7
+Welcome to Pancake Professor! 👋
 
 ## Getting started
 
-### Getting the code
-
-**Please do not clone the repository directly**, as that would defeat the purpose of using Bedrock — you don't want all of its git history in your own project.
-
-Instead, **download the "Source code (.zip)" file of [the latest release](https://github.com/mxstbr/bedrock/releases)**. Once that download finishes:
-
-1. Unzip the folder
-2. Rename the unzipped folder from `bedrock-x.y.z` to your product's name
-3. Open the directory on your terminal and initialize git:
-
-```sh
-cd <project>
-git init
-```
-
-After that, you're ready to get started!
-
 ### Initial setup
 
-You'll need certain environment variables to run Bedrock's functionality in local development. The first step is to:
+You'll need certain environment variables to run Pancake Professor's functionality in local development. The first step is to:
 
 - Sign up for [Stripe](https://stripe.com), used for payments
 - Sign up for [Postmark](https://postmarkapp.com), used for sending emails
@@ -42,7 +21,7 @@ cp .env.example .env
 
 Now you're ready to set everything up locally:
 
-1. **Install Docker** by following their [installation instructions for your OS](https://docs.docker.com/get-docker/). Bedrock uses Docker to start the local development database.
+1. **Install Docker** by following their [installation instructions for your OS](https://docs.docker.com/get-docker/). Pancake Professor uses Docker to start the local development database.
 
 2. Then, **install the dependencies** with `yarn`:
 
@@ -80,7 +59,7 @@ docker-compose up
 yarn dev
 ```
 
-That's it! Now you should have Bedrock running locally and should be able to visit http://localhost:3000 🎉
+That's it! Now you should have Pancake Professor running locally and should be able to visit http://localhost:3000 🎉
 
 #### Scripts
 

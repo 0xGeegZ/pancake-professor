@@ -1,6 +1,6 @@
-import { CircularProgress, Grid } from '@mui/material';
+import { Grid } from '@mui/material';
+import type { ReactElement } from 'react';
 import Head from 'next/head';
-import React, { useEffect, useState } from 'react';
 import ActiveReferrals from 'src/client/components/Dashboards/Analytics/ActiveReferrals';
 import AudienceOverview from 'src/client/components/Dashboards/Analytics/AudienceOverview';
 import BounceRate from 'src/client/components/Dashboards/Analytics/BounceRate';
@@ -15,48 +15,7 @@ import Footer from 'src/client/components/Footer';
 import PageTitleWrapper from 'src/client/components/PageTitleWrapper';
 import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout';
 
-import { useGetCurrentUserQuery } from '../../../client/graphql/getCurrentUser.generated';
-
-import type { ReactElement } from 'react';
 const DashboardAnalytics = ()=> {
-  const [{ data, fetching, error }] = useGetCurrentUserQuery();
-//   const router = useRouter();
-//   const [address, setAddress] = useState<string>("");
-  // const [email, setEmail] = useState<string>("");
-//   const currentUser = data?.currentUser;
-
-//    // Once we load the current user, default the name input to their name
-//    useEffect(() => {
-//     if (currentUser?.address) setAccount(currentUser.address);
-//     // if (currentUser?.name) setName(currentUser.name);
-//     // if (currentUser?.email) setEmail(currentUser.email);
-//   }, [currentUser]);
-
-//   useEffect(() => {
-//     if (data?.currentUser) {
-//         setAddress(data?.currentUser.address);
-//     }
-//   }, [data]);
-
-  if (fetching) 
-    return (<Grid container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={3}>
-        <Grid item>
-            <CircularProgress  />
-        </Grid>
-    </Grid>)
-
-    if (error) return (<p>{error.message}</p>);
-
-    if (!fetching && !data?.currentUser) {
-        //TODO add bandeau to invite user to login.
-        return (<p>Not found.</p>);
-    }
-
-    
     return (
         <>
             <Head>

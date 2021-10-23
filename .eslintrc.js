@@ -1,5 +1,8 @@
 module.exports = {
   parser: "@typescript-eslint/parser",
+  "parserOptions": {
+      "ecmaVersion": 2021
+  },
   plugins: ["@typescript-eslint", "import"],
   env: {
     node: true,

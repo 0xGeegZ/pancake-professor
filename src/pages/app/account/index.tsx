@@ -1,6 +1,6 @@
 import { useState, useCallback, ChangeEvent, useEffect } from 'react';
 import type { ReactElement } from 'react';
-import AccentHeaderLayout from "src/client/layouts/AccentHeaderLayout";
+import MainLayout from "src/client/layouts/MainLayout";
 
 import Head from 'next/head';
 import Footer from 'src/client/components/Footer';
@@ -12,6 +12,8 @@ import { useTranslation } from 'react-i18next';
 import type { User } from 'src/client/models/user';
 import ProfileCover from 'src/client/components/Management/Users/Single/ProfileCover';
 import RecentActivity from 'src/client/components/Management/Users/Single/RecentActivity';
+import AccountSecurity from 'src/client/components/Dashboards/Crypto/AccountSecurity';
+
 import Feed from 'src/client/components/Management/Users/Single/Feed';
 import PopularTags from 'src/client/components/Management/Users/Single/PopularTags';
 import MyCards from 'src/client/components/Management/Users/Single/MyCards';
@@ -31,20 +33,19 @@ const TabsWrapper = styled(Tabs)(
 `
 );
 
-function ManagementUsersView() {
+function UserView() {
   const isMountedRef = useRefMounted();
   const [user, setUser] = useState<User | null>(null);
   const router = useRouter();
   const { userId } = router.query;
   const { t }: { t: any } = useTranslation();
 
-  const [currentTab, setCurrentTab] = useState<string>('activity');
+  const [currentTab, setCurrentTab] = useState<string>('edit_profile');
 
   const tabs = [
-    { value: 'activity', label: t('Activity') },
     { value: 'edit_profile', label: t('Edit Profile') },
-    { value: 'notifications', label: t('Notifications') },
-    { value: 'security', label: t('Passwords/Security') }
+    // { value: 'notifications', label: t('Notifications') },
+    // { value: 'security', label: t('Passwords/Security') }
   ];
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
@@ -70,14 +71,15 @@ function ManagementUsersView() {
     getUser();
   }, [getUser]);
 
-  if (!user) {
-    return null;
-  }
+  // if (!user) {
+  //   return null;
+  // }
 
   return (
     <>
       <Head>
-        <title>{user.name} - Profile Details</title>
+        <title>Profile Details</title>
+        {/* <title>{user.name} - Profile Details</title> */}
       </Head>
       <Box sx={{ mt: 3 }}>
         <Grid
@@ -88,25 +90,7 @@ function ManagementUsersView() {
           alignItems="stretch"
           spacing={3}
         >
-          <Grid item xs={12} md={8}>
-            <ProfileCover user={user} />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <RecentActivity />
-          </Grid>
-          <Grid item xs={12} md={8}>
-            <Feed />
-          </Grid>
-          <Grid item xs={12} md={4}>
-            <PopularTags />
-          </Grid>
-          <Grid item xs={12} md={7}>
-            <MyCards />
-          </Grid>
-          <Grid item xs={12} md={5}>
-            <Addresses />
-          </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <TabsWrapper
               onChange={handleTabsChange}
               value={currentTab}
@@ -119,13 +103,35 @@ function ManagementUsersView() {
                 <Tab key={tab.value} label={tab.label} value={tab.value} />
               ))}
             </TabsWrapper>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
-            {currentTab === 'activity' && <ActivityTab />}
+            {/* {currentTab === 'activity' && <ActivityTab />} */}
             {currentTab === 'edit_profile' && <EditProfileTab />}
-            {currentTab === 'notifications' && <NotificationsTab />}
-            {currentTab === 'security' && <SecurityTab />}
+            {/* {currentTab === 'notifications' && <NotificationsTab />}
+            {currentTab === 'security' && <SecurityTab />} */}
           </Grid>
+          {/* <Grid item xs={12} md={8}>
+            <ProfileCover user={user} />
+          </Grid> */}
+           <Grid item lg={4} xs={12}>
+            <AccountSecurity />
+          </Grid>
+          <Grid item xs={12} md={4}>
+            <RecentActivity />
+          </Grid>
+          {/* <Grid item xs={12} md={8}>
+            <Feed />
+          </Grid> */}
+          {/* <Grid item xs={12} md={4}>
+            <PopularTags />
+          </Grid> */}
+          <Grid item xs={12} md={7}>
+            <MyCards />
+          </Grid>
+          {/* <Grid item xs={12} md={5}>
+            <Addresses />
+          </Grid> */}
+          
         </Grid>
       </Box>
       <Footer />
@@ -133,12 +139,12 @@ function ManagementUsersView() {
   );
 }
 
-export default ManagementUsersView;
+export default UserView;
 
-ManagementUsersView.getLayout = function getLayout(page: ReactElement) {
+UserView.getLayout = function getLayout(page: ReactElement) {
   return (
-      <AccentHeaderLayout>
+      <MainLayout>
           {page}
-      </AccentHeaderLayout>
+      </MainLayout>
   )
 }
