@@ -39,40 +39,40 @@ const menuItems: MenuItems[] = [
         items: [
           {
             name: 'Accent header',
-            link: '/dashboards/analytics'
+            link: '/dashboards/analytics',
           },
           {
             name: 'Accent sidebar',
-            link: '/dashboards/banking'
+            link: '/dashboards/banking',
           },
           {
             name: 'Boxed sidebar',
-            link: '/dashboards/monitoring'
+            link: '/dashboards/monitoring',
           },
           {
             name: 'Collapsed sidebar',
-            link: '/dashboards/helpdesk'
+            link: '/dashboards/helpdesk',
           },
           {
             name: 'Bottom navigation',
-            link: '/dashboards/automation'
+            link: '/dashboards/automation',
           },
           {
             name: 'Top navigation',
-            link: '/dashboards/finance'
-          }
-        ]
+            link: '/dashboards/finance',
+          },
+        ],
       },
       {
         name: 'Automation',
         icon: SmartToyTwoToneIcon,
         link: '/dashboards/automation',
-        badge: 'Hot'
+        badge: 'Hot',
       },
       {
         name: 'Analytics',
         icon: AnalyticsTwoToneIcon,
-        link: '/dashboards/analytics'
+        link: '/dashboards/analytics',
       },
       {
         name: 'Banking',
@@ -82,22 +82,22 @@ const menuItems: MenuItems[] = [
       {
         name: 'Commerce',
         icon: StoreTwoToneIcon,
-        link: '/dashboards/commerce'
+        link: '/dashboards/commerce',
       },
       {
         name: 'Crypto',
         icon: AccountBalanceWalletTwoToneIcon,
-        link: '/dashboards/crypto'
+        link: '/dashboards/crypto',
       },
       {
         name: 'Finance',
         icon: MonetizationOnTwoToneIcon,
-        link: '/dashboards/finance'
+        link: '/dashboards/finance',
       },
       {
         name: 'Fitness',
         icon: KitchenTwoToneIcon,
-        link: '/dashboards/fitness'
+        link: '/dashboards/fitness',
       },
       {
         name: 'Healthcare',
@@ -107,35 +107,35 @@ const menuItems: MenuItems[] = [
           {
             name: 'Doctors Page',
             badge: 'Hot',
-            link: '/dashboards/healthcare/doctor'
+            link: '/dashboards/healthcare/doctor',
           },
           {
             name: 'Hospital Overview',
-            link: '/dashboards/healthcare/hospital'
-          }
-        ]
+            link: '/dashboards/healthcare/hospital',
+          },
+        ],
       },
       {
         name: 'Helpdesk',
         icon: ContactSupportTwoToneIcon,
-        link: '/dashboards/helpdesk'
+        link: '/dashboards/helpdesk',
       },
       {
         name: 'Learning',
         icon: LocalLibraryTwoToneIcon,
-        link: 'learning'
+        link: 'learning',
       },
       {
         name: 'Monitoring',
         icon: DnsTwoToneIcon,
-        link: 'monitoring'
+        link: 'monitoring',
       },
       {
         name: 'Tasks',
         icon: TaskAltTwoToneIcon,
-        link: 'tasks'
-      }
-    ]
+        link: 'tasks',
+      },
+    ],
   },
 ];
 

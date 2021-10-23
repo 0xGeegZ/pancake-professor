@@ -247,5 +247,5 @@ const themeMap: { [key: string]: Theme } = {
   PurpleFlowTheme,
   NebulaFighterTheme,
   DarkSpacesTheme,
-  GreenFieldsTheme
+  GreenFieldsTheme,
 };

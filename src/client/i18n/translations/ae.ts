@@ -78,7 +78,7 @@ const aeJSON = {
   'Start working on your project directly from one of the included starter kits or use the Figma/Sketch files to create a prototype first':
     'ابدأ العمل في مشروعك مباشرةً من إحدى مجموعات البداية المضمنة أو استخدم ملفات Figma / Sketch لإنشاء نموذج أولي أولاً',
   'We only translated a small part of the template, for demonstration purposes':
-    'قمنا فقط بترجمة جزء صغير من النموذج لأغراض التوضيح'
+    'قمنا فقط بترجمة جزء صغير من النموذج لأغراض التوضيح',
 };
 
 export default aeJSON;

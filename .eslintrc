@@ -1,19 +1,22 @@
-module.exports = {
-  parser: "@typescript-eslint/parser",
+{
+  "parser": "@typescript-eslint/parser",
   "parserOptions": {
       "ecmaVersion": 2021
   },
-  plugins: ["@typescript-eslint", "import"],
-  env: {
-    node: true,
+  "plugins": ["@typescript-eslint", "import", "prettier"],
+  "env": {
+    "node": true,
   },
-  extends: [
+  "extends": [
     "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier",
     "plugin:import/typescript",
   ],
-  rules: {
+  "rules": {
+    "no-console": 1,       // Means warning
+    "prettier/prettier": 2, // Means error
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     // Disallow imports from src/server/ in src/pages/ except for src/pages/api
@@ -21,38 +24,38 @@ module.exports = {
     "import/no-restricted-paths": [
       "error",
       {
-        zones: [
+        "zones": [
           {
-            target: "./src/pages",
-            from: "./src/server",
+            "target": "./src/pages",
+            "from": "./src/server",
           },
         ],
       },
     ],
   },
-  overrides: [
+  "overrides": [
     {
-      files: ["next.config.js"],
-      rules: {
+      "files": ["next.config.js"],
+      "rules": {
         "@typescript-eslint/no-var-requires": "off",
       },
     },
     {
       // Allow imports from src/server/ in src/pages/api
-      files: ["src/pages/api/**/*"],
-      rules: {
+      "files": ["src/pages/api/**/*"],
+      "rules": {
         "import/no-restricted-paths": [
           "error",
           {
-            zones: [
+            "zones": [
               {
-                target: "./src/pages/api",
-                from: "./src/client/",
-              },
-            ],
-          },
-        ],
-      },
-    },
-  ],
-};
+                "target": "./src/pages/api",
+                "from": "./src/client/",
+              }
+            ]
+          }
+        ]
+      }
+    }
+  ]
+}

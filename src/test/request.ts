@@ -1,6 +1,6 @@
-import { graphql as executeGraphQL, Source } from "graphql";
-import { schema } from "../server/graphql/schema";
-import { oneLine } from "common-tags";
+import { graphql as executeGraphQL, Source } from 'graphql';
+import { schema } from '../server/graphql/schema';
+import { oneLine } from 'common-tags';
 
 interface Options {
   context?: {
@@ -25,10 +25,7 @@ interface Options {
  * })).toMatchSnapshot()
  * ```
  */
-export const request = (
-  query: string | Source,
-  { context, variables }: Options = {}
-) => {
+export const request = (query: string | Source, { context, variables }: Options = {}) => {
   return executeGraphQL(schema, query, undefined, context || {}, variables);
 };
 

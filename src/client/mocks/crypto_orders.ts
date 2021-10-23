@@ -15,7 +15,7 @@ mock.onGet('/api/crypto-orders').reply(() => {
       amountCrypto: 34.4565,
       amount: 56787,
       cryptoCurrency: 'ETH',
-      currency: '$'
+      currency: '$',
     },
     {
       id: '2',
@@ -28,7 +28,7 @@ mock.onGet('/api/crypto-orders').reply(() => {
       amountCrypto: 6.58454334,
       amount: 8734587,
       cryptoCurrency: 'BTC',
-      currency: '$'
+      currency: '$',
     },
     {
       id: '3',
@@ -41,7 +41,7 @@ mock.onGet('/api/crypto-orders').reply(() => {
       amountCrypto: 6.58454334,
       amount: 8734587,
       cryptoCurrency: 'BTC',
-      currency: '$'
+      currency: '$',
     },
     {
       id: '4',
@@ -54,7 +54,7 @@ mock.onGet('/api/crypto-orders').reply(() => {
       amountCrypto: 6.58454334,
       amount: 8734587,
       cryptoCurrency: 'BTC',
-      currency: '$'
+      currency: '$',
     },
     {
       id: '5',
@@ -67,7 +67,7 @@ mock.onGet('/api/crypto-orders').reply(() => {
       amountCrypto: 6.58454334,
       amount: 8734587,
       cryptoCurrency: 'BTC',
-      currency: '$'
+      currency: '$',
     },
     {
       id: '6',
@@ -80,7 +80,7 @@ mock.onGet('/api/crypto-orders').reply(() => {
       amountCrypto: 6.58454334,
       amount: 8734587,
       cryptoCurrency: 'BTC',
-      currency: '$'
+      currency: '$',
     },
     {
       id: '7',
@@ -93,7 +93,7 @@ mock.onGet('/api/crypto-orders').reply(() => {
       amountCrypto: 2.346546,
       amount: 234234,
       cryptoCurrency: 'BTC',
-      currency: '$'
+      currency: '$',
     },
     {
       id: '8',
@@ -106,7 +106,7 @@ mock.onGet('/api/crypto-orders').reply(() => {
       amountCrypto: 3.345456,
       amount: 34544,
       cryptoCurrency: 'BTC',
-      currency: '$'
+      currency: '$',
     },
     {
       id: '9',
@@ -119,7 +119,7 @@ mock.onGet('/api/crypto-orders').reply(() => {
       amountCrypto: 1.4389567945,
       amount: 123843,
       cryptoCurrency: 'BTC',
-      currency: '$'
+      currency: '$',
     },
     {
       id: '10',
@@ -132,8 +132,8 @@ mock.onGet('/api/crypto-orders').reply(() => {
       amountCrypto: 765.5695,
       amount: 7567,
       cryptoCurrency: 'ADA',
-      currency: '$'
-    }
+      currency: '$',
+    },
   ];
 
   return [200, { cryptoOrders }];

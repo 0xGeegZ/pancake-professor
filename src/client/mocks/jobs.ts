@@ -14,7 +14,7 @@ mock.onGet('/api/jobs').reply(() => {
       salaryRange: '700_1200',
       postedDate: subDays(new Date(), 5).getTime(),
       employment: 'full_time',
-      seniority: 'mid'
+      seniority: 'mid',
     },
     {
       id: '2',
@@ -26,7 +26,7 @@ mock.onGet('/api/jobs').reply(() => {
       salaryRange: '700_1200',
       postedDate: subDays(new Date(), 6).getTime(),
       employment: 'full_time',
-      seniority: 'mid'
+      seniority: 'mid',
     },
     {
       id: '3',
@@ -38,7 +38,7 @@ mock.onGet('/api/jobs').reply(() => {
       salaryRange: '700_1200',
       postedDate: subDays(new Date(), 5).getTime(),
       employment: 'full_time',
-      seniority: 'mid'
+      seniority: 'mid',
     },
     {
       id: '4',
@@ -50,7 +50,7 @@ mock.onGet('/api/jobs').reply(() => {
       salaryRange: '700_1200',
       postedDate: subDays(new Date(), 4).getTime(),
       employment: 'full_time',
-      seniority: 'mid'
+      seniority: 'mid',
     },
     {
       id: '5',
@@ -62,7 +62,7 @@ mock.onGet('/api/jobs').reply(() => {
       salaryRange: '700_1200',
       postedDate: subDays(new Date(), 3).getTime(),
       employment: 'full_time',
-      seniority: 'mid'
+      seniority: 'mid',
     },
     {
       id: '6',
@@ -74,7 +74,7 @@ mock.onGet('/api/jobs').reply(() => {
       salaryRange: '700_1200',
       postedDate: subDays(new Date(), 7).getTime(),
       employment: 'full_time',
-      seniority: 'mid'
+      seniority: 'mid',
     },
     {
       id: '7',
@@ -86,7 +86,7 @@ mock.onGet('/api/jobs').reply(() => {
       salaryRange: '700_1200',
       postedDate: subDays(new Date(), 5).getTime(),
       employment: 'full_time',
-      seniority: 'mid'
+      seniority: 'mid',
     },
     {
       id: '8',
@@ -98,7 +98,7 @@ mock.onGet('/api/jobs').reply(() => {
       salaryRange: '700_1200',
       postedDate: subDays(new Date(), 9).getTime(),
       employment: 'full_time',
-      seniority: 'mid'
+      seniority: 'mid',
     },
     {
       id: '9',
@@ -110,7 +110,7 @@ mock.onGet('/api/jobs').reply(() => {
       salaryRange: '700_1200',
       postedDate: subDays(new Date(), 3).getTime(),
       employment: 'full_time',
-      seniority: 'mid'
+      seniority: 'mid',
     },
     {
       id: '10',
@@ -122,7 +122,7 @@ mock.onGet('/api/jobs').reply(() => {
       salaryRange: '700_1200',
       postedDate: subDays(new Date(), 6).getTime(),
       employment: 'full_time',
-      seniority: 'mid'
+      seniority: 'mid',
     },
     {
       id: '11',
@@ -134,7 +134,7 @@ mock.onGet('/api/jobs').reply(() => {
       salaryRange: '700_1200',
       postedDate: subDays(new Date(), 8).getTime(),
       employment: 'full_time',
-      seniority: 'mid'
+      seniority: 'mid',
     },
     {
       id: '12',
@@ -146,8 +146,8 @@ mock.onGet('/api/jobs').reply(() => {
       salaryRange: '700_1200',
       postedDate: subDays(new Date(), 4).getTime(),
       employment: 'full_time',
-      seniority: 'mid'
-    }
+      seniority: 'mid',
+    },
   ];
 
   return [200, { jobs }];

@@ -29,17 +29,17 @@ const menuItems: MenuItems[] = [
       {
         name: 'Analytics',
         icon: AnalyticsTwoToneIcon,
-        link: '/dashboards/analytics'
+        link: '/dashboards/analytics',
       },
       {
         name: 'Finance',
         icon: MonetizationOnTwoToneIcon,
-        link: '/dashboards/finance'
+        link: '/dashboards/finance',
       },
       {
         name: 'Fitness',
         icon: KitchenTwoToneIcon,
-        link: '/dashboards/fitness'
+        link: '/dashboards/fitness',
       },
       {
         name: 'Healthcare',
@@ -49,23 +49,23 @@ const menuItems: MenuItems[] = [
           {
             name: 'Doctors Page',
             badge: 'Hot',
-            link: '/dashboards/healthcare/doctor'
+            link: '/dashboards/healthcare/doctor',
           },
           {
             name: 'Hospital Overview',
-            link: '/dashboards/healthcare/hospital'
-          }
-        ]
+            link: '/dashboards/healthcare/hospital',
+          },
+        ],
       },
       {
         name: 'Banking',
         icon: AccountBalanceTwoToneIcon,
-        link: '/dashboards/banking'
+        link: '/dashboards/banking',
       },
       {
         name: 'Learning',
         icon: SchoolTwoToneIcon,
-        link: '/dashboards/learning'
+        link: '/dashboards/learning',
       },
       {
         name: '',
@@ -74,21 +74,21 @@ const menuItems: MenuItems[] = [
         items: [
           {
             name: 'Monitoring',
-            link: '/dashboards/monitoring'
+            link: '/dashboards/monitoring',
           },
           {
             name: 'Tasks',
-            link: '/dashboards/tasks'
+            link: '/dashboards/tasks',
           },
           {
             name: 'Commerce',
-            link: '/dashboards/commerce'
+            link: '/dashboards/commerce',
           },
           {
             name: 'Crypto',
-            link: '/dashboards/crypto'
+            link: '/dashboards/crypto',
           },
-        ]
+        ],
       },
       {
         name: '',
@@ -97,31 +97,31 @@ const menuItems: MenuItems[] = [
         items: [
           {
             name: 'Accent header',
-            link: '/dashboards/analytics'
+            link: '/dashboards/analytics',
           },
           {
             name: 'Accent sidebar',
-            link: '/dashboards/banking'
+            link: '/dashboards/banking',
           },
           {
             name: 'Boxed sidebar',
-            link: '/dashboards/monitoring'
+            link: '/dashboards/monitoring',
           },
           {
             name: 'Collapsed sidebar',
-            link: '/dashboards/helpdesk'
+            link: '/dashboards/helpdesk',
           },
           {
             name: 'Bottom navigation',
-            link: '/dashboards/automation'
+            link: '/dashboards/automation',
           },
           {
             name: 'Top navigation',
-            link: '/dashboards/finance'
-          }
-        ]
-      }
-    ]
+            link: '/dashboards/finance',
+          },
+        ],
+      },
+    ],
   },
 ];
 

@@ -1,9 +1,9 @@
-import cookieSession from "cookie-session";
-import { NextApiRequest, NextApiResponse } from "next";
-import nc from "next-connect";
-import { error } from "next/dist/build/output/log";
-import passport from "./passport";
-import { trustProxyMiddleware } from "./trust-proxy-middleware";
+import cookieSession from 'cookie-session';
+import { NextApiRequest, NextApiResponse } from 'next';
+import nc from 'next-connect';
+import { error } from 'next/dist/build/output/log';
+import passport from './passport';
+import { trustProxyMiddleware } from './trust-proxy-middleware';
 
 export interface Request extends NextApiRequest {
   // Passport adds these to the request object
@@ -23,8 +23,7 @@ const COOKIE_SECRET = process.env.COOKIE_SECRET;
  * ```
  */
 function handler() {
-  if (!COOKIE_SECRET)
-    throw new Error(`Please add COOKIE_SECRET to your .env.local file!`);
+  if (!COOKIE_SECRET) throw new Error(`Please add COOKIE_SECRET to your .env.local file!`);
 
   return (
     nc<Request, NextApiResponse>({
@@ -39,16 +38,12 @@ function handler() {
       .use(process.env.VERCEL ? trustProxyMiddleware : (_, __, next) => next())
       .use(
         cookieSession({
-          name: "session",
+          name: 'session',
           keys: [COOKIE_SECRET],
           maxAge: 24 * 60 * 60 * 1000 * 30,
           // Do not change the lines below, they make cy.auth() work in e2e tests
-          secure:
-            process.env.NODE_ENV !== "development" &&
-            !process.env.INSECURE_AUTH,
-          signed:
-            process.env.NODE_ENV !== "development" &&
-            !process.env.INSECURE_AUTH,
+          secure: process.env.NODE_ENV !== 'development' && !process.env.INSECURE_AUTH,
+          signed: process.env.NODE_ENV !== 'development' && !process.env.INSECURE_AUTH,
         })
       )
       .use(passport.initialize())

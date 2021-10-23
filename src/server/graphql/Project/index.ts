@@ -1,11 +1,11 @@
-import { enumType, extendType, nonNull, objectType, stringArg } from "nexus";
-import prisma from "../../db/prisma";
-import { getProjectPaidPlan } from "../../get-project-paid-plan";
-import { plans } from "../../stripe/plans";
-import slug from "slug";
-import { generateInvitationToken } from "../../invitations/token";
-import { sendEmail } from "../../send-email";
-import stripe from "../../stripe";
+import { enumType, extendType, nonNull, objectType, stringArg } from 'nexus';
+import prisma from '../../db/prisma';
+import { getProjectPaidPlan } from '../../get-project-paid-plan';
+import { plans } from '../../stripe/plans';
+import slug from 'slug';
+import { generateInvitationToken } from '../../invitations/token';
+import { sendEmail } from '../../send-email';
+import stripe from '../../stripe';
 
 export const PaidPlan = enumType({
   name: `PaidPlan`,
@@ -13,14 +13,14 @@ export const PaidPlan = enumType({
 });
 
 const Project = objectType({
-  name: "Project",
+  name: 'Project',
   definition(t) {
     t.model.id();
     t.model.users();
     t.model.name();
     t.model.slug();
 
-    t.nullable.field("paidPlan", {
+    t.nullable.field('paidPlan', {
       type: `PaidPlan`,
       resolve: async ({ id }, _, ctx) => {
         if (!ctx.user?.id) return null;
@@ -44,10 +44,10 @@ const Project = objectType({
 });
 
 const queries = extendType({
-  type: "Query",
+  type: 'Query',
   definition: (t) => {
-    t.field("project", {
-      type: "Project",
+    t.field('project', {
+      type: 'Project',
       args: {
         id: stringArg(),
         slug: stringArg(),
@@ -55,9 +55,7 @@ const queries = extendType({
       resolve: async (_, { id, slug }, ctx) => {
         if (!ctx.user?.id) return null;
         if ((!id && !slug) || (id && slug))
-          throw new Error(
-            "Please provide either an ID or a slug to the project query"
-          );
+          throw new Error('Please provide either an ID or a slug to the project query');
 
         const project = await prisma.project.findFirst({
           where: {
@@ -81,10 +79,10 @@ const queries = extendType({
 });
 
 const mutations = extendType({
-  type: "Mutation",
+  type: 'Mutation',
   definition: (t) => {
-    t.nullable.field("createProject", {
-      type: "Project",
+    t.nullable.field('createProject', {
+      type: 'Project',
       args: {
         name: nonNull(stringArg()),
         slug: stringArg(),
@@ -106,8 +104,8 @@ const mutations = extendType({
       },
     });
 
-    t.nullable.field("createStripeCheckoutBillingPortalUrl", {
-      type: "String",
+    t.nullable.field('createStripeCheckoutBillingPortalUrl', {
+      type: 'String',
       args: {
         projectId: nonNull(stringArg()),
       },
@@ -136,10 +134,10 @@ const mutations = extendType({
       },
     });
 
-    t.nullable.field("createStripeCheckoutSession", {
-      type: "String",
+    t.nullable.field('createStripeCheckoutSession', {
+      type: 'String',
       args: {
-        plan: nonNull("PaidPlan"),
+        plan: nonNull('PaidPlan'),
         projectId: nonNull(stringArg()),
       },
       resolve: async (_, { projectId, plan }, ctx) => {
@@ -172,8 +170,8 @@ const mutations = extendType({
             };
 
         const session = await stripe.checkout.sessions.create({
-          mode: "subscription",
-          payment_method_types: ["card"],
+          mode: 'subscription',
+          payment_method_types: ['card'],
           line_items: [
             {
               price: priceId,
@@ -186,7 +184,7 @@ const mutations = extendType({
           },
           allow_promotion_codes: true,
           ...customerMetadata,
-          billing_address_collection: "auto",
+          billing_address_collection: 'auto',
           success_url: `${ctx.origin}/app/${project.slug}/?upgraded=true`,
           cancel_url: `${ctx.origin}/app/${project.slug}`,
         });
@@ -195,8 +193,8 @@ const mutations = extendType({
       },
     });
 
-    t.nullable.field("inviteToProject", {
-      type: "Boolean",
+    t.nullable.field('inviteToProject', {
+      type: 'Boolean',
       args: {
         projectId: nonNull(stringArg()),
         email: nonNull(stringArg()),

@@ -12,7 +12,7 @@ const invoices: Invoice[] = [
     clientAvatar: '/static/images/avatars/1.jpg',
     amount: 1497,
     currency: '$',
-    status: 'progress'
+    status: 'progress',
   },
   {
     id: '2',
@@ -23,7 +23,7 @@ const invoices: Invoice[] = [
     clientAvatar: '/static/images/avatars/2.jpg',
     amount: 5689,
     currency: '$',
-    status: 'draft'
+    status: 'draft',
   },
   {
     id: '3',
@@ -34,7 +34,7 @@ const invoices: Invoice[] = [
     clientAvatar: '/static/images/avatars/3.jpg',
     amount: 611,
     currency: '$',
-    status: 'progress'
+    status: 'progress',
   },
   {
     id: '4',
@@ -45,7 +45,7 @@ const invoices: Invoice[] = [
     clientAvatar: '/static/images/avatars/4.jpg',
     amount: 8792,
     currency: '$',
-    status: 'completed'
+    status: 'completed',
   },
   {
     id: '5',
@@ -56,7 +56,7 @@ const invoices: Invoice[] = [
     clientAvatar: '/static/images/avatars/5.jpg',
     amount: 3947,
     currency: '$',
-    status: 'progress'
+    status: 'progress',
   },
   {
     id: '6',
@@ -67,7 +67,7 @@ const invoices: Invoice[] = [
     clientAvatar: '/static/images/avatars/1.jpg',
     amount: 5133,
     currency: '$',
-    status: 'completed'
+    status: 'completed',
   },
   {
     id: '7',
@@ -78,7 +78,7 @@ const invoices: Invoice[] = [
     clientAvatar: '/static/images/avatars/2.jpg',
     amount: 7255,
     currency: '$',
-    status: 'draft'
+    status: 'draft',
   },
   {
     id: '8',
@@ -89,7 +89,7 @@ const invoices: Invoice[] = [
     clientAvatar: '/static/images/avatars/3.jpg',
     amount: 6091,
     currency: '$',
-    status: 'pending'
+    status: 'pending',
   },
   {
     id: '9',
@@ -100,7 +100,7 @@ const invoices: Invoice[] = [
     clientAvatar: '/static/images/avatars/4.jpg',
     amount: 7087,
     currency: '$',
-    status: 'draft'
+    status: 'draft',
   },
   {
     id: '10',
@@ -111,7 +111,7 @@ const invoices: Invoice[] = [
     clientAvatar: '/static/images/avatars/5.jpg',
     amount: 3999,
     currency: '$',
-    status: 'draft'
+    status: 'draft',
   },
   {
     id: '11',
@@ -122,7 +122,7 @@ const invoices: Invoice[] = [
     clientAvatar: '/static/images/avatars/1.jpg',
     amount: 5867,
     currency: '$',
-    status: 'progress'
+    status: 'progress',
   },
   {
     id: '12',
@@ -133,7 +133,7 @@ const invoices: Invoice[] = [
     clientAvatar: '/static/images/avatars/2.jpg',
     amount: 6337,
     currency: '$',
-    status: 'completed'
+    status: 'completed',
   },
   {
     id: '13',
@@ -144,7 +144,7 @@ const invoices: Invoice[] = [
     clientAvatar: '/static/images/avatars/3.jpg',
     amount: 6712,
     currency: '$',
-    status: 'progress'
+    status: 'progress',
   },
   {
     id: '14',
@@ -155,7 +155,7 @@ const invoices: Invoice[] = [
     clientAvatar: '/static/images/avatars/4.jpg',
     amount: 6004,
     currency: '$',
-    status: 'pending'
+    status: 'pending',
   },
   {
     id: '15',
@@ -166,8 +166,8 @@ const invoices: Invoice[] = [
     clientAvatar: '/static/images/avatars/5.jpg',
     amount: 5188,
     currency: '$',
-    status: 'draft'
-  }
+    status: 'draft',
+  },
 ];
 
 mock.onGet('/api/invoices').reply(() => {

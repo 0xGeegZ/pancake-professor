@@ -1,8 +1,8 @@
-import { extendType, nonNull, objectType, stringArg } from "nexus";
-import prisma from "../../db/prisma";
+import { extendType, nonNull, objectType, stringArg } from 'nexus';
+import prisma from '../../db/prisma';
 
 const User = objectType({
-  name: "User",
+  name: 'User',
   definition(t) {
     t.model.id();
     t.model.name();
@@ -14,10 +14,10 @@ const User = objectType({
 });
 
 const queries = extendType({
-  type: "Query",
+  type: 'Query',
   definition: (t) => {
-    t.field("currentUser", {
-      type: "User",
+    t.field('currentUser', {
+      type: 'User',
       resolve: (_, __, ctx) => {
         if (!ctx.user?.id) return null;
 
@@ -29,8 +29,8 @@ const queries = extendType({
       },
     });
 
-    t.field("user", {
-      type: "User",
+    t.field('user', {
+      type: 'User',
       args: {
         id: nonNull(stringArg()),
       },
@@ -48,35 +48,35 @@ const queries = extendType({
 });
 
 const mutations = extendType({
-  type: "Mutation",
+  type: 'Mutation',
   definition: (t) => {
-    t.nullable.field("updateUser", {
-      type: "User",
+    t.nullable.field('updateUser', {
+      type: 'User',
       args: {
         userId: nonNull(stringArg()),
         name: stringArg(),
         email: stringArg(),
         address: nonNull(stringArg()),
       },
-      resolve: async (_, { userId, name, email, address}, ctx) => {
+      resolve: async (_, { userId, name, email, address }, ctx) => {
         if (!ctx.user?.id || userId !== ctx.user.id) return null;
 
         const data = {
-          name : name ? name : "",
-          email : email ? email : "",
-          address
-        }
+          name: name ? name : '',
+          email: email ? email : '',
+          address,
+        };
 
-        if(name)  data.name = name
+        if (name) data.name = name;
         return await prisma.user.update({
           where: { id: userId },
-          data
+          data,
         });
       },
     });
 
-    t.nullable.field("createFriend", {
-      type: "User",
+    t.nullable.field('createFriend', {
+      type: 'User',
       args: {
         id: nonNull(stringArg()),
       },

@@ -14,8 +14,8 @@ const users = [
     jobtitle: 'Lead Developer',
     password: 'TokyoPass1@',
     role: 'admin',
-    posts: '27'
-  }
+    posts: '27',
+  },
 ];
 
 mock.onPost('/api/account/login').reply(async (config) => {
@@ -26,12 +26,12 @@ mock.onPost('/api/account/login').reply(async (config) => {
 
     const user = users.find((_user) => _user.email === email);
 
-    if (!user || (user.password !== password)) {
+    if (!user || user.password !== password) {
       return [400, { message: 'Verify that your email and password are correct' }];
     }
 
     const accessToken = sign({ userId: user.id }, JWT_SECRET, {
-      expiresIn: JWT_EXPIRES_IN
+      expiresIn: JWT_EXPIRES_IN,
     });
 
     return [
@@ -47,9 +47,9 @@ mock.onPost('/api/account/login').reply(async (config) => {
           location: user.location,
           username: user.username,
           role: user.role,
-          posts: user.posts
-        }
-      }
+          posts: user.posts,
+        },
+      },
     ];
   } catch (err) {
     console.error('Error: ', err);
@@ -79,13 +79,13 @@ mock.onPost('/api/account/register').reply(async (config) => {
       password,
       location: null,
       role: 'admin',
-      posts: '56'
+      posts: '56',
     };
 
     users.push(user);
 
     const accessToken = sign({ userId: user.id }, JWT_SECRET, {
-      expiresIn: JWT_EXPIRES_IN
+      expiresIn: JWT_EXPIRES_IN,
     });
 
     return [
@@ -101,9 +101,9 @@ mock.onPost('/api/account/register').reply(async (config) => {
           location: user.location,
           username: user.username,
           role: user.role,
-          posts: user.posts
-        }
-      }
+          posts: user.posts,
+        },
+      },
     ];
   } catch (err) {
     console.error('Error: ', err);
@@ -139,9 +139,9 @@ mock.onGet('/api/account/personal').reply((config) => {
           location: user.location,
           username: user.username,
           role: user.role,
-          posts: user.posts
-        }
-      }
+          posts: user.posts,
+        },
+      },
     ];
   } catch (err) {
     console.error('Error: ', err);

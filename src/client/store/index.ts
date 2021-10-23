@@ -1,7 +1,4 @@
-import {
-  useDispatch as useReduxDispatch,
-  useSelector as useReduxSelector
-} from 'react-redux';
+import { useDispatch as useReduxDispatch, useSelector as useReduxSelector } from 'react-redux';
 import type { TypedUseSelectorHook } from 'react-redux';
 import type { ThunkAction } from 'redux-thunk';
 import { configureStore } from '@reduxjs/toolkit';
@@ -10,7 +7,7 @@ import rootReducer from './rootReducer';
 
 const store = configureStore({
   reducer: rootReducer,
-  devTools: true
+  devTools: true,
 });
 
 export type RootState = ReturnType<typeof store.getState>;

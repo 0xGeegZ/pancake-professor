@@ -1,9 +1,9 @@
 // src/server/graphql/Koi/index.ts
-import { objectType, extendType, nonNull, stringArg, intArg } from "nexus";
-import prisma from "../../db/prisma";
+import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus';
+import prisma from '../../db/prisma';
 
 const KoiHistory = objectType({
-  name: "KoiHistory",
+  name: 'KoiHistory',
   definition(t) {
     t.model.length();
     t.model.date();
@@ -14,10 +14,10 @@ const KoiHistory = objectType({
 });
 
 const queries = extendType({
-  type: "Query",
+  type: 'Query',
   definition: (t) => {
-    t.field("koiHistory", {
-      type: "KoiHistory",
+    t.field('koiHistory', {
+      type: 'KoiHistory',
       args: {
         id: nonNull(stringArg()),
       },
@@ -36,10 +36,10 @@ const queries = extendType({
 });
 
 const mutations = extendType({
-  type: "Mutation",
+  type: 'Mutation',
   definition: (t) => {
-    t.nullable.field("createKoiHistory", {
-      type: "KoiHistory",
+    t.nullable.field('createKoiHistory', {
+      type: 'KoiHistory',
       args: {
         id: nonNull(stringArg()),
         length: intArg(),
@@ -65,8 +65,8 @@ const mutations = extendType({
       },
     });
 
-    t.nullable.field("updateKoiHistory", {
-      type: "KoiHistory",
+    t.nullable.field('updateKoiHistory', {
+      type: 'KoiHistory',
       args: {
         id: nonNull(stringArg()),
         length: intArg(),
@@ -102,8 +102,8 @@ const mutations = extendType({
       },
     });
 
-    t.nullable.field("deleteKoiHistory", {
-      type: "KoiHistory",
+    t.nullable.field('deleteKoiHistory', {
+      type: 'KoiHistory',
       args: {
         id: nonNull(stringArg()),
       },

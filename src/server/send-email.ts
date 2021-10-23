@@ -1,8 +1,8 @@
-import { info } from "next/dist/build/output/log";
-import { Client } from "postmark";
+import { info } from 'next/dist/build/output/log';
+import { Client } from 'postmark';
 
 const FROM_EMAIL = process.env.POSTMARK_FROM_EMAIL;
-const API_TOKEN = process.env.POSTMARK_API_TOKEN || "fake";
+const API_TOKEN = process.env.POSTMARK_API_TOKEN || 'fake';
 
 const client = new Client(API_TOKEN);
 
@@ -36,10 +36,8 @@ export const sendEmail = (input: SendEmailInput) => {
     return;
   }
 
-  if (API_TOKEN === "fake" || !FROM_EMAIL) {
-    console.error(
-      `Please specify the POSTMARK_FROM_EMAIL and POSTMARK_API_TOKEN env variables.`
-    );
+  if (API_TOKEN === 'fake' || !FROM_EMAIL) {
+    console.error(`Please specify the POSTMARK_FROM_EMAIL and POSTMARK_API_TOKEN env variables.`);
     return;
   }
 

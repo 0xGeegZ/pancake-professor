@@ -53,13 +53,10 @@ function draw() {
     borderWidth = borderWidth > barSize ? barSize : borderWidth;
     const halfStroke = borderWidth / 2;
     // Adjust borderWidth when bar top position is near vm.base(zero).
-    const borderLeft =
-      left + (borderSkipped !== 'left' ? halfStroke * signX : 0);
-    const borderRight =
-      right + (borderSkipped !== 'right' ? -halfStroke * signX : 0);
+    const borderLeft = left + (borderSkipped !== 'left' ? halfStroke * signX : 0);
+    const borderRight = right + (borderSkipped !== 'right' ? -halfStroke * signX : 0);
     const borderTop = top + (borderSkipped !== 'top' ? halfStroke * signY : 0);
-    const borderBottom =
-      bottom + (borderSkipped !== 'bottom' ? -halfStroke * signY : 0);
+    const borderBottom = bottom + (borderSkipped !== 'bottom' ? -halfStroke * signY : 0);
     // not become a vertical line?
     if (borderLeft !== borderRight) {
       top = borderTop;
@@ -84,7 +81,7 @@ function draw() {
     [left, bottom],
     [left, top],
     [right, top],
-    [right, bottom]
+    [right, bottom],
   ];
 
   // Find first (starting) corner with fallback to 'bottom'
@@ -173,12 +170,7 @@ function draw() {
       ctx.lineTo(x + width - radius, y);
       ctx.quadraticCurveTo(x + width, y, x + width, y + radius);
       ctx.lineTo(x + width, y + height - radius);
-      ctx.quadraticCurveTo(
-        x + width,
-        y + height,
-        x + width - radius,
-        y + height
-      );
+      ctx.quadraticCurveTo(x + width, y + height, x + width - radius, y + height);
       ctx.lineTo(x + radius, y + height);
       ctx.quadraticCurveTo(x, y + height, x, y + height - radius);
       ctx.lineTo(x, y + radius);
@@ -193,5 +185,5 @@ function draw() {
 }
 
 Chart.helpers.extend(Chart.elements.Rectangle.prototype, {
-  draw
+  draw,
 });

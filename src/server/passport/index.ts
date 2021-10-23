@@ -1,8 +1,8 @@
-import passport from "passport";
-import magicLink from "./magicLink";
-import localAuth from "./localAuth";
-import web3Auth from "./web3Auth";
-import prisma from "../db/prisma";
+import passport from 'passport';
+import magicLink from './magicLink';
+import localAuth from './localAuth';
+import web3Auth from './web3Auth';
+import prisma from '../db/prisma';
 
 passport.use(magicLink);
 passport.use(web3Auth);
@@ -21,7 +21,7 @@ declare global {
     }
   }
 }
- 
+
 passport.serializeUser(async (u: Express.User, done) => {
   const address = u.address.toLowerCase();
 
@@ -35,7 +35,6 @@ passport.serializeUser(async (u: Express.User, done) => {
     },
   });
 
-
   done(null, {
     ...u,
     id: user.id,
@@ -47,8 +46,6 @@ passport.deserializeUser(async (user: Express.User, done) => {
 });
 
 export default passport;
-
-
 
 // passport.serializeUser(async (u: Express.User, done) => {
 //   const email = u.email.toLowerCase();

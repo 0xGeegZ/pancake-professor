@@ -1,6 +1,6 @@
-import handler from "../../../server/api-route";
-import prisma from "../../../server/db/prisma";
-import { decodeInvitationToken } from "../../../server/invitations/token";
+import handler from '../../../server/api-route';
+import prisma from '../../../server/db/prisma';
+import { decodeInvitationToken } from '../../../server/invitations/token';
 
 /**
  * Users visit this route when accepting an invitation with the invitation token as a query param
@@ -15,22 +15,14 @@ export default handler().get(async (req, res) => {
     return;
   }
 
-  if (typeof token !== "string") {
-    res
-      .status(400)
-      .send(
-        "Invalid invitation. Please ask the project owner to re-invite you!"
-      );
+  if (typeof token !== 'string') {
+    res.status(400).send('Invalid invitation. Please ask the project owner to re-invite you!');
     return;
   }
 
   const payload = decodeInvitationToken(token);
   if (!payload) {
-    res
-      .status(400)
-      .send(
-        "Invalid invitation. Please ask the project owner to re-invite you!"
-      );
+    res.status(400).send('Invalid invitation. Please ask the project owner to re-invite you!');
     return;
   }
 

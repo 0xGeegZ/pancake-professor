@@ -51,31 +51,31 @@ const menuItems: MenuItems[] = [
         items: [
           {
             name: 'Accent header',
-            link: '/dashboards/analytics'
+            link: '/dashboards/analytics',
           },
           {
             name: 'Accent sidebar',
-            link: '/dashboards/banking'
+            link: '/dashboards/banking',
           },
           {
             name: 'Boxed sidebar',
-            link: '/dashboards/monitoring'
+            link: '/dashboards/monitoring',
           },
           {
             name: 'Collapsed sidebar',
-            link: '/dashboards/helpdesk'
+            link: '/dashboards/helpdesk',
           },
           {
             name: 'Bottom navigation',
-            link: '/dashboards/automation'
+            link: '/dashboards/automation',
           },
           {
             name: 'Top navigation',
-            link: '/dashboards/finance'
-          }
-        ]
+            link: '/dashboards/finance',
+          },
+        ],
       },
-    ]
+    ],
   },
   {
     heading: 'Dashboards',
@@ -84,12 +84,12 @@ const menuItems: MenuItems[] = [
         name: 'Automation',
         icon: SmartToyTwoToneIcon,
         link: '/dashboards/automation',
-        badge: 'Hot'
+        badge: 'Hot',
       },
       {
         name: 'Analytics',
         icon: AnalyticsTwoToneIcon,
-        link: '/dashboards/analytics'
+        link: '/dashboards/analytics',
       },
       {
         name: 'Banking',
@@ -99,22 +99,22 @@ const menuItems: MenuItems[] = [
       {
         name: 'Commerce',
         icon: StoreTwoToneIcon,
-        link: '/dashboards/commerce'
+        link: '/dashboards/commerce',
       },
       {
         name: 'Crypto',
         icon: AccountBalanceWalletTwoToneIcon,
-        link: '/dashboards/crypto'
+        link: '/dashboards/crypto',
       },
       {
         name: 'Finance',
         icon: MonetizationOnTwoToneIcon,
-        link: '/dashboards/finance'
+        link: '/dashboards/finance',
       },
       {
         name: 'Fitness',
         icon: KitchenTwoToneIcon,
-        link: '/dashboards/fitness'
+        link: '/dashboards/fitness',
       },
       {
         name: 'Healthcare',
@@ -124,35 +124,35 @@ const menuItems: MenuItems[] = [
           {
             name: 'Doctors Page',
             badge: 'Hot',
-            link: '/dashboards/healthcare/doctor'
+            link: '/dashboards/healthcare/doctor',
           },
           {
             name: 'Hospital Overview',
-            link: '/dashboards/healthcare/hospital'
-          }
-        ]
+            link: '/dashboards/healthcare/hospital',
+          },
+        ],
       },
       {
         name: 'Helpdesk',
         icon: ContactSupportTwoToneIcon,
-        link: '/dashboards/helpdesk'
+        link: '/dashboards/helpdesk',
       },
       {
         name: 'Learning',
         icon: LocalLibraryTwoToneIcon,
-        link: '/dashboards/learning'
+        link: '/dashboards/learning',
       },
       {
         name: 'Monitoring',
         icon: DnsTwoToneIcon,
-        link: '/dashboards/monitoring'
+        link: '/dashboards/monitoring',
       },
       {
         name: 'Tasks',
         icon: TaskAltTwoToneIcon,
-        link: '/dashboards/tasks'
-      }
-    ]
+        link: '/dashboards/tasks',
+      },
+    ],
   },
   {
     heading: 'Applications',
@@ -160,24 +160,24 @@ const menuItems: MenuItems[] = [
       {
         name: 'File Manager',
         icon: DocumentScannerTwoToneIcon,
-        link: '/applications/file-manager'
+        link: '/applications/file-manager',
       },
       {
         name: 'Jobs Platform',
         icon: WorkTwoToneIcon,
-        link: '/applications/jobs-platform'
+        link: '/applications/jobs-platform',
       },
       {
         name: 'Messenger',
         icon: QuestionAnswerTwoToneIcon,
-        link: '/applications/messenger'
+        link: '/applications/messenger',
       },
       {
         name: 'Projects Board',
         icon: DashboardCustomizeTwoToneIcon,
-        link: '/applications/projects-board'
-      }
-    ]
+        link: '/applications/projects-board',
+      },
+    ],
   },
   {
     heading: 'Management',
@@ -185,12 +185,12 @@ const menuItems: MenuItems[] = [
       {
         name: 'Users',
         icon: AssignmentIndTwoToneIcon,
-        link: '/management/users'
+        link: '/management/users',
       },
       {
         name: 'Projects',
         icon: AccountTreeTwoToneIcon,
-        link: '/management/projects'
+        link: '/management/projects',
       },
       {
         name: 'Commerce',
@@ -199,24 +199,24 @@ const menuItems: MenuItems[] = [
         items: [
           {
             name: 'Shop',
-            link: '/management/commerce/shop'
+            link: '/management/commerce/shop',
           },
           {
             name: 'Products List',
-            link: '/management/commerce/products'
+            link: '/management/commerce/products',
           },
           {
             name: 'Create Product',
-            link: '/management/commerce/products/create'
-          }
-        ]
+            link: '/management/commerce/products/create',
+          },
+        ],
       },
       {
         name: 'Invoices',
         icon: ReceiptTwoToneIcon,
-        link: '/management/invoices'
+        link: '/management/invoices',
       },
-    ]
+    ],
   },
   {
     heading: 'Extra Pages',
@@ -228,29 +228,29 @@ const menuItems: MenuItems[] = [
         items: [
           {
             name: 'Login Basic',
-            link: '/account/login-basic'
+            link: '/account/login-basic',
           },
           {
             name: 'Login Cover',
-            link: '/account/login-cover'
+            link: '/account/login-cover',
           },
           {
             name: 'Register Basic',
-            link: '/account/register-basic'
+            link: '/account/register-basic',
           },
           {
             name: 'Register Cover',
-            link: '/account/register-cover'
+            link: '/account/register-cover',
           },
           {
             name: 'Register Wizard',
-            link: '/account/register-wizard'
+            link: '/account/register-wizard',
           },
           {
             name: 'Recover Password',
-            link: '/account/recover-password'
-          }
-        ]
+            link: '/account/recover-password',
+          },
+        ],
       },
       {
         name: 'Status',
@@ -259,23 +259,23 @@ const menuItems: MenuItems[] = [
         items: [
           {
             name: 'Error 404',
-            link: '/status/404'
+            link: '/status/404',
           },
           {
             name: 'Error 500',
-            link: '/status/500'
+            link: '/status/500',
           },
           {
             name: 'Maintenance',
-            link: '/status/maintenance'
+            link: '/status/maintenance',
           },
           {
             name: 'Coming Soon',
-            link: '/status/coming-soon'
-          }
-        ]
-      }
-    ]
+            link: '/status/coming-soon',
+          },
+        ],
+      },
+    ],
   },
   {
     heading: 'Foundation',
@@ -283,15 +283,15 @@ const menuItems: MenuItems[] = [
       {
         name: 'Overview',
         link: '/',
-        icon: DesignServicesTwoToneIcon
+        icon: DesignServicesTwoToneIcon,
       },
       {
         name: 'Documentation',
         icon: SupportTwoToneIcon,
-        link: '/docs'
-      }
-    ]
-  }
+        link: '/docs',
+      },
+    ],
+  },
 ];
 
 export default menuItems;

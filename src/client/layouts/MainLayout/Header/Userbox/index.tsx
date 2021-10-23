@@ -14,7 +14,7 @@ import useRefMounted from 'src/client/hooks/useRefMounted';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
-    padding: ${theme.spacing(0, .5)};
+    padding: ${theme.spacing(0, 0.5)};
     height: ${theme.spacing(6)};
 `
 );
@@ -47,27 +47,24 @@ const UserBoxDescription = styled(Typography)(
 `
 );
 
-function HeaderUserbox({address}) {
-  const [balance, setBalance] = useState<string>("");
+function HeaderUserbox({ address }) {
+  const [balance, setBalance] = useState<string>('');
   const isMountedRef = useRefMounted();
 
   const [provider, setProvider] = useState<ethers.providers.Web3Provider>();
-  
 
   const checkBalance = useCallback(async () => {
-    if (!window.ethereum?.request)
-       return;
+    if (!window.ethereum?.request) return;
 
     if (!isMountedRef.current) {
       return;
     }
 
-    if(!provider){
+    if (!provider) {
       return;
     }
-  
 
-    const TOKEN_ADDR = "0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c";
+    const TOKEN_ADDR = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c';
     const token = Erc20__factory.connect(TOKEN_ADDR, provider.getSigner());
 
     const rawBalance = await token.balanceOf(address);
@@ -77,26 +74,23 @@ function HeaderUserbox({address}) {
     setBalance(balance);
 
     window.localStorage.setItem('balance', balance);
-  }, [address, provider])
+  }, [address, provider]);
 
   useEffect(() => {
     const provider = new ethers.providers.Web3Provider(window.ethereum);
     setProvider(provider);
-    
+
     // if (window.localStorage.getItem("balance"))
     //   setBalance(window.localStorage.getItem("balance"));
     // else
-      checkBalance()
-  }, [checkBalance])
+    checkBalance();
+  }, [checkBalance]);
 
-  
   const { enqueueSnackbar } = useSnackbar();
 
   const { t }: { t: any } = useTranslation();
 
   const router = useRouter();
-
-  
 
   const ref = useRef<any>(null);
   const [isOpen, setOpen] = useState<boolean>(false);
@@ -113,7 +107,7 @@ function HeaderUserbox({address}) {
     try {
       fetch(`/api/auth/logout`, {
         method: `GET`,
-        headers: { "Content-Type": "application/json" },
+        headers: { 'Content-Type': 'application/json' },
       })
         .then((res) => res.json())
         .then((json) => {
@@ -121,11 +115,11 @@ function HeaderUserbox({address}) {
           if (json.success) {
             router.push('/');
             enqueueSnackbar(t('Wallet succesfully unconnected!'), {
-              variant: 'success'
-            });     
-          }else {
+              variant: 'success',
+            });
+          } else {
             enqueueSnackbar(t('Unexpected error occurred'), {
-              variant: 'error'
+              variant: 'error',
             });
           }
         });
@@ -140,10 +134,8 @@ function HeaderUserbox({address}) {
         <Avatar variant="rounded" alt="Margaret Gale" src="/static/images/avatars/1.jpg" />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{address.substring(0,10)}</UserBoxLabel>
-            <UserBoxDescription variant="body2">
-             {balance || 0 }BNB
-            </UserBoxDescription>
+            <UserBoxLabel variant="body1">{address.substring(0, 10)}</UserBoxLabel>
+            <UserBoxDescription variant="body2">{balance || 0}BNB</UserBoxDescription>
           </UserBoxText>
         </Hidden>
         <Hidden smDown>
@@ -156,27 +148,30 @@ function HeaderUserbox({address}) {
         open={isOpen}
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
       >
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
           <Avatar variant="rounded" alt="Margaret Gale" src="/static/images/avatars/1.jpg" />
           <UserBoxText>
-            <UserBoxLabel variant="body1">{address.substring(0,10)}</UserBoxLabel>
-            <UserBoxDescription variant="body2">
-            {balance}BNB
-            </UserBoxDescription>
+            <UserBoxLabel variant="body1">{address.substring(0, 10)}</UserBoxLabel>
+            <UserBoxDescription variant="body2">{balance}BNB</UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
         <Divider sx={{ mb: 0 }} />
         <List sx={{ p: 1 }} component="nav">
           <ListItem
-            onClick={() => { handleClose() }}
-            button href="/app/account" component={Link}>
+            onClick={() => {
+              handleClose();
+            }}
+            button
+            href="/app/account"
+            component={Link}
+          >
             <AccountBoxTwoToneIcon fontSize="small" />
             <ListItemText primary={t('Profile')} />
           </ListItem>

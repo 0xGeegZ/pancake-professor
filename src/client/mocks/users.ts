@@ -15,7 +15,7 @@ const users: User[] = [
     followers: '667',
     description:
       'Vestibulum rutrum rutrum neque. Aenean auctor gravida sem quam pede lobortis ligula, sit amet eleifend.',
-    posts: '8'
+    posts: '8',
   },
   {
     id: '2',
@@ -30,7 +30,7 @@ const users: User[] = [
     followers: '375',
     description:
       'Nunc rhoncus dui vel sem. Sed sagittis. Nam congue, risus semper porta volutpat, quam pede lobortis ligula, sit amet eleifend pede libero quis orci.',
-    posts: '11'
+    posts: '11',
   },
   {
     id: '3',
@@ -45,7 +45,7 @@ const users: User[] = [
     followers: '6333',
     description:
       'Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque. Quisque porta volutpat erat.',
-    posts: '23'
+    posts: '23',
   },
   {
     id: '4',
@@ -59,7 +59,7 @@ const users: User[] = [
     coverImg: '/static/images/placeholders/covers/4.jpg',
     followers: '1876',
     description: 'Phasellus in felis. Donec semper sapien a libero. Nam dui.',
-    posts: '362'
+    posts: '362',
   },
   {
     id: '5',
@@ -74,7 +74,7 @@ const users: User[] = [
     followers: '6513',
     description:
       'Donec vitae nisi. Nam ultrices, libero non mattis pulvinar, nulla pede ullamcorper augue, a suscipit nulla elit ac nulla. Sed vel enim sit amet nunc viverra dapibus. Nulla suscipit ligula in lacus. Curabitur at ipsum ac tellus semper interdum.',
-    posts: '94'
+    posts: '94',
   },
   {
     id: '6',
@@ -89,7 +89,7 @@ const users: User[] = [
     followers: '492',
     description:
       'Nam congue, risus semper porta volutpat, quam pede lobortis ligula, sit amet eleifend pede libero quis orci. Nullam molestie nibh in lectus.',
-    posts: '38'
+    posts: '38',
   },
   {
     id: '7',
@@ -103,7 +103,7 @@ const users: User[] = [
     coverImg: '/static/images/placeholders/covers/1.jpg',
     followers: '3848',
     description: 'Vivamus tortor. Duis mattis egestas metus.',
-    posts: '4'
+    posts: '4',
   },
   {
     id: '8',
@@ -118,7 +118,7 @@ const users: User[] = [
     followers: '730',
     description:
       'Donec ut dolor. Morbi vel lectus in quam fringilla rhoncus. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id, turpis.',
-    posts: '457'
+    posts: '457',
   },
   {
     id: '9',
@@ -133,7 +133,7 @@ const users: User[] = [
     followers: '6673',
     description:
       'Vestibulum rutrum rutrum neque. Aenean auctor gravida sem. Mauris enim leo, rhoncus sed, vestibulum sit amet, cursus id.',
-    posts: '237'
+    posts: '237',
   },
   {
     id: '10',
@@ -148,7 +148,7 @@ const users: User[] = [
     followers: '980',
     description:
       'Morbi odio odio, elementum eu, interdum eu, tincidunt in, leo. Maecenas pulvinar lobortis est. Phasellus sit amet erat.',
-    posts: '84'
+    posts: '84',
   },
   {
     id: '11',
@@ -163,7 +163,7 @@ const users: User[] = [
     followers: '294',
     description:
       'Morbi porttitor lorem id ligula. Suspendisse ornare consequat lectus. In est risus, auctor sed, tristique in, tempus sit amet, sem. Fusce consequat.',
-    posts: '55'
+    posts: '55',
   },
   {
     id: '12',
@@ -178,7 +178,7 @@ const users: User[] = [
     followers: '672',
     description:
       'Maecenas tincidunt lacus at velit. Vivamus vel nulla eget eros elementum pellentesque. Quisque porta volutpat erat.',
-    posts: '23'
+    posts: '23',
   },
   {
     id: '13',
@@ -193,7 +193,7 @@ const users: User[] = [
     followers: '893',
     description:
       'Maecenas ut massa quis augue luctus tincidunt. Nulla mollis molestie lorem. Quisque ut erat. Curabitur gravida nisi at nibh.',
-    posts: '465'
+    posts: '465',
   },
   {
     id: '14',
@@ -208,7 +208,7 @@ const users: User[] = [
     followers: '995',
     description:
       'Nulla tellus. In sagittis dui vel nisl. Duis ac nibh. Fusce lacus purus, aliquet at, feugiat non, pretium quis, lectus.',
-    posts: '65'
+    posts: '65',
   },
   {
     id: '15',
@@ -221,9 +221,8 @@ const users: User[] = [
     role: 'subscriber',
     coverImg: '/static/images/placeholders/covers/3.jpg',
     followers: '215',
-    description:
-      'Proin risus. Praesent lectus. Vestibulum quam sapien, varius ut, blandit non, interdum in, ante.',
-    posts: '9'
+    description: 'Proin risus. Praesent lectus. Vestibulum quam sapien, varius ut, blandit non, interdum in, ante.',
+    posts: '9',
   },
   {
     id: '16',
@@ -238,7 +237,7 @@ const users: User[] = [
     followers: '1348',
     description:
       'Aliquam quis turpis eget elit sodales scelerisque. Mauris sit amet eros. Suspendisse accumsan tortor quis turpis.',
-    posts: '22'
+    posts: '22',
   },
   {
     id: '17',
@@ -253,7 +252,7 @@ const users: User[] = [
     followers: '9711',
     description:
       'Nulla ac enim. In tempor, turpis nec euismod scelerisque, quam turpis adipiscing lorem, vitae mattis nibh ligula nec sem. Duis aliquam convallis nunc. Proin at turpis a pede posuere nonummy.',
-    posts: '5'
+    posts: '5',
   },
   {
     id: '18',
@@ -268,7 +267,7 @@ const users: User[] = [
     followers: '773',
     description:
       'Vivamus metus arcu, adipiscing molestie, hendrerit at, vulputate vitae, nisl. Aenean lectus. Pellentesque eget nunc.',
-    posts: '3'
+    posts: '3',
   },
   {
     id: '19',
@@ -281,9 +280,8 @@ const users: User[] = [
     role: 'admin',
     coverImg: '/static/images/placeholders/covers/1.jpg',
     followers: '650',
-    description:
-      'Morbi non quam nec dui luctus rutrum. Nulla tellus. In sagittis dui vel nisl.',
-    posts: '34'
+    description: 'Morbi non quam nec dui luctus rutrum. Nulla tellus. In sagittis dui vel nisl.',
+    posts: '34',
   },
   {
     id: '20',
@@ -296,10 +294,9 @@ const users: User[] = [
     role: 'customer',
     coverImg: '/static/images/placeholders/covers/2.jpg',
     followers: '627',
-    description:
-      'Sed accumsan felis. Ut at dolor quis odio consequat varius. Integer ac leo.',
-    posts: '54'
-  }
+    description: 'Sed accumsan felis. Ut at dolor quis odio consequat varius. Integer ac leo.',
+    posts: '54',
+  },
 ];
 
 mock.onGet('/api/users').reply(() => {

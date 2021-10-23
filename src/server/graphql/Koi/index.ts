@@ -1,9 +1,9 @@
 // src/server/graphql/Koi/index.ts
-import { objectType, extendType, nonNull, stringArg, intArg } from "nexus";
-import prisma from "../../db/prisma";
+import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus';
+import prisma from '../../db/prisma';
 
 const Koi = objectType({
-  name: "Koi",
+  name: 'Koi',
   definition(t) {
     t.model.id();
     t.model.modifiedAt();
@@ -21,11 +21,11 @@ const Koi = objectType({
 });
 
 const queries = extendType({
-  type: "Query",
+  type: 'Query',
   definition: (t) => {
     // This will add a { post(id: "...") { id title body } } query to the API
-    t.field("koi", {
-      type: "Koi",
+    t.field('koi', {
+      type: 'Koi',
       args: {
         id: nonNull(stringArg()),
       },
@@ -50,10 +50,10 @@ const queries = extendType({
 });
 
 const mutations = extendType({
-  type: "Mutation",
+  type: 'Mutation',
   definition: (t) => {
-    t.nullable.field("createKoi", {
-      type: "Koi",
+    t.nullable.field('createKoi', {
+      type: 'Koi',
       args: {
         id: nonNull(stringArg()),
         variety: nonNull(stringArg()),
@@ -89,8 +89,8 @@ const mutations = extendType({
       },
     });
 
-    t.nullable.field("updateKoi", {
-      type: "Koi",
+    t.nullable.field('updateKoi', {
+      type: 'Koi',
       args: {
         id: nonNull(stringArg()),
         variety: nonNull(stringArg()),
@@ -134,8 +134,8 @@ const mutations = extendType({
       },
     });
 
-    t.nullable.field("deleteKoi", {
-      type: "Koi",
+    t.nullable.field('deleteKoi', {
+      type: 'Koi',
       args: {
         id: nonNull(stringArg()),
       },

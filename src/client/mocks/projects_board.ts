@@ -9,20 +9,20 @@ const project: Project = {
       id: '1',
       name: 'In review',
       color: '#FF1A43',
-      taskIds: ['1', '2', '3', '4']
+      taskIds: ['1', '2', '3', '4'],
     },
     {
       id: '2',
       name: 'In progress',
       color: '#33C2FF',
-      taskIds: ['5', '6', '7']
+      taskIds: ['5', '6', '7'],
     },
     {
       id: '3',
       name: 'Completed',
       color: '#44D600',
-      taskIds: ['8', '9', '10']
-    }
+      taskIds: ['8', '9', '10'],
+    },
   ],
   tasks: [
     {
@@ -31,12 +31,11 @@ const project: Project = {
       progress: 0,
       sub_items: 3,
       comments: 1,
-      description:
-        'If several languages coalesce, the grammar of the resulting language',
+      description: 'If several languages coalesce, the grammar of the resulting language',
       due_date: addDays(new Date(), 15).getTime(),
       listId: '1',
       memberIds: ['1', '2', '3'],
-      name: 'Product design review'
+      name: 'Product design review',
     },
     {
       id: '2',
@@ -44,12 +43,11 @@ const project: Project = {
       progress: 0,
       sub_items: 11,
       comments: 0,
-      description:
-        'Is more simple and regular than that of the individual languages',
+      description: 'Is more simple and regular than that of the individual languages',
       due_date: addDays(new Date(), 16).getTime(),
       listId: '1',
       memberIds: ['4', '5'],
-      name: 'New features - React implementation'
+      name: 'New features - React implementation',
     },
     {
       id: '3',
@@ -57,12 +55,11 @@ const project: Project = {
       progress: 0,
       sub_items: 7,
       comments: 4,
-      description:
-        'The new common language will be more simple and regular than',
+      description: 'The new common language will be more simple and regular than',
       due_date: addDays(new Date(), 12).getTime(),
       listId: '1',
       memberIds: ['3', '1'],
-      name: 'Increase ROI master plan'
+      name: 'Increase ROI master plan',
     },
     {
       id: '4',
@@ -70,12 +67,11 @@ const project: Project = {
       progress: 0,
       sub_items: 17,
       comments: 6,
-      description:
-        'The existing European languages, it will be as simple as Occidental',
+      description: 'The existing European languages, it will be as simple as Occidental',
       due_date: addDays(new Date(), 11).getTime(),
       listId: '1',
       memberIds: ['1', '2', '3', '4'],
-      name: 'Contact support with questions'
+      name: 'Contact support with questions',
     },
     {
       id: '5',
@@ -83,12 +79,11 @@ const project: Project = {
       progress: 35,
       sub_items: 14,
       comments: 0,
-      description:
-        'In fact, it will be Occidental to an English person, it will seem like',
+      description: 'In fact, it will be Occidental to an English person, it will seem like',
       due_date: addDays(new Date(), 7).getTime(),
       listId: '2',
       memberIds: ['5', '1', '2'],
-      name: 'Website launch list & todos'
+      name: 'Website launch list & todos',
     },
     {
       id: '6',
@@ -96,12 +91,11 @@ const project: Project = {
       progress: 76,
       sub_items: 5,
       comments: 1,
-      description:
-        'Simplified English, as a skeptical Cambridge friend of mine told me',
+      description: 'Simplified English, as a skeptical Cambridge friend of mine told me',
       due_date: addDays(new Date(), 5).getTime(),
       listId: '2',
       memberIds: ['4', '3'],
-      name: 'Write 5 new articles'
+      name: 'Write 5 new articles',
     },
     {
       id: '7',
@@ -109,12 +103,11 @@ const project: Project = {
       progress: 44,
       sub_items: 3,
       comments: 17,
-      description:
-        'What Occidental is, the European languages are members of the same family',
+      description: 'What Occidental is, the European languages are members of the same family',
       due_date: addDays(new Date(), 4).getTime(),
       listId: '2',
       memberIds: ['5', '2', '1'],
-      name: 'Gather marketing materials'
+      name: 'Gather marketing materials',
     },
     {
       id: '8',
@@ -122,12 +115,11 @@ const project: Project = {
       progress: 100,
       sub_items: 3,
       comments: 0,
-      description:
-        'Their separate existence is a myth for science, music, sport',
+      description: 'Their separate existence is a myth for science, music, sport',
       due_date: addDays(new Date(), 7).getTime(),
       listId: '3',
       memberIds: ['3', '4'],
-      name: 'Clean up maintenance branch'
+      name: 'Clean up maintenance branch',
     },
     {
       id: '9',
@@ -135,12 +127,11 @@ const project: Project = {
       progress: 100,
       sub_items: 7,
       comments: 5,
-      description:
-        'Everyone realizes why a new common language would be desirable',
+      description: 'Everyone realizes why a new common language would be desirable',
       due_date: addDays(new Date(), 2).getTime(),
       listId: '3',
       memberIds: ['1'],
-      name: 'Prepare sales forecast for Q2/2021'
+      name: 'Prepare sales forecast for Q2/2021',
     },
     {
       id: '10',
@@ -148,41 +139,40 @@ const project: Project = {
       progress: 100,
       sub_items: 4,
       comments: 1,
-      description:
-        'Uniform grammar, pronunciation and more common words more simple and regular',
+      description: 'Uniform grammar, pronunciation and more common words more simple and regular',
       due_date: addDays(new Date(), 8).getTime(),
       listId: '3',
       memberIds: ['5', '1', '4'],
-      name: 'Generate missing invoices'
-    }
+      name: 'Generate missing invoices',
+    },
   ],
   members: [
     {
       id: '1',
       avatar: '/static/images/avatars/1.jpg',
-      name: 'Maren Lipshutz'
+      name: 'Maren Lipshutz',
     },
     {
       id: '2',
       avatar: '/static/images/avatars/2.jpg',
-      name: 'Zain Vetrovs'
+      name: 'Zain Vetrovs',
     },
     {
       id: '3',
       avatar: '/static/images/avatars/3.jpg',
-      name: 'Hanna Siphron'
+      name: 'Hanna Siphron',
     },
     {
       id: '4',
       avatar: '/static/images/avatars/4.jpg',
-      name: 'Cristofer Aminoff'
+      name: 'Cristofer Aminoff',
     },
     {
       id: '5',
       avatar: '/static/images/avatars/5.jpg',
-      name: 'Maria Calzoni'
-    }
-  ]
+      name: 'Maria Calzoni',
+    },
+  ],
 };
 
 mock.onGet('/api/projects_board/board').reply(200, { project });
@@ -233,9 +223,7 @@ mock.onPost('/api/projects_board/tasks/move').reply((request) => {
     _.pull(sourceList.taskIds, taskId);
 
     if (listId) {
-      const destinationList = project.lists.find(
-        (list) => list.id === task.listId
-      );
+      const destinationList = project.lists.find((list) => list.id === task.listId);
 
       if (!destinationList) {
         return [500, 'List not found'];

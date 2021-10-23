@@ -78,7 +78,7 @@ const znJSON = {
   'Start working on your project directly from one of the included starter kits or use the Figma/Sketch files to create a prototype first':
     '直接从随附的入门工具包之一开始处理您的项目，或使用Figma / Sketch文件首先创建原型',
   'We only translated a small part of the template, for demonstration purposes':
-    '我们仅翻译了模板的一小部分，以进行演示'
+    '我们仅翻译了模板的一小部分，以进行演示',
 };
 
 export default znJSON;

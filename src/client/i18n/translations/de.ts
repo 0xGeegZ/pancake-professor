@@ -78,7 +78,7 @@ const deJSON = {
   'Start working on your project directly from one of the included starter kits or use the Figma/Sketch files to create a prototype first':
     'Beginnen Sie direkt mit einem der mitgelieferten Starter-Kits mit der Arbeit an Ihrem Projekt oder verwenden Sie zuerst die Figma / Sketch-Dateien, um einen Prototyp zu erstellen',
   'We only translated a small part of the template, for demonstration purposes':
-    'Wir haben nur einen kleinen Teil der Vorlage zu Demonstrationszwecken übersetzt'
+    'Wir haben nur einen kleinen Teil der Vorlage zu Demonstrationszwecken übersetzt',
 };
 
 export default deJSON;

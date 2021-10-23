@@ -27,26 +27,23 @@ const initialState: ProjectsBoardState = {
   isLoaded: false,
   lists: {
     byId: {},
-    allIds: []
+    allIds: [],
   },
   tasks: {
     byId: {},
-    allIds: []
+    allIds: [],
   },
   members: {
     byId: {},
-    allIds: []
-  }
+    allIds: [],
+  },
 };
 
 const slice = createSlice({
   name: 'projects_board',
   initialState,
   reducers: {
-    getBoard(
-      state: ProjectsBoardState,
-      action: PayloadAction<{ project: Project }>
-    ) {
+    getBoard(state: ProjectsBoardState, action: PayloadAction<{ project: Project }>) {
       const { project } = action.payload;
 
       state.lists.byId = objectArray(project.lists);
@@ -57,10 +54,7 @@ const slice = createSlice({
       state.members.allIds = Object.keys(state.members.byId);
       state.isLoaded = true;
     },
-    updateList(
-      state: ProjectsBoardState,
-      action: PayloadAction<{ list: List }>
-    ) {
+    updateList(state: ProjectsBoardState, action: PayloadAction<{ list: List }>) {
       const { list } = action.payload;
 
       state.lists.byId[list.id] = list;
@@ -84,52 +78,45 @@ const slice = createSlice({
       } else {
         state.lists.byId[sourceListId].taskIds.splice(position, 0, taskId);
       }
-    }
-  }
+    },
+  },
 });
 
 export const reducer = slice.reducer;
 
 export const getBoard = (): AppThunk => async (dispatch) => {
-  const response = await axios.get<{ project: Project }>(
-    '/api/projects_board/board'
-  );
+  const response = await axios.get<{ project: Project }>('/api/projects_board/board');
 
   dispatch(slice.actions.getBoard(response.data));
 };
 
-export const updateList = (listId: string, update: any): AppThunk => async (
-  dispatch
-) => {
-  const response = await axios.post<{ list: List }>(
-    '/api/projects_board/list/update',
-    {
+export const updateList =
+  (listId: string, update: any): AppThunk =>
+  async (dispatch) => {
+    const response = await axios.post<{ list: List }>('/api/projects_board/list/update', {
       listId,
-      update
-    }
-  );
+      update,
+    });
 
-  dispatch(slice.actions.updateList(response.data));
-};
+    dispatch(slice.actions.updateList(response.data));
+  };
 
-export const moveTask = (
-  taskId: string,
-  position: number,
-  listId?: string
-): AppThunk => async (dispatch) => {
-  await axios.post('/api/projects_board/tasks/move', {
-    taskId,
-    position,
-    listId
-  });
-
-  dispatch(
-    slice.actions.moveTask({
+export const moveTask =
+  (taskId: string, position: number, listId?: string): AppThunk =>
+  async (dispatch) => {
+    await axios.post('/api/projects_board/tasks/move', {
       taskId,
       position,
-      listId
-    })
-  );
-};
+      listId,
+    });
+
+    dispatch(
+      slice.actions.moveTask({
+        taskId,
+        position,
+        listId,
+      })
+    );
+  };
 
 export default slice;

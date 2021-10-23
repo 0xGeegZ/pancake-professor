@@ -11,7 +11,7 @@ mock.onGet('/api/products/top').reply(() => {
       inventory: 99,
       currency: '$',
       revenue: 6748,
-      revenuePercent: 59
+      revenuePercent: 59,
     },
     {
       id: '2',
@@ -21,7 +21,7 @@ mock.onGet('/api/products/top').reply(() => {
       inventory: 76,
       currency: '$',
       revenue: 3956,
-      revenuePercent: 34
+      revenuePercent: 34,
     },
     {
       id: '3',
@@ -31,10 +31,9 @@ mock.onGet('/api/products/top').reply(() => {
       inventory: 5,
       currency: '$',
       revenue: 2869,
-      revenuePercent: 25
-    }
+      revenuePercent: 25,
+    },
   ];
 
   return [200, { products }];
 });
-

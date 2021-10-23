@@ -15,7 +15,7 @@ const resources = {
   es: { translation: esJSON },
   fr: { translation: frJSON },
   ae: { translation: aeJSON },
-  cn: { translation: zhJSON }
+  cn: { translation: zhJSON },
 };
 
 i18n
@@ -26,11 +26,11 @@ i18n
     keySeparator: false,
     fallbackLng: 'en',
     react: {
-      useSuspense: true
+      useSuspense: true,
     },
     interpolation: {
-      escapeValue: false
-    }
+      escapeValue: false,
+    },
   });
 
 export default i18n;

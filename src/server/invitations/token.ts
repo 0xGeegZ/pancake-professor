@@ -1,9 +1,8 @@
-import jwt from "jsonwebtoken";
+import jwt from 'jsonwebtoken';
 
 const SECRET = process.env.INVITATION_TOKEN_SECRET;
 
-if (!SECRET)
-  throw new Error("Please specify the INVITATION_TOKEN_SECRET env variable.");
+if (!SECRET) throw new Error('Please specify the INVITATION_TOKEN_SECRET env variable.');
 
 type JwtPayload = {
   destination: string;
@@ -42,5 +41,5 @@ export const decodeInvitationToken = (token: string): JwtPayload | null => {
  */
 export const generateInvitationToken = (payload: JwtPayload): string =>
   jwt.sign(payload, SECRET, {
-    expiresIn: "1w",
+    expiresIn: '1w',
   });
