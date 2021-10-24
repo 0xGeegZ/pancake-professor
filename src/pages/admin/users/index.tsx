@@ -13,7 +13,8 @@ import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
 function ManagementUsers() {
   const isMountedRef = useRefMounted()
-  const [users, setUsers] = useState<User[]>([])
+  // const [users, setUsers] = useState<User[]>([])
+  const [users, setUsers] = useState<any[]>([])
   const [{ data, fetching, error }] = useGetUsersQuery()
 
   // const getUsers = useCallback(async () => {

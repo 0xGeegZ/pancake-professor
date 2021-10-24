@@ -121,6 +121,7 @@ const TabsWrapper = styled(Tabs)(
 
 interface ResultsProps {
   users: User[]
+  fetching: boolean
 }
 
 interface Filters {
@@ -715,10 +716,12 @@ const Results: FC<ResultsProps> = ({ users, fetching }) => {
 
 Results.propTypes = {
   users: PropTypes.array.isRequired,
+  fetching: PropTypes.array.isRequired,
 }
 
 Results.defaultProps = {
   users: [],
+  fetching: true,
 }
 
 export default Results
