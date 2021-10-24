@@ -1,21 +1,21 @@
 {
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
-      "ecmaVersion": 2021
+    "ecmaVersion": 2021
   },
   "plugins": ["@typescript-eslint", "import", "prettier"],
   "env": {
-    "node": true,
+    "node": true
   },
   "extends": [
     "eslint:recommended",
     "plugin:@typescript-eslint/eslint-recommended",
     "plugin:@typescript-eslint/recommended",
     "prettier",
-    "plugin:import/typescript",
+    "plugin:import/typescript"
   ],
   "rules": {
-    "no-console": 1,       // Means warning
+    "no-console": 1, // Means warning
     "prettier/prettier": 2, // Means error
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
@@ -27,18 +27,18 @@
         "zones": [
           {
             "target": "./src/pages",
-            "from": "./src/server",
-          },
-        ],
-      },
-    ],
+            "from": "./src/server"
+          }
+        ]
+      }
+    ]
   },
   "overrides": [
     {
       "files": ["next.config.js"],
       "rules": {
-        "@typescript-eslint/no-var-requires": "off",
-      },
+        "@typescript-eslint/no-var-requires": "off"
+      }
     },
     {
       // Allow imports from src/server/ in src/pages/api
@@ -50,7 +50,7 @@
             "zones": [
               {
                 "target": "./src/pages/api",
-                "from": "./src/client/",
+                "from": "./src/client/"
               }
             ]
           }

@@ -1,67 +1,60 @@
-import {
-  FC,
-  ChangeEvent,
-  MouseEvent,
-  SyntheticEvent,
-  useState,
-  Ref,
-  forwardRef
-} from 'react';
-import type { ReactElement } from 'react';
-
-import PropTypes from 'prop-types';
+import CloseIcon from '@mui/icons-material/Close';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone';
+import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
+import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone';
 import {
   Avatar,
   Box,
+  Button,
   Card,
   Checkbox,
-  Grid,
-  Slide,
+  CircularProgress,
+  Dialog,
   Divider,
-  Tooltip,
-  Link,
+  Grid,
   IconButton,
   InputAdornment,
+  Link,
+  Slide,
+  Tab,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TablePagination,
-  TableContainer,
   TableRow,
-  ToggleButton,
-  ToggleButtonGroup,
-  Tab,
   Tabs,
   TextField,
-  Button,
+  ToggleButton,
+  ToggleButtonGroup,
+  Tooltip,
   Typography,
-  Dialog,
-  Zoom
+  Zoom,
 } from '@mui/material';
-import { TransitionProps } from '@mui/material/transitions';
-import CloseIcon from '@mui/icons-material/Close';
-import type { User, UserRole } from 'src/client/models/user';
-import { useTranslation } from 'react-i18next';
-import clsx from 'clsx';
 import { styled } from '@mui/material/styles';
-import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
-import Label from 'src/client/components/Label';
-import BulkActions from './BulkActions';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone';
-import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import { TransitionProps } from '@mui/material/transitions';
+import clsx from 'clsx';
 import { useSnackbar } from 'notistack';
-import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
+import PropTypes from 'prop-types';
+import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, SyntheticEvent, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import Label from 'src/client/components/Label';
 
+import BulkActions from './BulkActions';
+
+import type { ReactElement } from 'react'
+
+import type { User, UserRole } from 'src/client/models/user'
 const DialogWrapper = styled(Dialog)(
   () => `
       .MuiDialog-paper {
         overflow: visible;
       }
 `
-);
+)
 
 const AvatarError = styled(Avatar)(
   ({ theme }) => `
@@ -74,7 +67,7 @@ const AvatarError = styled(Avatar)(
         font-size: ${theme.typography.pxToRem(45)};
       }
 `
-);
+)
 
 const CardWrapper = styled(Card)(
   ({ theme }) => `
@@ -98,7 +91,7 @@ const CardWrapper = styled(Card)(
       box-shadow: 0 0 0 3px ${theme.colors.primary.main};
     }
   `
-);
+)
 
 const ButtonError = styled(Button)(
   ({ theme }) => `
@@ -109,7 +102,7 @@ const ButtonError = styled(Button)(
         background: ${theme.colors.error.dark};
      }
     `
-);
+)
 
 const TabsWrapper = styled(Tabs)(
   ({ theme }) => `
@@ -124,204 +117,188 @@ const TabsWrapper = styled(Tabs)(
       }
     }
     `
-);
+)
 
 interface ResultsProps {
-  users: User[];
+  users: User[]
 }
 
 interface Filters {
-  role?: UserRole;
+  role?: UserRole
 }
 
 const Transition = forwardRef(function Transition(
   props: TransitionProps & { children?: ReactElement<any, any> },
   ref: Ref<unknown>
 ) {
-  return <Slide direction="down" ref={ref} {...props} />;
-});
+  return <Slide direction="down" ref={ref} {...props} />
+})
 
 const getUserRoleLabel = (userRole: UserRole): JSX.Element => {
   const map = {
     admin: {
       text: 'Administrator',
-      color: 'error'
+      color: 'error',
     },
     customer: {
       text: 'Customer',
-      color: 'info'
+      color: 'info',
     },
     subscriber: {
-      text: 'Subscriber',
-      color: 'warning'
-    }
-  };
+      text: 'Waiting List',
+      color: 'warning',
+    },
+  }
 
-  const { text, color }: any = map[userRole];
+  const { text, color }: any = map[userRole]
 
-  return <Label color={color}>{text}</Label>;
-};
+  return <Label color={color}>{text}</Label>
+}
 
-const applyFilters = (
-  users: User[],
-  query: string,
-  filters: Filters
-): User[] => {
+const applyFilters = (users: User[], query: string, filters: Filters): User[] => {
   return users.filter((user) => {
-    let matches = true;
+    let matches = true
 
     if (query) {
-      const properties = ['email', 'name', 'username'];
-      let containsQuery = false;
+      const properties = ['email', 'name', 'address', 'generated']
+      // const properties = ['email', 'name', 'username']
+      let containsQuery = false
 
       properties.forEach((property) => {
         if (user[property].toLowerCase().includes(query.toLowerCase())) {
-          containsQuery = true;
+          containsQuery = true
         }
-      });
+      })
 
-      if (filters.role && user.role !== filters.role) {
-        matches = false;
-      }
+      // if (filters.role && user.role !== filters.role) {
+      //   matches = false
+      // }
 
       if (!containsQuery) {
-        matches = false;
+        matches = false
       }
     }
 
     Object.keys(filters).forEach((key) => {
-      const value = filters[key];
+      const value = filters[key]
 
       if (value && user[key] !== value) {
-        matches = false;
+        matches = false
       }
-    });
+    })
 
-    return matches;
-  });
-};
+    return matches
+  })
+}
 
-const applyPagination = (
-  users: User[],
-  page: number,
-  limit: number
-): User[] => {
-  return users.slice(page * limit, page * limit + limit);
-};
+const applyPagination = (users: User[], page: number, limit: number): User[] => {
+  return users.slice(page * limit, page * limit + limit)
+}
 
-const Results: FC<ResultsProps> = ({ users }) => {
-  const [selectedItems, setSelectedUsers] = useState<string[]>([]);
-  const { t }: { t: any } = useTranslation();
-  const { enqueueSnackbar } = useSnackbar();
+const Results: FC<ResultsProps> = ({ users, fetching }) => {
+  const [selectedItems, setSelectedUsers] = useState<string[]>([])
+  const { t }: { t: any } = useTranslation()
+  const { enqueueSnackbar } = useSnackbar()
 
   const tabs = [
     {
       value: 'all',
-      label: t('All users')
+      label: t('All users'),
     },
-    {
-      value: 'customer',
-      label: t('Customers')
-    },
-    {
-      value: 'admin',
-      label: t('Administrators')
-    },
-    {
-      value: 'subscriber',
-      label: t('Subscribers')
-    }
-  ];
+    // {
+    //   value: 'customer',
+    //   label: t('Customers'),
+    // },
+    // {
+    //   value: 'admin',
+    //   label: t('Administrators'),
+    // },
+    // {
+    //   value: 'subscriber',
+    //   label: t('Waiting List'),
+    // },
+  ]
 
-  const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(10);
-  const [query, setQuery] = useState<string>('');
+  const [page, setPage] = useState<number>(0)
+  const [limit, setLimit] = useState<number>(10)
+  const [query, setQuery] = useState<string>('')
   const [filters, setFilters] = useState<Filters>({
-    role: null
-  });
+    role: null,
+  })
   const handleTabsChange = (_event: SyntheticEvent, tabsValue: unknown) => {
-    let value = null;
+    let value = null
 
     if (tabsValue !== 'all') {
-      value = tabsValue;
+      value = tabsValue
     }
 
     setFilters((prevFilters) => ({
       ...prevFilters,
-      role: value
-    }));
+      role: value,
+    }))
 
-    setSelectedUsers([]);
-  };
+    setSelectedUsers([])
+  }
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    event.persist();
-    setQuery(event.target.value);
-  };
+    event.persist()
+    setQuery(event.target.value)
+  }
 
   const handleSelectAllUsers = (event: ChangeEvent<HTMLInputElement>): void => {
-    setSelectedUsers(event.target.checked ? users.map((user) => user.id) : []);
-  };
+    setSelectedUsers(event.target.checked ? users.map((user) => user.id) : [])
+  }
 
-  const handleSelectOneUser = (
-    _event: ChangeEvent<HTMLInputElement>,
-    userId: string
-  ): void => {
+  const handleSelectOneUser = (_event: ChangeEvent<HTMLInputElement>, userId: string): void => {
     if (!selectedItems.includes(userId)) {
-      setSelectedUsers((prevSelected) => [...prevSelected, userId]);
+      setSelectedUsers((prevSelected) => [...prevSelected, userId])
     } else {
-      setSelectedUsers((prevSelected) =>
-        prevSelected.filter((id) => id !== userId)
-      );
+      setSelectedUsers((prevSelected) => prevSelected.filter((id) => id !== userId))
     }
-  };
+  }
 
   const handlePageChange = (_event: any, newPage: number): void => {
-    setPage(newPage);
-  };
+    setPage(newPage)
+  }
 
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(parseInt(event.target.value));
-  };
+    setLimit(parseInt(event.target.value))
+  }
 
-  const filteredUsers = applyFilters(users, query, filters);
-  const paginatedUsers = applyPagination(filteredUsers, page, limit);
-  const selectedBulkActions = selectedItems.length > 0;
-  const selectedSomeUsers =
-    selectedItems.length > 0 && selectedItems.length < users.length;
-  const selectedAllUsers = selectedItems.length === users.length;
+  const filteredUsers = applyFilters(users, query, filters)
+  const paginatedUsers = applyPagination(filteredUsers, page, limit)
+  const selectedBulkActions = selectedItems.length > 0
+  const selectedSomeUsers = selectedItems.length > 0 && selectedItems.length < users.length
+  const selectedAllUsers = selectedItems.length === users.length
 
-  const [toggleView, setToggleView] = useState<string | null>('table_view');
+  const [toggleView, setToggleView] = useState<string | null>('table_view')
 
-  const handleViewOrientation = (
-    _event: MouseEvent<HTMLElement>,
-    newValue: string | null
-  ) => {
-    setToggleView(newValue);
-  };
+  const handleViewOrientation = (_event: MouseEvent<HTMLElement>, newValue: string | null) => {
+    setToggleView(newValue)
+  }
 
-  const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
 
   const handleConfirmDelete = () => {
-    setOpenConfirmDelete(true);
-  };
+    setOpenConfirmDelete(true)
+  }
 
   const closeConfirmDelete = () => {
-    setOpenConfirmDelete(false);
-  };
+    setOpenConfirmDelete(false)
+  }
 
   const handleDeleteCompleted = () => {
-    setOpenConfirmDelete(false);
+    setOpenConfirmDelete(false)
 
     enqueueSnackbar(t('The user account has been removed'), {
       variant: 'success',
       anchorOrigin: {
         vertical: 'top',
-        horizontal: 'right'
+        horizontal: 'right',
       },
-      TransitionComponent: Zoom
-    });
-  };
+      TransitionComponent: Zoom,
+    })
+  }
 
   return (
     <>
@@ -330,25 +307,18 @@ const Results: FC<ResultsProps> = ({ users }) => {
         alignItems="center"
         flexDirection={{ xs: 'column', sm: 'row' }}
         justifyContent={{ xs: 'center', sm: 'space-between' }}
-        pb={3}
-      >
+        pb={3}>
         <TabsWrapper
           onChange={handleTabsChange}
           scrollButtons="auto"
           textColor="secondary"
           value={filters.role || 'all'}
-          variant="scrollable"
-        >
+          variant="scrollable">
           {tabs.map((tab) => (
             <Tab key={tab.value} value={tab.value} label={tab.label} />
           ))}
         </TabsWrapper>
-        <ToggleButtonGroup
-          sx={{ mt: { xs: 2, sm: 0 } }}
-          value={toggleView}
-          exclusive
-          onChange={handleViewOrientation}
-        >
+        <ToggleButtonGroup sx={{ mt: { xs: 2, sm: 0 } }} value={toggleView} exclusive onChange={handleViewOrientation}>
           <ToggleButton disableRipple value="table_view">
             <TableRowsTwoToneIcon />
           </ToggleButton>
@@ -368,10 +338,10 @@ const Results: FC<ResultsProps> = ({ users }) => {
                     <InputAdornment position="start">
                       <SearchTwoToneIcon />
                     </InputAdornment>
-                  )
+                  ),
                 }}
                 onChange={handleQueryChange}
-                placeholder={t('Search by name, email or username...')}
+                placeholder={t('Search by name, email or address...')}
                 value={query}
                 size="small"
                 fullWidth
@@ -385,17 +355,28 @@ const Results: FC<ResultsProps> = ({ users }) => {
           <Divider />
 
           {paginatedUsers.length === 0 ? (
-            <>
-              <Typography
-                sx={{ py: 10 }}
-                variant="h3"
-                fontWeight="normal"
-                color="text.secondary"
-                align="center"
-              >
-                {t("We couldn't find any users matching your search criteria")}
-              </Typography>
-            </>
+            fetching ? (
+              <>
+                <Grid
+                  sx={{ py: 10 }}
+                  container
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="stretch"
+                  spacing={3}>
+                  <Grid item>
+                    {/* TODO UPDATE PROGRESS COLOR TO WHITE */}
+                    <CircularProgress color="secondary" size="1rem" />
+                  </Grid>
+                </Grid>
+              </>
+            ) : (
+              <>
+                <Typography sx={{ py: 10 }} variant="h3" fontWeight="normal" color="text.secondary" align="center">
+                  {t("We couldn't find any users matching your search criteria")}
+                </Typography>
+              </>
+            )
           ) : (
             <>
               <TableContainer>
@@ -409,47 +390,42 @@ const Results: FC<ResultsProps> = ({ users }) => {
                           onChange={handleSelectAllUsers}
                         />
                       </TableCell>
-                      <TableCell>{t('Username')}</TableCell>
+                      {/* <TableCell>{t('Username')}</TableCell> */}
                       <TableCell>{t('Name')}</TableCell>
                       <TableCell>{t('Email')}</TableCell>
-                      <TableCell align="center">{t('Posts')}</TableCell>
-                      <TableCell>{t('Location')}</TableCell>
-                      <TableCell>{t('Role')}</TableCell>
+                      <TableCell>{t('Main address')}</TableCell>
+                      <TableCell>{t('Generated address')}</TableCell>
+                      {/* <TableCell align="center">{t('Posts')}</TableCell>
+                      <TableCell>{t('Location')}</TableCell> */}
+                      {/* <TableCell>{t('Role')}</TableCell> */}
                       <TableCell align="center">{t('Actions')}</TableCell>
                     </TableRow>
                   </TableHead>
                   <TableBody>
                     {paginatedUsers.map((user) => {
-                      const isUserSelected = selectedItems.includes(user.id);
+                      const isUserSelected = selectedItems.includes(user.id)
                       return (
                         <TableRow hover key={user.id} selected={isUserSelected}>
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={isUserSelected}
-                              onChange={(event) =>
-                                handleSelectOneUser(event, user.id)
-                              }
+                              onChange={(event) => handleSelectOneUser(event, user.id)}
                               value={isUserSelected}
                             />
                           </TableCell>
-                          <TableCell>
-                            <Typography variant="h5">
-                              {user.username}
-                            </Typography>
-                          </TableCell>
+                          {/* <TableCell>
+                            <Typography variant="h5">{user.username}</Typography>
+                          </TableCell> */}
                           <TableCell>
                             <Box display="flex" alignItems="center">
-                              <Avatar sx={{ mr: 1 }} src="/static/images/avatars/1.jpg" />
+                              {/* <Avatar sx={{ mr: 1 }} src="/static/images/avatars/1.jpg" /> */}
                               <Box>
-                                <Link underline="hover"
-                                  variant="h5"
-                                  href={'/management/users/' + user.id}
-                                >
+                                <Link underline="hover" variant="h5" href={'/admin/users/' + user.id}>
                                   {user.name}
                                 </Link>
-                                <Typography noWrap variant="subtitle2">
+                                {/* <Typography noWrap variant="subtitle2">
                                   {user.jobtitle}
-                                </Typography>
+                                </Typography> */}
                               </Box>
                             </Box>
                           </TableCell>
@@ -457,37 +433,48 @@ const Results: FC<ResultsProps> = ({ users }) => {
                             <Typography>{user.email}</Typography>
                           </TableCell>
                           <TableCell align="center">
-                            <Typography fontWeight="bold">
-                              {user.posts}
-                            </Typography>
+                            <Link
+                              underline="hover"
+                              variant="h5"
+                              href={`https://bscscan.com/address/${user.address}`}
+                              target="_blank">
+                              <Typography fontWeight="bold">{user.address.substring(0, 10)}</Typography>
+                            </Link>
                           </TableCell>
                           <TableCell>
-                            <Typography>{user.location}</Typography>
+                            <TableCell align="center">
+                              <Link
+                                underline="hover"
+                                variant="h5"
+                                href={`https://bscscan.com/address/${user.generated}`}
+                                target="_blank">
+                                <Typography fontWeight="bold">{user.generated.substring(0, 10)}</Typography>
+                              </Link>
+                            </TableCell>
                           </TableCell>
-                          <TableCell>{getUserRoleLabel(user.role)}</TableCell>
+                          {/* <TableCell align="center">
+                            <Typography fontWeight="bold">{user.posts}</Typography>
+                          </TableCell>
+                          <TableCell> */}
+                          {/* <Typography>{user.location}</Typography>
+                          </TableCell> */}
+                          {/* <TableCell>{getUserRoleLabel(user.role)}</TableCell> */}
                           <TableCell align="center">
                             <Typography noWrap>
                               <Tooltip title={t('View')} arrow>
-                                <IconButton
-                                  component={Link}
-                                  href={'/management/users/' + user.id}
-                                  color="primary"
-                                >
+                                <IconButton component={Link} href={'/admin/users/' + user.id} color="primary">
                                   <LaunchTwoToneIcon fontSize="small" />
                                 </IconButton>
                               </Tooltip>
                               <Tooltip title={t('Delete')} arrow>
-                                <IconButton
-                                  onClick={handleConfirmDelete}
-                                  color="primary"
-                                >
+                                <IconButton disabled={true} onClick={handleConfirmDelete} color="primary">
                                   <DeleteTwoToneIcon fontSize="small" />
                                 </IconButton>
                               </Tooltip>
                             </Typography>
                           </TableCell>
                         </TableRow>
-                      );
+                      )
                     })}
                   </TableBody>
                 </Table>
@@ -510,19 +497,11 @@ const Results: FC<ResultsProps> = ({ users }) => {
       {toggleView === 'grid_view' && (
         <>
           <Card sx={{ p: 2, mb: 3 }}>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-            >
+            <Box display="flex" alignItems="center" justifyContent="space-between">
               {paginatedUsers.length !== 0 && (
                 <>
                   <Box display="flex" alignItems="center">
-                    <Tooltip
-                      arrow
-                      placement="top"
-                      title={t('Select all users')}
-                    >
+                    <Tooltip arrow placement="top" title={t('Select all users')}>
                       <Checkbox
                         checked={selectedAllUsers}
                         indeterminate={selectedSomeUsers}
@@ -546,10 +525,10 @@ const Results: FC<ResultsProps> = ({ users }) => {
                       <InputAdornment position="start">
                         <SearchTwoToneIcon />
                       </InputAdornment>
-                    )
+                    ),
                   }}
                   onChange={handleQueryChange}
-                  placeholder={t('Search by name, email or username...')}
+                  placeholder={t('Search by name, email or address...')}
                   value={query}
                   size="small"
                   margin="normal"
@@ -559,94 +538,101 @@ const Results: FC<ResultsProps> = ({ users }) => {
             </Box>
           </Card>
           {paginatedUsers.length === 0 ? (
-            <Typography
-              sx={{ py: 10 }}
-              variant="h3"
-              fontWeight="normal"
-              color="text.secondary"
-              align="center"
-            >
-              {t("We couldn't find any users matching your search criteria")}
-            </Typography>
+            fetching ? (
+              <>
+                <Grid
+                  sx={{ py: 10 }}
+                  container
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="stretch"
+                  spacing={3}>
+                  <Grid item>
+                    <CircularProgress color="secondary" size="1rem" />
+                  </Grid>
+                </Grid>
+              </>
+            ) : (
+              <Typography sx={{ py: 10 }} variant="h3" fontWeight="normal" color="text.secondary" align="center">
+                {t("We couldn't find any users matching your search criteria")}
+              </Typography>
+            )
           ) : (
             <>
               <Grid container spacing={3}>
                 {paginatedUsers.map((user) => {
-                  const isUserSelected = selectedItems.includes(user.id);
+                  const isUserSelected = selectedItems.includes(user.id)
 
                   return (
                     <Grid item xs={12} sm={6} md={4} key={user.id}>
                       <CardWrapper
                         className={clsx({
-                          'Mui-selected': isUserSelected
-                        })}
-                      >
+                          'Mui-selected': isUserSelected,
+                        })}>
                         <Box sx={{ position: 'relative', zIndex: '2' }}>
-                          <Box
-                            px={2}
-                            pt={2}
-                            display="flex"
-                            alignItems="flex-start"
-                            justifyContent="space-between"
-                          >
+                          {/* <Box px={2} pt={2} display="flex" alignItems="flex-start" justifyContent="space-between">
                             {getUserRoleLabel(user.role)}
                             <IconButton color="primary" sx={{ p: 0.5 }}>
                               <MoreVertTwoToneIcon />
                             </IconButton>
-                          </Box>
+                          </Box> */}
                           <Box p={2} display="flex" alignItems="flex-start">
-                            <Avatar
-                              sx={{ width: 50, height: 50, mr: 2 }}
-                              src="/static/images/avatars/1.jpg"
-                            />
+                            <Avatar sx={{ width: 50, height: 50, mr: 2 }} src="/static/images/avatars/1.jpg" />
                             <Box>
                               <Box>
-                                <Link underline="hover"
-                                  variant="h5"
-                                  href={'/management/users/' + user.id}
-                                >
+                                <Link underline="hover" variant="h5" href={'/admin/users/' + user.id}>
                                   {user.name}
                                 </Link>{' '}
-                                <Typography
-                                  component="span"
-                                  variant="body2"
-                                  color="text.secondary"
-                                >
-                                  ({user.username})
+                                <Typography sx={{ pt: 1 }} variant="h6">
+                                  {user.email}
                                 </Typography>
                               </Box>
-                              <Typography sx={{ pt: 0.3 }} variant="subtitle2">
+                              <Box>
+                                <Typography component="span" variant="body2" color="text.secondary">
+                                  <Link
+                                    underline="hover"
+                                    variant="h5"
+                                    href={`https://bscscan.com/address/${user.address}`}
+                                    target="_blank">
+                                    {t('Main address')} : {user.address.substring(0, 10)}
+                                  </Link>
+                                </Typography>
+                              </Box>
+                              <Box>
+                                <Typography component="span" variant="body2" color="text.secondary">
+                                  <Link
+                                    underline="hover"
+                                    variant="h5"
+                                    href={`https://bscscan.com/address/${user.generated}`}
+                                    target="_blank">
+                                    {t('Generated address')} : {user.generated.substring(0, 10)}
+                                  </Link>
+                                </Typography>
+                                {/* <Typography component="span" variant="body2" color="text.secondary">
+                                  ({user.username})
+                                </Typography> */}
+                              </Box>
+                              {/* <Typography sx={{ pt: 0.3 }} variant="subtitle2">
                                 {user.jobtitle}
-                              </Typography>
-                              <Typography sx={{ pt: 1 }} variant="h6">
-                                {user.email}
-                              </Typography>
+                              </Typography> */}
                             </Box>
                           </Box>
                           <Divider />
-                          <Box
-                            pl={2}
-                            py={1}
-                            pr={1}
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="space-between"
-                          >
+                          <Box pl={2} py={1} pr={1} display="flex" alignItems="center" justifyContent="space-between">
                             <Typography>
-                              <b>{user.posts}</b> {t('posts')}
+                              {/* <b>{user.posts}</b> {t('posts')} */}
+                              <b> {t('Select')}</b>
                             </Typography>
                             <Checkbox
                               checked={isUserSelected}
-                              onChange={(event) =>
-                                handleSelectOneUser(event, user.id)
-                              }
+                              onChange={(event) => handleSelectOneUser(event, user.id)}
                               value={isUserSelected}
                             />
                           </Box>
                         </Box>
                       </CardWrapper>
                     </Grid>
-                  );
+                  )
                 })}
               </Grid>
               <Card
@@ -655,15 +641,13 @@ const Results: FC<ResultsProps> = ({ users }) => {
                   mt: 3,
                   display: 'flex',
                   alignItems: 'center',
-                  justifyContent: 'space-between'
-                }}
-              >
+                  justifyContent: 'space-between',
+                }}>
                 <Box>
                   <Typography component="span" variant="subtitle1">
                     {t('Showing')}
                   </Typography>{' '}
-                  <b>{limit}</b> {t('of')} <b>{filteredUsers.length}</b>{' '}
-                  <b>{t('users')}</b>
+                  <b>{limit}</b> {t('of')} <b>{filteredUsers.length}</b> <b>{t('users')}</b>
                 </Box>
                 <TablePagination
                   component="div"
@@ -688,11 +672,8 @@ const Results: FC<ResultsProps> = ({ users }) => {
             fontWeight="normal"
             color="text.secondary"
             sx={{ my: 5 }}
-            gutterBottom
-          >
-            {t(
-              'Choose between table or grid views for displaying the users list.'
-            )}
+            gutterBottom>
+            {t('Choose between table or grid views for displaying the users list.')}
           </Typography>
         </Card>
       )}
@@ -703,54 +684,41 @@ const Results: FC<ResultsProps> = ({ users }) => {
         fullWidth
         TransitionComponent={Transition}
         keepMounted
-        onClose={closeConfirmDelete}
-      >
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          flexDirection="column"
-          p={5}
-        >
+        onClose={closeConfirmDelete}>
+        <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={5}>
           <AvatarError>
             <CloseIcon />
           </AvatarError>
 
           <Typography align="center" sx={{ py: 4, px: 6 }} variant="h2">
-            {t('Are you sure you want to permanently delete this user account')}
-            ?
+            {t('Are you sure you want to permanently delete this user account')}?
           </Typography>
 
           <Box>
-            <Button
-              variant="text"
-              size="large"
-              sx={{ mx: 1 }}
-              onClick={closeConfirmDelete}
-            >
+            <Button variant="text" size="large" sx={{ mx: 1 }} onClick={closeConfirmDelete}>
               {t('Cancel')}
             </Button>
             <ButtonError
+              disabled={true}
               onClick={handleDeleteCompleted}
               size="large"
               sx={{ mx: 1, px: 3 }}
-              variant="contained"
-            >
+              variant="contained">
               {t('Delete')}
             </ButtonError>
           </Box>
         </Box>
       </DialogWrapper>
     </>
-  );
-};
+  )
+}
 
 Results.propTypes = {
-  users: PropTypes.array.isRequired
-};
+  users: PropTypes.array.isRequired,
+}
 
 Results.defaultProps = {
-  users: []
-};
+  users: [],
+}
 
-export default Results;
+export default Results

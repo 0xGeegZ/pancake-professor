@@ -3,35 +3,32 @@ import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
 import { Avatar, Box, Button, Divider, Hidden, List, ListItem, ListItemText, Popover, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { ethers } from 'ethers';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Link from 'src/client/components/Link';
-import { Erc20__factory } from 'src/client/contracts/types';
-import useRefMounted from 'src/client/hooks/useRefMounted';
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
     padding: ${theme.spacing(0, 0.5)};
     height: ${theme.spacing(6)};
 `
-);
+)
 
 const MenuUserBox = styled(Box)(
   ({ theme }) => `
         background: ${theme.colors.alpha.black[5]};
         padding: ${theme.spacing(2)};
 `
-);
+)
 
 const UserBoxText = styled(Box)(
   ({ theme }) => `
         text-align: left;
         padding-left: ${theme.spacing(1)};
 `
-);
+)
 
 const UserBoxLabel = styled(Typography)(
   ({ theme }) => `
@@ -39,71 +36,34 @@ const UserBoxLabel = styled(Typography)(
         color: ${theme.palette.secondary.main};
         display: block;
 `
-);
+)
 
 const UserBoxDescription = styled(Typography)(
   ({ theme }) => `
         color: ${theme.palette.secondary.light}
 `
-);
+)
 
-function HeaderUserbox({ address }) {
-  const [balance, setBalance] = useState<string>('');
-  const isMountedRef = useRefMounted();
+function HeaderUserbox({ address, balance }) {
+  const { enqueueSnackbar } = useSnackbar()
 
-  const [provider, setProvider] = useState<ethers.providers.Web3Provider>();
+  const { t }: { t: any } = useTranslation()
 
-  const checkBalance = useCallback(async () => {
-    if (!window.ethereum?.request) return;
+  const router = useRouter()
 
-    if (!isMountedRef.current) {
-      return;
-    }
-
-    if (!provider) {
-      return;
-    }
-
-    const TOKEN_ADDR = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c';
-    const token = Erc20__factory.connect(TOKEN_ADDR, provider.getSigner());
-
-    const rawBalance = await token.balanceOf(address);
-    const decimals = await token.decimals();
-
-    const balance = ethers.utils.formatUnits(rawBalance, decimals);
-    setBalance(balance);
-
-    window.localStorage.setItem('balance', balance);
-  }, [address, provider]);
-
-  useEffect(() => {
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    setProvider(provider);
-
-    // if (window.localStorage.getItem("balance"))
-    //   setBalance(window.localStorage.getItem("balance"));
-    // else
-    checkBalance();
-  }, [checkBalance]);
-
-  const { enqueueSnackbar } = useSnackbar();
-
-  const { t }: { t: any } = useTranslation();
-
-  const router = useRouter();
-
-  const ref = useRef<any>(null);
-  const [isOpen, setOpen] = useState<boolean>(false);
+  const ref = useRef<any>(null)
+  const [isOpen, setOpen] = useState<boolean>(false)
 
   const handleOpen = (): void => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = (): void => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const handleLogout = async (): Promise<void> => {
+    handleClose()
     try {
       fetch(`/api/auth/logout`, {
         method: `GET`,
@@ -111,22 +71,22 @@ function HeaderUserbox({ address }) {
       })
         .then((res) => res.json())
         .then((json) => {
-          handleClose();
+          handleClose()
           if (json.success) {
-            router.push('/');
+            router.push('/')
             enqueueSnackbar(t('Wallet succesfully unconnected!'), {
               variant: 'success',
-            });
+            })
           } else {
             enqueueSnackbar(t('Unexpected error occurred'), {
               variant: 'error',
-            });
+            })
           }
-        });
+        })
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
-  };
+  }
 
   return (
     <>
@@ -153,8 +113,7 @@ function HeaderUserbox({ address }) {
         transformOrigin={{
           vertical: 'top',
           horizontal: 'right',
-        }}
-      >
+        }}>
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
           <Avatar variant="rounded" alt="Margaret Gale" src="/static/images/avatars/1.jpg" />
           <UserBoxText>
@@ -166,14 +125,13 @@ function HeaderUserbox({ address }) {
         <List sx={{ p: 1 }} component="nav">
           <ListItem
             onClick={() => {
-              handleClose();
+              handleClose()
             }}
             button
             href="/app/account"
-            component={Link}
-          >
+            component={Link}>
             <AccountBoxTwoToneIcon fontSize="small" />
-            <ListItemText primary={t('Profile')} />
+            <ListItemText primary={t('Settings')} />
           </ListItem>
           {/* <ListItem
             onClick={() => { handleClose() }}
@@ -194,7 +152,7 @@ function HeaderUserbox({ address }) {
         </Box>
       </Popover>
     </>
-  );
+  )
 }
 
-export default HeaderUserbox;
+export default HeaderUserbox

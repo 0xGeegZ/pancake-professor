@@ -1,5 +1,6 @@
-query GetCurrentUser {
-  currentUser {
+query getUsers {
+  getUsers {
+    # user {
     id
     name
     address
@@ -7,5 +8,6 @@ query GetCurrentUser {
     email
     registeredAt
     loginAt
+    # }
   }
 }

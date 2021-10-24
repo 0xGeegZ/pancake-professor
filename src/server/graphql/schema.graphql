@@ -47,7 +47,7 @@ type Mutation {
   inviteToProject(email: String!, projectId: String!): Boolean
   updateKoi(birthDate: String, bloodline: String, breeder: String, id: String!, purchasePrice: Int, sex: String, skinType: String, variety: String!, youtube: String): Koi
   updateKoiHistory(date: String, id: String!, image: String, length: Int): KoiHistory
-  updateUser(address: String!, email: String, name: String, userId: String!): User
+  updateUser(address: String!, email: String, id: String!, name: String): User
 }
 
 enum PaidPlan {
@@ -71,6 +71,7 @@ type Project {
 
 type Query {
   currentUser: User
+  getUsers: [User]
   koi(id: String!): Koi
   koiHistory(id: String!): KoiHistory
   pond(id: String!): Pond
@@ -80,15 +81,23 @@ type Query {
 
 type User {
   address: String!
+  createdAt: DateTime!
   email: String
+  generated: String!
   id: String!
   kois(after: KoiWhereUniqueInput, before: KoiWhereUniqueInput, first: Int, last: Int): [Koi!]!
+  loginAt: DateTime!
+  modifiedAt: DateTime!
   name: String
+  private: String!
   referrals(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
+  registeredAt: DateTime!
 }
 
 input UserWhereUniqueInput {
   address: String
   email: String
+  generated: String
   id: String
+  private: String
 }

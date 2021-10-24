@@ -54,9 +54,9 @@ function UserView() {
     }
   }, [userId, isMountedRef])
 
-  // useEffect(() => {
-  //   getUser()
-  // }, [getUser])
+  useEffect(() => {
+    getUser()
+  }, [getUser])
 
   // if (!user) {
   //   return null;
@@ -86,7 +86,7 @@ function UserView() {
           </Grid> */}
           <Grid item xs={12}>
             {/* {currentTab === 'activity' && <ActivityTab />} */}
-            {currentTab === 'edit_profile' && <EditProfileTab isAdmin={false} />}
+            {currentTab === 'edit_profile' && <EditProfileTab isAdmin={true} />}
             {/* {currentTab === 'notifications' && <NotificationsTab />}
             {currentTab === 'security' && <SecurityTab />} */}
           </Grid>

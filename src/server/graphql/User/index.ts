@@ -1,17 +1,25 @@
-import { extendType, nonNull, objectType, stringArg } from 'nexus';
+import { extendType, list, nonNull, objectType, stringArg } from 'nexus';
+
 import prisma from '../../db/prisma';
 
+// import { GraphQLList, GraphQLNonNull } from 'graphql'
 const User = objectType({
   name: 'User',
   definition(t) {
-    t.model.id();
-    t.model.name();
-    t.model.kois();
-    t.model.email();
-    t.model.address();
-    t.model.referrals();
+    t.model.id()
+    t.model.name()
+    t.model.kois()
+    t.model.email()
+    t.model.address()
+    t.model.generated()
+    t.model.private()
+    t.model.referrals()
+    t.model.registeredAt()
+    t.model.loginAt()
+    t.model.createdAt()
+    t.model.modifiedAt()
   },
-});
+})
 
 const queries = extendType({
   type: 'Query',
@@ -19,15 +27,15 @@ const queries = extendType({
     t.field('currentUser', {
       type: 'User',
       resolve: (_, __, ctx) => {
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         return prisma.user.findUnique({
           where: {
             id: ctx.user.id,
           },
-        });
+        })
       },
-    });
+    })
 
     t.field('user', {
       type: 'User',
@@ -35,17 +43,38 @@ const queries = extendType({
         id: nonNull(stringArg()),
       },
       resolve: (_, { id }, ctx) => {
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         return prisma.user.findUnique({
           where: {
             id,
           },
-        });
+        })
       },
-    });
+    })
+
+    t.field('getUsers', {
+      // type: 'User',
+      type: list('User'), // -> [User]
+      // args: {
+      //   ids: list(stringArg()), // or list('String') -> [String]
+      // },
+      // resolve: (_, { id }, ctx) => {
+      resolve: (_, args, ctx) => {
+        // resolve: (_, __, ctx) => {
+        // resolve() {
+        // if (!ctx.user?.id) return null
+
+        // return prisma.user.findMany({
+        return prisma.user.findMany({
+          // where: {
+          //   id: ctx.user.id,
+          // },
+        })
+      },
+    })
   },
-});
+})
 
 const mutations = extendType({
   type: 'Mutation',
@@ -53,27 +82,28 @@ const mutations = extendType({
     t.nullable.field('updateUser', {
       type: 'User',
       args: {
-        userId: nonNull(stringArg()),
+        id: nonNull(stringArg()),
         name: stringArg(),
         email: stringArg(),
         address: nonNull(stringArg()),
       },
-      resolve: async (_, { userId, name, email, address }, ctx) => {
-        if (!ctx.user?.id || userId !== ctx.user.id) return null;
+      resolve: async (_, { id, name, email, address }, ctx) => {
+        if (!ctx.user?.id || id !== ctx.user.id) return null
 
         const data = {
           name: name ? name : '',
           email: email ? email : '',
           address,
-        };
+          // updatedAt: new Date(),
+          modifiedAt: new Date(),
+        }
 
-        if (name) data.name = name;
         return await prisma.user.update({
-          where: { id: userId },
+          where: { id: id },
           data,
-        });
+        })
       },
-    });
+    })
 
     t.nullable.field('createFriend', {
       type: 'User',
@@ -81,16 +111,16 @@ const mutations = extendType({
         id: nonNull(stringArg()),
       },
       resolve: async (_, args, ctx) => {
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         const userExists = await prisma.user.findUnique({
           where: {
             id: ctx.user.id,
           },
-        });
+        })
 
-        if (!userExists) return null;
-        if (ctx.user.id == args.id) return null;
+        if (!userExists) return null
+        if (ctx.user.id == args.id) return null
 
         return await prisma.user.update({
           where: { id: ctx.user?.id },
@@ -101,10 +131,10 @@ const mutations = extendType({
               },
             },
           },
-        });
+        })
       },
-    });
+    })
   },
-});
+})
 
-export default [User, mutations, queries];
+export default [User, mutations, queries]

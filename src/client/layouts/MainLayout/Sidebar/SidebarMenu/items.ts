@@ -1,42 +1,24 @@
-import type { ReactNode } from 'react';
-
-import AnalyticsTwoToneIcon from '@mui/icons-material/AnalyticsTwoTone';
-import AccountBalanceTwoToneIcon from '@mui/icons-material/AccountBalanceTwoTone';
-import StoreTwoToneIcon from '@mui/icons-material/StoreTwoTone';
 import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
-import MonetizationOnTwoToneIcon from '@mui/icons-material/MonetizationOnTwoTone';
-import KitchenTwoToneIcon from '@mui/icons-material/KitchenTwoTone';
-import HealthAndSafetyTwoToneIcon from '@mui/icons-material/HealthAndSafetyTwoTone';
-import ContactSupportTwoToneIcon from '@mui/icons-material/ContactSupportTwoTone';
-import LocalLibraryTwoToneIcon from '@mui/icons-material/LocalLibraryTwoTone';
-import DnsTwoToneIcon from '@mui/icons-material/DnsTwoTone';
-import TaskAltTwoToneIcon from '@mui/icons-material/TaskAltTwoTone';
-import DocumentScannerTwoToneIcon from '@mui/icons-material/DocumentScannerTwoTone';
-import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone';
-import QuestionAnswerTwoToneIcon from '@mui/icons-material/QuestionAnswerTwoTone';
+import AnalyticsTwoToneIcon from '@mui/icons-material/AnalyticsTwoTone';
 import DashboardCustomizeTwoToneIcon from '@mui/icons-material/DashboardCustomizeTwoTone';
-import AssignmentIndTwoToneIcon from '@mui/icons-material/AssignmentIndTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
-import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
-import VpnKeyTwoToneIcon from '@mui/icons-material/VpnKeyTwoTone';
-import ErrorTwoToneIcon from '@mui/icons-material/ErrorTwoTone';
-import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
-import SupportTwoToneIcon from '@mui/icons-material/SupportTwoTone';
-import ReceiptTwoToneIcon from '@mui/icons-material/ReceiptTwoTone';
-import BackupTableTwoToneIcon from '@mui/icons-material/BackupTableTwoTone';
+import LocalLibraryTwoToneIcon from '@mui/icons-material/LocalLibraryTwoTone';
+import PeopleIcon from '@mui/icons-material/People';
 import SmartToyTwoToneIcon from '@mui/icons-material/SmartToyTwoTone';
+import SupportTwoToneIcon from '@mui/icons-material/SupportTwoTone';
+
+import type { ReactNode } from 'react'
 
 export interface MenuItem {
-  link?: string;
-  icon?: ReactNode;
-  badge?: string;
-  items?: MenuItem[];
-  name: string;
+  link?: string
+  icon?: ReactNode
+  badge?: string
+  items?: MenuItem[]
+  name: string
 }
 
 export interface MenuItems {
-  items: MenuItem[];
-  heading: string;
+  items: MenuItem[]
+  heading: string
 }
 
 const menuItems: MenuItems[] = [
@@ -267,20 +249,20 @@ const menuItems: MenuItems[] = [
   //   ]
   // },
   {
-    heading: 'More',
+    heading: 'Admin',
     items: [
-      // {
-      //   name: 'Overview',
-      //   link: '/',
-      //   icon: DesignServicesTwoToneIcon
-      // },
+      {
+        name: 'Users',
+        icon: PeopleIcon,
+        link: '/admin/users',
+      },
       {
         name: 'Documentation',
         icon: SupportTwoToneIcon,
-        link: '/docs',
+        link: '/admin/docs',
       },
     ],
   },
-];
+]
 
-export default menuItems;
+export default menuItems
