@@ -1,11 +1,11 @@
-import { Container, Grid, Typography, ListItemText, ListItem, List, Divider } from '@mui/material'
-import type { ReactElement } from 'react'
-import DocsLayout from 'src/client/layouts/DocsLayout'
-import Head from 'next/head'
-import PageHeader from 'src/client/components/PageHeaderDocs'
-import { Prism } from 'react-syntax-highlighter'
-import a11yDark from 'react-syntax-highlighter/dist/cjs/styles/prism/a11y-dark'
+import { Container, Divider, Grid, List, ListItem, ListItemText, Typography } from '@mui/material';
+import Head from 'next/head';
+import { Prism } from 'react-syntax-highlighter';
+import a11yDark from 'react-syntax-highlighter/dist/cjs/styles/prism/a11y-dark';
+import PageHeader from 'src/client/components/PageHeaderDocs';
+import DocsLayout from 'src/client/layouts/DocsLayout';
 
+import type { ReactElement } from 'react'
 function Installation() {
   const npmInstall = `// the -g parameter install npm globally on your system
 

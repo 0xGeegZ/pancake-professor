@@ -69,10 +69,11 @@ const ActiveLiveBetsChart: FC<ActiveLiveBetsChartProps> = ({ data: dataProp, lab
 
   const options = {
     responsive: true,
-    animation: {
-      duration: 250 * 1.5,
-      easing: 'linear',
-    },
+    animation: false,
+    // animation: {
+    //   duration: 250 * 1.5,
+    //   easing: 'linear',
+    // },
     maintainAspectRatio: false,
     cornerRadius: 6,
     legend: {
@@ -97,9 +98,10 @@ const ActiveLiveBetsChart: FC<ActiveLiveBetsChartProps> = ({ data: dataProp, lab
             display: false,
             beginAtZero: false,
             min: 0,
-            maxTicksLimit:
-              dataProp.bears.length > dataProp.bulls.length ? dataProp.bears.length + 1 : dataProp.bulls.length + 1,
-            // maxTicksLimit: 7,
+            // maxTicksLimit: dataProp.bears.length + dataProp.bulls.length,
+            // maxTicksLimit:
+            //   dataProp.bears.length > dataProp.bulls.length ? dataProp.bears.length + 2 : dataProp.bulls.length + 2,
+            maxTicksLimit: 10,
           },
         },
       ],
@@ -118,9 +120,10 @@ const ActiveLiveBetsChart: FC<ActiveLiveBetsChartProps> = ({ data: dataProp, lab
             display: false,
             beginAtZero: false,
             min: 0,
-            // maxTicksLimit: 7,
-            maxTicksLimit:
-              dataProp.bears.length > dataProp.bulls.length ? dataProp.bears.length + 1 : dataProp.bulls.length + 1,
+            maxTicksLimit: 10,
+            // maxTicksLimit: dataProp.bears.length + dataProp.bulls.length,
+            // maxTicksLimit:
+            //   dataProp.bears.length > dataProp.bulls.length ? dataProp.bears.length + 2 : dataProp.bulls.length + 2,
           },
         },
       ],

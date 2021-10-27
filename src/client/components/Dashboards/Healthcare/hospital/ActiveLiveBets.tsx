@@ -72,7 +72,8 @@ function ActiveLiveBets({ timeLeft, epoch, userBulls, userBears }) {
   const [period, setPeriod] = useState<string>(periods[2].text)
 
   const DEFAULT_STATUS = {
-    isDataLoaded: false,
+    isDataLoaded: true,
+    // isDataLoaded: false,
     data: {
       bulls: [],
       bears: [],
