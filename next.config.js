@@ -1,15 +1,15 @@
-const { i18n } = require("./next-i18next.config");
-const withImages = require("next-images");
-const withPrismaPlugin = require("next-prisma-plugin");
+const { i18n } = require('./next-i18next.config')
+const withImages = require('next-images')
+const withPrismaPlugin = require('next-prisma-plugin')
 
 module.exports = withImages(
   withPrismaPlugin({
     i18n,
     images: {
-      domains: ["res.cloudinary.com", "img.youtube.com"],
+      domains: ['res.cloudinary.com', 'img.youtube.com'],
     },
     // Necessary for next-on-netlify to work correctly
-    target: process.env.NETLIFY ? "experimental-serverless-trace" : undefined,
+    target: process.env.NETLIFY ? 'experimental-serverless-trace' : undefined,
     webpackDevMiddleware: (config) => {
       if (process.env.IS_DOCKER) {
         // "next dev" in Docker doesn't reliably pick up file changes, so we need to enable polling
@@ -17,9 +17,14 @@ module.exports = withImages(
         config.watchOptions = {
           ...config.watchOptions,
           poll: 500,
-        };
+        }
       }
-      return config;
+      return config
     },
+    // !! WARN !!
+    // Dangerously allow production builds to successfully complete even if
+    // your project has type errors.
+    // !! WARN !!
+    // ignoreBuildErrors: true,
   })
-);
+)

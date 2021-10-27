@@ -23,14 +23,16 @@ import {
   Zoom,
 } from '@mui/material';
 import { styled } from '@mui/material/styles';
+import { ethers } from 'ethers';
 import { Formik } from 'formik';
 import { useSnackbar } from 'notistack';
-import { useContext, useEffect, useRef, useState } from 'react';
+import { FC, ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Moment from 'react-moment';
+import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance';
 import Label from 'src/client/components/Label';
 import Text from 'src/client/components/Text';
-import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated';
+import { Erc20__factory } from 'src/client/contracts/types';
 import { useUpdateUserMutation } from 'src/client/graphql/updateUser.generated';
 import { ThemeContext } from 'src/client/theme/ThemeProvider';
 import * as Yup from 'yup';
@@ -195,27 +197,50 @@ const CheckSelected = styled(Box)(
   `
 )
 
-function EditProfileTab({ isAdmin }) {
+function EditProfileTab({ user, isAdmin }) {
   const { t }: { t: any } = useTranslation()
   const { enqueueSnackbar } = useSnackbar()
+  const [balance, setBalance] = useState<string>('')
+
+  const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
   const setThemeName = useContext(ThemeContext)
 
-  const [user, setCurrentUser] = useState<any>('')
   const [open, setOpen] = useState(false)
   const [, updateUser] = useUpdateUserMutation()
 
-  const [{ data, fetching, error }] = useGetCurrentUserQuery()
+  const checkBalance = useCallback(async (address) => {
+    if (!window.ethereum?.request) return
+
+    const browserProvider = new ethers.providers.Web3Provider(window.ethereum)
+
+    if (!browserProvider) return
+
+    setProvider(browserProvider)
+
+    const TOKEN_ADDR = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
+    const token = Erc20__factory.connect(TOKEN_ADDR, browserProvider.getSigner())
+
+    const rawBalance = await token.balanceOf(address)
+    const decimals = await token.decimals()
+
+    const balance = ethers.utils.formatUnits(rawBalance, decimals)
+    setBalance(balance)
+    window.localStorage.setItem('balance', balance)
+  }, [])
 
   useEffect(() => {
+    if (window.localStorage.getItem('balance')) setBalance(window.localStorage.getItem('balance'))
+    else checkBalance(user.address)
+
     const curThemeName = window.localStorage.getItem('appTheme') || 'PureLightTheme'
     setTheme(curThemeName)
+  }, [checkBalance])
 
-    if (!data) return
-    if (!data.currentUser) return
-
-    setCurrentUser(data.currentUser)
-  }, [data])
+  // useEffect(() => {
+  //   const curThemeName = window.localStorage.getItem('appTheme') || 'PureLightTheme'
+  //   setTheme(curThemeName)
+  // }, [])
 
   const [theme, setTheme] = useState('PureLightTheme')
 
@@ -250,13 +275,10 @@ function EditProfileTab({ isAdmin }) {
       user.email = _values.email
       user.name = _values.name
 
-      const { data, error } = await updateUser({ ...user })
+      const { error } = await updateUser({ ...user })
 
-      if (error) {
-        throw new Error(error.message)
-      }
+      if (error) throw new Error(error.message)
 
-      setCurrentUser(user)
       resetForm()
       setStatus({ success: true })
       setSubmitting(false)
@@ -273,10 +295,21 @@ function EditProfileTab({ isAdmin }) {
   }
 
   return (
+    // <>
+    //   {!fetching ? (
+    //     <Grid sx={{ py: 10 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
+    //       <Grid item>
+    //         <CircularProgress color="secondary" size="1rem" />
+    //       </Grid>
+    //     </Grid>
+    //   ) : (
     <>
       <Grid container spacing={3}>
-        <Grid item xs={12}>
-          <Card>
+        <Grid item lg={4} xs={12}>
+          <AccountBalance balance={balance} />
+        </Grid>
+        <Grid item lg={8} xs={12}>
+          <Card sx={{ pb: 5 }}>
             <Box p={3} display="flex" alignItems="center" justifyContent="space-between">
               <Box>
                 <Typography variant="h4" gutterBottom>
@@ -329,6 +362,7 @@ function EditProfileTab({ isAdmin }) {
             </CardContent>
           </Card>
         </Grid>
+
         {/* <Grid item xs={6}> */}
         <Grid item xs={isAdmin ? 12 : 6}>
           <Card>
@@ -434,7 +468,7 @@ function EditProfileTab({ isAdmin }) {
         </Grid>
         {!isAdmin ? (
           <Grid item xs={6}>
-            <Card>
+            <Card sx={{ pb: 3 }}>
               <Box p={3} display="flex" alignItems="center" justifyContent="space-between">
                 <Box>
                   <Typography variant="h4" gutterBottom>
@@ -748,6 +782,8 @@ function EditProfileTab({ isAdmin }) {
         </Formik>
       </Dialog>
     </>
+    //   )}
+    // </>
   )
 }
 

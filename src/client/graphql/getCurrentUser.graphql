@@ -4,6 +4,7 @@ query GetCurrentUser {
     name
     address
     generated
+    private
     email
     registeredAt
     loginAt

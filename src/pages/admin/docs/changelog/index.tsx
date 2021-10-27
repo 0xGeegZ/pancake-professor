@@ -1,14 +1,14 @@
-import { Container, Grid, List, ListItem, Typography } from '@mui/material';
-import type { ReactElement } from 'react';
-import DocsLayout from "src/client/layouts/DocsLayout";
-import Head from 'next/head';
-import PageHeader from 'src/client/components/PageHeaderDocs';
+import { Container, Grid, List, ListItem, Typography } from '@mui/material'
+import type { ReactElement } from 'react'
+import DocsLayout from 'src/client/layouts/DocsLayout'
+import Head from 'next/head'
+import PageHeader from 'src/client/components/PageHeaderDocs'
 
 function Changelog() {
   return (
     <>
       <Head>
-        <title>Changelog - Tokyo NextJS Admin Dashboard</title>
+        <title>Changelog - Pancake Professor</title>
       </Head>
       <Container maxWidth={false}>
         <Grid container spacing={3}>
@@ -19,12 +19,7 @@ function Changelog() {
             <Typography variant="h2" sx={{ mb: 2 }}>
               Version 1.0.0
             </Typography>
-            <Typography
-              component="span"
-              fontWeight="normal"
-              variant="h3"
-              color="text.secondary"
-            >
+            <Typography component="span" fontWeight="normal" variant="h3" color="text.secondary">
               Released on: <b>16 October 2021</b>
             </Typography>
             <br />
@@ -36,15 +31,11 @@ function Changelog() {
         </Grid>
       </Container>
     </>
-  );
+  )
 }
 
-export default Changelog;
+export default Changelog
 
 Changelog.getLayout = function getLayout(page: ReactElement) {
-  return (
-      <DocsLayout>
-          {page}
-      </DocsLayout>
-  )
+  return <DocsLayout>{page}</DocsLayout>
 }

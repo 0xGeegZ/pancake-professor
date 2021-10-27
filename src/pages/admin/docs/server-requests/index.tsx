@@ -1,11 +1,11 @@
-import { Container, Typography, Grid } from '@mui/material';
-import type { ReactElement } from 'react';
-import DocsLayout from "src/client/layouts/DocsLayout";
+import { Container, Grid, Typography } from '@mui/material';
 import Head from 'next/head';
-import PageHeader from 'src/client/components/PageHeaderDocs';
 import { Prism } from 'react-syntax-highlighter';
 import a11yDark from 'react-syntax-highlighter/dist/cjs/styles/prism/a11y-dark';
+import PageHeader from 'src/client/components/PageHeaderDocs';
+import DocsLayout from 'src/client/layouts/DocsLayout';
 
+import type { ReactElement } from 'react'
 function ServerRequests() {
   const axiosImp = `import { useState, useEffect, useCallback } from 'react';
 
@@ -45,7 +45,7 @@ function ServerRequests() {
   }
   
   export default RecentOrders;
-  `;
+  `
 
   const axiosMock = `import { mock } from 'src/client/utils/axios';
 import { CryptoOrder } from 'src/client/models/crypto_order';
@@ -68,12 +68,12 @@ mock.onGet('/api/crypto-orders').reply(() => {
   ];
 
   return [200, { cryptoOrders }];
-});`;
+});`
 
   return (
     <>
       <Head>
-        <title>Server Requests - Tokyo NextJS Admin Dashboard</title>
+        <title>Server Requests - Pancake Professor</title>
       </Head>
       <Container maxWidth={false}>
         <Grid container spacing={3}>
@@ -82,46 +82,28 @@ mock.onGet('/api/crypto-orders').reply(() => {
           </Grid>
           <Grid item xs={12}>
             <Typography paragraph>
-              Throughout Tokyo NextJS Admin Dashboard you will find a few
-              examples of API calls, mocked using Axios.
+              Throughout Pancake Professor you will find a few examples of API calls, mocked using Axios.
             </Typography>
-            <Typography paragraph>
-              Below is a simple example of an API call implementation.
-            </Typography>
-            <Prism
-              showLineNumbers
-              wrapLines
-              language="javascript"
-              style={a11yDark}
-            >
+            <Typography paragraph>Below is a simple example of an API call implementation.</Typography>
+            <Prism showLineNumbers wrapLines language="javascript" style={a11yDark}>
               {axiosImp}
             </Prism>
             <br />
             <Typography paragraph>
-              Using Axios Mock Adapter you can simulate request calls. Check out
-              the example below:
+              Using Axios Mock Adapter you can simulate request calls. Check out the example below:
             </Typography>
-            <Prism
-              showLineNumbers
-              wrapLines
-              language="javascript"
-              style={a11yDark}
-            >
+            <Prism showLineNumbers wrapLines language="javascript" style={a11yDark}>
               {axiosMock}
             </Prism>
           </Grid>
         </Grid>
       </Container>
     </>
-  );
+  )
 }
 
-export default ServerRequests;
+export default ServerRequests
 
 ServerRequests.getLayout = function getLayout(page: ReactElement) {
-  return (
-      <DocsLayout>
-          {page}
-      </DocsLayout>
-  )
+  return <DocsLayout>{page}</DocsLayout>
 }

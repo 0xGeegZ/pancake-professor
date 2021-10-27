@@ -1,23 +1,19 @@
 import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
-import { alpha, Box, Card, Hidden, IconButton, Tooltip } from '@mui/material';
+import { alpha, Box, Button, Card, CircularProgress, Grid, Hidden, IconButton, Tooltip } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { SidebarContext } from 'src/client/contexts/SidebarContext';
-import { FC, useRef, useState, useEffect, useContext} from 'react';
-import { CircularProgress, Grid ,Button} from '@mui/material';
-import { useSnackbar } from 'notistack';
-import { useTranslation } from 'react-i18next';
 import { ethers } from 'ethers';
-import HeaderNotifications from './Buttons/Notifications';
-import LanguageSwitcher from './Buttons/LanguageSwitcher';
-
-import HeaderButtons from './Buttons';
-import Logo from './Logo';
-import HeaderSearch from './Search';
-import HeaderUserbox from './Userbox';
-import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated';
+import { useSnackbar } from 'notistack';
+import { FC, useContext, useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import Link from 'src/client/components/Link';
+import { SidebarContext } from 'src/client/contexts/SidebarContext';
+import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated';
 
+import LanguageSwitcher from './Buttons/LanguageSwitcher';
+import HeaderNotifications from './Buttons/Notifications';
+import Logo from './Logo';
+import HeaderUserbox from './Userbox';
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `
@@ -34,7 +30,7 @@ const HeaderWrapper = styled(Card)(
     align-items: center;
     border-radius: 0;
 `
-);
+)
 
 const IconButtonPrimary = styled(IconButton)(
   ({ theme }) => `
@@ -53,7 +49,7 @@ const IconButtonPrimary = styled(IconButton)(
       color: ${theme.colors.alpha.trueWhite[100]};
     }
 `
-);
+)
 
 const BoxLogoWrapper = styled(Box)(
   ({ theme }) => `
@@ -64,89 +60,86 @@ const BoxLogoWrapper = styled(Box)(
   }
     
 `
-);
+)
 
 const Header: FC = () => {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
-  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
+  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext)
 
-  const [{ data, fetching, error }] = useGetCurrentUserQuery();
+  const [{ data, fetching, error }] = useGetCurrentUserQuery()
   //   const router = useRouter();
-    const [address, setAddress] = useState<string>("");
-    const [email, setEmail] = useState<string>("");
-    const [name, setName] = useState<string>("");
-    const [user, setCurrentUser] = useState<string>("");
-    const [account, setAccount] = useState<string>("");
+  const [address, setAddress] = useState<string>('')
+  const [email, setEmail] = useState<string>('')
+  const [name, setName] = useState<string>('')
+  const [user, setUser] = useState<string>('')
+  const [account, setAccount] = useState<string>('')
 
-    const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar()
 
-    const currentUser = data?.currentUser;
-  
-     // Once we load the current user, default the name input to their name
-     useEffect(() => {
-      if (currentUser?.address) setAddress(currentUser.address);
-      if (currentUser?.name) setName(currentUser.name);
-      if (currentUser?.email) setEmail(currentUser.email);
-    }, [currentUser]);
-  
-    useEffect(() => {
-      if (data?.currentUser) {
-        // setCurrentUser(data.currentUser)
-        if (currentUser?.address) setAddress(data?.currentUser.address);
-        if (currentUser?.name) setName(data?.currentUser.name);
-        if (currentUser?.email) setEmail(data?.currentUser.email);
-      }
-    }, [data]);
+  const currentUser = data?.currentUser
 
+  // Once we load the current user, default the name input to their name
+  useEffect(() => {
+    if (currentUser?.address) setAddress(currentUser.address)
+    if (currentUser?.name) setName(currentUser.name)
+    if (currentUser?.email) setEmail(currentUser.email)
+  }, [currentUser])
 
-    const [provider, setProvider] = useState<ethers.providers.Web3Provider>();
+  useEffect(() => {
+    if (data?.currentUser) {
+      // setUser(data.currentUser)
+      if (currentUser?.address) setAddress(data?.currentUser.address)
+      if (currentUser?.name) setName(data?.currentUser.name)
+      if (currentUser?.email) setEmail(data?.currentUser.email)
+    }
+  }, [data])
 
+  const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
-    const connect = async (evt) => {
-      evt.preventDefault();
-      if (!window.ethereum?.request) {
-        enqueueSnackbar(t('MetaMask is not installed!'), {
-          variant: 'error'
-        });
-         return;
-      }
-  
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const accounts = await window.ethereum.request({
-        method: "eth_requestAccounts",
-      });
-      setProvider(provider);
-      setAccount(accounts[0]);
-  
-     
-      const msg = "Pancake Professor Application Sign Up";
-      const signer = provider.getSigner()
-      const signed = await signer.signMessage(msg);
-  
-      fetch(`/api/auth/web3Auth`, {
-        method: `POST`,
-        body: JSON.stringify({
-          address: accounts[0],
-          msg,
-          signed,
-        }),
-        headers: { "Content-Type": "application/json" },
+  const connect = async (evt) => {
+    evt.preventDefault()
+    if (!window.ethereum?.request) {
+      enqueueSnackbar(t('MetaMask is not installed!'), {
+        variant: 'error',
       })
-        .then((res) => res.json())
-        .then((json) => {
-          if (json.success) {
-            enqueueSnackbar(t('Wallet succesfully connected!'), {
-              variant: 'success'
-            });     
-          }else {
-            enqueueSnackbar(t('Unexpected error occurred'), {
-              variant: 'error'
-            });
-          }
-        });
-    };
-  
+      return
+    }
+
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const accounts = await window.ethereum.request({
+      method: 'eth_requestAccounts',
+    })
+    setProvider(provider)
+    setAccount(accounts[0])
+
+    const msg = 'Pancake Professor Application Sign Up'
+    const signer = provider.getSigner()
+    const signed = await signer.signMessage(msg)
+
+    fetch(`/api/auth/web3Auth`, {
+      method: `POST`,
+      body: JSON.stringify({
+        address: accounts[0],
+        msg,
+        signed,
+      }),
+      headers: { 'Content-Type': 'application/json' },
+    })
+      .then((res) => res.json())
+      .then((json) => {
+        if (json.success) {
+          enqueueSnackbar(t('Wallet succesfully connected!'), {
+            variant: 'success',
+          })
+        } else {
+          enqueueSnackbar(t('Unexpected error occurred'), {
+            variant: 'error',
+          })
+        }
+      })
+  }
+
   return (
     <HeaderWrapper>
       <Box display="flex" alignItems="center">
@@ -158,47 +151,39 @@ const Header: FC = () => {
         </Hidden> */}
       </Box>
       <Box display="flex" alignItems="center">
-      <Box sx={{ mr: 1 }}>
-       {currentUser ? (<HeaderNotifications />) : (<></>)}
-        <LanguageSwitcher />
-      </Box>
-      {fetching ? 
-      (<Grid container
-             direction="row"
-             justifyContent="center"
-             alignItems="stretch"
-             spacing={3}>
-             <Grid item>
-               {/* TODO UPDATE PROGRESS COLOR TO WHITE */}
-               <CircularProgress  color="secondary" size="1rem" />
-             </Grid>
-         </Grid>) : currentUser ? 
-        (<> 
-          {/* <HeaderButtons /> */}
-          <HeaderUserbox />
-          <Hidden lgUp>
-            <Tooltip arrow title="Toggle Menu">
-              <IconButtonPrimary color="primary" onClick={toggleSidebar}>
-                {!sidebarToggle ? <MenuTwoToneIcon /> : <CloseTwoToneIcon />}
-              </IconButtonPrimary>
-            </Tooltip>
-          </Hidden>
-        </>) : 
-       (<>
-        <Button
-          color="secondary"
-          component={Link}
-          href="#"
-          onClick={connect}
-          variant="contained"
-          sx={{ ml: 2 }}
-        >
-          {t('Connect Wallet')}
-        </Button>
-        </>)}
+        <Box sx={{ mr: 1 }}>
+          {currentUser ? <HeaderNotifications /> : <></>}
+          <LanguageSwitcher />
+        </Box>
+        {fetching ? (
+          <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
+            <Grid item>
+              {/* TODO UPDATE PROGRESS COLOR TO WHITE */}
+              <CircularProgress color="secondary" size="1rem" />
+            </Grid>
+          </Grid>
+        ) : currentUser ? (
+          <>
+            {/* <HeaderButtons /> */}
+            <HeaderUserbox />
+            <Hidden lgUp>
+              <Tooltip arrow title="Toggle Menu">
+                <IconButtonPrimary color="primary" onClick={toggleSidebar}>
+                  {!sidebarToggle ? <MenuTwoToneIcon /> : <CloseTwoToneIcon />}
+                </IconButtonPrimary>
+              </Tooltip>
+            </Hidden>
+          </>
+        ) : (
+          <>
+            <Button color="secondary" component={Link} href="#" onClick={connect} variant="contained" sx={{ ml: 2 }}>
+              {t('Connect Wallet')}
+            </Button>
+          </>
+        )}
       </Box>
     </HeaderWrapper>
-  );
+  )
 }
 
-export default Header;
+export default Header

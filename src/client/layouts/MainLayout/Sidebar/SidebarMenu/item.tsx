@@ -8,13 +8,13 @@ import { useTranslation } from 'react-i18next';
 import { SidebarContext } from 'src/client/contexts/SidebarContext';
 
 interface SidebarMenuItemProps {
-  children?: ReactNode;
-  link?: string;
-  icon?: any;
-  badge?: string;
-  open?: boolean;
-  active?: boolean;
-  name: string;
+  children?: ReactNode
+  link?: string
+  icon?: any
+  badge?: string
+  open?: boolean
+  active?: boolean
+  name: string
 }
 
 const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
@@ -27,13 +27,13 @@ const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
   name,
   ...rest
 }) => {
-  const [menuToggle, setMenuToggle] = useState<boolean>(openParent);
-  const { t }: { t: any } = useTranslation();
-  const { toggleSidebar } = useContext(SidebarContext);
+  const { t }: { t: any } = useTranslation()
+  const { toggleSidebar } = useContext(SidebarContext)
+  const [menuToggle, setMenuToggle] = useState<boolean>(openParent)
 
   const toggleMenu = (): void => {
-    setMenuToggle((Open) => !Open);
-  };
+    setMenuToggle((Open) => !Open)
+  }
 
   if (children) {
     return (
@@ -41,17 +41,14 @@ const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
         <Button
           className={clsx({ 'Mui-active': menuToggle })}
           startIcon={Icon && <Icon />}
-          endIcon={
-            menuToggle ? <ExpandLessTwoToneIcon /> : <ExpandMoreTwoToneIcon />
-          }
-          onClick={toggleMenu}
-        >
+          endIcon={menuToggle ? <ExpandLessTwoToneIcon /> : <ExpandMoreTwoToneIcon />}
+          onClick={toggleMenu}>
           {badge && <Badge badgeContent={badge} />}
           {t(name)}
         </Button>
         <Collapse in={menuToggle}>{children}</Collapse>
       </ListItem>
-    );
+    )
   }
 
   return (
@@ -60,14 +57,13 @@ const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
         className={clsx({ 'Mui-active': active })}
         onClick={toggleSidebar}
         href={link}
-        startIcon={Icon && <Icon />}
-      >
+        startIcon={Icon && <Icon />}>
         {t(name)}
         {badge && <Badge badgeContent={badge} />}
       </Button>
     </ListItem>
-  );
-};
+  )
+}
 
 SidebarMenuItem.propTypes = {
   children: PropTypes.node,
@@ -76,12 +72,12 @@ SidebarMenuItem.propTypes = {
   icon: PropTypes.elementType,
   badge: PropTypes.string,
   open: PropTypes.bool,
-  name: PropTypes.string.isRequired
-};
+  name: PropTypes.string.isRequired,
+}
 
 SidebarMenuItem.defaultProps = {
   open: false,
   active: false,
-};
+}
 
-export default SidebarMenuItem;
+export default SidebarMenuItem

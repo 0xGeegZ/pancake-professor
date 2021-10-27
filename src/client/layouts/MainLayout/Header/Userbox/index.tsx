@@ -1,7 +1,9 @@
+import logout from '@/pages/api/auth/logout';
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
 import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import { Avatar, Box, Button, Divider, Hidden, List, ListItem, ListItemText, Popover, Typography } from '@mui/material';
+import { Box, Button, Divider, Hidden, List, ListItem, ListItemText, Popover, Typography } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 import { useSnackbar } from 'notistack';
@@ -44,7 +46,7 @@ const UserBoxDescription = styled(Typography)(
 `
 )
 
-function HeaderUserbox({ address, balance }) {
+function HeaderUserbox({ address, balance, logout }) {
   const { enqueueSnackbar } = useSnackbar()
 
   const { t }: { t: any } = useTranslation()
@@ -64,37 +66,16 @@ function HeaderUserbox({ address, balance }) {
 
   const handleLogout = async (): Promise<void> => {
     handleClose()
-    try {
-      fetch(`/api/auth/logout`, {
-        method: `GET`,
-        headers: { 'Content-Type': 'application/json' },
-      })
-        .then((res) => res.json())
-        .then((json) => {
-          handleClose()
-          if (json.success) {
-            router.push('/')
-            enqueueSnackbar(t('Wallet succesfully unconnected!'), {
-              variant: 'success',
-            })
-          } else {
-            enqueueSnackbar(t('Unexpected error occurred'), {
-              variant: 'error',
-            })
-          }
-        })
-    } catch (err) {
-      console.error(err)
-    }
+    logout()
   }
 
   return (
     <>
       <UserBoxButton color="secondary" ref={ref} onClick={handleOpen}>
-        <Avatar variant="rounded" alt="Margaret Gale" src="/static/images/avatars/1.jpg" />
+        <AccountCircleIcon />
         <Hidden mdDown>
           <UserBoxText>
-            <UserBoxLabel variant="body1">{address.substring(0, 10)}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{address?.substring(0, 10)}</UserBoxLabel>
             <UserBoxDescription variant="body2">{balance || 0}BNB</UserBoxDescription>
           </UserBoxText>
         </Hidden>
@@ -115,9 +96,10 @@ function HeaderUserbox({ address, balance }) {
           horizontal: 'right',
         }}>
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
-          <Avatar variant="rounded" alt="Margaret Gale" src="/static/images/avatars/1.jpg" />
+          <AccountCircleIcon />
+
           <UserBoxText>
-            <UserBoxLabel variant="body1">{address.substring(0, 10)}</UserBoxLabel>
+            <UserBoxLabel variant="body1">{address?.substring(0, 10)}</UserBoxLabel>
             <UserBoxDescription variant="body2">{balance}BNB</UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>

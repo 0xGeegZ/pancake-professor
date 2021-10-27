@@ -1,7 +1,7 @@
 {
   "name": "tokyo-nextjs-admin-dashboard",
   "version": "1.0.0",
-  "title": "Tokyo NextJS Admin Dashboard",
+  "title": "Pancake Professor",
   "description": "Production-ready updated admin dashboard powered by React and Material-UI built on NextJS features hundreds of components and examples that will help you build faster and better apps.",
   "author": {
     "name": "BloomUI.com",
@@ -34,6 +34,7 @@
     "post-update": "yarn upgrade --latest"
   },
   "dependencies": {
+    "@binance/connector": "^1.5.0",
     "@emotion/cache": "11.4.0",
     "@emotion/react": "11.4.1",
     "@emotion/server": "11.4.0",
@@ -64,6 +65,7 @@
     "formik": "2.2.9",
     "formik-material-ui": "4.0.0-alpha.1",
     "graphql": "^15.5.0",
+    "graphql-request": "^3.6.1",
     "hyperplan": "^0.4.1",
     "i18next-browser-languagedetector": "6.1.2",
     "jsonwebtoken": "8.5.1",

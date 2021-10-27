@@ -1,9 +1,9 @@
+import UsersList from '@/client/components/Management/Users/UsersList';
 import { Grid } from '@mui/material';
 import Head from 'next/head';
 import { useCallback, useEffect, useState } from 'react';
 import Footer from 'src/client/components/Footer';
 import PageHeader from 'src/client/components/Management/Users/PageHeader';
-import Results from 'src/client/components/Management/Users/Results';
 import PageTitleWrapper from 'src/client/components/PageTitleWrapper';
 import { useGetUsersQuery } from 'src/client/graphql/getUsers.generated';
 import useRefMounted from 'src/client/hooks/useRefMounted';
@@ -46,7 +46,7 @@ function ManagementUsers() {
 
       <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
         <Grid item xs={12}>
-          <Results users={users} fetching={fetching} />
+          <UsersList users={users} fetching={fetching} />
         </Grid>
       </Grid>
       <Footer />

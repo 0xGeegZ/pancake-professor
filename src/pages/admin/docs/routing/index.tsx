@@ -1,11 +1,11 @@
-import { Container, Typography, Grid } from '@mui/material';
-import type { ReactElement } from 'react';
-import DocsLayout from "src/client/layouts/DocsLayout";
+import { Container, Grid, Typography } from '@mui/material';
 import Head from 'next/head';
-import PageHeader from 'src/client/components/PageHeaderDocs';
 import { Prism } from 'react-syntax-highlighter';
 import a11yDark from 'react-syntax-highlighter/dist/cjs/styles/prism/a11y-dark';
+import PageHeader from 'src/client/components/PageHeaderDocs';
+import DocsLayout from 'src/client/layouts/DocsLayout';
 
+import type { ReactElement } from 'react'
 function Routing() {
   const routingExample = `├── account
   │   ├── login-basic
@@ -106,7 +106,7 @@ function Routing() {
   ├── _app.tsx
   ├── _document.tsx
   ├── 404.tsx
-  └── index.tsx`;
+  └── index.tsx`
   const sidebarExample = `import type { ReactNode } from 'react';
 
   import AnalyticsTwoToneIcon from '@mui/icons-material/AnalyticsTwoTone';
@@ -285,12 +285,12 @@ function Routing() {
   ];
   
   export default menuItems;
-  `;
+  `
 
   return (
     <>
       <Head>
-        <title>Routing - Tokyo NextJS Admin Dashboard</title>
+        <title>Routing - Pancake Professor</title>
       </Head>
       <Container maxWidth={false}>
         <Grid container spacing={3}>
@@ -299,23 +299,22 @@ function Routing() {
           </Grid>
           <Grid item xs={12}>
             <Typography paragraph>
-              In Next.js, a page is a React Component exported from a .js, .jsx, .ts, or .tsx file in the pages directory. Each page is associated with a route based on its file name.
+              In Next.js, a page is a React Component exported from a .js, .jsx, .ts, or .tsx file in the pages
+              directory. Each page is associated with a route based on its file name.
             </Typography>
             <Typography paragraph>
-              Example: If you create <code>pages/about.js</code> that exports a React component like below, it will be accessible at <code>/about</code>.
+              Example: If you create <code>pages/about.js</code> that exports a React component like below, it will be
+              accessible at <code>/about</code>.
             </Typography>
             <Typography paragraph>
-              Any route like /post/1, /post/abc, etc. will be matched by <code>pages/post/[pid].js</code>. The matched path parameter will be sent as a query parameter to the page, and it will be merged with the other query parameters.
+              Any route like /post/1, /post/abc, etc. will be matched by <code>pages/post/[pid].js</code>. The matched
+              path parameter will be sent as a query parameter to the page, and it will be merged with the other query
+              parameters.
             </Typography>
             <Typography paragraph>
               The example below is a sample from the <code>/pages</code> folder.
             </Typography>
-            <Prism
-              showLineNumbers
-              wrapLines
-              language="javascript"
-              style={a11yDark}
-            >
+            <Prism showLineNumbers wrapLines language="javascript" style={a11yDark}>
               {routingExample}
             </Prism>
             <br />
@@ -324,34 +323,22 @@ function Routing() {
             </Typography>
             <Typography paragraph>
               To modify the current sidebar navigation, edit the following file{' '}
-              <code>
-                src\layouts\AccentHeaderLayout\Sidebar\SidebarMenu\items.ts
-              </code>
-              . It contains an items array used for building the sidebar menu
-              tree. The 'link' parameter represents the page URL defined based on the {' '}
+              <code>src\layouts\AccentHeaderLayout\Sidebar\SidebarMenu\items.ts</code>. It contains an items array used
+              for building the sidebar menu tree. The 'link' parameter represents the page URL defined based on the{' '}
               <code>/pages</code> folder structure.
             </Typography>
-            <Prism
-              showLineNumbers
-              wrapLines
-              language="javascript"
-              style={a11yDark}
-            >
+            <Prism showLineNumbers wrapLines language="javascript" style={a11yDark}>
               {sidebarExample}
             </Prism>
           </Grid>
         </Grid>
       </Container>
     </>
-  );
+  )
 }
 
-export default Routing;
+export default Routing
 
 Routing.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <DocsLayout>
-      {page}
-    </DocsLayout>
-  )
+  return <DocsLayout>{page}</DocsLayout>
 }

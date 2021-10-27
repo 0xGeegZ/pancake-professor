@@ -419,7 +419,7 @@ const Results: FC<ResultsProps> = ({ users, fetching }) => {
                           </TableCell> */}
                           <TableCell>
                             <Box display="flex" alignItems="center">
-                              {/* <Avatar sx={{ mr: 1 }} src="/static/images/avatars/1.jpg" /> */}
+                              <Avatar sx={{ mr: 1 }} src="/static/images/avatars/1.jpg" />
                               <Box>
                                 <Link underline="hover" variant="h5" href={'/admin/users/' + user.id}>
                                   {user.name}
@@ -715,8 +715,8 @@ const Results: FC<ResultsProps> = ({ users, fetching }) => {
 }
 
 Results.propTypes = {
-  users: PropTypes.array.isRequired,
-  fetching: PropTypes.array.isRequired,
+  users: PropTypes.array,
+  fetching: PropTypes.boolean.isRequired,
 }
 
 Results.defaultProps = {

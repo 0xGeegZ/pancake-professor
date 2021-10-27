@@ -54,6 +54,10 @@ enum PaidPlan {
   pro
 }
 
+type Player {
+  id: String!
+}
+
 type Pond {
   id: String!
   modifiedAt: DateTime!
@@ -71,6 +75,7 @@ type Project {
 
 type Query {
   currentUser: User
+  getPlayers: [Player]
   getUsers: [User]
   koi(id: String!): Koi
   koiHistory(id: String!): KoiHistory

@@ -93,11 +93,9 @@ function PageHeader() {
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
           <Typography variant="h3" component="h3" gutterBottom>
-            {t('Users Management')}
+            {t('Copy best players')}
           </Typography>
-          <Typography variant="subtitle2">
-            {t('All aspects related to the app users can be managed from this page')}
-          </Typography>
+          <Typography variant="subtitle2">{t('Choose a player and follow all his actions')}</Typography>
         </Grid>
         {/* <Grid item>
           <Button

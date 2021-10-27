@@ -61,7 +61,7 @@ const aeJSON = {
   'Sign out': 'خروج',
   'Change Theme': 'غير الخلفية',
   'View all notifications': 'عرض جميع الإخطارات',
-  'Tokyo NextJS Admin Dashboard': 'لوحة تحكم إدارة Tokyo React',
+  'Pancake Professor': 'لوحة تحكم إدارة Tokyo React',
   'High performance React template built with lots of powerful Material-UI components across multiple product niches for fast & perfect apps development processes':
     'قالب React عالي الأداء المصمم بالكثير من مكونات واجهة المستخدم المادية القوية عبر منافذ منتجات متعددة لعمليات تطوير تطبيقات سريعة ومثالية',
   'Browse Live Preview': 'تصفح المعاينة المباشرة',
@@ -79,6 +79,6 @@ const aeJSON = {
     'ابدأ العمل في مشروعك مباشرةً من إحدى مجموعات البداية المضمنة أو استخدم ملفات Figma / Sketch لإنشاء نموذج أولي أولاً',
   'We only translated a small part of the template, for demonstration purposes':
     'قمنا فقط بترجمة جزء صغير من النموذج لأغراض التوضيح',
-};
+}
 
-export default aeJSON;
+export default aeJSON

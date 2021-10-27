@@ -61,7 +61,7 @@ const esJSON = {
   'Sign out': 'Desconectar',
   'Change Theme': 'Cambiar de tema',
   'View all notifications': 'Ver todas las notificaciones',
-  'Tokyo NextJS Admin Dashboard': 'Panel de administración de Tokyo React',
+  'Pancake Professor': 'Panel de administración de Tokyo React',
   'High performance React template built with lots of powerful Material-UI components across multiple product niches for fast & perfect apps development processes':
     'Plantilla React de alto rendimiento construida con una gran cantidad de poderosos componentes Material-UI en múltiples nichos de productos para procesos de desarrollo de aplicaciones rápidos y perfectos',
   'Browse Live Preview': 'Explorar vista previa en vivo',
@@ -79,6 +79,6 @@ const esJSON = {
     'Comience a trabajar en su proyecto directamente desde uno de los kits de inicio incluidos o use los archivos Figma / Sketch para crear un prototipo primero',
   'We only translated a small part of the template, for demonstration purposes':
     'Solo traducimos una pequeña parte de la plantilla, con fines de demostración',
-};
+}
 
-export default esJSON;
+export default esJSON

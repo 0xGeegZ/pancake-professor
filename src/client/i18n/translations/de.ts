@@ -61,7 +61,7 @@ const deJSON = {
   'Sign out': 'Ausloggen',
   'Change Theme': 'Thema ändern',
   'View all notifications': 'Alle Benachrichtigungen anzeigen',
-  'Tokyo NextJS Admin Dashboard': 'Tokyo NextJS Admin Dashboard',
+  'Pancake Professor': 'Pancake Professor',
   'High performance React template built with lots of powerful Material-UI components across multiple product niches for fast & perfect apps development processes':
     'Hochleistungs-React-Vorlage mit vielen leistungsstarken Material-UI-Komponenten in mehreren Produktnischen für schnelle und perfekte Entwicklungsprozesse für Apps',
   'Browse Live Preview': 'Durchsuchen Sie die Live-Vorschau',
@@ -79,6 +79,6 @@ const deJSON = {
     'Beginnen Sie direkt mit einem der mitgelieferten Starter-Kits mit der Arbeit an Ihrem Projekt oder verwenden Sie zuerst die Figma / Sketch-Dateien, um einen Prototyp zu erstellen',
   'We only translated a small part of the template, for demonstration purposes':
     'Wir haben nur einen kleinen Teil der Vorlage zu Demonstrationszwecken übersetzt',
-};
+}
 
-export default deJSON;
+export default deJSON

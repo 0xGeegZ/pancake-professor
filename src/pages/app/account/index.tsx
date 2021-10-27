@@ -1,17 +1,21 @@
-import { Box, Grid, Tabs } from '@mui/material';
+import 'moment-timezone';
+
+import { Box, CircularProgress, Grid, Tabs } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
+import { useSnackbar } from 'notistack';
 import { ChangeEvent, useCallback, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Footer from 'src/client/components/Footer';
 import EditProfileTab from 'src/client/components/Management/Users/Single/EditProfileTab';
+import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated';
 import useRefMounted from 'src/client/hooks/useRefMounted';
 import MainLayout from 'src/client/layouts/MainLayout';
-import axios from 'src/client/utils/axios';
 
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
+
 const TabsWrapper = styled(Tabs)(
   () => `
     .MuiTabs-scrollableX {
@@ -22,9 +26,25 @@ const TabsWrapper = styled(Tabs)(
 
 function UserView() {
   const isMountedRef = useRefMounted()
-  const [user, setUser] = useState<User | null>(null)
+  const [user, setUser] = useState<User | any>(null)
   const router = useRouter()
   const { userId } = router.query
+  const { enqueueSnackbar } = useSnackbar()
+
+  const [{ data, fetching, error }] = useGetCurrentUserQuery()
+
+  useEffect(() => {
+    if (!data) return
+    if (!data.currentUser) {
+      router.push('/app')
+      return
+    }
+
+    if (isMountedRef.current) {
+      setUser(data.currentUser)
+    }
+  }, [data])
+
   const { t }: { t: any } = useTranslation()
 
   const [currentTab, setCurrentTab] = useState<string>('edit_profile')
@@ -39,20 +59,20 @@ function UserView() {
     setCurrentTab(value)
   }
 
-  const getUser = useCallback(async () => {
-    try {
-      const response = await axios.get<{ user: User }>('/api/user', {
-        params: {
-          userId,
-        },
-      })
-      if (isMountedRef.current) {
-        setUser(response.data.user)
-      }
-    } catch (err) {
-      console.error(err)
-    }
-  }, [userId, isMountedRef])
+  // const getUser = useCallback(async () => {
+  //   try {
+  //     const response = await axios.get<{ user: User }>('/api/user', {
+  //       params: {
+  //         userId,
+  //       },
+  //     })
+  //     if (isMountedRef.current) {
+  //       setUser(response.data.user)
+  //     }
+  //   } catch (err) {
+  //     console.error(err)
+  //   }
+  // }, [userId, isMountedRef])
 
   // useEffect(() => {
   //   getUser()
@@ -86,7 +106,22 @@ function UserView() {
           </Grid> */}
           <Grid item xs={12}>
             {/* {currentTab === 'activity' && <ActivityTab />} */}
-            {currentTab === 'edit_profile' && <EditProfileTab isAdmin={false} />}
+            {currentTab === 'edit_profile' &&
+              (fetching || !user ? (
+                <Grid
+                  sx={{ py: 10 }}
+                  container
+                  direction="row"
+                  justifyContent="center"
+                  alignItems="stretch"
+                  spacing={3}>
+                  <Grid item>
+                    <CircularProgress color="secondary" size="1rem" />
+                  </Grid>
+                </Grid>
+              ) : (
+                <EditProfileTab user={user} isAdmin={false} />
+              ))}
             {/* {currentTab === 'notifications' && <NotificationsTab />}
             {currentTab === 'security' && <SecurityTab />} */}
           </Grid>

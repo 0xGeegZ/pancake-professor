@@ -1,27 +1,19 @@
-import {
-  Container,
-  Grid,
-  Typography,
-  ListItemText,
-  ListItem,
-  List,
-  Divider
-} from '@mui/material';
-import type { ReactElement } from 'react';
-import DocsLayout from "src/client/layouts/DocsLayout";
-import Head from 'next/head';
-import PageHeader from 'src/client/components/PageHeaderDocs';
-import { Prism } from 'react-syntax-highlighter';
-import a11yDark from 'react-syntax-highlighter/dist/cjs/styles/prism/a11y-dark';
+import { Container, Grid, Typography, ListItemText, ListItem, List, Divider } from '@mui/material'
+import type { ReactElement } from 'react'
+import DocsLayout from 'src/client/layouts/DocsLayout'
+import Head from 'next/head'
+import PageHeader from 'src/client/components/PageHeaderDocs'
+import { Prism } from 'react-syntax-highlighter'
+import a11yDark from 'react-syntax-highlighter/dist/cjs/styles/prism/a11y-dark'
 
 function Installation() {
   const npmInstall = `// the -g parameter install npm globally on your system
 
-npm install -g npm`;
+npm install -g npm`
 
   const npmDeps = `cd application_folder_name
 
-npm install`;
+npm install`
 
   const devBuild = `yarn dev  
   yarn run v1.15.2
@@ -31,10 +23,10 @@ npm install`;
   event - compiled successfully
   event - build page: /docs/installation
   wait  - compiling...
-  event - compiled successfully`;
+  event - compiled successfully`
 
-  const devRunBuild = `yarn dev`;
-  const prodRunBuild = `yarn build`;
+  const devRunBuild = `yarn dev`
+  const prodRunBuild = `yarn build`
 
   const prodBuildFinish = `yarn build
   yarn run v1.15.2
@@ -62,19 +54,19 @@ npm install`;
     ├ chunks/webpack.a53636.js                   2.41 kB
     └ css/748d52ef6c5f93f3764e.css               439 B
   
-  Done in 64.25s.`;
+  Done in 64.25s.`
 
-  const prodRunServer = `yarn start`;
+  const prodRunServer = `yarn start`
 
   const prodServerFinish = `yarn start
   yarn run v1.15.2
   $ next start
-  ready - started server on 0.0.0.0:3000, url: http://localhost:3000`;
+  ready - started server on 0.0.0.0:3000, url: http://localhost:3000`
 
   return (
     <>
       <Head>
-        <title>Installation - Tokyo NextJS Admin Dashboard</title>
+        <title>Installation - Pancake Professor</title>
       </Head>
       <Container maxWidth={false}>
         <Grid container spacing={3}>
@@ -86,8 +78,8 @@ npm install`;
               Setup
             </Typography>
             <Typography paragraph>
-              Follow the instructions below in order to install the project
-              dependencies and start a new browser instance.
+              Follow the instructions below in order to install the project dependencies and start a new browser
+              instance.
             </Typography>
             <List>
               <ListItem sx={{ my: 2 }}>
@@ -95,8 +87,7 @@ npm install`;
                   primaryTypographyProps={{ variant: 'h4', gutterBottom: true }}
                   secondaryTypographyProps={{ variant: 'subtitle2' }}
                   primary="Install Node.js"
-                  secondary="Before proceeding you will need to have Node.js installed on your system. Download and install the latest stable version from https://nodejs.org/"
-                ></ListItemText>
+                  secondary="Before proceeding you will need to have Node.js installed on your system. Download and install the latest stable version from https://nodejs.org/"></ListItemText>
               </ListItem>
               <Divider component="li" />
               <ListItem sx={{ my: 2 }}>
@@ -106,9 +97,8 @@ npm install`;
                   primary="Install NPM"
                   secondary={
                     <>
-                      You will need to have the last stable version of NPM
-                      available. More informations about this package manager
-                      can be found at https://www.npmjs.com/
+                      You will need to have the last stable version of NPM available. More informations about this
+                      package manager can be found at https://www.npmjs.com/
                       <Typography variant="h4" sx={{ mt: 2 }} gutterBottom>
                         To install NPM run the following in a command line:
                       </Typography>
@@ -116,8 +106,7 @@ npm install`;
                         {npmInstall}
                       </Prism>
                     </>
-                  }
-                ></ListItemText>
+                  }></ListItemText>
               </ListItem>
               <Divider component="li" />
               <ListItem sx={{ my: 2 }}>
@@ -127,15 +116,13 @@ npm install`;
                   primary="Install Project Dependencies"
                   secondary={
                     <>
-                      The project dependencies are defined in the package.json
-                      file. Run the command below inside the root folder to
-                      install the dependencies.
+                      The project dependencies are defined in the package.json file. Run the command below inside the
+                      root folder to install the dependencies.
                       <Prism wrapLines language="javascript" style={a11yDark}>
                         {npmDeps}
                       </Prism>
                     </>
-                  }
-                ></ListItemText>
+                  }></ListItemText>
               </ListItem>
             </List>
             <br />
@@ -143,22 +130,20 @@ npm install`;
               Development Server
             </Typography>
             <Typography paragraph>
-              After finishing with the dependencies install process, you can
-              start a local development server and view the project in your
-              browser.
+              After finishing with the dependencies install process, you can start a local development server and view
+              the project in your browser.
             </Typography>
             <Typography paragraph>
-              Inside the project folder run the following command. It takes a
-              few minutes to complete the initial development build.
+              Inside the project folder run the following command. It takes a few minutes to complete the initial
+              development build.
             </Typography>
             <Prism wrapLines language="javascript" style={a11yDark}>
               {devRunBuild}
             </Prism>
             <br />
             <Typography paragraph>
-              When finished, a browser window will be opened at
-              http://localhost:3000 and the terminal will show a message similar
-              to the one below:
+              When finished, a browser window will be opened at http://localhost:3000 and the terminal will show a
+              message similar to the one below:
             </Typography>
             <Prism wrapLines language="javascript" style={a11yDark}>
               {devBuild}
@@ -168,17 +153,16 @@ npm install`;
               Production Build
             </Typography>
             <Typography paragraph>
-              When ready to launch in production your new project, run the
-              following command in a command line opened in the project folder:
+              When ready to launch in production your new project, run the following command in a command line opened in
+              the project folder:
             </Typography>
             <Prism wrapLines language="javascript" style={a11yDark}>
               {prodRunBuild}
             </Prism>
             <br />
             <Typography paragraph>
-              This will create a production-ready build of your project. If the
-              build completed successfully, you will see in your terminal window
-              a message similar to the one below:
+              This will create a production-ready build of your project. If the build completed successfully, you will
+              see in your terminal window a message similar to the one below:
             </Typography>
             <Prism wrapLines language="javascript" style={a11yDark}>
               {prodBuildFinish}
@@ -188,7 +172,8 @@ npm install`;
               Production Server
             </Typography>
             <Typography paragraph>
-              After the build is completed successfully you can run the following command to start a starts a Next.js production server and test it out before deployment.
+              After the build is completed successfully you can run the following command to start a starts a Next.js
+              production server and test it out before deployment.
             </Typography>
             <Prism wrapLines language="javascript" style={a11yDark}>
               {prodRunServer}
@@ -203,15 +188,11 @@ npm install`;
         </Grid>
       </Container>
     </>
-  );
+  )
 }
 
-export default Installation;
+export default Installation
 
 Installation.getLayout = function getLayout(page: ReactElement) {
-  return (
-      <DocsLayout>
-          {page}
-      </DocsLayout>
-  )
+  return <DocsLayout>{page}</DocsLayout>
 }

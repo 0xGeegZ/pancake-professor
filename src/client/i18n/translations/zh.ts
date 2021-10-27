@@ -61,7 +61,7 @@ const znJSON = {
   'Sign out': '登出',
   'Change Theme': '改变主题',
   'View all notifications': '查看所有通知',
-  'Tokyo NextJS Admin Dashboard': '东京React管理员仪表板',
+  'Pancake Professor': '东京React管理员仪表板',
   'High performance React template built with lots of powerful Material-UI components across multiple product niches for fast & perfect apps development processes':
     '高性能React模板由跨多个产品细分市场的大量功能强大的Material-UI组件构建，可实现快速，完美的应用程序开发流程',
   'Browse Live Preview': '浏览实时预览',
@@ -79,6 +79,6 @@ const znJSON = {
     '直接从随附的入门工具包之一开始处理您的项目，或使用Figma / Sketch文件首先创建原型',
   'We only translated a small part of the template, for demonstration purposes':
     '我们仅翻译了模板的一小部分，以进行演示',
-};
+}
 
-export default znJSON;
+export default znJSON

@@ -92,7 +92,7 @@ const Overview: FC = () => {
   return (
     <OverviewWrapper>
       <Head>
-        <title>Tokyo NextJS Admin Dashboard</title>
+        <title>Pancake Professor</title>
       </Head>
       <HeaderWrapper>
         <Container maxWidth="lg">
@@ -103,11 +103,11 @@ const Overview: FC = () => {
 
               <Box>
                 <LanguageSwitcher />
-                {/* <Link href="/dashboards/analytics" underline="hover" sx={{ fontWeight: 'bold' }} variant="body2">
-                        {t('Dashboard')}
-                </Link> */}
+                <Link underline="hover" href="/blog" rel="noopener noreferrer" variant="body2" sx={{ ml: 2, p: 1 }}>
+                  {t('Blog')}
+                </Link>
                 <Link underline="hover" href="/app" rel="noopener noreferrer" sx={{ ml: 2, p: 1 }}>
-                  {t('Dashboard')}
+                  <b> {t('Dashboard')}</b>
                 </Link>
                 <Button component={Link} href="#" onClick={connect} variant="contained" sx={{ ml: 2 }}>
                   {t('Connect Wallet')}

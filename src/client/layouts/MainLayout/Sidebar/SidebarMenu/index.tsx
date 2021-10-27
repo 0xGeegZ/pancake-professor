@@ -3,7 +3,6 @@ import { styled } from '@mui/material/styles';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated';
 
 import SidebarMenuItem from './item';
 import menuItems, { MenuItem } from './items';
@@ -212,41 +211,9 @@ const reduceChildRoutes = ({
   return ev
 }
 
-function SidebarMenu() {
+function SidebarMenu({ fetching, error, allMenuItems }) {
   const router = useRouter()
   const { t }: { t: any } = useTranslation()
-  const [allMenuItems, setAllMenuItems] = useState<any>()
-
-  const [{ data, fetching, error }] = useGetCurrentUserQuery()
-
-  useEffect(() => {
-    if (!data) return
-    if (!data.currentUser) return
-
-    if (typeof allMenuItems !== 'undefined') return
-
-    // const address = localStorage.getItem('address') || ''
-    // console.log('🚀 ~ file: index.tsx ~ line 231 ~ useEffect ~ address', address)
-    //  if (localStorage.getItem('address')) {
-
-    //TODO check if admin on server side
-    const isFinded = process.env.NEXT_PUBLIC_ADMIN_ADDRESS
-      ? // ? process.env.NEXT_PUBLIC_ADMIN_ADDRESS.includes(address)
-        process.env.NEXT_PUBLIC_ADMIN_ADDRESS.includes(data.currentUser.address)
-      : false
-
-    // let filtereds: Array<menuItems> = []
-    // let filtereds: MenuItem[] = []
-    let filtereds = []
-    if (isFinded) {
-      filtereds = menuItems
-    } else {
-      filtereds = menuItems.filter((mi) => mi.heading !== 'Admin')
-    }
-    setAllMenuItems(filtereds)
-    // }, [])
-  }, [data, menuItems])
-
   return (
     <>
       {fetching ? (
@@ -269,7 +236,6 @@ function SidebarMenu() {
                 {renderSidebarMenuItems({
                   items: section.items,
                   path: router.pathname,
-                  // isAdmin,
                 })}
               </List>
             </MenuWrapper>

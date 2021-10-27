@@ -1,29 +1,16 @@
-import {
-  Button,
-  Card,
-  Box,
-  Grid,
-  Typography,
-  Hidden,
-  Avatar,
-  Divider,
-  ListItem,
-  ListItemText,
-  List,
-  ListItemAvatar
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
 import TrendingUp from '@mui/icons-material/TrendingUp';
+import { Avatar, Box, Button, Card, Grid, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next';
+
 import AccountBalanceChart from './AccountBalanceChart';
-import Text from 'src/client/components/Text';
 
 const AccountBalanceChartWrapper = styled(AccountBalanceChart)(
   () => `
       width: 100%;
       height: 100%;
 `
-);
+)
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.success.main};
@@ -32,42 +19,38 @@ const AvatarSuccess = styled(Avatar)(
       height: ${theme.spacing(8)};
       box-shadow: ${theme.colors.shadows.success};
 `
-);
+)
 
-function AccountBalance() {
-  const { t }: { t: any } = useTranslation();
+function AccountBalance({ balance }) {
+  const { t }: { t: any } = useTranslation()
 
   const cryptoBalance = {
     datasets: [
       {
         data: [20, 10, 40, 30],
-        backgroundColor: ['#ff9900', '#1c81c2', '#333', '#5c6ac0']
-      }
+        backgroundColor: ['#ff9900', '#1c81c2', '#333', '#5c6ac0'],
+      },
     ],
-    labels: [t('Bitcoin'), t('Ripple'), t('Cardano'), t('Ethereum')]
-  };
+    labels: [t('Bitcoin'), t('Ripple'), t('Cardano'), t('Ethereum')],
+  }
 
   return (
     <Card>
       <Grid spacing={0} container>
-        <Grid item xs={12} md={6}>
+        <Grid item xs={12}>
           <Box p={4}>
             <Typography sx={{ pb: 3 }} variant="h4">
               {t('Account Balance')}
             </Typography>
             <Box>
               <Typography variant="h1" gutterBottom>
-                $54,584.23
+                $ -
               </Typography>
-              <Typography
-                variant="h4"
-                fontWeight="normal"
-                color="text.secondary"
-              >
-                1.0045983485234 BTC
+              <Typography variant="h4" fontWeight="normal" color="text.secondary">
+                {balance} BTC
               </Typography>
-              <Box display="flex" sx={{ py: 4 }} alignItems="center">
-                <AvatarSuccess sx={{ mr: 2 }} variant="rounded">
+              <Box display="flex" sx={{ py: 2 }} alignItems="center">
+                <AvatarSuccess sx={{ mr: 1 }} variant="rounded">
                   <TrendingUp fontSize="large" />
                 </AvatarSuccess>
                 <Box>
@@ -81,18 +64,18 @@ function AccountBalance() {
             <Grid container spacing={3}>
               <Grid sm item>
                 <Button fullWidth variant="outlined">
-                  {t('Send')}
+                  {t('Add funds')}
                 </Button>
               </Grid>
               <Grid sm item>
                 <Button fullWidth variant="contained">
-                  {t('Receive')}
+                  {t('Remove funds')}
                 </Button>
               </Grid>
             </Grid>
           </Box>
         </Grid>
-        <Grid
+        {/* <Grid
           sx={{ position: 'relative' }}
           display="flex"
           alignItems="center"
@@ -239,10 +222,10 @@ function AccountBalance() {
               </Grid>
             </Grid>
           </Box>
-        </Grid>
+        </Grid> */}
       </Grid>
     </Card>
-  );
+  )
 }
 
-export default AccountBalance;
+export default AccountBalance

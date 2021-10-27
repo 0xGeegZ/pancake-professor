@@ -23,7 +23,7 @@ const SidebarWrapper = styled(Box)(
         border-radius: ${theme.general.borderRadius};
     }
 `
-);
+)
 
 const TopSection = styled(Box)(
   ({ theme }) => `
@@ -33,11 +33,11 @@ const TopSection = styled(Box)(
         margin: 0 ${theme.spacing(2)};
         border-bottom: ${theme.sidebar.dividerBg} solid 1px;
 `
-);
+)
 
-function Sidebar() {
-  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
-  const closeSidebar = () => toggleSidebar();
+function Sidebar({ fetching, error, allMenuItems }) {
+  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext)
+  const closeSidebar = () => toggleSidebar()
 
   return (
     <>
@@ -49,32 +49,26 @@ function Sidebar() {
           <Box sx={{ height: 'calc(100% - 80px)' }}>
             <Scrollbars universal autoHide>
               <Box pt={1}>
-                <SidebarMenu />
+                <SidebarMenu fetching={fetching} error={error} allMenuItems={allMenuItems} />
               </Box>
             </Scrollbars>
           </Box>
         </SidebarWrapper>
       </Hidden>
       <Hidden lgUp>
-        <Drawer
-          anchor="left"
-          open={sidebarToggle}
-          onClose={closeSidebar}
-          variant="temporary"
-          elevation={9}
-        >
+        <Drawer anchor="left" open={sidebarToggle} onClose={closeSidebar} variant="temporary" elevation={9}>
           <SidebarWrapper>
             <Scrollbars universal autoHide>
               <TopSection>
                 <Logo />
               </TopSection>
-              <SidebarMenu />
+              <SidebarMenu fetching={fetching} error={error} allMenuItems={allMenuItems} />
             </Scrollbars>
           </SidebarWrapper>
         </Drawer>
       </Hidden>
     </>
-  );
+  )
 }
 
-export default Sidebar;
+export default Sidebar
