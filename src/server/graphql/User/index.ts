@@ -1,6 +1,6 @@
-import { extendType, list, nonNull, objectType, stringArg } from 'nexus';
+import { extendType, list, nonNull, objectType, stringArg } from 'nexus'
 
-import prisma from '../../db/prisma';
+import prisma from '../../db/prisma'
 
 // import { GraphQLList, GraphQLNonNull } from 'graphql'
 const User = objectType({
@@ -9,6 +9,7 @@ const User = objectType({
     t.model.id()
     t.model.name()
     t.model.kois()
+    t.model.strategies()
     t.model.email()
     t.model.address()
     t.model.generated()

@@ -1,0 +1,31 @@
+mutation UpdateStrategie(
+  $id: String!
+  $player: String!
+  $amount: String!
+  $isActive: Boolean!
+  $isDeleted: Boolean!
+  $maxLooseAmount: Int!
+  $minWinAmount: Int!
+) {
+  updateStrategie(
+    id: $id
+    player: $player
+    amount: $amount
+    isActive: $isActive
+    isDeleted: $isDeleted
+    maxLooseAmount: $maxLooseAmount
+    minWinAmount: $minWinAmount
+  ) {
+    id
+    player
+    amount
+    isActive
+    isDeleted
+    maxLooseAmount
+    minWinAmount
+    user {
+      id
+      address
+    }
+  }
+}

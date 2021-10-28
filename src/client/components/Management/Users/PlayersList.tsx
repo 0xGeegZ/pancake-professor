@@ -56,6 +56,7 @@ import {
   useState,
 } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useCreateStrategieMutation } from 'src/client/graphql/createStrategie.generated'
 
 import type { Player } from 'src/client/models/player'
 
@@ -268,6 +269,8 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
 
+  const [, createStrategie] = useCreateStrategieMutation()
+
   const ordersBy = [
     {
       value: 'default',
@@ -427,6 +430,21 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
 
   const handleCloseDialog = () => {
     setOpenDialog(false)
+  }
+
+  const sumbitCreateStrategie = async () => {
+    const { error } = await createStrategie({
+      //   player: $player
+      // amount: $amount
+      // isActive: $isActive
+      // isDeleted: $isDeleted
+      // maxLooseAmount: $maxLooseAmount
+      // minWinAmount: $minWinAmount
+    })
+
+    if (error) throw new Error(error.message)
+
+    handleCloseDialog()
   }
 
   return (
@@ -648,7 +666,7 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
                           <TableCell align="center">
                             <Typography noWrap>
                               <Tooltip title={t('Copy')} arrow>
-                                <IconButton component={Link} href="/#" color="primary">
+                                <IconButton component={Link} onClick={handleOpenDialog} color="primary">
                                   <GamepadIcon fontSize="small" />
                                 </IconButton>
                               </Tooltip>
@@ -1149,7 +1167,7 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
             )}
           </Typography>
 
-          <Button fullWidth size="large" variant="contained" onClick={handleCloseDialog}>
+          <Button fullWidth size="large" variant="contained" onClick={sumbitCreateStrategie}>
             {t('Copy player')}
           </Button>
         </Box>

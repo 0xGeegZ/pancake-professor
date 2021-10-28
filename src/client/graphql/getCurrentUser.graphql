@@ -8,5 +8,14 @@ query GetCurrentUser {
     email
     registeredAt
     loginAt
+    strategies {
+      id
+      player
+      amount
+      isActive
+      isDeleted
+      maxLooseAmount
+      minWinAmount
+    }
   }
 }

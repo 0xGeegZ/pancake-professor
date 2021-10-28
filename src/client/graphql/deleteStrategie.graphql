@@ -1,0 +1,5 @@
+mutation DeleteStrategie($id: String!) {
+  deleteStrategie(id: $id) {
+    id
+  }
+}
