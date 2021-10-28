@@ -17,6 +17,10 @@ Then, copy `.env.example` to `.env` and fill out the `.env` file with your envir
 cp .env.example .env
 ```
 
+```sh
+cp .env.localexample .env.local
+```
+
 > Note: do not delete the `.env.example` file, as it's used by some code generation processes and is useful for potential future team members as a reference.
 
 Now you're ready to set everything up locally:

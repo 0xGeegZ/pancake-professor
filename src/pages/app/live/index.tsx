@@ -88,14 +88,18 @@ const LiveView = () => {
   const isMountedRef = useRefMounted()
   const [epoch, setEpoch] = useState<String>('')
   const [user, setUser] = useState<User | any>(null)
+  const [isPaused, setIsPaused] = useState<boolean>(false)
+
   const [userBulls, setUserBulls] = useState<any>([])
   const [userBears, setUserBears] = useState<any>([])
   const [preditionContract, setPreditionContract] = useState<any>(null)
   // const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(new Date().getTime() - 60))
   // const [timeLeft, setTimeLeft] = useState<any>(calculateTimeLeft(new Date().getTime()))
   const [timeLeft, setTimeLeft] = useState<any>(null)
+  const [startTimestamp, setStartTimestamp] = useState<any>(null)
+
   const [timerComponents, setTimerComponents] = useState<any>(null)
-  const [progressValue, setProgressValue] = useState<any>(50)
+  const [progressValue, setProgressValue] = useState<any>(100)
 
   const router = useRouter()
   const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
@@ -106,8 +110,16 @@ const LiveView = () => {
     if (!preditionContract) return
     if (epoch) return
 
-    console.log('🚀 HHHHHHHHHHHHHHHHHHHHHH ~ epoch', epoch)
-    // if (epoch) return
+    const isPaused = await preditionContract.paused()
+    console.log('🚀 ~ file: index.tsx ~ line 114 ~ initialize ~ isPaused', isPaused)
+    setIsPaused(isPaused)
+    if (isPaused) {
+      enqueueSnackbar(t(`[LAUNCH] Contract is actually paused`), {
+        variant: 'error',
+        TransitionComponent: Zoom,
+      })
+      return
+    }
 
     const _epoch = epoch ? epoch : await preditionContract.currentEpoch()
     setEpoch(_epoch)
@@ -127,6 +139,7 @@ const LiveView = () => {
 
     const _timeLeft = calculateTimeLeft(startTimestamp.toString())
     setTimeLeft(_timeLeft)
+    setStartTimestamp(startTimestamp.toString())
     // console.log('🚀 ~ file: index.tsx ~ line 125 ~ initialize ~ _timeLeft', _timeLeft)
     const total = 5 * 60
     const actual = total - _timeLeft
@@ -162,8 +175,7 @@ const LiveView = () => {
       const round = await loadGameData({ epoch: _epoch })
       if (!round) return
 
-      console.log('🚀 ~  checkEpoch ~ round', round)
-      console.log('🚀 ~  checkEpoch ~ bets', round.bets.length)
+      console.log('🚀 ~  checkEpoch ~ round', round, 'bets', round.bets.length)
       // setRound(round)
       round.bets.map((bet) => {
         if (bet.position === 'Bull') {
@@ -195,8 +207,8 @@ const LiveView = () => {
       userBulls.unshift({ betBull: true, address: sender, amount: ethers.utils.formatEther(amount), epoch })
       setUserBulls([...userBulls])
       // console.log(`[BET-BULL] for player ${sender} - ${userBulls.length}`)
-      const _timeLeft = calculateTimeLeft(timeLeft)
-      // setTimeLeft(_timeLeft)
+      const _timeLeft = calculateTimeLeft(startTimestamp)
+      setTimeLeft(_timeLeft)
       const total = 5 * 60
       const actual = total - _timeLeft
       const generated = (actual * 100) / total
@@ -212,8 +224,8 @@ const LiveView = () => {
       setUserBears([...userBears])
       // console.log(`[BET-BEAR] for player ${sender} - ${userBears.length}`)
       // const _timeLeft = calculateTimeLeft(new Date().getTime())
-      const _timeLeft = calculateTimeLeft(timeLeft)
-      // setTimeLeft(_timeLeft)
+      const _timeLeft = calculateTimeLeft(startTimestamp)
+      setTimeLeft(_timeLeft)
       console.log('🚀 ~ file: index.tsx ~ line 125 ~ initialize ~ _timeLeft', _timeLeft)
       const total = 5 * 60
       const actual = total - _timeLeft
@@ -233,8 +245,11 @@ const LiveView = () => {
     // setUserBears([])
     // await utils.sleep(30 * 1000)
     setEpoch(epoch)
-    const timeLeft = calculateTimeLeft(new Date().getTime())
+
+    const _startTimestamp = new Date().getTime()
+    const timeLeft = calculateTimeLeft(_startTimestamp)
     setTimeLeft(timeLeft)
+    setStartTimestamp(_startTimestamp.toString())
   }
 
   const roundEndListenner = async (epoch) => {
@@ -299,9 +314,13 @@ const LiveView = () => {
       <Head>
         <title>Play live</title>
       </Head>
-      <Box sx={{ mt: 1 }}>
-        <LinearProgressWrapper variant="buffer" value={progressValue} valueBuffer={80} />
-      </Box>
+      {!isPaused ? (
+        <Box sx={{ mt: 1 }}>
+          <LinearProgressWrapper variant="buffer" value={progressValue} valueBuffer={80} />
+        </Box>
+      ) : (
+        <></>
+      )}
       <Box sx={{ mt: 3 }}>
         <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
           <Grid item lg={8} xs={12}>

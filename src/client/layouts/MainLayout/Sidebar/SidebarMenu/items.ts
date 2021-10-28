@@ -1,6 +1,6 @@
-import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
 import AnalyticsTwoToneIcon from '@mui/icons-material/AnalyticsTwoTone';
 import DashboardCustomizeTwoToneIcon from '@mui/icons-material/DashboardCustomizeTwoTone';
+import LiveTvIcon from '@mui/icons-material/LiveTv';
 import LocalLibraryTwoToneIcon from '@mui/icons-material/LocalLibraryTwoTone';
 import PeopleIcon from '@mui/icons-material/People';
 import SmartToyTwoToneIcon from '@mui/icons-material/SmartToyTwoTone';
@@ -37,7 +37,8 @@ const menuItems: MenuItems[] = [
       },
       {
         name: 'Live Analytics',
-        icon: AccountBalanceWalletTwoToneIcon,
+        // icon: AccountBalanceWalletTwoToneIcon,
+        icon: LiveTvIcon,
         link: '/app/live',
       },
       {

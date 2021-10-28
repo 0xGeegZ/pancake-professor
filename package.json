@@ -154,6 +154,7 @@
     "eslint": "^7.22.0",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-react-hooks": "^4.2.0",
     "ethers": "^5.0.31",
     "husky": ">=4",
     "jest": "^26.6.3",

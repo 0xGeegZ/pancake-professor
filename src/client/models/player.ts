@@ -5,6 +5,7 @@ export interface Player {
   winRate: string
   averageBNB: string
   netBNB: string
+  recentGames: number
   // [key: string]: any
   // bets {
   //   position: string

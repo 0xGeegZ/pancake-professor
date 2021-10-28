@@ -46,18 +46,39 @@ const checkIfPlaying = (player, lastGame) => {
   const wons = filtereds.filter((r) => r.isWon)
   const winRateRecents = (wons.length * 100) / filtereds.length || 0
   player.winRateRecents = winRateRecents
-  if (recentGames >= lastGame.length / 4 && lastFive > 1) return player
+  // if (recentGames >= lastGame.length / 4 && lastFive > 1)
+  return player
 }
 
-const loadPlayers = async ({ currentEpoch }) => {
+const loadPlayers = async ({ epoch, orderBy = 'winRate' }) => {
+  console.log('🚀 ~ file: loadPlayers.ts ~ line 53 ~ loadPlayers ~ orderBy', orderBy)
   try {
+    // if (orderBy === 'default') {
+    //   orderBy = 'winRate'
+    // }
+
+    const orderByFilter = orderBy === 'default' ? 'winRate' : orderBy
+    const LIMIT_HISTORY_LENGTH = 12 * 24
+
+    const first = orderBy === 'default' ? 500 : 100
+    console.log('🚀 ~ file: loadPlayers.ts ~ line 64 ~ loadPlayers ~ first', first)
+    const firstBets = orderBy === 'default' ? 300 : 1
+    console.log('🚀 ~ file: loadPlayers.ts ~ line 65 ~ loadPlayers ~ firstBets', firstBets)
     const query = gql`
-      query getUsers($totalBets: String!, $winRate: String!) {
+      # query getUsers($totalBets: String!, $winRate: String!, $order_by: tables_order_by!) {
+      query getUsers($totalBets: String!, $winRate: String!, $orderBy: String!, $first: Int!, $firstBets: Int!) {
         users(
-          first: 100
+          first: $first
+          # first: 500
           where: { totalBets_gt: $totalBets, winRate_gt: $winRate }
-          orderBy: winRate
-          orderDirection: desc
+          # sort: { field: winRate, order: asc }
+          # order_by: [$order_by]
+          # order_by: [{ winRate: desc }]
+          # sort: { order: [DESC], fields: [winRate] }
+          # orderBy: [{ winRate: desc }]
+          orderBy: $orderBy
+          # orderBy: winRate
+          orderDirection: desc # orderBy: winRate
         ) {
           id
           totalBNB
@@ -65,7 +86,8 @@ const loadPlayers = async ({ currentEpoch }) => {
           winRate
           averageBNB
           netBNB
-          bets(first: 1000, orderBy: createdAt, orderDirection: desc) {
+          # bets(first: 300, orderBy: createdAt, orderDirection: desc) {
+          bets(first: $firstBets, orderBy: createdAt, orderDirection: desc) {
             position
             round {
               epoch
@@ -76,30 +98,37 @@ const loadPlayers = async ({ currentEpoch }) => {
       }
     `
 
-    const lastFinishedEpoch = parseInt(currentEpoch) - 1
+    const lastFinishedEpoch = parseInt(epoch) - 1
 
     console.log(`Current betting epoch ${+lastFinishedEpoch}`)
     const variables = {
       totalBets: TOTAL_BETS.toString(),
       winRate: WIN_RATE.toString(),
+      orderBy: orderByFilter,
+      first,
+      firstBets,
+      // orderBy: orderBy.toString(),
+      // order_by: {
+      //   winRate: 'desc',
+      // },
     }
     let data = await graphQLClient.request(query, variables)
 
     const { users } = data
 
-    return users
+    if (orderBy !== 'default') return users
+
     console.log(`Loading ${+users.length} players with WIN_RATE ${WIN_RATE} and TOTAL_BETS ${TOTAL_BETS} ...`)
 
-    const LIMIT_HISTORY_LENGTH = 12 * 24
-
     const lastGame = [...utils.range(lastFinishedEpoch - LIMIT_HISTORY_LENGTH, lastFinishedEpoch)]
+
     let bestPlayers = users.map((p) => checkIfPlaying(p, lastGame))
+    console.log('🚀 ~ 1 ~ bestPlayers', bestPlayers.length)
 
     // let bestPlayers = users
 
     bestPlayers = bestPlayers.filter(Boolean)
-
-    bestPlayers = bestPlayers.filter((p) => +p.lastLooseCount === 0 && +p.lastWinCount < 4)
+    console.log('🚀 ~ 2 ~ bestPlayers', bestPlayers.length)
 
     if (bestPlayers.length <= 2) {
       if (WIN_RATE < 54) {
@@ -111,26 +140,13 @@ const loadPlayers = async ({ currentEpoch }) => {
           WIN_RATE--
         }
       }
-      return await loadPlayers({ currentEpoch })
+      return await loadPlayers({ epoch })
     } else {
       TOTAL_BETS = TOTAL_BETS_INITIAL
       WIN_RATE = WIN_RATE_INITIAL
     }
 
     bestPlayers = bestPlayers.sort((a, b) => {
-      if (
-        +a.winRate > +b.winRate &&
-        (a.recentGames >= b.recentGames + 1 ||
-          (a.recentGames >= 7 && b.recentGames >= 7 && a.recentGames >= b.recentGames + 2))
-      )
-        return -1
-      if (
-        +a.winRate < +b.winRate &&
-        (a.recentGames <= b.recentGames + 1 ||
-          (a.recentGames <= 7 && b.recentGames <= 7 && a.recentGames <= b.recentGames + 2))
-      )
-        return 1
-
       if (+a.winRate > +b.winRate && a.recentGames > b.recentGames) return -1
       if (+a.winRate < +b.winRate && a.recentGames < b.recentGames) return 1
 
@@ -149,10 +165,8 @@ const loadPlayers = async ({ currentEpoch }) => {
   } catch (error) {
     console.error('GraphQL query error')
     console.error(error)
-    return []
-    // await sleep(5 * 1000)
-    // console.error('Retrying...')
-    // await loadPlayers({ currentEpoch })
+    // return []
+    throw new Error(error)
   }
 }
 
