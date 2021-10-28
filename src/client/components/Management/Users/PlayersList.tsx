@@ -3,14 +3,20 @@ import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 import GamepadIcon from '@mui/icons-material/Gamepad'
 import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone'
 import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
+import SidebarPlayerDrawer from './SidebarPlayerDrawer'
+import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 import {
+  Drawer,
   Avatar,
   Box,
   Button,
   Card,
+  Alert,
+  Slide,
+  Dialog,
+  Collapse,
   CardHeader,
   CircularProgress,
-  Dialog,
   Divider,
   Grid,
   IconButton,
@@ -18,7 +24,6 @@ import {
   Link,
   Menu,
   MenuItem,
-  Slide,
   Table,
   TableBody,
   TableCell,
@@ -80,6 +85,16 @@ const AvatarPrimary = styled(Avatar)(
       color: ${theme.colors.primary.main};
       width: ${theme.spacing(5)};
       height: ${theme.spacing(5)};
+`
+)
+
+const AvatarWarning = styled(Avatar)(
+  ({ theme }) => `
+      background-color: ${theme.colors.warning.main};
+      color:  ${theme.palette.primary.contrastText};
+      width: ${theme.spacing(8)};
+      height: ${theme.spacing(8)};
+      box-shadow: ${theme.colors.shadows.warning};
 `
 )
 
@@ -308,6 +323,7 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
   const [filters, setFilters] = useState<Filters>({
     role: null,
   })
+
   const handleTabsChange = (_event: SyntheticEvent, tabsValue: unknown) => {
     let value = null
 
@@ -393,6 +409,24 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
       },
       TransitionComponent: Zoom,
     })
+  }
+
+  const [mobileOpen, setMobileOpen] = useState(false)
+
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen)
+  }
+
+  const [openAlert, setOpenAlert] = useState(true)
+
+  const [openDialog, setOpenDialog] = useState(false)
+
+  const handleOpenDialog = () => {
+    setOpenDialog(true)
+  }
+
+  const handleCloseDialog = () => {
+    setOpenDialog(false)
   }
 
   return (
@@ -980,12 +1014,18 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
                             <Grid container spacing={3}>
                               <Grid item md={6}>
                                 {/* <Button size="small" fullWidth variant="contained"> */}
-                                <Button size="small" fullWidth variant="outlined">
+                                <Button size="small" fullWidth variant="contained" onClick={handleOpenDialog}>
                                   <b> {t('Copy')}</b>
                                 </Button>
                               </Grid>
                               <Grid item md={6}>
-                                <Button disabled={true} size="small" fullWidth variant="outlined">
+                                <Button
+                                  size="small"
+                                  disabled={true}
+                                  fullWidth
+                                  variant="outlined"
+                                  color="secondary"
+                                  onClick={handleDrawerToggle}>
                                   {t('View details')}
                                 </Button>
                               </Grid>
@@ -1071,6 +1111,57 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
           </Box>
         </Box>
       </DialogWrapper>
+      <DialogWrapper
+        open={openDialog}
+        maxWidth="sm"
+        fullWidth
+        TransitionComponent={Transition}
+        keepMounted
+        onClose={handleCloseDialog}>
+        <Box sx={{ px: 4, pb: 4, pt: 4 }}>
+          <Collapse in={openAlert}>
+            <Alert
+              action={
+                <IconButton
+                  aria-label="close"
+                  color="inherit"
+                  size="small"
+                  onClick={() => {
+                    setOpenAlert(false)
+                  }}>
+                  <CloseIcon fontSize="inherit" />
+                </IconButton>
+              }
+              severity="warning">
+              {t('This product is in beta, use it at your own risk.')}
+            </Alert>
+          </Collapse>
+
+          <Typography align="center" sx={{ py: 4, pt: 5, pb: 5, pl: 10, pr: 10 }} variant="h3">
+            {t('Are you sur to copy this player ? ')}
+          </Typography>
+          <Typography align="center" sx={{ py: 4, pt: 0, pb: 0, pr: 5, pl: 5 }} variant="body1">
+            {t('We are listenning the adress directly from mempool to be as precise as possible.')}
+          </Typography>
+          <Typography align="center" sx={{ py: 4, pt: 0, pb: 5, pr: 5, pl: 5 }} variant="body1">
+            {t(
+              'Most of the time, you will play on the same block, but sometime, it could play on the next block and could be beatted for you but works for player.'
+            )}
+          </Typography>
+
+          <Button fullWidth size="large" variant="contained" onClick={handleCloseDialog}>
+            {t('Copy player')}
+          </Button>
+        </Box>
+      </DialogWrapper>
+      <Drawer
+        variant="temporary"
+        anchor={theme.direction === 'rtl' ? 'left' : 'right'}
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        elevation={9}>
+        {mobileOpen && <SidebarPlayerDrawer />}
+      </Drawer>
     </>
   )
 }

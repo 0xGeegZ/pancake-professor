@@ -1,18 +1,18 @@
-import { Box } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { ethers } from 'ethers';
-import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
-import PropTypes from 'prop-types';
-import { FC, ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Erc20__factory } from 'src/client/contracts/types';
-import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated';
-import useRefMounted from 'src/client/hooks/useRefMounted';
-import menuItems from 'src/client/layouts/MainLayout/Sidebar/SidebarMenu/items';
+import { Box } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { ethers } from 'ethers'
+import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
+import PropTypes from 'prop-types'
+import { FC, ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { Erc20__factory } from 'src/client/contracts/types'
+import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
+import useRefMounted from 'src/client/hooks/useRefMounted'
+import menuItems from 'src/client/layouts/MainLayout/Sidebar/SidebarMenu/items'
 
-import Header from './Header';
-import Sidebar from './Sidebar';
+import Header from './Header'
+import Sidebar from './Sidebar'
 
 // import ThemeSettings from 'src/client/components/ThemeSettings';
 
@@ -48,7 +48,7 @@ const MainContent = styled(Box)(
 const BoxedSidebarLayout: FC<BoxedSidebarLayoutProps> = ({ children }) => {
   const { t }: { t: any } = useTranslation()
 
-  const isMountedRef = useRefMounted()
+  // const isMountedRef = useRefMounted()
 
   const [{ data, fetching, error }] = useGetCurrentUserQuery()
 

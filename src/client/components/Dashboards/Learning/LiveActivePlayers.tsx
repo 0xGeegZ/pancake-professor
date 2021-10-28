@@ -1,5 +1,5 @@
-import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone';
-import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone';
+import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone'
+import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone'
 import {
   Box,
   Button,
@@ -15,11 +15,11 @@ import {
   TableHead,
   TableRow,
   Typography,
-} from '@mui/material';
-import { useRef, useState } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars-2';
-import { useTranslation } from 'react-i18next';
-import Text from 'src/client/components/Text';
+} from '@mui/material'
+import { useRef, useState } from 'react'
+import { Scrollbars } from 'react-custom-scrollbars-2'
+import { useTranslation } from 'react-i18next'
+import Text from 'src/client/components/Text'
 
 // const AvatarLight = styled(Avatar)(
 //   ({ theme }) => `
@@ -150,7 +150,7 @@ function LiveActivePlayers({ userBulls, userBears }) {
             </TableCell>
           </TableRow> */}
             {[].concat(userBulls, userBears).length === 0 ? (
-              <Grid sx={{ py: 8 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
+              <Grid sx={{ py: 11 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
                 <Grid item>
                   <CircularProgress color="secondary" size="1rem" />
                 </Grid>

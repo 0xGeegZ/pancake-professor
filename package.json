@@ -107,6 +107,7 @@
     "redux-devtools-extension": "2.13.9",
     "redux-form": "8.3.7",
     "redux-thunk": "2.3.0",
+    "simplebar-react": "^2.3.6",
     "slug": "^4.0.3",
     "stripe": "^8.149.0",
     "styled-components": "^5.3.1",

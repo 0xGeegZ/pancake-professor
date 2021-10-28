@@ -1,11 +1,12 @@
-import { Box, Drawer, Hidden } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useContext } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars-2';
-import Logo from 'src/client/components/Logo';
-import { SidebarContext } from 'src/client/contexts/SidebarContext';
+import { Box, Drawer, Hidden } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useContext } from 'react'
+import { Scrollbars } from 'react-custom-scrollbars-2'
 
-import SidebarMenu from './SidebarMenu';
+import Logo from 'src/client/components/Logo'
+import { SidebarContext } from 'src/client/contexts/SidebarContext'
+
+import SidebarMenu from './SidebarMenu'
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `

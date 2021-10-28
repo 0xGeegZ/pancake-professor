@@ -1,11 +1,11 @@
-import { alpha, Box, CircularProgress, darken, Grid, lighten, List, ListSubheader } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { alpha, Box, CircularProgress, darken, Grid, lighten, List, ListSubheader } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useRouter } from 'next/router'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import SidebarMenuItem from './item';
-import menuItems, { MenuItem } from './items';
+import SidebarMenuItem from './item'
+import menuItems, { MenuItem } from './items'
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -211,6 +211,7 @@ const reduceChildRoutes = ({
   return ev
 }
 
+// function SidebarMenu({ fetching, error, allMenuItems }) {
 function SidebarMenu({ fetching, error, allMenuItems }) {
   const router = useRouter()
   const { t }: { t: any } = useTranslation()
