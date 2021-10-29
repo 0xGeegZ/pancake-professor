@@ -8,7 +8,7 @@ Welcome to Pancake Professor! 👋
 
 You'll need certain environment variables to run Pancake Professor's functionality in local development. The first step is to:
 
-- Sign up for [Stripe](https://stripe.com), used for payments
+- OPTIONNAL : Sign up for [Stripe](https://stripe.com), used for payments
 - Sign up for [Postmark](https://postmarkapp.com), used for sending emails
 
 Then, copy `.env.example` to `.env` and fill out the `.env` file with your environment variables!
