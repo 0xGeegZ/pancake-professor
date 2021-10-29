@@ -9,21 +9,21 @@ import {
   ListItem,
   IconButton,
   Avatar,
-  Grid
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import HealthStatusChart from './HealthStatusChart';
-import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone';
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
-import Text from 'src/client/components/Text';
+  Grid,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone'
+import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import Text from 'src/client/components/Text'
+import HealthStatusChart from './HealthStatusChart'
 
 const HealthStatusChartWrapper = styled(HealthStatusChart)(
   () => `
     width: 130px;
 `
-);
+)
 
 const BoxChartWrapperText = styled(Box)(
   ({ theme }) => `
@@ -45,7 +45,7 @@ const BoxChartWrapperText = styled(Box)(
       justify-content: center;
     }
 `
-);
+)
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -55,7 +55,7 @@ const AvatarSuccess = styled(Avatar)(
       height: ${theme.spacing(4)};
       margin-right: ${theme.spacing(1)};
 `
-);
+)
 
 const AvatarError = styled(Avatar)(
   ({ theme }) => `
@@ -65,7 +65,7 @@ const AvatarError = styled(Avatar)(
       height: ${theme.spacing(4)};
       margin-right: ${theme.spacing(1)};
 `
-);
+)
 
 const IconButtonWrapper = styled(IconButton)(
   ({ theme }) => `
@@ -77,28 +77,25 @@ const IconButtonWrapper = styled(IconButton)(
       color: ${theme.colors.alpha.black[100]};
     }
 `
-);
+)
 
 function HealthStatus() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const data = {
     value: {
       datasets: [
         {
-          data: [82, 18]
-        }
+          data: [82, 18],
+        },
       ],
-      labels: ['', '']
-    }
-  };
+      labels: ['', ''],
+    },
+  }
 
   return (
     <Card sx={{ height: '100%' }}>
-      <CardHeader
-        action={<Button>{t('Check status')}</Button>}
-        title={t('Health Status')}
-      />
+      <CardHeader action={<Button>{t('Check status')}</Button>} title={t('Health Status')} />
       <Box sx={{ p: 4 }}>
         <Grid container alignItems="center">
           <Grid item xs={12} sm={4}>
@@ -112,25 +109,12 @@ function HealthStatus() {
             </BoxChartWrapperText>
           </Grid>
           <Grid item xs={12} sm={8}>
-            <Box
-              display="flex"
-              alignItems="flex-start"
-              flexGrow={1}
-              flexDirection="column"
-            >
+            <Box display="flex" alignItems="flex-start" flexGrow={1} flexDirection="column">
               <Box sx={{ pb: 2 }}>
-                <Typography
-                  color="text.primary"
-                  variant="h1"
-                  sx={{ pr: 0.5, display: 'inline-flex' }}
-                >
+                <Typography color="text.primary" variant="h1" sx={{ pr: 0.5, display: 'inline-flex' }}>
                   82
                 </Typography>
-                <Typography
-                  color="text.secondary"
-                  variant="h3"
-                  sx={{ pr: 2, display: 'inline-flex' }}
-                >
+                <Typography color="text.secondary" variant="h3" sx={{ pr: 2, display: 'inline-flex' }}>
                   /100
                 </Typography>
               </Box>
@@ -150,10 +134,7 @@ function HealthStatus() {
                   </Box>
                 </ListItem>
                 <ListItem disableGutters sx={{ pb: 0 }}>
-                  <ListItemText
-                    primary={t('Storage capacity')}
-                    primaryTypographyProps={{ variant: 'subtitle2' }}
-                  />
+                  <ListItemText primary={t('Storage capacity')} primaryTypographyProps={{ variant: 'subtitle2' }} />
                   <Box display="flex" alignItems="center">
                     <Text color="success">
                       <b>{t('Ok')}</b>
@@ -164,10 +145,7 @@ function HealthStatus() {
                   </Box>
                 </ListItem>
                 <ListItem disableGutters sx={{ pb: 0 }}>
-                  <ListItemText
-                    primary={t('Performance test')}
-                    primaryTypographyProps={{ variant: 'subtitle2' }}
-                  />
+                  <ListItemText primary={t('Performance test')} primaryTypographyProps={{ variant: 'subtitle2' }} />
                   <Box display="flex" alignItems="center">
                     <Text color="error">
                       <b>{t('Failed')}</b>
@@ -183,7 +161,7 @@ function HealthStatus() {
         </Grid>
       </Box>
     </Card>
-  );
+  )
 }
 
-export default HealthStatus;
+export default HealthStatus

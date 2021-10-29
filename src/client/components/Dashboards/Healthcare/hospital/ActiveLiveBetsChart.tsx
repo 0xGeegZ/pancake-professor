@@ -1,7 +1,7 @@
-import { useTheme } from '@mui/material';
-import PropTypes from 'prop-types';
-import { FC, useEffect, useState } from 'react';
-import { Line } from 'react-chartjs-2';
+import { useTheme } from '@mui/material'
+import PropTypes from 'prop-types'
+import { FC, useEffect, useState } from 'react'
+import { Line } from 'react-chartjs-2'
 
 interface ActiveLiveBetsChartProps {
   className?: string

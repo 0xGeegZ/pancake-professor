@@ -1,15 +1,15 @@
-import { FC, ReactNode } from 'react';
-import { styled } from '@mui/material/styles';
-import { Box } from '@mui/material';
-import PropTypes from 'prop-types';
+import { FC, ReactNode } from 'react'
+import { styled } from '@mui/material/styles'
+import { Box } from '@mui/material'
+import PropTypes from 'prop-types'
 
-import ThemeSettings from 'src/client/components/ThemeSettings';
+import ThemeSettings from 'src/client/components/ThemeSettings'
 
-import Sidebar from './Sidebar';
-import Header from './Header';
+import Sidebar from './Sidebar'
+import Header from './Header'
 
 interface AccentSidebarLayoutProps {
-  children?: ReactNode;
+  children?: ReactNode
 }
 
 const MainWrapper = styled(Box)(
@@ -22,7 +22,7 @@ const MainWrapper = styled(Box)(
             padding-left: ${theme.sidebar.width};
         }
 `
-);
+)
 
 const MainContent = styled(Box)(
   ({ theme }) => `
@@ -31,25 +31,23 @@ const MainContent = styled(Box)(
     overflow-y: auto;
     overflow-x: hidden;
 `
-);
+)
 
-const AccentSidebarLayout: FC<AccentSidebarLayoutProps> = ({ children }) => {
-  return (
-    <>
-      <Sidebar />
-      <MainWrapper>
-        <Header />
-        <MainContent>
-          {children}
-          <ThemeSettings />
-        </MainContent>
-      </MainWrapper>
-    </>
-  );
-};
+const AccentSidebarLayout: FC<AccentSidebarLayoutProps> = ({ children }) => (
+  <>
+    <Sidebar />
+    <MainWrapper>
+      <Header />
+      <MainContent>
+        {children}
+        <ThemeSettings />
+      </MainContent>
+    </MainWrapper>
+  </>
+)
 
 AccentSidebarLayout.propTypes = {
-  children: PropTypes.node
-};
+  children: PropTypes.node,
+}
 
-export default AccentSidebarLayout;
+export default AccentSidebarLayout

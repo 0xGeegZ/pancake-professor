@@ -1,9 +1,9 @@
-import TrendingUp from '@mui/icons-material/TrendingUp';
-import { Avatar, Box, Button, Card, Grid, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+import TrendingUp from '@mui/icons-material/TrendingUp'
+import { Avatar, Box, Button, Card, Grid, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
-import AccountBalanceChart from './AccountBalanceChart';
+import AccountBalanceChart from './AccountBalanceChart'
 
 const AccountBalanceChartWrapper = styled(AccountBalanceChart)(
   () => `

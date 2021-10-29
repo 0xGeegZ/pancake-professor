@@ -1,20 +1,16 @@
-import { FC } from 'react';
-import PropTypes from 'prop-types';
-import { Line } from 'react-chartjs-2';
-import { useTheme } from '@mui/material';
+import { FC } from 'react'
+import PropTypes from 'prop-types'
+import { Line } from 'react-chartjs-2'
+import { useTheme } from '@mui/material'
 
 interface InvestmentsChartProps {
-  className?: string;
-  data: any;
-  labels: string[];
+  className?: string
+  data: any
+  labels: string[]
 }
 
-const InvestmentsChart: FC<InvestmentsChartProps> = ({
-  data: dataProp,
-  labels,
-  ...rest
-}) => {
-  const theme = useTheme();
+const InvestmentsChart: FC<InvestmentsChartProps> = ({ data: dataProp, labels, ...rest }) => {
+  const theme = useTheme()
 
   const data = {
     datasets: [
@@ -32,7 +28,7 @@ const InvestmentsChart: FC<InvestmentsChartProps> = ({
         pointHoverColor: theme.palette.warning.main,
         pointHoverBorderWidth: 4,
         pointBackgroundColor: theme.palette.warning.main,
-        lineTension: 0.1
+        lineTension: 0.1,
       },
       {
         label: 'Current Period',
@@ -48,45 +44,45 @@ const InvestmentsChart: FC<InvestmentsChartProps> = ({
         pointHoverColor: theme.palette.info.main,
         pointHoverBorderWidth: 4,
         pointBackgroundColor: theme.palette.info.main,
-        lineTension: 0.1
-      }
+        lineTension: 0.1,
+      },
     ],
-    labels
-  };
+    labels,
+  }
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     animation: false,
     legend: {
-      display: false
+      display: false,
     },
     layout: {
-      padding: 0
+      padding: 0,
     },
     scales: {
       xAxes: [
         {
           gridLines: {
             display: false,
-            drawBorder: false
+            drawBorder: false,
           },
           ticks: {
-            display: false
-          }
-        }
+            display: false,
+          },
+        },
       ],
       yAxes: [
         {
           gridLines: {
             display: false,
-            drawBorder: false
+            drawBorder: false,
           },
           ticks: {
-            display: false
-          }
-        }
-      ]
+            display: false,
+          },
+        },
+      ],
     },
     tooltips: {
       enabled: true,
@@ -103,24 +99,24 @@ const InvestmentsChart: FC<InvestmentsChartProps> = ({
       backgroundColor: theme.palette.common.black,
       titleFontColor: theme.palette.common.white,
       bodyFontColor: theme.palette.common.white,
-      footerFontColor: theme.palette.common.white
+      footerFontColor: theme.palette.common.white,
     },
     hover: {
       mode: 'nearest',
-      intersect: true
-    }
-  };
+      intersect: true,
+    },
+  }
 
   return (
     <div {...rest}>
       <Line data={data} options={options} />
     </div>
-  );
-};
+  )
+}
 
 InvestmentsChart.propTypes = {
   data: PropTypes.object.isRequired,
-  labels: PropTypes.array.isRequired
-};
+  labels: PropTypes.array.isRequired,
+}
 
-export default InvestmentsChart;
+export default InvestmentsChart

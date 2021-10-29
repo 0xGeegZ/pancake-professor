@@ -1,32 +1,32 @@
-import 'nprogress/nprogress.css';
-import 'src/client/mocks';
-import 'src/client/utils/chart';
+import 'nprogress/nprogress.css'
+import 'src/client/mocks'
+import 'src/client/utils/chart'
 
-import { CacheProvider, EmotionCache } from '@emotion/react';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import { Button } from '@mui/material';
-import CssBaseline from '@mui/material/CssBaseline';
-import { appWithTranslation } from 'next-i18next';
-import { PageTransition } from 'next-page-transitions';
-import Head from 'next/head';
-import Router from 'next/router';
-import { SnackbarProvider } from 'notistack';
-import nProgress from 'nprogress';
-import { ChangeEvent, useRef, useState } from 'react';
-import { Provider as ReduxProvider } from 'react-redux';
-import { SidebarProvider } from 'src/client/contexts/SidebarContext';
-import createEmotionCache from 'src/client/createEmotionCache';
-import useScrollTop from 'src/client/hooks/useScrollTop';
-import store from 'src/client/store';
-import ThemeProvider from 'src/client/theme/ThemeProvider';
-import { Provider as GraphQLProvider } from 'urql';
-
-import { client } from '../client/graphql/client';
+import { CacheProvider, EmotionCache } from '@emotion/react'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import { Button } from '@mui/material'
+import CssBaseline from '@mui/material/CssBaseline'
+import { appWithTranslation } from 'next-i18next'
+import { PageTransition } from 'next-page-transitions'
+import Head from 'next/head'
+import Router from 'next/router'
+import { SnackbarProvider } from 'notistack'
+import nProgress from 'nprogress'
+import { ChangeEvent, useRef, useState } from 'react'
+import { Provider as ReduxProvider } from 'react-redux'
+import { SidebarProvider } from 'src/client/contexts/SidebarContext'
+import createEmotionCache from 'src/client/createEmotionCache'
+import useScrollTop from 'src/client/hooks/useScrollTop'
+import store from 'src/client/store'
+import ThemeProvider from 'src/client/theme/ThemeProvider'
+import { Provider as GraphQLProvider } from 'urql'
 
 import type { ReactElement, ReactNode } from 'react'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
+import { client } from '../client/graphql/client'
+
 const clientSideEmotionCache = createEmotionCache()
 
 type NextPageWithLayout = NextPage & {

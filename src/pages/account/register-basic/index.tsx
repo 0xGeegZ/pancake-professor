@@ -1,17 +1,11 @@
-import {
-  Box,
-  Card,
-  Link,
-  Typography,
-  Container,
-} from '@mui/material';
-import Head from 'next/head';
-import type { ReactElement } from 'react';
-import BaseLayout from "src/client/layouts/BaseLayout";
-import RegisterForm from 'src/client/components/Account/RegisterForm';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import Logo from 'src/client/components/LogoSign';
+import { Box, Card, Link, Typography, Container } from '@mui/material'
+import Head from 'next/head'
+import type { ReactElement } from 'react'
+import BaseLayout from 'src/client/layouts/BaseLayout'
+import RegisterForm from 'src/client/components/Account/RegisterForm'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import Logo from 'src/client/components/LogoSign'
 
 const MainContent = styled(Box)(
   () => `
@@ -20,7 +14,7 @@ const MainContent = styled(Box)(
     flex: 1;
     flex-direction: column;
 `
-);
+)
 
 const TopWrapper = styled(Box)(
   ({ theme }) => `
@@ -31,11 +25,10 @@ const TopWrapper = styled(Box)(
   justify-content: center;
   padding: ${theme.spacing(6)};
 `
-);
+)
 
 function RegisterBasic() {
-
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <>
@@ -51,23 +44,13 @@ function RegisterBasic() {
                 <Typography variant="h2" sx={{ mb: 1 }}>
                   {t('Create account')}
                 </Typography>
-                <Typography
-                  variant="h4"
-                  color="text.secondary"
-                  fontWeight="normal"
-                  sx={{ mb: 3 }}
-                >
+                <Typography variant="h4" color="text.secondary" fontWeight="normal" sx={{ mb: 3 }}>
                   {t('Fill in the fields below to sign up for an account.')}
                 </Typography>
               </Box>
               <RegisterForm />
               <Box mt={4}>
-                <Typography
-                  component="span"
-                  variant="subtitle2"
-                  color="text.primary"
-                  fontWeight="bold"
-                >
+                <Typography component="span" variant="subtitle2" color="text.primary" fontWeight="bold">
                   {t('Already have an account?')}
                 </Typography>{' '}
                 <Link underline="hover" href="/account/login-basic">
@@ -79,15 +62,11 @@ function RegisterBasic() {
         </TopWrapper>
       </MainContent>
     </>
-  );
+  )
 }
 
-export default RegisterBasic;
+export default RegisterBasic
 
 RegisterBasic.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <BaseLayout>
-      {page}
-    </BaseLayout>
-  )
+  return <BaseLayout>{page}</BaseLayout>
 }

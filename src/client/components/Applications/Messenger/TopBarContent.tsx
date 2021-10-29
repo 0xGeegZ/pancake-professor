@@ -1,4 +1,4 @@
-import { useState, SyntheticEvent } from 'react';
+import { useState, SyntheticEvent } from 'react'
 import {
   Box,
   IconButton,
@@ -13,23 +13,23 @@ import {
   List,
   ListItem,
   ListItemText,
-  ListItemIcon
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled, useTheme } from '@mui/material/styles';
-import { formatDistance, subMinutes } from 'date-fns';
-import CallTwoToneIcon from '@mui/icons-material/CallTwoTone';
-import VideoCameraFrontTwoToneIcon from '@mui/icons-material/VideoCameraFrontTwoTone';
-import InfoTwoToneIcon from '@mui/icons-material/InfoTwoTone';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import ColorLensTwoToneIcon from '@mui/icons-material/ColorLensTwoTone';
-import NotificationsOffTwoToneIcon from '@mui/icons-material/NotificationsOffTwoTone';
-import EmojiEmotionsTwoToneIcon from '@mui/icons-material/EmojiEmotionsTwoTone';
-import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone';
-import BlockTwoToneIcon from '@mui/icons-material/BlockTwoTone';
-import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone';
-import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
+  ListItemIcon,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled, useTheme } from '@mui/material/styles'
+import { formatDistance, subMinutes } from 'date-fns'
+import CallTwoToneIcon from '@mui/icons-material/CallTwoTone'
+import VideoCameraFrontTwoToneIcon from '@mui/icons-material/VideoCameraFrontTwoTone'
+import InfoTwoToneIcon from '@mui/icons-material/InfoTwoTone'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+import ColorLensTwoToneIcon from '@mui/icons-material/ColorLensTwoTone'
+import NotificationsOffTwoToneIcon from '@mui/icons-material/NotificationsOffTwoTone'
+import EmojiEmotionsTwoToneIcon from '@mui/icons-material/EmojiEmotionsTwoTone'
+import CancelTwoToneIcon from '@mui/icons-material/CancelTwoTone'
+import BlockTwoToneIcon from '@mui/icons-material/BlockTwoTone'
+import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone'
+import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone'
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
@@ -39,14 +39,14 @@ const RootWrapper = styled(Box)(
           justify-content: space-between;
       }
 `
-);
+)
 
 const ListItemIconWrapper = styled(ListItemIcon)(
   ({ theme }) => `
         min-width: 36px;
         color: ${theme.colors.primary.light};
 `
-);
+)
 
 const AccordionSummaryWrapper = styled(AccordionSummary)(
   ({ theme }) => `
@@ -80,26 +80,23 @@ const AccordionSummaryWrapper = styled(AccordionSummary)(
           }
         }
 `
-);
+)
 
 function TopBarContent() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+    setMobileOpen(!mobileOpen)
+  }
 
-  const [expanded, setExpanded] = useState<string | false>('section1');
+  const [expanded, setExpanded] = useState<string | false>('section1')
 
-  const handleChange = (section: string) => (
-    _event: SyntheticEvent,
-    isExpanded: boolean
-  ) => {
-    setExpanded(isExpanded ? section : false);
-  };
+  const handleChange = (section: string) => (_event: SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? section : false)
+  }
 
   return (
     <>
@@ -117,16 +114,15 @@ function TopBarContent() {
             </Typography>
             <Typography variant="subtitle2">
               {formatDistance(subMinutes(new Date(), 8), new Date(), {
-                addSuffix: true
+                addSuffix: true,
               })}
             </Typography>
           </Box>
         </Box>
         <Box
           sx={{
-            mt: { xs: 3, md: 0 }
-          }}
-        >
+            mt: { xs: 3, md: 0 },
+          }}>
           <Tooltip placement="bottom" title={t('Start a voice call')}>
             <IconButton color="primary">
               <CallTwoToneIcon />
@@ -149,8 +145,7 @@ function TopBarContent() {
         anchor={theme.direction === 'rtl' ? 'left' : 'right'}
         open={mobileOpen}
         onClose={handleDrawerToggle}
-        elevation={9}
-      >
+        elevation={9}>
         <Box sx={{ minWidth: 360 }} p={2}>
           <Box sx={{ textAlign: 'center' }}>
             <Avatar
@@ -158,7 +153,7 @@ function TopBarContent() {
                 mx: 'auto',
                 my: 2,
                 width: theme.spacing(12),
-                height: theme.spacing(12)
+                height: theme.spacing(12),
               }}
               variant="rounded"
               alt="Zain Baptista"
@@ -168,16 +163,13 @@ function TopBarContent() {
             <Typography variant="subtitle2">
               {t('Active')}{' '}
               {formatDistance(subMinutes(new Date(), 7), new Date(), {
-                addSuffix: true
+                addSuffix: true,
               })}
             </Typography>
           </Box>
           <Divider sx={{ my: 3 }} />
 
-          <Accordion
-            expanded={expanded === 'section1'}
-            onChange={handleChange('section1')}
-          >
+          <Accordion expanded={expanded === 'section1'} onChange={handleChange('section1')}>
             <AccordionSummaryWrapper expandIcon={<ExpandMoreIcon />}>
               <Typography variant="h5">{t('Customize Chat')}</Typography>
             </AccordionSummaryWrapper>
@@ -187,36 +179,24 @@ function TopBarContent() {
                   <ListItemIconWrapper>
                     <SearchTwoToneIcon />
                   </ListItemIconWrapper>
-                  <ListItemText
-                    primary={t('Search in Conversation')}
-                    primaryTypographyProps={{ variant: 'h5' }}
-                  />
+                  <ListItemText primary={t('Search in Conversation')} primaryTypographyProps={{ variant: 'h5' }} />
                 </ListItem>
                 <ListItem button>
                   <ListItemIconWrapper>
                     <ColorLensTwoToneIcon />
                   </ListItemIconWrapper>
-                  <ListItemText
-                    primary={t('Change Theme Styling')}
-                    primaryTypographyProps={{ variant: 'h5' }}
-                  />
+                  <ListItemText primary={t('Change Theme Styling')} primaryTypographyProps={{ variant: 'h5' }} />
                 </ListItem>
                 <ListItem button>
                   <ListItemIconWrapper>
                     <EmojiEmotionsTwoToneIcon />
                   </ListItemIconWrapper>
-                  <ListItemText
-                    primary={t('Choose Default Emoji')}
-                    primaryTypographyProps={{ variant: 'h5' }}
-                  />
+                  <ListItemText primary={t('Choose Default Emoji')} primaryTypographyProps={{ variant: 'h5' }} />
                 </ListItem>
               </List>
             </AccordionDetails>
           </Accordion>
-          <Accordion
-            expanded={expanded === 'section2'}
-            onChange={handleChange('section2')}
-          >
+          <Accordion expanded={expanded === 'section2'} onChange={handleChange('section2')}>
             <AccordionSummaryWrapper expandIcon={<ExpandMoreIcon />}>
               <Typography variant="h5">{t('Privacy & Support')}</Typography>
             </AccordionSummaryWrapper>
@@ -226,28 +206,19 @@ function TopBarContent() {
                   <ListItemIconWrapper>
                     <NotificationsOffTwoToneIcon />
                   </ListItemIconWrapper>
-                  <ListItemText
-                    primary={t('Turn off notifications')}
-                    primaryTypographyProps={{ variant: 'h5' }}
-                  />
+                  <ListItemText primary={t('Turn off notifications')} primaryTypographyProps={{ variant: 'h5' }} />
                 </ListItem>
                 <ListItem button>
                   <ListItemIconWrapper>
                     <CancelTwoToneIcon />
                   </ListItemIconWrapper>
-                  <ListItemText
-                    primary={t('Ignore all messages')}
-                    primaryTypographyProps={{ variant: 'h5' }}
-                  />
+                  <ListItemText primary={t('Ignore all messages')} primaryTypographyProps={{ variant: 'h5' }} />
                 </ListItem>
                 <ListItem button>
                   <ListItemIconWrapper>
                     <BlockTwoToneIcon />
                   </ListItemIconWrapper>
-                  <ListItemText
-                    primary={t('Block user')}
-                    primaryTypographyProps={{ variant: 'h5' }}
-                  />
+                  <ListItemText primary={t('Block user')} primaryTypographyProps={{ variant: 'h5' }} />
                 </ListItem>
                 <ListItem button>
                   <ListItemIconWrapper>
@@ -256,19 +227,14 @@ function TopBarContent() {
                   <ListItemText
                     primary={t("Something's Wrong")}
                     primaryTypographyProps={{ variant: 'h5' }}
-                    secondary={t(
-                      'Report the conversation and provide feedback'
-                    )}
+                    secondary={t('Report the conversation and provide feedback')}
                     secondaryTypographyProps={{ variant: 'subtitle1' }}
                   />
                 </ListItem>
               </List>
             </AccordionDetails>
           </Accordion>
-          <Accordion
-            expanded={expanded === 'section3'}
-            onChange={handleChange('section3')}
-          >
+          <Accordion expanded={expanded === 'section3'} onChange={handleChange('section3')}>
             <AccordionSummaryWrapper expandIcon={<ExpandMoreIcon />}>
               <Typography variant="h5">{t('Shared Files')}</Typography>
             </AccordionSummaryWrapper>
@@ -313,7 +279,7 @@ function TopBarContent() {
         </Box>
       </Drawer>
     </>
-  );
+  )
 }
 
-export default TopBarContent;
+export default TopBarContent

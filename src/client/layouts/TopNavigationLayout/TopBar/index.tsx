@@ -1,21 +1,21 @@
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
-import { alpha, Box, Card, Container, darken, Divider, Hidden, IconButton, Tooltip } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useContext } from 'react';
-import { SidebarContext } from 'src/client/contexts/SidebarContext';
+import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import { alpha, Box, Card, Container, darken, Divider, Hidden, IconButton, Tooltip } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useContext } from 'react'
+import { SidebarContext } from 'src/client/contexts/SidebarContext'
 
-import LanguageSwitcher from './LanguageSwitcher';
-import Logo from './Logo';
-import NavigationMenu from './NavigationMenu';
-import Notifications from './Notifications';
-import Search from './Search';
-import Userbox from './Userbox';
+import LanguageSwitcher from './LanguageSwitcher'
+import Logo from './Logo'
+import NavigationMenu from './NavigationMenu'
+import Notifications from './Notifications'
+import Search from './Search'
+import Userbox from './Userbox'
 
 const TopBarWrapper = styled(Card)(
   ({ theme }) => `
     color: ${theme.header.textColor};
-    background: ${alpha(darken(theme.colors.primary.dark, .2), .95)};
+    background: ${alpha(darken(theme.colors.primary.dark, 0.2), 0.95)};
     backdrop-filter: blur(5px);
     margin: ${theme.spacing(0, 0, 4)};
     padding: ${theme.spacing(4, 0, 44)};
@@ -31,7 +31,7 @@ const TopBarWrapper = styled(Card)(
     border-bottom-left-radius: 40px;
     position: relative;
 `
-);
+)
 
 const TopBarImage = styled(Box)(
   () => `
@@ -43,7 +43,7 @@ const TopBarImage = styled(Box)(
     height: 100%;
     opacity: .7;
 `
-);
+)
 
 const TopBarBg = styled(Box)(
   ({ theme }) => `
@@ -56,14 +56,13 @@ const TopBarBg = styled(Box)(
     opacity: .3;
     z-index: 5;
 `
-);
+)
 
 const DividerWrapper = styled(Divider)(
   ({ theme }) => `
     background: ${theme.colors.alpha.white[10]};
 `
-);
-
+)
 
 const IconButtonPrimary = styled(IconButton)(
   ({ theme }) => `
@@ -87,17 +86,17 @@ const IconButtonPrimary = styled(IconButton)(
 
     &.Mui-active,
     &:hover {
-      background-color: ${alpha(theme.colors.alpha.white[30], .2)};
+      background-color: ${alpha(theme.colors.alpha.white[30], 0.2)};
 
       .MuiSvgIcon-root {
         color: ${theme.colors.alpha.trueWhite[100]};
       }
     }
 `
-);
+)
 
 function TopBar() {
-  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
+  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext)
 
   return (
     <TopBarWrapper>
@@ -137,7 +136,7 @@ function TopBar() {
         </Hidden>
       </Container>
     </TopBarWrapper>
-  );
+  )
 }
 
-export default TopBar;
+export default TopBar

@@ -1,48 +1,37 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from 'react'
 
-import Link from 'src/client/components/Link';
-import { useRouter } from 'next/router';
+import Link from 'src/client/components/Link'
+import { useRouter } from 'next/router'
 
-import {
-  Avatar,
-  Box,
-  Button,
-  Divider,
-  Hidden,
-  List,
-  ListItem,
-  ListItemText,
-  Popover,
-  Typography
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
-import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
-import { useSnackbar } from 'notistack';
+import { Avatar, Box, Button, Divider, Hidden, List, ListItem, ListItemText, Popover, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone'
+import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone'
+import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone'
+import { useSnackbar } from 'notistack'
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
-    padding: ${theme.spacing(0, .5)};
+    padding: ${theme.spacing(0, 0.5)};
     height: ${theme.spacing(6)};
 `
-);
+)
 
 const MenuUserBox = styled(Box)(
   ({ theme }) => `
         background: ${theme.colors.alpha.black[5]};
         padding: ${theme.spacing(2)};
 `
-);
+)
 
 const UserBoxText = styled(Box)(
   ({ theme }) => `
         text-align: left;
         padding-left: ${theme.spacing(1)};
 `
-);
+)
 
 const UserBoxLabel = styled(Typography)(
   ({ theme }) => `
@@ -50,59 +39,56 @@ const UserBoxLabel = styled(Typography)(
         color: ${theme.palette.secondary.main};
         display: block;
 `
-);
+)
 
 const UserBoxDescription = styled(Typography)(
   ({ theme }) => `
         color: ${theme.palette.secondary.light}
 `
-);
+)
 
 function HeaderUserbox() {
+  const { enqueueSnackbar } = useSnackbar()
 
-  const { enqueueSnackbar } = useSnackbar();
+  const { t }: { t: any } = useTranslation()
 
-  const { t }: { t: any } = useTranslation();
+  const router = useRouter()
 
-  const router = useRouter();
-
-  
-
-  const ref = useRef<any>(null);
-  const [isOpen, setOpen] = useState<boolean>(false);
+  const ref = useRef<any>(null)
+  const [isOpen, setOpen] = useState<boolean>(false)
 
   const handleOpen = (): void => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = (): void => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const handleLogout = async (): Promise<void> => {
     try {
       fetch(`/api/auth/logout`, {
         method: `GET`,
-        headers: { "Content-Type": "application/json" },
+        headers: { 'Content-Type': 'application/json' },
       })
         .then((res) => res.json())
         .then((json) => {
-          handleClose();
+          handleClose()
           if (json.success) {
-            router.push('/');
+            router.push('/')
             enqueueSnackbar(t('Wallet succesfully unconnected!'), {
-              variant: 'success'
-            });     
-          }else {
+              variant: 'success',
+            })
+          } else {
             enqueueSnackbar(t('Unexpected error occurred'), {
-              variant: 'error'
-            });
+              variant: 'error',
+            })
           }
-        });
+        })
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
-  };
+  }
 
   return (
     <>
@@ -111,9 +97,7 @@ function HeaderUserbox() {
         <Hidden mdDown>
           <UserBoxText>
             <UserBoxLabel variant="body1">Margaret Gale</UserBoxLabel>
-            <UserBoxDescription variant="body2">
-              Lead Developer
-            </UserBoxDescription>
+            <UserBoxDescription variant="body2">Lead Developer</UserBoxDescription>
           </UserBoxText>
         </Hidden>
         <Hidden smDown>
@@ -126,27 +110,28 @@ function HeaderUserbox() {
         open={isOpen}
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right'
-        }}
-      >
+          horizontal: 'right',
+        }}>
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
           <Avatar variant="rounded" alt="Margaret Gale" src="/static/images/avatars/1.jpg" />
           <UserBoxText>
             <UserBoxLabel variant="body1">Margaret Gale</UserBoxLabel>
-            <UserBoxDescription variant="body2">
-              Lead Developer
-            </UserBoxDescription>
+            <UserBoxDescription variant="body2">Lead Developer</UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
         <Divider sx={{ mb: 0 }} />
         <List sx={{ p: 1 }} component="nav">
           <ListItem
-            onClick={() => { handleClose() }}
-            button href="/account" component={Link}>
+            onClick={() => {
+              handleClose()
+            }}
+            button
+            href="/account"
+            component={Link}>
             <AccountBoxTwoToneIcon fontSize="small" />
             <ListItemText primary={t('Profile')} />
           </ListItem>
@@ -169,7 +154,7 @@ function HeaderUserbox() {
         </Box>
       </Popover>
     </>
-  );
+  )
 }
 
-export default HeaderUserbox;
+export default HeaderUserbox

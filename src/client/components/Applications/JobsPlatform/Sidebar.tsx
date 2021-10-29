@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState } from 'react'
 
 import {
   Typography,
@@ -11,12 +11,12 @@ import {
   Checkbox,
   List,
   ListItemButton,
-  ListItemText
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import Label from 'src/client/components/Label';
+  ListItemText,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import Label from 'src/client/components/Label'
 
 const AccordionSummaryWrapper = styled(AccordionSummary)(
   () => `
@@ -28,7 +28,7 @@ const AccordionSummaryWrapper = styled(AccordionSummary)(
         margin: 12px 0;
       }
   `
-);
+)
 
 const ListItemWrapper = styled(ListItemButton)(
   () => `
@@ -37,148 +37,148 @@ const ListItemWrapper = styled(ListItemButton)(
         border-radius: 0;
       }
   `
-);
+)
 
 function Sidebar() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const typeOfEmployment = [
     {
       id: 1,
       amount: 12,
       value: 'full_time',
-      text: t('Full Time')
+      text: t('Full Time'),
     },
     {
       id: 2,
       amount: 16,
       value: 'part_time',
-      text: t('Part Time')
+      text: t('Part Time'),
     },
     {
       id: 3,
       amount: 9,
       value: 'remote',
-      text: t('Remote')
+      text: t('Remote'),
     },
     {
       id: 4,
       amount: 19,
       value: 'internship',
-      text: t('Internship')
+      text: t('Internship'),
     },
     {
       id: 5,
       amount: 25,
       value: 'freelance',
-      text: t('Freelance')
-    }
-  ];
+      text: t('Freelance'),
+    },
+  ]
 
   const seniorityLevel = [
     {
       id: 1,
       amount: 7,
       value: 'student',
-      text: t('Student')
+      text: t('Student'),
     },
     {
       id: 2,
       amount: 35,
       value: 'entry',
-      text: t('Entry Level')
+      text: t('Entry Level'),
     },
     {
       id: 3,
       amount: 27,
       value: 'mid',
-      text: t('Mid Level')
+      text: t('Mid Level'),
     },
     {
       id: 4,
       amount: 8,
       value: 'director',
-      text: t('Director')
+      text: t('Director'),
     },
     {
       id: 5,
       amount: 4,
       value: 'vp',
-      text: t('VP and above')
-    }
-  ];
+      text: t('VP and above'),
+    },
+  ]
 
   const salaryRange = [
     {
       id: 1,
       amount: 65,
       value: '700_1200',
-      text: '$700 - $1200'
+      text: '$700 - $1200',
     },
     {
       id: 2,
       amount: 345,
       value: '1200_3000',
-      text: '$1200 - $3000'
+      text: '$1200 - $3000',
     },
     {
       id: 3,
       amount: 23,
       value: '3000_5000',
-      text: '$3000 - $5000'
+      text: '$3000 - $5000',
     },
     {
       id: 4,
       amount: 12,
       value: '5000_above',
-      text: t('$5000 and above')
-    }
-  ];
+      text: t('$5000 and above'),
+    },
+  ]
 
-  const [checked, setChecked] = useState([0]);
+  const [checked, setChecked] = useState([0])
 
   const handleToggle = (value: number) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+    const currentIndex = checked.indexOf(value)
+    const newChecked = [...checked]
 
     if (currentIndex === -1) {
-      newChecked.push(value);
+      newChecked.push(value)
     } else {
-      newChecked.splice(currentIndex, 1);
+      newChecked.splice(currentIndex, 1)
     }
 
-    setChecked(newChecked);
-  };
+    setChecked(newChecked)
+  }
 
-  const [checked2, setChecked2] = useState([0]);
+  const [checked2, setChecked2] = useState([0])
 
   const handleToggle2 = (value: number) => () => {
-    const currentIndex = checked2.indexOf(value);
-    const newChecked = [...checked2];
+    const currentIndex = checked2.indexOf(value)
+    const newChecked = [...checked2]
 
     if (currentIndex === -1) {
-      newChecked.push(value);
+      newChecked.push(value)
     } else {
-      newChecked.splice(currentIndex, 1);
+      newChecked.splice(currentIndex, 1)
     }
 
-    setChecked2(newChecked);
-  };
+    setChecked2(newChecked)
+  }
 
-  const [checked3, setChecked3] = useState([0]);
+  const [checked3, setChecked3] = useState([0])
 
   const handleToggle3 = (value: number) => () => {
-    const currentIndex = checked3.indexOf(value);
-    const newChecked = [...checked3];
+    const currentIndex = checked3.indexOf(value)
+    const newChecked = [...checked3]
 
     if (currentIndex === -1) {
-      newChecked.push(value);
+      newChecked.push(value)
     } else {
-      newChecked.splice(currentIndex, 1);
+      newChecked.splice(currentIndex, 1)
     }
 
-    setChecked3(newChecked);
-  };
+    setChecked3(newChecked)
+  }
 
   return (
     <Card>
@@ -188,30 +188,15 @@ function Sidebar() {
         </AccordionSummaryWrapper>
         <AccordionDetails sx={{ p: 0 }}>
           <List disablePadding component="div">
-            {typeOfEmployment.map((value) => {
-              return (
-                <ListItemWrapper
-                  sx={{ py: 0, px: 2 }}
-                  key={value.id}
-
-                  onClick={handleToggle(value.id)}
-                >
-                  <ListItemIcon sx={{ minWidth: 32 }}>
-                    <Checkbox
-                      edge="start"
-                      checked={checked.indexOf(value.id) !== -1}
-                      tabIndex={-1}
-                      disableRipple
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={value.text}
-                    primaryTypographyProps={{ variant: 'body1' }}
-                  />
-                  <Label color="primary">{value.amount}</Label>
-                </ListItemWrapper>
-              );
-            })}
+            {typeOfEmployment.map((value) => (
+              <ListItemWrapper sx={{ py: 0, px: 2 }} key={value.id} onClick={handleToggle(value.id)}>
+                <ListItemIcon sx={{ minWidth: 32 }}>
+                  <Checkbox edge="start" checked={checked.indexOf(value.id) !== -1} tabIndex={-1} disableRipple />
+                </ListItemIcon>
+                <ListItemText primary={value.text} primaryTypographyProps={{ variant: 'body1' }} />
+                <Label color="primary">{value.amount}</Label>
+              </ListItemWrapper>
+            ))}
           </List>
         </AccordionDetails>
       </Accordion>
@@ -222,30 +207,15 @@ function Sidebar() {
         </AccordionSummaryWrapper>
         <AccordionDetails sx={{ p: 0 }}>
           <List disablePadding component="div">
-            {seniorityLevel.map((value) => {
-              return (
-                <ListItemWrapper
-                  sx={{ py: 0, px: 2 }}
-                  key={value.id}
-
-                  onClick={handleToggle2(value.id)}
-                >
-                  <ListItemIcon sx={{ minWidth: 32 }}>
-                    <Checkbox
-                      edge="start"
-                      checked={checked2.indexOf(value.id) !== -1}
-                      tabIndex={-1}
-                      disableRipple
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={value.text}
-                    primaryTypographyProps={{ variant: 'body1' }}
-                  />
-                  <Label color="primary">{value.amount}</Label>
-                </ListItemWrapper>
-              );
-            })}
+            {seniorityLevel.map((value) => (
+              <ListItemWrapper sx={{ py: 0, px: 2 }} key={value.id} onClick={handleToggle2(value.id)}>
+                <ListItemIcon sx={{ minWidth: 32 }}>
+                  <Checkbox edge="start" checked={checked2.indexOf(value.id) !== -1} tabIndex={-1} disableRipple />
+                </ListItemIcon>
+                <ListItemText primary={value.text} primaryTypographyProps={{ variant: 'body1' }} />
+                <Label color="primary">{value.amount}</Label>
+              </ListItemWrapper>
+            ))}
           </List>
         </AccordionDetails>
       </Accordion>
@@ -256,35 +226,20 @@ function Sidebar() {
         </AccordionSummaryWrapper>
         <AccordionDetails sx={{ p: 0 }}>
           <List disablePadding component="div">
-            {salaryRange.map((value) => {
-              return (
-                <ListItemWrapper
-                  sx={{ py: 0, px: 2 }}
-                  key={value.id}
-
-                  onClick={handleToggle3(value.id)}
-                >
-                  <ListItemIcon sx={{ minWidth: 32 }}>
-                    <Checkbox
-                      edge="start"
-                      checked={checked3.indexOf(value.id) !== -1}
-                      tabIndex={-1}
-                      disableRipple
-                    />
-                  </ListItemIcon>
-                  <ListItemText
-                    primary={value.text}
-                    primaryTypographyProps={{ variant: 'body1' }}
-                  />
-                  <Label color="primary">{value.amount}</Label>
-                </ListItemWrapper>
-              );
-            })}
+            {salaryRange.map((value) => (
+              <ListItemWrapper sx={{ py: 0, px: 2 }} key={value.id} onClick={handleToggle3(value.id)}>
+                <ListItemIcon sx={{ minWidth: 32 }}>
+                  <Checkbox edge="start" checked={checked3.indexOf(value.id) !== -1} tabIndex={-1} disableRipple />
+                </ListItemIcon>
+                <ListItemText primary={value.text} primaryTypographyProps={{ variant: 'body1' }} />
+                <Label color="primary">{value.amount}</Label>
+              </ListItemWrapper>
+            ))}
           </List>
         </AccordionDetails>
       </Accordion>
     </Card>
-  );
+  )
 }
 
-export default Sidebar;
+export default Sidebar

@@ -1,12 +1,12 @@
-import { graphql as executeGraphQL, Source } from 'graphql';
-import { schema } from '../server/graphql/schema';
-import { oneLine } from 'common-tags';
+import { graphql as executeGraphQL, Source } from 'graphql'
+import { oneLine } from 'common-tags'
+import { schema } from '../server/graphql/schema'
 
 interface Options {
   context?: {
-    user?: any;
-  };
-  variables?: Record<string, unknown>;
+    user?: any
+  }
+  variables?: Record<string, unknown>
 }
 
 /**
@@ -25,9 +25,8 @@ interface Options {
  * })).toMatchSnapshot()
  * ```
  */
-export const request = (query: string | Source, { context, variables }: Options = {}) => {
-  return executeGraphQL(schema, query, undefined, context || {}, variables);
-};
+export const request = (query: string | Source, { context, variables }: Options = {}) =>
+  executeGraphQL(schema, query, undefined, context || {}, variables)
 
 /**
  * No-op graphql tagged template literal for tests to trigger Prettier's code formatted and VSCode's syntax highlighting
@@ -36,4 +35,4 @@ export const request = (query: string | Source, { context, variables }: Options 
  * expect(await request(graphql`{ currentUser { id } }`)).toMatchSnapshot()
  * ```
  */
-export const graphql = oneLine;
+export const graphql = oneLine

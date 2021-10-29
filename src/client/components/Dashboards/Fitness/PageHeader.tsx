@@ -1,13 +1,13 @@
-import { Grid, Typography, Avatar } from '@mui/material';
+import { Grid, Typography, Avatar } from '@mui/material'
 
-import { useTranslation } from 'react-i18next';
-import { useTheme } from '@mui/material/styles';
-import { format } from 'date-fns';
+import { useTranslation } from 'react-i18next'
+import { useTheme } from '@mui/material/styles'
+import { format } from 'date-fns'
 
 function PageHeader() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
   // const { user } = useAuth();
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <Grid container alignItems="center">
@@ -24,12 +24,11 @@ function PageHeader() {
           {t('Welcome')}, Margaret Gale!
         </Typography>
         <Typography variant="subtitle2">
-          {t('These are your analytics stats for today')},{' '}
-          <b>{format(new Date(), 'MMMM dd yyyy')}</b>
+          {t('These are your analytics stats for today')}, <b>{format(new Date(), 'MMMM dd yyyy')}</b>
         </Typography>
       </Grid>
     </Grid>
-  );
+  )
 }
 
-export default PageHeader;
+export default PageHeader

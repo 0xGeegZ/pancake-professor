@@ -1,8 +1,8 @@
-import { Typography } from '@mui/material';
-import { useTranslation } from 'react-i18next';
+import { Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 function PageHeader() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <>
@@ -10,12 +10,11 @@ function PageHeader() {
         {t('Welcome')}, Dr. Williams!
       </Typography>
       <Typography variant="h4" color="text.secondary" fontWeight="normal">
-        {t('Since your last login there were')} <b>3</b>{' '}
-        {t('new patients appointments and ')} <b>10</b>{' '}
+        {t('Since your last login there were')} <b>3</b> {t('new patients appointments and ')} <b>10</b>{' '}
         {t('new prescription requests.')}
       </Typography>
     </>
-  );
+  )
 }
 
-export default PageHeader;
+export default PageHeader

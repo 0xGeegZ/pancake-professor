@@ -1,14 +1,14 @@
-import { alpha, Box, Card, Typography, useTheme } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
+import { alpha, Box, Card, Typography, useTheme } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
 
-import UsageChart from './UsageChart';
+import UsageChart from './UsageChart'
 
 const UsageChartWrapper = styled(UsageChart)(
   () => `
     width: 150px;
 `
-);
+)
 
 const BoxChartWrapperText = styled(Box)(
   () => `
@@ -30,28 +30,22 @@ const BoxChartWrapperText = styled(Box)(
       justify-content: center;
     }
 `
-);
+)
 
 function StorageUsage() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   const data = {
     datasets: [
       {
-        backgroundColor: [
-          theme.colors.error.main,
-          alpha(theme.colors.error.light, 0.15)
-        ],
-        hoverBackgroundColor: [
-          theme.colors.error.dark,
-          alpha(theme.colors.error.light, 0.25)
-        ],
-        data: [25, 75]
-      }
+        backgroundColor: [theme.colors.error.main, alpha(theme.colors.error.light, 0.15)],
+        hoverBackgroundColor: [theme.colors.error.dark, alpha(theme.colors.error.light, 0.25)],
+        data: [25, 75],
+      },
     ],
-    labels: ['', '']
-  };
+    labels: ['', ''],
+  }
 
   return (
     <Card
@@ -59,18 +53,21 @@ function StorageUsage() {
         px: { lg: 4, xs: 2, md: 3 },
         py: { lg: 7.08, xs: 4 },
         display: 'flex',
-        alignItems: 'center'
-      }}
-    >
+        alignItems: 'center',
+      }}>
       <BoxChartWrapperText sx={{ mr: 3 }}>
         <div className="ChartText" style={{ color: theme.colors.error.main }}>
           <span>25%</span>
         </div>
         <UsageChartWrapper data={data} />
       </BoxChartWrapperText>
-      <Typography variant="h1">{t('Storage')}<br />{t('Usage')}</Typography>
+      <Typography variant="h1">
+        {t('Storage')}
+        <br />
+        {t('Usage')}
+      </Typography>
     </Card>
-  );
+  )
 }
 
-export default StorageUsage;
+export default StorageUsage

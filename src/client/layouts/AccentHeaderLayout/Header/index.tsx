@@ -1,19 +1,19 @@
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
-import { alpha, Box, Button, Card, CircularProgress, Grid, Hidden, IconButton, Tooltip } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { ethers } from 'ethers';
-import { useSnackbar } from 'notistack';
-import { FC, useContext, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Link from 'src/client/components/Link';
-import { SidebarContext } from 'src/client/contexts/SidebarContext';
-import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated';
+import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import { alpha, Box, Button, Card, CircularProgress, Grid, Hidden, IconButton, Tooltip } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { ethers } from 'ethers'
+import { useSnackbar } from 'notistack'
+import { FC, useContext, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
+import { SidebarContext } from 'src/client/contexts/SidebarContext'
+import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 
-import LanguageSwitcher from './Buttons/LanguageSwitcher';
-import HeaderNotifications from './Buttons/Notifications';
-import Logo from './Logo';
-import HeaderUserbox from './Userbox';
+import LanguageSwitcher from './Buttons/LanguageSwitcher'
+import HeaderNotifications from './Buttons/Notifications'
+import Logo from './Logo'
+import HeaderUserbox from './Userbox'
 
 const HeaderWrapper = styled(Card)(
   ({ theme }) => `

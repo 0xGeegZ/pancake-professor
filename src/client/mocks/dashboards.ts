@@ -1,5 +1,5 @@
-import { mock } from 'src/client/utils/axios';
-import { Product } from 'src/client/models/dashboards';
+import { mock } from 'src/client/utils/axios'
+import { Product } from 'src/client/models/dashboards'
 
 mock.onGet('/api/products/top').reply(() => {
   const products: Product[] = [
@@ -33,7 +33,7 @@ mock.onGet('/api/products/top').reply(() => {
       revenue: 2869,
       revenuePercent: 25,
     },
-  ];
+  ]
 
-  return [200, { products }];
-});
+  return [200, { products }]
+})

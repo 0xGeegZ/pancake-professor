@@ -139,7 +139,7 @@ const mutations = extendType({
                 id: ctx.user.id,
               },
             },
-            id: id,
+            id,
           },
         })
 
@@ -183,7 +183,7 @@ const mutations = extendType({
                 id: ctx.user.id,
               },
             },
-            id: id,
+            id,
           },
         })
 

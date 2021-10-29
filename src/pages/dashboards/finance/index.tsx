@@ -1,17 +1,18 @@
-import { Grid } from '@mui/material';
-import Head from 'next/head';
-import ActiveSubscriptions from 'src/client/components/Dashboards/Finance/ActiveSubscriptions';
-import AllExpenses from 'src/client/components/Dashboards/Finance/AllExpenses';
-import Budget from 'src/client/components/Dashboards/Finance/Budget';
-import MyCards from 'src/client/components/Dashboards/Finance/MyCards';
-import PageHeader from 'src/client/components/Dashboards/Finance/PageHeader';
-import RecentTransactions from 'src/client/components/Dashboards/Finance/RecentTransactions';
-import UpgradeAccount from 'src/client/components/Dashboards/Finance/UpgradeAccount';
-import Footer from 'src/client/components/Footer';
-import PageTitleWrapper from 'src/client/components/PageTitleWrapper';
-import BoxedSidebarLayout from 'src/client/layouts/BoxedSidebarLayout';
+import { Grid } from '@mui/material'
+import Head from 'next/head'
+import ActiveSubscriptions from 'src/client/components/Dashboards/Finance/ActiveSubscriptions'
+import AllExpenses from 'src/client/components/Dashboards/Finance/AllExpenses'
+import Budget from 'src/client/components/Dashboards/Finance/Budget'
+import MyCards from 'src/client/components/Dashboards/Finance/MyCards'
+import PageHeader from 'src/client/components/Dashboards/Finance/PageHeader'
+import RecentTransactions from 'src/client/components/Dashboards/Finance/RecentTransactions'
+import UpgradeAccount from 'src/client/components/Dashboards/Finance/UpgradeAccount'
+import Footer from 'src/client/components/Footer'
+import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
+import BoxedSidebarLayout from 'src/client/layouts/BoxedSidebarLayout'
 
-import type { ReactElement } from 'react';
+import type { ReactElement } from 'react'
+
 function DashboardFinance() {
   return (
     <>
@@ -22,14 +23,7 @@ function DashboardFinance() {
         <PageHeader />
       </PageTitleWrapper>
 
-      <Grid
-        sx={{ px: 4 }}
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={3}
-      >
+      <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
         <Grid item lg={7} md={6} xs={12}>
           <RecentTransactions />
         </Grid>
@@ -52,15 +46,11 @@ function DashboardFinance() {
 
       <Footer />
     </>
-  );
+  )
 }
 
-export default DashboardFinance;
+export default DashboardFinance
 
 DashboardFinance.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <BoxedSidebarLayout>
-      {page}
-    </BoxedSidebarLayout>
-  )
+  return <BoxedSidebarLayout>{page}</BoxedSidebarLayout>
 }

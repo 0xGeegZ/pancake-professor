@@ -1,7 +1,10 @@
 /// <reference types="react" />
 import { InputBaseProps as MuiInputBaseProps } from '@mui/material/InputBase';
 import { FieldProps } from 'formik';
-export interface InputBaseProps extends FieldProps, Omit<MuiInputBaseProps, 'name' | 'value' | 'error'> {}
+
+export interface InputBaseProps
+  extends FieldProps,
+    Omit<MuiInputBaseProps, 'name' | 'value' | 'error'> {}
 export declare function fieldToInputBase({
   disabled,
   field: { onBlur: fieldOnBlur, ...field },

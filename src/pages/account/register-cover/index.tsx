@@ -10,34 +10,34 @@ import {
   ListItemIcon,
   Hidden,
   IconButton,
-  Typography
-} from '@mui/material';
-import Head from 'next/head';
-import type { ReactElement } from 'react';
-import BaseLayout from "src/client/layouts/BaseLayout";
-import RegisterForm from 'src/client/components/Account/RegisterForm';
+  Typography,
+} from '@mui/material'
+import Head from 'next/head'
+import type { ReactElement } from 'react'
+import BaseLayout from 'src/client/layouts/BaseLayout'
+import RegisterForm from 'src/client/components/Account/RegisterForm'
 
-import { useTranslation } from 'react-i18next';
-import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone';
-import { styled } from '@mui/material/styles';
-import { Scrollbars } from 'react-custom-scrollbars-2';
-import Logo from 'src/client/components/LogoSign';
-import SwiperCore, { Navigation, Pagination } from 'swiper';
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
-import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper.min.css';
-import 'swiper/components/navigation/navigation.min.css';
-import 'swiper/components/pagination/pagination.min.css';
+import { useTranslation } from 'react-i18next'
+import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone'
+import { styled } from '@mui/material/styles'
+import { Scrollbars } from 'react-custom-scrollbars-2'
+import Logo from 'src/client/components/LogoSign'
+import SwiperCore, { Navigation, Pagination } from 'swiper'
+import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
+import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/swiper.min.css'
+import 'swiper/components/navigation/navigation.min.css'
+import 'swiper/components/pagination/pagination.min.css'
 
-SwiperCore.use([Navigation, Pagination]);
+SwiperCore.use([Navigation, Pagination])
 
 const icons = {
   UiPath: '/static/images/placeholders/logo/uipath.jpg',
   Ea: '/static/images/placeholders/logo/ea.jpg',
   Autodesk: '/static/images/placeholders/logo/autodesk.jpg',
-  Adobe: '/static/images/placeholders/logo/adobe.jpg'
-};
+  Adobe: '/static/images/placeholders/logo/adobe.jpg',
+}
 
 const Content = styled(Box)(
   () => `
@@ -45,7 +45,7 @@ const Content = styled(Box)(
     height: 100%;
     flex: 1;
 `
-);
+)
 
 const MainContent = styled(Box)(
   () => `
@@ -56,14 +56,14 @@ const MainContent = styled(Box)(
     overflow: auto;
     position: relative;
 `
-);
+)
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
     background: ${theme.colors.gradients.blue3};
     width: 500px;
 `
-);
+)
 
 const SidebarContent = styled(Box)(
   ({ theme }) => `
@@ -73,7 +73,7 @@ const SidebarContent = styled(Box)(
   height: 100%;
   padding: ${theme.spacing(6)};
 `
-);
+)
 
 const CardImg = styled(Card)(
   ({ theme }) => `
@@ -88,7 +88,7 @@ const CardImg = styled(Card)(
     height: ${theme.spacing(16)};
     margin-bottom: ${theme.spacing(3)};
 `
-);
+)
 
 const SwipeIndicator = styled(IconButton)(
   ({ theme }) => `
@@ -103,7 +103,7 @@ const SwipeIndicator = styled(IconButton)(
           background: ${theme.colors.alpha.white[10]};
         }
 `
-);
+)
 
 const LogoWrapper = styled(Box)(
   ({ theme }) => `
@@ -111,37 +111,37 @@ const LogoWrapper = styled(Box)(
     left: ${theme.spacing(4)};
     top: ${theme.spacing(4)};
 `
-);
+)
 
 const TypographyPrimary = styled(Typography)(
   ({ theme }) => `
       color: ${theme.colors.alpha.white[100]};
 `
-);
+)
 
 const TypographySecondary = styled(Typography)(
   ({ theme }) => `
       color: ${theme.colors.alpha.white[70]};
 `
-);
+)
 
 const DividerWrapper = styled(Divider)(
   ({ theme }) => `
       background: ${theme.colors.alpha.white[10]};
 `
-);
+)
 
 const ListItemTextWrapper = styled(ListItemText)(
   ({ theme }) => `
       color: ${theme.colors.alpha.white[70]};
 `
-);
+)
 const ListItemIconWrapper = styled(ListItemIcon)(
   ({ theme }) => `
       color: ${theme.colors.success.main};
       min-width: 32px;
 `
-);
+)
 
 const SwiperWrapper = styled(Box)(
   ({ theme }) => `
@@ -159,11 +159,10 @@ const SwiperWrapper = styled(Box)(
         }
       }
 `
-);
+)
 
 function RegisterCover() {
-
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <>
@@ -183,11 +182,7 @@ function RegisterCover() {
                     <ChevronRightTwoToneIcon fontSize="large" />
                   </SwipeIndicator>
                 </Box>
-                <TypographyPrimary
-                  align="center"
-                  variant="h3"
-                  sx={{ mb: 4, px: 8 }}
-                >
+                <TypographyPrimary align="center" variant="h3" sx={{ mb: 4, px: 8 }}>
                   {t('Fortune 500 Companies')}
                 </TypographyPrimary>
                 <SwiperWrapper>
@@ -197,107 +192,62 @@ function RegisterCover() {
                     loop
                     navigation={{
                       nextEl: '.MuiSwipe-right',
-                      prevEl: '.MuiSwipe-left'
+                      prevEl: '.MuiSwipe-left',
                     }}
-                    pagination={{ dynamicBullets: true, clickable: true }}
-                  >
+                    pagination={{ dynamicBullets: true, clickable: true }}>
                     <SwiperSlide>
                       <Box textAlign="center">
                         <CardImg>
-                          <img
-                            height={80}
-                            alt="UiPath"
-                            src={icons['UiPath']}
-                          />
+                          <img height={80} alt="UiPath" src={icons.UiPath} />
                         </CardImg>
-                        <TypographyPrimary
-                          align="center"
-                          variant="h3"
-                          sx={{ mb: 2 }}
-                        >
+                        <TypographyPrimary align="center" variant="h3" sx={{ mb: 2 }}>
                           UiPath
                         </TypographyPrimary>
-                        <TypographySecondary
-                          align="center"
-                          variant="subtitle2"
-                          sx={{ mb: 5 }}
-                        >
-                          UiPath streamlines processes, uncovers efficiencies and provides insights, making the path to digital transformation fast and cost-effective.
+                        <TypographySecondary align="center" variant="subtitle2" sx={{ mb: 5 }}>
+                          UiPath streamlines processes, uncovers efficiencies and provides insights, making the path to
+                          digital transformation fast and cost-effective.
                         </TypographySecondary>
                       </Box>
                     </SwiperSlide>
                     <SwiperSlide>
                       <Box textAlign="center">
                         <CardImg>
-                          <img
-                            height={80}
-                            alt="EA"
-                            src={icons['Ea']}
-                          />
+                          <img height={80} alt="EA" src={icons.Ea} />
                         </CardImg>
-                        <TypographyPrimary
-                          align="center"
-                          variant="h3"
-                          sx={{ mb: 2 }}
-                        >
+                        <TypographyPrimary align="center" variant="h3" sx={{ mb: 2 }}>
                           Electronic Arts
                         </TypographyPrimary>
-                        <TypographySecondary
-                          align="center"
-                          variant="subtitle2"
-                          sx={{ mb: 5 }}
-                        >
-                          We exist to inspire the world through Play. Electronic Arts is a leading publisher of games on Console, PC and Mobile.
+                        <TypographySecondary align="center" variant="subtitle2" sx={{ mb: 5 }}>
+                          We exist to inspire the world through Play. Electronic Arts is a leading publisher of games on
+                          Console, PC and Mobile.
                         </TypographySecondary>
                       </Box>
                     </SwiperSlide>
                     <SwiperSlide>
                       <Box textAlign="center">
                         <CardImg>
-                          <img
-                            height={80}
-                            alt="Autodesk"
-                            src={icons['Autodesk']}
-                          />
+                          <img height={80} alt="Autodesk" src={icons.Autodesk} />
                         </CardImg>
-                        <TypographyPrimary
-                          align="center"
-                          variant="h3"
-                          sx={{ mb: 2 }}
-                        >
+                        <TypographyPrimary align="center" variant="h3" sx={{ mb: 2 }}>
                           Autodesk
                         </TypographyPrimary>
-                        <TypographySecondary
-                          align="center"
-                          variant="subtitle2"
-                          sx={{ mb: 5 }}
-                        >
-                          Autodesk is a global leader in design and make technology, with expertise across architecture, engineering, construction, design, manufacturing.
+                        <TypographySecondary align="center" variant="subtitle2" sx={{ mb: 5 }}>
+                          Autodesk is a global leader in design and make technology, with expertise across architecture,
+                          engineering, construction, design, manufacturing.
                         </TypographySecondary>
                       </Box>
                     </SwiperSlide>
                     <SwiperSlide>
                       <Box textAlign="center">
                         <CardImg>
-                          <img
-                            height={80}
-                            alt="Adobe"
-                            src={icons['Adobe']}
-                          />
+                          <img height={80} alt="Adobe" src={icons.Adobe} />
                         </CardImg>
-                        <TypographyPrimary
-                          align="center"
-                          variant="h3"
-                          sx={{ mb: 2 }}
-                        >
+                        <TypographyPrimary align="center" variant="h3" sx={{ mb: 2 }}>
                           Adobe
                         </TypographyPrimary>
-                        <TypographySecondary
-                          align="center"
-                          variant="subtitle2"
-                          sx={{ mb: 5 }}
-                        >
-                          Adobe is changing the world through digital experiences. We help our customers create, deliver and optimize content and applications.
+                        <TypographySecondary align="center" variant="subtitle2" sx={{ mb: 5 }}>
+                          Adobe is changing the world through digital experiences. We help our customers create, deliver
+                          and optimize content and applications.
                         </TypographySecondary>
                       </Box>
                     </SwiperSlide>
@@ -350,23 +300,13 @@ function RegisterCover() {
                 <Typography variant="h2" sx={{ mb: 1 }}>
                   {t('Create account')}
                 </Typography>
-                <Typography
-                  variant="h4"
-                  color="text.secondary"
-                  fontWeight="normal"
-                  sx={{ mb: 3 }}
-                >
+                <Typography variant="h4" color="text.secondary" fontWeight="normal" sx={{ mb: 3 }}>
                   {t('Fill in the fields below to sign up for an account.')}
                 </Typography>
               </Box>
               <RegisterForm />
               <Box mt={4}>
-                <Typography
-                  component="span"
-                  variant="subtitle2"
-                  color="text.primary"
-                  fontWeight="bold"
-                >
+                <Typography component="span" variant="subtitle2" color="text.primary" fontWeight="bold">
                   {t('Already have an account?')}
                 </Typography>{' '}
                 <Link underline="hover" href="/account/login-cover">
@@ -378,15 +318,11 @@ function RegisterCover() {
         </MainContent>
       </Content>
     </>
-  );
+  )
 }
 
-export default RegisterCover;
+export default RegisterCover
 
 RegisterCover.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <BaseLayout>
-      {page}
-    </BaseLayout>
-  )
+  return <BaseLayout>{page}</BaseLayout>
 }

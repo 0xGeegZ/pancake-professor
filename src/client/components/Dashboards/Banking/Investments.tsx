@@ -1,20 +1,11 @@
-import { useState, ChangeEvent } from 'react';
-import {
-  Card,
-  Box,
-  CardContent,
-  CardHeader,
-  Typography,
-  Divider,
-  Avatar,
-  Switch
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import Label from 'src/client/components/Label';
-import AttachMoneyTwoToneIcon from '@mui/icons-material/AttachMoneyTwoTone';
-import MonetizationOnTwoToneIcon from '@mui/icons-material/MonetizationOnTwoTone';
-import InvestmentsChart from './InvestmentsChart';
+import { useState, ChangeEvent } from 'react'
+import { Card, Box, CardContent, CardHeader, Typography, Divider, Avatar, Switch } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import Label from 'src/client/components/Label'
+import AttachMoneyTwoToneIcon from '@mui/icons-material/AttachMoneyTwoTone'
+import MonetizationOnTwoToneIcon from '@mui/icons-material/MonetizationOnTwoTone'
+import InvestmentsChart from './InvestmentsChart'
 
 const AvatarLabelInfo = styled(Avatar)(
   ({ theme }) => `
@@ -23,7 +14,7 @@ const AvatarLabelInfo = styled(Avatar)(
       width: ${theme.spacing(6)};
       height: ${theme.spacing(6)};
 `
-);
+)
 
 const AvatarLabelWarning = styled(Avatar)(
   ({ theme }) => `
@@ -32,64 +23,46 @@ const AvatarLabelWarning = styled(Avatar)(
       width: ${theme.spacing(6)};
       height: ${theme.spacing(6)};
 `
-);
+)
 
 function Investments() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
   const data = {
     amount: '$54,348.55',
     amountIncrease: '$12,475.44',
     amountPercent: '+ 3.24%',
     wallet: '$5,348.73',
-    shares: '$785.00'
-  };
+    shares: '$785.00',
+  }
 
   const [state, setState] = useState({
-    interest: true
-  });
+    interest: true,
+  })
 
   const interestActivate = (event: ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,
-      [event.target.name]: event.target.checked
-    });
-  };
+      [event.target.name]: event.target.checked,
+    })
+  }
 
   const referrals = {
     current: [1008, 940, 1010, 821, 1035, 1030, 957, 926, 993, 1021, 997, 879],
-    previous: [648, 745, 897, 743, 635, 842, 811, 696, 878, 987, 747, 731]
-  };
+    previous: [648, 745, 897, 743, 635, 842, 811, 696, 878, 987, 747, 731],
+  }
 
   const generic = {
     month: {
-      labels: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
-      ]
-    }
-  };
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    },
+  }
 
   return (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
       <CardHeader title={t('Investments')} />
       <Divider />
       <CardContent>
-        <Box
-          display="flex"
-          alignItems="flex-start"
-          justifyContent="space-between"
-          sx={{ py: 2 }}
-        >
+        <Box display="flex" alignItems="flex-start" justifyContent="space-between" sx={{ py: 2 }}>
           <Box>
             <Typography variant="h1" sx={{ mb: 1 }}>
               {data.amount}
@@ -103,12 +76,7 @@ function Investments() {
           </Box>
           <Box sx={{ textAlign: 'center' }}>
             <Typography variant="subtitle2">{t('Interest')}</Typography>
-            <Switch
-              checked={state.interest}
-              onChange={interestActivate}
-              color="primary"
-              name="interest"
-            />
+            <Switch checked={state.interest} onChange={interestActivate} color="primary" name="interest" />
           </Box>
         </Box>
 
@@ -142,7 +110,7 @@ function Investments() {
         </Box>
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default Investments;
+export default Investments

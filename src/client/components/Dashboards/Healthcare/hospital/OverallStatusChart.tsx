@@ -1,20 +1,16 @@
-import { FC } from 'react';
-import PropTypes from 'prop-types';
-import { Line } from 'react-chartjs-2';
-import { useTheme } from '@mui/material';
+import { FC } from 'react'
+import PropTypes from 'prop-types'
+import { Line } from 'react-chartjs-2'
+import { useTheme } from '@mui/material'
 
 interface OverallStatusChartProps {
-  className?: string;
-  data: any;
-  labels: string[];
+  className?: string
+  data: any
+  labels: string[]
 }
 
-const OverallStatusChart: FC<OverallStatusChartProps> = ({
-  data: dataProp,
-  labels,
-  ...rest
-}) => {
-  const theme = useTheme();
+const OverallStatusChart: FC<OverallStatusChartProps> = ({ data: dataProp, labels, ...rest }) => {
+  const theme = useTheme()
 
   const data = {
     datasets: [
@@ -33,7 +29,7 @@ const OverallStatusChart: FC<OverallStatusChartProps> = ({
         pointHoverBorderWidth: 4,
         pointBackgroundColor: theme.palette.primary.main,
         type: 'line',
-        lineTension: 0.01
+        lineTension: 0.01,
       },
       {
         label: 'Consultations',
@@ -50,41 +46,41 @@ const OverallStatusChart: FC<OverallStatusChartProps> = ({
         pointHoverBorderColor: theme.palette.common.white,
         pointHoverColor: theme.colors.success.main,
         pointHoverBorderWidth: 4,
-        pointBackgroundColor: theme.colors.success.main
-      }
+        pointBackgroundColor: theme.colors.success.main,
+      },
     ],
-    labels
-  };
+    labels,
+  }
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     cornerRadius: 6,
     legend: {
-      display: false
+      display: false,
     },
     layout: {
       padding: {
         left: 0,
         right: 10,
         top: 0,
-        bottom: 0
-      }
+        bottom: 0,
+      },
     },
     scales: {
       xAxes: [
         {
           gridLines: {
             display: false,
-            drawBorder: false
+            drawBorder: false,
           },
           ticks: {
             display: false,
             beginAtZero: false,
             min: 3,
-            maxTicksLimit: 7
-          }
-        }
+            maxTicksLimit: 7,
+          },
+        },
       ],
       yAxes: [
         {
@@ -95,16 +91,16 @@ const OverallStatusChart: FC<OverallStatusChartProps> = ({
             drawBorder: false,
             zeroLineBorderDash: [6],
             zeroLineBorderDashOffset: [0],
-            zeroLineColor: theme.colors.alpha.black[10]
+            zeroLineColor: theme.colors.alpha.black[10],
           },
           ticks: {
             display: false,
             beginAtZero: false,
             min: 3,
-            maxTicksLimit: 7
-          }
-        }
-      ]
+            maxTicksLimit: 7,
+          },
+        },
+      ],
     },
     tooltips: {
       enabled: true,
@@ -121,24 +117,24 @@ const OverallStatusChart: FC<OverallStatusChartProps> = ({
       backgroundColor: theme.palette.common.black,
       titleFontColor: theme.palette.common.white,
       bodyFontColor: theme.palette.common.white,
-      footerFontColor: theme.palette.common.white
+      footerFontColor: theme.palette.common.white,
     },
     hover: {
       mode: 'nearest',
-      intersect: true
-    }
-  };
+      intersect: true,
+    },
+  }
 
   return (
     <div {...rest}>
       <Line data={data} options={options} />
     </div>
-  );
-};
+  )
+}
 
 OverallStatusChart.propTypes = {
   data: PropTypes.object.isRequired,
-  labels: PropTypes.array.isRequired
-};
+  labels: PropTypes.array.isRequired,
+}
 
-export default OverallStatusChart;
+export default OverallStatusChart

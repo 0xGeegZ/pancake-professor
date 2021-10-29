@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from 'react'
 import {
   Button,
   Card,
@@ -15,18 +15,18 @@ import {
   TextField,
   CardActions,
   Divider,
-  useTheme
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import Label from 'src/client/components/Label';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import Text from 'src/client/components/Text';
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
-import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone';
+  useTheme,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import AddCircleTwoToneIcon from '@mui/icons-material/AddCircleTwoTone'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
+import Label from 'src/client/components/Label'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+import Text from 'src/client/components/Text'
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone'
 
 const TextfieldWrapper = styled(Box)(
   ({ theme }) => `
@@ -34,7 +34,7 @@ const TextfieldWrapper = styled(Box)(
       background: ${theme.colors.alpha.white[100]};
     }
 `
-);
+)
 
 const CardIndicatorWrapper = styled(Card)(
   () => `
@@ -48,21 +48,21 @@ const CardIndicatorWrapper = styled(Card)(
       height: 5px;
     }
 `
-);
+)
 
 const CardActionsWrapper = styled(CardActions)(
   ({ theme }) => `
     background: ${theme.colors.alpha.black[5]};
     padding: ${theme.spacing(2)} ${theme.spacing(2)};
 `
-);
+)
 
 const IconWrapper = styled(Box)(
   ({ theme }) => `
     display: flex;
     margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 const AvatarAddWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -71,7 +71,7 @@ const AvatarAddWrapper = styled(Avatar)(
         width: ${theme.spacing(8)};
         height: ${theme.spacing(8)};
 `
-);
+)
 
 const CardAddAction = styled(Card)(
   ({ theme }) => `
@@ -94,71 +94,66 @@ const CardAddAction = styled(Card)(
           border-color: ${theme.colors.alpha.black[100]};
         }
 `
-);
+)
 
 function DatacenterClusters() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   const clusters = [
     {
       value: '1',
       badge: '15',
-      text: t('All clusters')
+      text: t('All clusters'),
     },
     {
       value: '2',
       badge: '25',
-      text: t('Oracle')
+      text: t('Oracle'),
     },
     {
       value: '3',
       badge: '35',
-      text: t('IBM')
+      text: t('IBM'),
     },
     {
       value: '4',
       badge: '45',
-      text: t('Microsoft')
-    }
-  ];
+      text: t('Microsoft'),
+    },
+  ]
   const sorts = [
     {
       value: '1',
-      text: t('Sort by name')
+      text: t('Sort by name'),
     },
     {
       value: '2',
-      text: t('Sort by name')
+      text: t('Sort by name'),
     },
     {
       value: '3',
-      text: t('Sort by status')
+      text: t('Sort by status'),
     },
     {
       value: '4',
-      text: t('Sort by hosts')
-    }
-  ];
+      text: t('Sort by hosts'),
+    },
+  ]
 
-  const actionRef = useRef<any>(null);
-  const actionRef1 = useRef<any>(null);
-  const [openCluster, setOpenMenuCluster] = useState<boolean>(false);
-  const [cluster, setCluster] = useState<string>(clusters[0].text);
-  const [openSort, setOpenMenuSort] = useState<boolean>(false);
-  const [sort, setSort] = useState<string>('Sort by...');
+  const actionRef = useRef<any>(null)
+  const actionRef1 = useRef<any>(null)
+  const [openCluster, setOpenMenuCluster] = useState<boolean>(false)
+  const [cluster, setCluster] = useState<string>(clusters[0].text)
+  const [openSort, setOpenMenuSort] = useState<boolean>(false)
+  const [sort, setSort] = useState<string>('Sort by...')
 
   return (
     <>
       <Typography variant="h3" sx={{ pb: 3 }}>
         {t('Datacenter Clusters')}
       </Typography>
-      <Box
-        display={{ xs: 'block', md: 'flex' }}
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ pb: 3 }}
-      >
+      <Box display={{ xs: 'block', md: 'flex' }} alignItems="center" justifyContent="space-between" sx={{ pb: 3 }}>
         <Box display="flex" alignItems="center">
           <Button
             sx={{ mr: 1 }}
@@ -166,32 +161,28 @@ function DatacenterClusters() {
             color="secondary"
             ref={actionRef}
             onClick={() => setOpenMenuCluster(true)}
-            endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}
-          >
+            endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}>
             {cluster}
           </Button>
           <Menu
             anchorEl={actionRef.current}
             onClose={() => setOpenMenuCluster(false)}
             open={openCluster}
-
             anchorOrigin={{
               vertical: 'bottom',
-              horizontal: 'left'
+              horizontal: 'left',
             }}
             transformOrigin={{
               vertical: 'top',
-              horizontal: 'left'
-            }}
-          >
+              horizontal: 'left',
+            }}>
             {clusters.map((_cluster) => (
               <MenuItem
                 key={_cluster.value}
                 onClick={() => {
-                  setCluster(_cluster.text);
-                  setOpenMenuCluster(false);
-                }}
-              >
+                  setCluster(_cluster.text)
+                  setOpenMenuCluster(false)
+                }}>
                 {_cluster.text}
                 <Box sx={{ ml: 1 }}>
                   <Label color="success">{_cluster.badge}</Label>
@@ -207,7 +198,7 @@ function DatacenterClusters() {
                   <InputAdornment position="start">
                     <SearchTwoToneIcon />
                   </InputAdornment>
-                )
+                ),
               }}
               placeholder={t('Search...')}
             />
@@ -218,35 +209,28 @@ function DatacenterClusters() {
             variant="outlined"
             ref={actionRef1}
             onClick={() => setOpenMenuSort(true)}
-            endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}
-          >
+            endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}>
             {sort}
           </Button>
           <Menu
             anchorEl={actionRef1.current}
             onClose={() => setOpenMenuSort(false)}
             open={openSort}
-
             anchorOrigin={{
               vertical: 'bottom',
-              horizontal: 'right'
+              horizontal: 'right',
             }}
             transformOrigin={{
               vertical: 'top',
-              horizontal: 'right'
-            }}
-          >
+              horizontal: 'right',
+            }}>
             {sorts.map((_sort) => (
               <MenuItem key={_sort.value} onClick={() => setSort(_sort.text)}>
                 {_sort.text}
               </MenuItem>
             ))}
           </Menu>
-          <Button
-            sx={{ ml: 1 }}
-            variant="contained"
-            startIcon={<AddCircleTwoToneIcon />}
-          >
+          <Button sx={{ ml: 1 }} variant="contained" startIcon={<AddCircleTwoToneIcon />}>
             {t('Create new cluster')}
           </Button>
         </Box>
@@ -255,40 +239,26 @@ function DatacenterClusters() {
       <Grid container spacing={3}>
         <Grid item xs={12} sm={6} md={5} lg={4}>
           <CardIndicatorWrapper>
-            <Box
-              className="MuiCard-indicator"
-              sx={{ background: `${theme.colors.info.main}` }}
-            />
+            <Box className="MuiCard-indicator" sx={{ background: `${theme.colors.info.main}` }} />
             <CardContent sx={{ pb: 4, pt: 7, px: 3, textAlign: 'center' }}>
-              <img
-                style={{ height: '30px' }}
-                src="/static/images/placeholders/logo/netflix-logo.jpg"
-                alt="..."
-              />
+              <img style={{ height: '30px' }} src="/static/images/placeholders/logo/netflix-logo.jpg" alt="..." />
               <Typography variant="h3" sx={{ pt: 2, px: 3 }} gutterBottom>
                 Mainframe Analytics Cluster for Visitors and Page Views
               </Typography>
-              <Typography variant="subtitle2">
-                {t('Maintained for')} Netflix Inc.
-              </Typography>
+              <Typography variant="subtitle2">{t('Maintained for')} Netflix Inc.</Typography>
               <Button variant="outlined" color="primary" sx={{ mt: 3 }}>
                 {t('View details')}
               </Button>
             </CardContent>
             <Divider />
-            <CardActionsWrapper
-              sx={{ display: 'flex', justifyContent: 'space-between' }}
-            >
+            <CardActionsWrapper sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Typography variant="subtitle1">
                 <Text color="black">
                   <b>7</b>
                 </Text>{' '}
                 {t('hosts')}
               </Typography>
-              <Typography
-                sx={{ display: 'flex', alignItems: 'center' }}
-                variant="subtitle1"
-              >
+              <Typography sx={{ display: 'flex', alignItems: 'center' }} variant="subtitle1">
                 <IconWrapper sx={{ color: `${theme.colors.success.main}` }}>
                   <CheckTwoToneIcon />
                 </IconWrapper>
@@ -299,40 +269,26 @@ function DatacenterClusters() {
         </Grid>
         <Grid item xs={12} sm={6} md={5} lg={4}>
           <CardIndicatorWrapper>
-            <Box
-              className="MuiCard-indicator"
-              sx={{ background: `${theme.colors.success.main}` }}
-            />
+            <Box className="MuiCard-indicator" sx={{ background: `${theme.colors.success.main}` }} />
             <CardContent sx={{ pb: 4, pt: 7, px: 3, textAlign: 'center' }}>
-              <img
-                style={{ height: '30px' }}
-                src="/static/images/placeholders/logo/google-logo.jpg"
-                alt="..."
-              />
+              <img style={{ height: '30px' }} src="/static/images/placeholders/logo/google-logo.jpg" alt="..." />
               <Typography variant="h3" sx={{ pt: 2, px: 3 }} gutterBottom>
                 Main Website Sales Monitoring Cluster Database
               </Typography>
-              <Typography variant="subtitle2">
-                {t('Maintained for')} Google Corp.
-              </Typography>
+              <Typography variant="subtitle2">{t('Maintained for')} Google Corp.</Typography>
               <Button variant="outlined" color="primary" sx={{ mt: 3 }}>
                 {t('View details')}
               </Button>
             </CardContent>
             <Divider />
-            <CardActionsWrapper
-              sx={{ display: 'flex', justifyContent: 'space-between' }}
-            >
+            <CardActionsWrapper sx={{ display: 'flex', justifyContent: 'space-between' }}>
               <Typography variant="subtitle1">
                 <Text color="black">
                   <b>15</b>
                 </Text>{' '}
                 {t('hosts')}
               </Typography>
-              <Typography
-                sx={{ display: 'flex', alignItems: 'center' }}
-                variant="subtitle1"
-              >
+              <Typography sx={{ display: 'flex', alignItems: 'center' }} variant="subtitle1">
                 <IconWrapper sx={{ color: `${theme.colors.warning.main}` }}>
                   <RefreshTwoToneIcon />
                 </IconWrapper>
@@ -356,7 +312,7 @@ function DatacenterClusters() {
         </Grid>
       </Grid>
     </>
-  );
-};
+  )
+}
 
-export default DatacenterClusters;
+export default DatacenterClusters

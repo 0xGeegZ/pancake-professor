@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from 'react'
 import {
   Button,
   Card,
@@ -18,62 +18,62 @@ import {
   Pagination,
   InputAdornment,
   Menu,
-  MenuItem
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { useSnackbar } from 'notistack';
-import { formatDistance, subMonths, subDays } from 'date-fns';
-import TodayTwoToneIcon from '@mui/icons-material/TodayTwoTone';
-import Link from 'src/client/components/Link';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import Text from 'src/client/components/Text';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import { styled } from '@mui/material/styles';
+  MenuItem,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { useSnackbar } from 'notistack'
+import { formatDistance, subMonths, subDays } from 'date-fns'
+import TodayTwoToneIcon from '@mui/icons-material/TodayTwoTone'
+import Link from 'src/client/components/Link'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+import Text from 'src/client/components/Text'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import { styled } from '@mui/material/styles'
 
 const OutlinedInputWrapper = styled(OutlinedInput)(
   ({ theme }) => `
     background-color: ${theme.colors.alpha.white[100]};
 `
-);
+)
 
 function TaskSearch() {
-  const { t }: { t: any } = useTranslation();
-  const { enqueueSnackbar } = useSnackbar();
+  const { t }: { t: any } = useTranslation()
+  const { enqueueSnackbar } = useSnackbar()
 
   const handleDelete = () => {
     enqueueSnackbar(t('You clicked on delete!'), {
-      variant: 'error'
-    });
-  };
+      variant: 'error',
+    })
+  }
 
   const handleClick = () => {
     enqueueSnackbar(t('You clicked on the chip!'), {
-      variant: 'success'
-    });
-  };
+      variant: 'success',
+    })
+  }
 
   const periods = [
     {
       value: 'popular',
-      text: t('Most popular')
+      text: t('Most popular'),
     },
     {
       value: 'recent',
-      text: t('Recent tasks')
+      text: t('Recent tasks'),
     },
     {
       value: 'updated',
-      text: t('Latest updated tasks')
+      text: t('Latest updated tasks'),
     },
     {
       value: 'oldest',
-      text: t('Oldest tasks first')
-    }
-  ];
+      text: t('Oldest tasks first'),
+    },
+  ]
 
-  const actionRef1 = useRef<any>(null);
-  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false);
-  const [period, setPeriod] = useState<string>(periods[0].text);
+  const actionRef1 = useRef<any>(null)
+  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false)
+  const [period, setPeriod] = useState<string>(periods[0].text)
 
   return (
     <>
@@ -95,12 +95,7 @@ function TaskSearch() {
           }
         />
       </FormControl>
-      <Box
-        py={3}
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-      >
+      <Box py={3} display="flex" alignItems="center" justifyContent="space-between">
         <Box>
           <Typography variant="subtitle2">
             {t('Showing')}:{' '}
@@ -118,32 +113,28 @@ function TaskSearch() {
             variant="outlined"
             ref={actionRef1}
             onClick={() => setOpenMenuPeriod(true)}
-            endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}
-          >
+            endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}>
             {period}
           </Button>
           <Menu
             anchorEl={actionRef1.current}
             onClose={() => setOpenMenuPeriod(false)}
             open={openPeriod}
-
             anchorOrigin={{
               vertical: 'bottom',
-              horizontal: 'right'
+              horizontal: 'right',
             }}
             transformOrigin={{
               vertical: 'top',
-              horizontal: 'right'
-            }}
-          >
+              horizontal: 'right',
+            }}>
             {periods.map((_period) => (
               <MenuItem
                 key={_period.value}
                 onClick={() => {
-                  setPeriod(_period.text);
-                  setOpenMenuPeriod(false);
-                }}
-              >
+                  setPeriod(_period.text)
+                  setOpenMenuPeriod(false)
+                }}>
                 {_period.text}
               </MenuItem>
             ))}
@@ -179,9 +170,8 @@ function TaskSearch() {
                 />
               </Box>
               <Typography sx={{ pb: 2 }} color="text.secondary">
-                It is a long established fact that a reader will be distracted
-                by the readable content of a page when looking at its layout
-                beatae vitae dicta sunt explicabo.
+                It is a long established fact that a reader will be distracted by the readable content of a page when
+                looking at its layout beatae vitae dicta sunt explicabo.
               </Typography>
               <Button size="small" variant="contained">
                 {t('View task')}
@@ -193,21 +183,16 @@ function TaskSearch() {
                 p: 2,
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'space-between'
-              }}
-            >
-              <Typography
-                display="flex"
-                alignItems="center"
-                variant="subtitle2"
-              >
+                justifyContent: 'space-between',
+              }}>
+              <Typography display="flex" alignItems="center" variant="subtitle2">
                 <TodayTwoToneIcon sx={{ mr: 1 }} />
                 {formatDistance(subDays(new Date(), 24), new Date(), {
-                  addSuffix: true
+                  addSuffix: true,
                 })}
               </Typography>
               <AvatarGroup>
-                <Tooltip arrow title={t('View profile for') + ' Remy Sharp'}>
+                <Tooltip arrow title={`${t('View profile for')} Remy Sharp`}>
                   <Avatar
                     sx={{ width: 30, height: 30 }}
                     component={Link}
@@ -216,10 +201,7 @@ function TaskSearch() {
                     src="/static/images/avatars/3.jpg"
                   />
                 </Tooltip>
-                <Tooltip
-                  arrow
-                  title={t('View profile for') + ' Trevor Henderson'}
-                >
+                <Tooltip arrow title={`${t('View profile for')} Trevor Henderson`}>
                   <Avatar
                     sx={{ width: 30, height: 30 }}
                     component={Link}
@@ -260,9 +242,8 @@ function TaskSearch() {
                 />
               </Box>
               <Typography sx={{ pb: 2 }} color="text.secondary">
-                Sed ut perspiciatis unde omnis iste natus error sit voluptatem
-                accusantium doloremque laudantium, totam rem aperiam, eaque ipsa
-                quae ab illo.
+                Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam
+                rem aperiam, eaque ipsa quae ab illo.
               </Typography>
               <Button size="small" variant="contained">
                 {t('View task')}
@@ -274,21 +255,16 @@ function TaskSearch() {
                 p: 2,
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'space-between'
-              }}
-            >
-              <Typography
-                display="flex"
-                alignItems="center"
-                variant="subtitle2"
-              >
+                justifyContent: 'space-between',
+              }}>
+              <Typography display="flex" alignItems="center" variant="subtitle2">
                 <TodayTwoToneIcon sx={{ mr: 1 }} />
                 {formatDistance(subMonths(new Date(), 2), new Date(), {
-                  addSuffix: true
+                  addSuffix: true,
                 })}
               </Typography>
               <AvatarGroup>
-                <Tooltip arrow title={t('View profile for') + ' Remy Sharp'}>
+                <Tooltip arrow title={`${t('View profile for')} Remy Sharp`}>
                   <Avatar
                     sx={{ width: 30, height: 30 }}
                     component={Link}
@@ -297,7 +273,7 @@ function TaskSearch() {
                     src="/static/images/avatars/2.jpg"
                   />
                 </Tooltip>
-                <Tooltip arrow title={t('View profile for') + ' Travis Howard'}>
+                <Tooltip arrow title={`${t('View profile for')} Travis Howard`}>
                   <Avatar
                     sx={{ width: 30, height: 30 }}
                     component={Link}
@@ -306,10 +282,7 @@ function TaskSearch() {
                     src="/static/images/avatars/3.jpg"
                   />
                 </Tooltip>
-                <Tooltip
-                  arrow
-                  title={t('View profile for') + ' Trevor Henderson'}
-                >
+                <Tooltip arrow title={`${t('View profile for')} Trevor Henderson`}>
                   <Avatar
                     sx={{ width: 30, height: 30 }}
                     component={Link}
@@ -350,8 +323,8 @@ function TaskSearch() {
                 />
               </Box>
               <Typography sx={{ pb: 2 }} color="text.secondary">
-                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit
-                aut fugit, sed quia consequuntur magni dolores eos qui ratione.
+                Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni
+                dolores eos qui ratione.
               </Typography>
               <Button size="small" variant="contained">
                 {t('View task')}
@@ -363,21 +336,16 @@ function TaskSearch() {
                 p: 2,
                 display: 'flex',
                 alignItems: 'center',
-                justifyContent: 'space-between'
-              }}
-            >
-              <Typography
-                display="flex"
-                alignItems="center"
-                variant="subtitle2"
-              >
+                justifyContent: 'space-between',
+              }}>
+              <Typography display="flex" alignItems="center" variant="subtitle2">
                 <TodayTwoToneIcon sx={{ mr: 1 }} />
                 {formatDistance(subDays(new Date(), 31), new Date(), {
-                  addSuffix: true
+                  addSuffix: true,
                 })}
               </Typography>
               <AvatarGroup>
-                <Tooltip arrow title={t('View profile for') + ' Remy Sharp'}>
+                <Tooltip arrow title={`${t('View profile for')} Remy Sharp`}>
                   <Avatar
                     sx={{ width: 30, height: 30 }}
                     component={Link}
@@ -386,7 +354,7 @@ function TaskSearch() {
                     src="/static/images/avatars/1.jpg"
                   />
                 </Tooltip>
-                <Tooltip arrow title={t('View profile for') + ' Travis Howard'}>
+                <Tooltip arrow title={`${t('View profile for')} Travis Howard`}>
                   <Avatar
                     sx={{ width: 30, height: 30 }}
                     component={Link}
@@ -395,10 +363,7 @@ function TaskSearch() {
                     src="/static/images/avatars/2.jpg"
                   />
                 </Tooltip>
-                <Tooltip
-                  arrow
-                  title={t('View profile for') + ' Trevor Henderson'}
-                >
+                <Tooltip arrow title={`${t('View profile for')} Trevor Henderson`}>
                   <Avatar
                     sx={{ width: 30, height: 30 }}
                     component={Link}
@@ -412,12 +377,7 @@ function TaskSearch() {
           </Card>
         </Grid>
       </Grid>
-      <Box
-        sx={{ py: 3 }}
-        display="flex"
-        alignItems="center"
-        justifyContent="center"
-      >
+      <Box sx={{ py: 3 }} display="flex" alignItems="center" justifyContent="center">
         <Pagination
           showFirstButton
           showLastButton
@@ -430,7 +390,7 @@ function TaskSearch() {
         />
       </Box>
     </>
-  );
+  )
 }
 
-export default TaskSearch;
+export default TaskSearch

@@ -1,25 +1,25 @@
-import type { ReactElement } from 'react';
-import AccentHeaderLayout from "src/client/layouts/AccentHeaderLayout";
+import type { ReactElement } from 'react'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 
-import Head from 'next/head';
-import PageHeader from 'src/client/components/Dashboards/Commerce/PageHeader';
-import { Grid } from '@mui/material';
-import Footer from 'src/client/components/Footer';
-import PageTitleWrapper from 'src/client/components/PageTitleWrapper';
+import Head from 'next/head'
+import PageHeader from 'src/client/components/Dashboards/Commerce/PageHeader'
+import { Grid } from '@mui/material'
+import Footer from 'src/client/components/Footer'
+import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
 
-import GrossSales from 'src/client/components/Dashboards/Commerce/GrossSales';
-import Customers from 'src/client/components/Dashboards/Commerce/Customers';
-import Orders from 'src/client/components/Dashboards/Commerce/Orders';
-import Refunds from 'src/client/components/Dashboards/Commerce/Refunds';
-import VisitorsOverview from 'src/client/components/Dashboards/Commerce/VisitorsOverview';
-import RecentTransactions from 'src/client/components/Dashboards/Commerce/RecentTransactions';
-import FullReport from 'src/client/components/Dashboards/Commerce/FullReport';
-import SalesByCategory from 'src/client/components/Dashboards/Commerce/SalesByCategory';
-import TopProducts from 'src/client/components/Dashboards/Commerce/TopProducts';
-import MonthlyComparison from 'src/client/components/Dashboards/Commerce/MonthlyComparison';
-import MonthlyGoals from 'src/client/components/Dashboards/Commerce/MonthlyGoals';
-import SalesByCountry from 'src/client/components/Dashboards/Commerce/SalesByCountry';
-import Traffic from 'src/client/components/Dashboards/Commerce/Traffic';
+import GrossSales from 'src/client/components/Dashboards/Commerce/GrossSales'
+import Customers from 'src/client/components/Dashboards/Commerce/Customers'
+import Orders from 'src/client/components/Dashboards/Commerce/Orders'
+import Refunds from 'src/client/components/Dashboards/Commerce/Refunds'
+import VisitorsOverview from 'src/client/components/Dashboards/Commerce/VisitorsOverview'
+import RecentTransactions from 'src/client/components/Dashboards/Commerce/RecentTransactions'
+import FullReport from 'src/client/components/Dashboards/Commerce/FullReport'
+import SalesByCategory from 'src/client/components/Dashboards/Commerce/SalesByCategory'
+import TopProducts from 'src/client/components/Dashboards/Commerce/TopProducts'
+import MonthlyComparison from 'src/client/components/Dashboards/Commerce/MonthlyComparison'
+import MonthlyGoals from 'src/client/components/Dashboards/Commerce/MonthlyGoals'
+import SalesByCountry from 'src/client/components/Dashboards/Commerce/SalesByCountry'
+import Traffic from 'src/client/components/Dashboards/Commerce/Traffic'
 
 function DashboardCommerce() {
   return (
@@ -31,22 +31,9 @@ function DashboardCommerce() {
         <PageHeader />
       </PageTitleWrapper>
 
-      <Grid
-        sx={{ px: 4 }}
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={3}
-      >
+      <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
         <Grid item xs={12}>
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="stretch"
-            spacing={3}
-          >
+          <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
             <Grid item lg={3} sm={6} xs={12}>
               <GrossSales />
             </Grid>
@@ -68,13 +55,7 @@ function DashboardCommerce() {
           <RecentTransactions />
         </Grid>
         <Grid item lg={5} xs={12}>
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="stretch"
-            spacing={3}
-          >
+          <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
             <Grid item lg={12} md={6} xs={12}>
               <FullReport />
             </Grid>
@@ -102,15 +83,11 @@ function DashboardCommerce() {
 
       <Footer />
     </>
-  );
+  )
 }
 
-export default DashboardCommerce;
+export default DashboardCommerce
 
 DashboardCommerce.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <AccentHeaderLayout>
-      {page}
-    </AccentHeaderLayout>
-  )
+  return <AccentHeaderLayout>{page}</AccentHeaderLayout>
 }

@@ -1,29 +1,21 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  IconButton,
-  Tooltip
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone';
-import Label from 'src/client/components/Label';
-import ArrowUpwardTwoTone from '@mui/icons-material/ArrowUpwardTwoTone';
+import { Box, Card, CardContent, CardHeader, Typography, IconButton, Tooltip } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone'
+import Label from 'src/client/components/Label'
+import ArrowUpwardTwoTone from '@mui/icons-material/ArrowUpwardTwoTone'
 
 const ArrowUpwardWrapper = styled(ArrowUpwardTwoTone)(
   ({ theme }) => `
       color:  ${theme.palette.success.main};
 `
-);
+)
 function Orders() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const data = {
-    value: '843'
-  };
+    value: '843',
+  }
 
   return (
     <Card sx={{ px: 1, pt: 1 }}>
@@ -32,14 +24,10 @@ function Orders() {
         titleTypographyProps={{
           variant: 'subtitle2',
           fontWeight: 'bold',
-          color: 'textSecondary'
+          color: 'textSecondary',
         }}
         action={
-          <Tooltip
-            placement="top"
-            arrow
-            title={t('This section can have a description!')}
-          >
+          <Tooltip placement="top" arrow title={t('This section can have a description!')}>
             <IconButton size="small" color="secondary">
               <HelpOutlineTwoToneIcon fontSize="small" />
             </IconButton>
@@ -51,9 +39,8 @@ function Orders() {
         sx={{
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between'
-        }}
-      >
+          justifyContent: 'space-between',
+        }}>
         <Typography variant="h3">{data.value}</Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Label color="success">+10%</Label>
@@ -61,7 +48,7 @@ function Orders() {
         </Box>
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default Orders;
+export default Orders

@@ -9,27 +9,27 @@ import useRefMounted from 'src/client/hooks/useRefMounted';
 import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout';
 import axios from 'src/client/utils/axios';
 
-import type { ReactElement } from 'react'
-import type { User } from 'src/client/models/user'
+import type { ReactElement } from 'react';
+import type { User } from 'src/client/models/user';
 function ManagementUsers() {
-  const isMountedRef = useRefMounted()
-  const [users, setUsers] = useState<User[]>([])
+  const isMountedRef = useRefMounted();
+  const [users, setUsers] = useState<User[]>([]);
 
   const getUsers = useCallback(async () => {
     try {
-      const response = await axios.get<{ users: User[] }>('/api/users')
+      const response = await axios.get<{ users: User[] }>('/api/users');
 
       if (isMountedRef.current) {
-        setUsers(response.data.users)
+        setUsers(response.data.users);
       }
     } catch (err) {
-      console.error(err)
+      console.error(err);
     }
-  }, [isMountedRef])
+  }, [isMountedRef]);
 
   useEffect(() => {
-    getUsers()
-  }, [getUsers])
+    getUsers();
+  }, [getUsers]);
 
   return (
     <>
@@ -47,11 +47,11 @@ function ManagementUsers() {
       </Grid>
       <Footer />
     </>
-  )
+  );
 }
 
-export default ManagementUsers
+export default ManagementUsers;
 
 ManagementUsers.getLayout = function getLayout(page: ReactElement) {
-  return <AccentHeaderLayout>{page}</AccentHeaderLayout>
-}
+  return <AccentHeaderLayout>{page}</AccentHeaderLayout>;
+};

@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from 'react'
 
 import {
   IconButton,
@@ -8,21 +8,23 @@ import {
   ListItem,
   Divider,
   Typography,
-  ListItemText, Popover, Tooltip
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
+  ListItemText,
+  Popover,
+  Tooltip,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
 
-import Text from 'src/client/components/Text';
-import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone';
-import internationalization from 'src/client/i18n/i18n';
-import { useTranslation } from 'react-i18next';
+import Text from 'src/client/components/Text'
+import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone'
+import internationalization from 'src/client/i18n/i18n'
+import { useTranslation } from 'react-i18next'
 
-import deFlag from 'country-flag-icons/3x2/DE.svg';
-import usFlag from 'country-flag-icons/3x2/US.svg';
-import esFlag from 'country-flag-icons/3x2/ES.svg';
-import frFlag from 'country-flag-icons/3x2/FR.svg';
-import cnFlag from 'country-flag-icons/3x2/CN.svg';
-import aeFlag from 'country-flag-icons/3x2/AE.svg';
+import deFlag from 'country-flag-icons/3x2/DE.svg'
+import usFlag from 'country-flag-icons/3x2/US.svg'
+import esFlag from 'country-flag-icons/3x2/ES.svg'
+import frFlag from 'country-flag-icons/3x2/FR.svg'
+import cnFlag from 'country-flag-icons/3x2/CN.svg'
+import aeFlag from 'country-flag-icons/3x2/AE.svg'
 
 const SectionHeading = styled(Typography)(
   ({ theme }) => `
@@ -31,13 +33,13 @@ const SectionHeading = styled(Typography)(
         display: block;
         padding: ${theme.spacing(2, 2, 0)};
 `
-);
+)
 const ImageWrapper = styled('img')(
   () => `
         width: 30px;
         margin: 3px;
 `
-);
+)
 
 const IconButtonPrimary = styled(IconButton)(
   ({ theme }) => `
@@ -57,26 +59,26 @@ const IconButtonPrimary = styled(IconButton)(
       color: ${theme.colors.alpha.trueWhite[100]};
     }
 `
-);
+)
 
 function LanguageSwitcher() {
-  const { i18n } = useTranslation();
-  const { t }: { t: any } = useTranslation();
-  const getLanguage = i18n.language;
+  const { i18n } = useTranslation()
+  const { t }: { t: any } = useTranslation()
+  const getLanguage = i18n.language
 
   const switchLanguage = ({ lng }: { lng: any }) => {
-    internationalization.changeLanguage(lng);
-  };
-  const ref = useRef<any>(null);
-  const [isOpen, setOpen] = useState<boolean>(false);
+    internationalization.changeLanguage(lng)
+  }
+  const ref = useRef<any>(null)
+  const [isOpen, setOpen] = useState<boolean>(false)
 
   const handleOpen = (): void => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = (): void => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <>
@@ -97,13 +99,12 @@ function LanguageSwitcher() {
         open={isOpen}
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right'
-        }}
-      >
+          horizontal: 'right',
+        }}>
         <Box sx={{ maxWidth: 240 }}>
           <SectionHeading variant="body2" color="text.primary">
             {t('Language Switcher')}
@@ -112,48 +113,60 @@ function LanguageSwitcher() {
             <ListItem
               className={getLanguage === 'en' || getLanguage === 'en-US' ? 'active' : ''}
               button
-              onClick={() => { switchLanguage({ lng: 'en' }); handleClose() }}
-            >
+              onClick={() => {
+                switchLanguage({ lng: 'en' })
+                handleClose()
+              }}>
               <ImageWrapper alt="English" src={usFlag} />
               <ListItemText sx={{ pl: 1 }} primary="English" />
             </ListItem>
             <ListItem
               className={getLanguage === 'de' ? 'active' : ''}
               button
-              onClick={() => { switchLanguage({ lng: 'de' }); handleClose() }}
-            >
+              onClick={() => {
+                switchLanguage({ lng: 'de' })
+                handleClose()
+              }}>
               <ImageWrapper alt="German" src={deFlag} />
               <ListItemText sx={{ pl: 1 }} primary="German" />
             </ListItem>
             <ListItem
               className={getLanguage === 'es' ? 'active' : ''}
               button
-              onClick={() => { switchLanguage({ lng: 'es' }); handleClose() }}
-            >
+              onClick={() => {
+                switchLanguage({ lng: 'es' })
+                handleClose()
+              }}>
               <ImageWrapper alt="Spanish" src={esFlag} />
               <ListItemText sx={{ pl: 1 }} primary="Spanish" />
             </ListItem>
             <ListItem
               className={getLanguage === 'fr' ? 'active' : ''}
               button
-              onClick={() => { switchLanguage({ lng: 'fr' }); handleClose() }}
-            >
+              onClick={() => {
+                switchLanguage({ lng: 'fr' })
+                handleClose()
+              }}>
               <ImageWrapper alt="French" src={frFlag} />
               <ListItemText sx={{ pl: 1 }} primary="French" />
             </ListItem>
             <ListItem
               className={getLanguage === 'cn' ? 'active' : ''}
               button
-              onClick={() => { switchLanguage({ lng: 'cn' }); handleClose() }}
-            >
+              onClick={() => {
+                switchLanguage({ lng: 'cn' })
+                handleClose()
+              }}>
               <ImageWrapper alt="Chinese" src={cnFlag} />
               <ListItemText sx={{ pl: 1 }} primary="Chinese" />
             </ListItem>
             <ListItem
               className={getLanguage === 'ae' ? 'active' : ''}
               button
-              onClick={() => { switchLanguage({ lng: 'ae' }); handleClose() }}
-            >
+              onClick={() => {
+                switchLanguage({ lng: 'ae' })
+                handleClose()
+              }}>
               <ImageWrapper alt="Arabic" src={aeFlag} />
               <ListItemText sx={{ pl: 1 }} primary="Arabic" />
             </ListItem>
@@ -163,17 +176,14 @@ function LanguageSwitcher() {
             <Box p={2} sx={{ maxWidth: 340 }}>
               <WarningTwoToneIcon fontSize="small" />
               <Typography variant="body1">
-                {t(
-                  'We only translated a small part of the template, for demonstration purposes'
-                )}
-                !
+                {t('We only translated a small part of the template, for demonstration purposes')}!
               </Typography>
             </Box>
           </Text>
         </Box>
       </Popover>
     </>
-  );
-};
+  )
+}
 
-export default LanguageSwitcher;
+export default LanguageSwitcher

@@ -1,7 +1,7 @@
-import { Box, Button, Container, Grid, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import Link from 'src/client/components/Link';
+import { Box, Button, Container, Grid, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
 
 const TypographyH1 = styled(Typography)(
   ({ theme }) => `
@@ -140,7 +140,7 @@ function Hero() {
     <Container maxWidth="lg">
       <Grid spacing={{ xs: 6, md: 10 }} justifyContent="center" alignItems="center" container>
         <Grid item md={6} pr={{ xs: 0, md: 3 }}>
-          <LabelWrapper color="success">{t('Version') + ' 1.0.0'}</LabelWrapper>
+          <LabelWrapper color="success">{`${t('Version')} 1.0.0`}</LabelWrapper>
           <TypographyH1 sx={{ mb: 2 }} variant="h1">
             {t('Pancake Professor')}
           </TypographyH1>

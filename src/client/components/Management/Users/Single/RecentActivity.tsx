@@ -1,9 +1,9 @@
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-import ShoppingBagTwoToneIcon from '@mui/icons-material/ShoppingBagTwoTone';
-import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
-import { Avatar, Box, Card, CardHeader, Divider, Typography, useTheme } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
+import ShoppingBagTwoToneIcon from '@mui/icons-material/ShoppingBagTwoTone'
+import StarTwoToneIcon from '@mui/icons-material/StarTwoTone'
+import { Avatar, Box, Card, CardHeader, Divider, Typography, useTheme } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `

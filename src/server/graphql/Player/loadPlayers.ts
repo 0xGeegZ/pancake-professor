@@ -1,21 +1,20 @@
-import { finder, range } from '../../utils/utils';
+import { finder, range } from '../../utils/utils'
 
 // import utils from '../../utils/utils';
 
 const { GraphQLClient, gql } = require('graphql-request')
+
 const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
 
-let TOTAL_BETS_INITIAL = 80
-let WIN_RATE_INITIAL = 56
+const TOTAL_BETS_INITIAL = 80
+const WIN_RATE_INITIAL = 56
 
 let TOTAL_BETS = TOTAL_BETS_INITIAL
 let WIN_RATE = WIN_RATE_INITIAL
 
 const checkIfPlaying = (player, lastGame) => {
   let results = player.bets
-    .map(({ position, round: { epoch, position: final } }) => {
-      return { epoch: +epoch, isWon: position === final }
-    })
+    .map(({ position, round: { epoch, position: final } }) => ({ epoch: +epoch, isWon: position === final }))
     .sort((a, b) => a.epoch > b.epoch)
 
   results = results.sort((a, b) => +a.epoch - +b.epoch)
@@ -83,7 +82,7 @@ const loadPlayers = async ({ currentEpoch }) => {
       totalBets: TOTAL_BETS.toString(),
       winRate: WIN_RATE.toString(),
     }
-    let data = await graphQLClient.request(query, variables)
+    const data = await graphQLClient.request(query, variables)
 
     const { users } = data
 
@@ -104,18 +103,17 @@ const loadPlayers = async ({ currentEpoch }) => {
     if (bestPlayers.length <= 2) {
       if (WIN_RATE < 54) {
         return []
-      } else {
-        if (TOTAL_BETS >= 60) {
-          TOTAL_BETS -= 5
-        } else {
-          WIN_RATE--
-        }
       }
+      if (TOTAL_BETS >= 60) {
+        TOTAL_BETS -= 5
+      } else {
+        WIN_RATE--
+      }
+
       return await loadPlayers({ currentEpoch })
-    } else {
-      TOTAL_BETS = TOTAL_BETS_INITIAL
-      WIN_RATE = WIN_RATE_INITIAL
     }
+    TOTAL_BETS = TOTAL_BETS_INITIAL
+    WIN_RATE = WIN_RATE_INITIAL
 
     bestPlayers = bestPlayers.sort((a, b) => {
       if (

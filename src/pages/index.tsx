@@ -1,20 +1,21 @@
-import { Box, Button, Container } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { ethers } from 'ethers';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
-import { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Footer from 'src/client/components/Footer';
-import Link from 'src/client/components/Link';
-import Logo from 'src/client/components/LogoSign';
-import Hero from 'src/client/components/Overview/Hero';
-import Highlights from 'src/client/components/Overview/Highlights';
-import BaseLayout from 'src/client/layouts/BaseLayout';
-import LanguageSwitcher from 'src/client/layouts/BoxedSidebarLayout/Header/Buttons/LanguageSwitcher';
+import { Box, Button, Container } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { ethers } from 'ethers'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
+import { FC, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Footer from 'src/client/components/Footer'
+import Link from 'src/client/components/Link'
+import Logo from 'src/client/components/LogoSign'
+import Hero from 'src/client/components/Overview/Hero'
+import Highlights from 'src/client/components/Overview/Highlights'
+import BaseLayout from 'src/client/layouts/BaseLayout'
+import LanguageSwitcher from 'src/client/layouts/BoxedSidebarLayout/Header/Buttons/LanguageSwitcher'
 
 import type { ReactElement } from 'react'
+
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
     width: 100%;

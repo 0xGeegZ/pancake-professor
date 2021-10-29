@@ -1,8 +1,8 @@
-import passport from 'passport';
+import passport from 'passport'
 
-import localAuth from './localAuth';
-import magicLink from './magicLink';
-import web3Auth from './web3Auth';
+import localAuth from './localAuth'
+import magicLink from './magicLink'
+import web3Auth from './web3Auth'
 
 passport.use(magicLink)
 passport.use(web3Auth)

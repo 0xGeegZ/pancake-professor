@@ -1,14 +1,14 @@
-import { FC } from 'react';
-import PropTypes from 'prop-types';
-import { Pie } from 'react-chartjs-2';
-import { useTheme } from '@mui/material';
+import { FC } from 'react'
+import PropTypes from 'prop-types'
+import { Pie } from 'react-chartjs-2'
+import { useTheme } from '@mui/material'
 
 interface ChartProps {
-  data: any;
+  data: any
 }
 
 const ExpensesChart: FC<ChartProps> = ({ data: dataProp, ...rest }) => {
-  const theme = useTheme();
+  const theme = useTheme()
 
   const data = {
     datasets: dataProp.datasets.map((dataset) => ({
@@ -17,10 +17,10 @@ const ExpensesChart: FC<ChartProps> = ({ data: dataProp, ...rest }) => {
       borderColor: theme.palette.common.white,
       hoverBorderColor: theme.palette.common.white,
       hoverBorderWidth: 12,
-      rotation: 90
+      rotation: 90,
     })),
-    labels: dataProp.labels
-  };
+    labels: dataProp.labels,
+  }
 
   const options = {
     responsive: true,
@@ -28,10 +28,10 @@ const ExpensesChart: FC<ChartProps> = ({ data: dataProp, ...rest }) => {
     animation: false,
     cutoutPercentage: 60,
     legend: {
-      display: false
+      display: false,
     },
     layout: {
-      padding: 0
+      padding: 0,
     },
     tooltips: {
       enabled: true,
@@ -50,20 +50,20 @@ const ExpensesChart: FC<ChartProps> = ({ data: dataProp, ...rest }) => {
       footerFontColor: theme.palette.common.white,
       callbacks: {
         label(tooltipItem, _data) {
-          const label = _data.labels[tooltipItem.index];
-          const value = _data.datasets[0].data[tooltipItem.index];
+          const label = _data.labels[tooltipItem.index]
+          const value = _data.datasets[0].data[tooltipItem.index]
 
-          return `${label}: ${value}%`;
-        }
-      }
-    }
-  };
+          return `${label}: ${value}%`
+        },
+      },
+    },
+  }
 
-  return <Pie data={data} options={options} {...rest} />;
-};
+  return <Pie data={data} options={options} {...rest} />
+}
 
 ExpensesChart.propTypes = {
-  data: PropTypes.object.isRequired
-};
+  data: PropTypes.object.isRequired,
+}
 
-export default ExpensesChart;
+export default ExpensesChart

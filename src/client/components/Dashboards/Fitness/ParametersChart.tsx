@@ -1,68 +1,62 @@
-import { FC } from 'react';
-import PropTypes from 'prop-types';
-import { Line } from 'react-chartjs-2';
-import { useTheme } from '@mui/material';
+import { FC } from 'react'
+import PropTypes from 'prop-types'
+import { Line } from 'react-chartjs-2'
+import { useTheme } from '@mui/material'
 
 interface ParametersChartProps {
-  data: any[];
-  labels: string[];
+  data: any[]
+  labels: string[]
 }
 
-const ParametersChart: FC<ParametersChartProps> = ({
-  data: dataProp,
-  labels,
-  ...rest
-}) => {
-  const theme = useTheme();
+const ParametersChart: FC<ParametersChartProps> = ({ data: dataProp, labels, ...rest }) => {
+  const theme = useTheme()
 
-  const data = () => {
-    return {
-      datasets: [
-        {
-          data: dataProp,
-          borderWidth: 3,
-          backgroundColor: 'transparent',
-          borderColor: theme.colors.primary.main,
-          pointBorderWidth: 0,
-          pointRadius: 0,
-          pointHoverRadius: 0
-        }
-      ],
-      labels
-    };
-  };
+  const data = () => ({
+    datasets: [
+      {
+        data: dataProp,
+        borderWidth: 3,
+        backgroundColor: 'transparent',
+        borderColor: theme.colors.primary.main,
+        pointBorderWidth: 0,
+        pointRadius: 0,
+        pointHoverRadius: 0,
+      },
+    ],
+    labels,
+  })
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     legend: {
-      display: false
+      display: false,
     },
     layout: {
-      padding: 5
+      padding: 5,
     },
     scales: {
       xAxes: [
         {
           gridLines: {
             display: false,
-            drawBorder: false
+            drawBorder: false,
           },
           ticks: {
-            display: false
-          }
-        }
+            display: false,
+          },
+        },
       ],
       yAxes: [
         {
           gridLines: {
-            display: false
+            display: false,
           },
           ticks: {
-            display: false
-          }
-        }
-      ]
+            display: false,
+          },
+        },
+      ],
     },
     tooltips: {
       enabled: true,
@@ -79,24 +73,22 @@ const ParametersChart: FC<ParametersChartProps> = ({
       bodyFontColor: theme.palette.common.white,
       footerFontColor: theme.palette.common.white,
       callbacks: {
-        title: () => { },
-        label: (tooltipItem: any) => {
-          return `${tooltipItem.xLabel}: ${tooltipItem.yLabel}`;
-        }
-      }
-    }
-  };
+        title: () => {},
+        label: (tooltipItem: any) => `${tooltipItem.xLabel}: ${tooltipItem.yLabel}`,
+      },
+    },
+  }
 
   return (
     <div {...rest}>
       <Line data={data} options={options} />
     </div>
-  );
-};
+  )
+}
 
 ParametersChart.propTypes = {
   data: PropTypes.array.isRequired,
-  labels: PropTypes.array.isRequired
-};
+  labels: PropTypes.array.isRequired,
+}
 
-export default ParametersChart;
+export default ParametersChart

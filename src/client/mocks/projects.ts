@@ -1,6 +1,6 @@
-import { mock } from 'src/client/utils/axios';
-import type { Project } from 'src/client/models/project';
-import { subDays } from 'date-fns';
+import { mock } from 'src/client/utils/axios'
+import type { Project } from 'src/client/models/project'
+import { subDays } from 'date-fns'
 
 const projects: Project[] = [
   {
@@ -576,8 +576,6 @@ const projects: Project[] = [
     progress: 92,
     status: 'not_started',
   },
-];
+]
 
-mock.onGet('/api/projects').reply(() => {
-  return [200, { projects }];
-});
+mock.onGet('/api/projects').reply(() => [200, { projects }])

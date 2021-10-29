@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react'
 import {
   Box,
   Typography,
@@ -10,20 +10,20 @@ import {
   FormControl,
   InputAdornment,
   Button,
-  FormHelperText
-} from '@mui/material';
-import type { ReactElement } from 'react';
-import BaseLayout from "src/client/layouts/BaseLayout";
+  FormHelperText,
+} from '@mui/material'
+import type { ReactElement } from 'react'
+import BaseLayout from 'src/client/layouts/BaseLayout'
 
-import Head from 'next/head';
-import Logo from 'src/client/components/LogoSign';
+import Head from 'next/head'
+import Logo from 'src/client/components/LogoSign'
 
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-import InstagramIcon from '@mui/icons-material/Instagram';
-import MailTwoToneIcon from '@mui/icons-material/MailTwoTone';
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import FacebookIcon from '@mui/icons-material/Facebook'
+import TwitterIcon from '@mui/icons-material/Twitter'
+import InstagramIcon from '@mui/icons-material/Instagram'
+import MailTwoToneIcon from '@mui/icons-material/MailTwoTone'
 
 const MainContent = styled(Box)(
   () => `
@@ -32,7 +32,7 @@ const MainContent = styled(Box)(
     flex: 1;
     flex-direction: column;
 `
-);
+)
 
 const TopWrapper = styled(Box)(
   ({ theme }) => `
@@ -43,64 +43,64 @@ const TopWrapper = styled(Box)(
   justify-content: center;
   padding: ${theme.spacing(6)};
 `
-);
+)
 
 const TypographyH1 = styled(Typography)(
   ({ theme }) => `
   font-size: ${theme.typography.pxToRem(75)};
 `
-);
+)
 
 const TypographyH3 = styled(Typography)(
   ({ theme }) => `
   color: ${theme.colors.alpha.black[50]};
 `
-);
+)
 
 const OutlinedInputWrapper = styled(OutlinedInput)(
   ({ theme }) => `
     background-color: ${theme.colors.alpha.white[100]};
 `
-);
+)
 
 const ButtonNotify = styled(Button)(
   ({ theme }) => `
     margin-right: -${theme.spacing(1)};
 `
-);
+)
 
 function StatusComingSoon() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const calculateTimeLeft = () => {
-    const difference = +new Date(`2022`) - +new Date();
-    let timeLeft = {};
+    const difference = +new Date(`2022`) - +new Date()
+    let timeLeft = {}
 
     if (difference > 0) {
       timeLeft = {
         days: Math.floor(difference / (1000 * 60 * 60 * 24)),
         hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
         minutes: Math.floor((difference / 1000 / 60) % 60),
-        seconds: Math.floor((difference / 1000) % 60)
-      };
+        seconds: Math.floor((difference / 1000) % 60),
+      }
     }
 
-    return timeLeft;
-  };
+    return timeLeft
+  }
 
-  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft());
+  const [timeLeft, setTimeLeft] = useState(calculateTimeLeft())
 
   useEffect(() => {
     setTimeout(() => {
-      setTimeLeft(calculateTimeLeft());
-    }, 1000);
-  });
+      setTimeLeft(calculateTimeLeft())
+    }, 1000)
+  })
 
-  const timerComponents = [];
+  const timerComponents = []
 
   Object.keys(timeLeft).forEach((interval) => {
     if (!timeLeft[interval]) {
-      return;
+      return
     }
 
     timerComponents.push(
@@ -108,8 +108,8 @@ function StatusComingSoon() {
         <TypographyH1 variant="h1">{timeLeft[interval]}</TypographyH1>
         <TypographyH3 variant="h3">{interval}</TypographyH3>
       </Box>
-    );
-  });
+    )
+  })
 
   return (
     <>
@@ -125,22 +125,11 @@ function StatusComingSoon() {
                 <Typography variant="h1" sx={{ mt: 4, mb: 2 }}>
                   {t('Coming Soon')}
                 </Typography>
-                <Typography
-                  variant="h3"
-                  color="text.secondary"
-                  fontWeight="normal"
-                  sx={{ mb: 4 }}
-                >
-                  {t(
-                    "We're working on implementing the last features before our launch!"
-                  )}
+                <Typography variant="h3" color="text.secondary" fontWeight="normal" sx={{ mb: 4 }}>
+                  {t("We're working on implementing the last features before our launch!")}
                 </Typography>
               </Container>
-              <img
-                alt="Coming Soon"
-                height={200}
-                src="/static/images/status/coming-soon.svg"
-              />
+              <img alt="Coming Soon" height={200} src="/static/images/status/coming-soon.svg" />
             </Box>
 
             <Box display="flex" justifyContent="center">
@@ -166,9 +155,7 @@ function StatusComingSoon() {
                       </InputAdornment>
                     }
                   />
-                  <FormHelperText>
-                    {t("We'll email you once our website is launched!")}
-                  </FormHelperText>
+                  <FormHelperText>{t("We'll email you once our website is launched!")}</FormHelperText>
                 </FormControl>
                 <Divider sx={{ my: 4 }} />
                 <Box sx={{ textAlign: 'center' }}>
@@ -194,15 +181,11 @@ function StatusComingSoon() {
         </TopWrapper>
       </MainContent>
     </>
-  );
+  )
 }
 
-export default StatusComingSoon;
+export default StatusComingSoon
 
 StatusComingSoon.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <BaseLayout>
-      {page}
-    </BaseLayout>
-  )
+  return <BaseLayout>{page}</BaseLayout>
 }

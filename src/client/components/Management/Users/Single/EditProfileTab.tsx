@@ -1,8 +1,8 @@
-import 'moment-timezone';
+import 'moment-timezone'
 
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
-import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone'
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
 import {
   Box,
   Button,
@@ -21,21 +21,21 @@ import {
   Tooltip,
   Typography,
   Zoom,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { ethers } from 'ethers';
-import { Formik } from 'formik';
-import { useSnackbar } from 'notistack';
-import { FC, ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Moment from 'react-moment';
-import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance';
-import Label from 'src/client/components/Label';
-import Text from 'src/client/components/Text';
-import { Erc20__factory } from 'src/client/contracts/types';
-import { useUpdateUserMutation } from 'src/client/graphql/updateUser.generated';
-import { ThemeContext } from 'src/client/theme/ThemeProvider';
-import * as Yup from 'yup';
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { ethers } from 'ethers'
+import { Formik } from 'formik'
+import { useSnackbar } from 'notistack'
+import { FC, ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Moment from 'react-moment'
+import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance'
+import Label from 'src/client/components/Label'
+import Text from 'src/client/components/Text'
+import { Erc20__factory } from 'src/client/contracts/types'
+import { useUpdateUserMutation } from 'src/client/graphql/updateUser.generated'
+import { ThemeContext } from 'src/client/theme/ThemeProvider'
+import * as Yup from 'yup'
 
 const ThemeToggleWrapper = styled(Box)(
   ({ theme }) => `

@@ -1,9 +1,9 @@
-import { Grid, Typography, Avatar } from '@mui/material';
+import { Grid, Typography, Avatar } from '@mui/material'
 
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import { format } from 'date-fns';
-import LiveHelpTwoToneIcon from '@mui/icons-material/LiveHelpTwoTone';
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import { format } from 'date-fns'
+import LiveHelpTwoToneIcon from '@mui/icons-material/LiveHelpTwoTone'
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `
@@ -14,10 +14,10 @@ const AvatarPrimary = styled(Avatar)(
       box-shadow: ${theme.colors.shadows.primary};
       margin-right: ${theme.spacing(2)};
 `
-);
+)
 
 function PageHeader() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
   // const { user } = useAuth();
 
   return (
@@ -32,12 +32,12 @@ function PageHeader() {
           {t('Helpdesk')}
         </Typography>
         <Typography variant="subtitle2">
-          Margaret Gale, {t('this is your helpdesk dashboard overview for today')}
-          , <b>{format(new Date(), 'MMMM dd yyyy')}</b>
+          Margaret Gale, {t('this is your helpdesk dashboard overview for today')},{' '}
+          <b>{format(new Date(), 'MMMM dd yyyy')}</b>
         </Typography>
       </Grid>
     </Grid>
-  );
+  )
 }
 
-export default PageHeader;
+export default PageHeader

@@ -13,12 +13,12 @@ import {
   ListItemAvatar,
   ListItemText,
   Divider,
-  useTheme
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
-import { styled } from '@mui/material/styles';
-import GradeTwoToneIcon from '@mui/icons-material/GradeTwoTone';
+  useTheme,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
+import { styled } from '@mui/material/styles'
+import GradeTwoToneIcon from '@mui/icons-material/GradeTwoTone'
 
 const DotLegend = styled('span')(
   ({ theme }) => `
@@ -29,14 +29,14 @@ const DotLegend = styled('span')(
     margin-right: ${theme.spacing(0.5)};
     border: ${theme.colors.alpha.white[100]} solid 2px;
 `
-);
+)
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
     width: ${theme.spacing(9)};
     height: ${theme.spacing(9)};
 `
-);
+)
 
 const RatingWrapper = styled(Box)(
   ({ theme }) => `
@@ -51,11 +51,11 @@ const RatingWrapper = styled(Box)(
       color: ${theme.colors.warning.main};      
     }
 `
-);
+)
 
 function Doctors() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   return (
     <Card>
@@ -68,21 +68,14 @@ function Doctors() {
               overlap="rectangular"
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               badgeContent={
                 <Tooltip arrow placement="top" title={t('Idle for 5 minutes')}>
-                  <DotLegend
-                    style={{ background: `${theme.colors.warning.main}` }}
-                  />
+                  <DotLegend style={{ background: `${theme.colors.warning.main}` }} />
                 </Tooltip>
-              }
-            >
-              <AvatarWrapper
-                variant="rounded"
-                alt="Remy Sharp"
-                src="/static/images/avatars/3.jpg"
-              />
+              }>
+              <AvatarWrapper variant="rounded" alt="Remy Sharp" src="/static/images/avatars/3.jpg" />
             </Badge>
           </ListItemAvatar>
           <ListItemText
@@ -115,19 +108,10 @@ function Doctors() {
               overlap="rectangular"
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
-              badgeContent={
-                <DotLegend
-                  style={{ background: `${theme.colors.success.main}` }}
-                />
-              }
-            >
-              <AvatarWrapper
-                variant="rounded"
-                alt="Remy Sharp"
-                src="/static/images/avatars/4.jpg"
-              />
+              badgeContent={<DotLegend style={{ background: `${theme.colors.success.main}` }} />}>
+              <AvatarWrapper variant="rounded" alt="Remy Sharp" src="/static/images/avatars/4.jpg" />
             </Badge>
           </ListItemAvatar>
           <ListItemText
@@ -156,11 +140,7 @@ function Doctors() {
         <Divider variant="inset" component="li" />
         <ListItem sx={{ py: 2.5 }} alignItems="flex-start">
           <ListItemAvatar>
-            <AvatarWrapper
-              variant="rounded"
-              alt="Remy Sharp"
-              src="/static/images/avatars/2.jpg"
-            />
+            <AvatarWrapper variant="rounded" alt="Remy Sharp" src="/static/images/avatars/2.jpg" />
           </ListItemAvatar>
           <ListItemText
             sx={{ pl: 2 }}
@@ -188,16 +168,12 @@ function Doctors() {
       </List>
       <Divider />
       <CardActions sx={{ justifyContent: 'center', py: 2 }}>
-        <Button
-          variant="contained"
-          size="small"
-          endIcon={<ArrowForwardTwoToneIcon fontSize="small" />}
-        >
+        <Button variant="contained" size="small" endIcon={<ArrowForwardTwoToneIcon fontSize="small" />}>
           {t('View all doctors')}
         </Button>
       </CardActions>
     </Card>
-  );
+  )
 }
 
-export default Doctors;
+export default Doctors

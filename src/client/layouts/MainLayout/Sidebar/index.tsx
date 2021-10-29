@@ -1,12 +1,11 @@
-import { Box, Drawer, Hidden } from '@mui/material'
-import { styled } from '@mui/material/styles'
-import { useContext } from 'react'
-import { Scrollbars } from 'react-custom-scrollbars-2'
+import { Box, Drawer, Hidden } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import { useContext } from 'react';
+import { Scrollbars } from 'react-custom-scrollbars-2';
+import Logo from 'src/client/components/Logo';
+import { SidebarContext } from 'src/client/contexts/SidebarContext';
 
-import Logo from 'src/client/components/Logo'
-import { SidebarContext } from 'src/client/contexts/SidebarContext'
-
-import SidebarMenu from './SidebarMenu'
+import SidebarMenu from './SidebarMenu';
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
@@ -24,7 +23,7 @@ const SidebarWrapper = styled(Box)(
         border-radius: ${theme.general.borderRadius};
     }
 `
-)
+);
 
 const TopSection = styled(Box)(
   ({ theme }) => `
@@ -34,11 +33,11 @@ const TopSection = styled(Box)(
         margin: 0 ${theme.spacing(2)};
         border-bottom: ${theme.sidebar.dividerBg} solid 1px;
 `
-)
+);
 
 function Sidebar({ fetching, error, allMenuItems }) {
-  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext)
-  const closeSidebar = () => toggleSidebar()
+  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
+  const closeSidebar = () => toggleSidebar();
 
   return (
     <>
@@ -69,7 +68,7 @@ function Sidebar({ fetching, error, allMenuItems }) {
         </Drawer>
       </Hidden>
     </>
-  )
+  );
 }
 
-export default Sidebar
+export default Sidebar;

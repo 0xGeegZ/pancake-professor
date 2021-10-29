@@ -1,18 +1,19 @@
-import ActiveStrategiesCount from '@/client/components/Dashboards/Commerce/ActiveStrategiesCount'
 import { Box, Grid } from '@mui/material'
 import Head from 'next/head'
 import ActiveStrategies from 'src/client/components/Dashboards/Automation/ActiveStrategies'
 import TotalLockedValue from 'src/client/components/Dashboards/Automation/TotalLockedValue'
 import ActiveUsers from 'src/client/components/Dashboards/Commerce/ActiveUsers'
 import CountUsers from 'src/client/components/Dashboards/Commerce/CountUsers'
+import MonthlyComparison from 'src/client/components/Dashboards/Commerce/MonthlyComparison'
 import TotalWon from 'src/client/components/Dashboards/Commerce/TotalWon'
 import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance'
 import BalanceHistory from 'src/client/components/Dashboards/Healthcare/hospital/BalanceHistory'
 import Footer from 'src/client/components/Footer'
 import MainLayout from 'src/client/layouts/MainLayout'
-import MonthlyComparison from 'src/client/components/Dashboards/Commerce/MonthlyComparison'
 
 import type { ReactElement } from 'react'
+import ActiveStrategiesCount from '@/client/components/Dashboards/Commerce/ActiveStrategiesCount'
+
 function DashboardCrypto() {
   return (
     <>

@@ -1,26 +1,15 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from 'react'
 
-import {
-  Box,
-  Typography,
-  MenuItem,
-  Menu,
-  Card,
-  Avatar,
-  Button,
-  IconButton,
-  Tooltip,
-  Grid
-} from '@mui/material';
+import { Box, Typography, MenuItem, Menu, Card, Avatar, Button, IconButton, Tooltip, Grid } from '@mui/material'
 
-import { styled, useTheme } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone';
-import MicNoneTwoToneIcon from '@mui/icons-material/MicNoneTwoTone';
-import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import VideoCamerasChart from './VideoCamerasChart';
-import PowerTwoToneIcon from '@mui/icons-material/PowerTwoTone';
-import BatteryCharging50TwoToneIcon from '@mui/icons-material/BatteryCharging50TwoTone';
+import { styled, useTheme } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
+import MicNoneTwoToneIcon from '@mui/icons-material/MicNoneTwoTone'
+import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone'
+import PowerTwoToneIcon from '@mui/icons-material/PowerTwoTone'
+import BatteryCharging50TwoToneIcon from '@mui/icons-material/BatteryCharging50TwoTone'
+import VideoCamerasChart from './VideoCamerasChart'
 
 const CardCamera = styled(Card)(
   () => `
@@ -34,7 +23,7 @@ const CardCamera = styled(Card)(
     z-index: 4;
   }
 `
-);
+)
 
 const CameraActions = styled(Box)(
   ({ theme }) => `
@@ -47,7 +36,7 @@ const CameraActions = styled(Box)(
    padding: ${theme.spacing(3)};
    background: linear-gradient(to right, rgba(0,0,0,0) 0%,rgba(0,0,0,0) 0%,rgba(0,0,0,0.65) 95%,rgba(0,0,0,0.65) 100%);
 `
-);
+)
 
 const TalkButton = styled(Button)(
   () => `
@@ -56,7 +45,7 @@ const TalkButton = styled(Button)(
     margin-left: -5px;
   }
 `
-);
+)
 
 const ButtonDark = styled(Button)(
   ({ theme }) => `
@@ -73,19 +62,19 @@ const ButtonDark = styled(Button)(
     background: rgba(0,0,0,.75);
   }
 `
-);
+)
 
 const TypographyMain = styled(Typography)(
   ({ theme }) => `
   color: ${theme.colors.alpha.trueWhite[100]};
 `
-);
+)
 
 const TypographyShade = styled(Typography)(
   ({ theme }) => `
   color: ${theme.colors.alpha.trueWhite[70]};
 `
-);
+)
 
 const Dot = styled(Box)(
   ({ theme }) => `
@@ -94,7 +83,7 @@ const Dot = styled(Box)(
   width: 6px;
   height: 6px;
 `
-);
+)
 
 const IconButtonDark = styled(IconButton)(
   ({ theme }) => `
@@ -107,18 +96,18 @@ const IconButtonDark = styled(IconButton)(
     background: rgba(0,0,0,.75);
   }
 `
-);
+)
 
 const CameraImage = styled('img')(
   ({ theme }) => `
   background: ${theme.colors.alpha.trueWhite[100]};
-  padding: ${theme.spacing(.5)};
+  padding: ${theme.spacing(0.5)};
   border-radius: ${theme.general.borderRadius};
   height: auto;
   width: 160px;
   display: block;
 `
-);
+)
 
 const CardWrapper = styled(Card)(
   ({ theme }) => `
@@ -142,11 +131,11 @@ const CardWrapper = styled(Card)(
   }
 
   .MuiTypography-h1 {
-    padding: ${theme.spacing(3, 0, .8)};
+    padding: ${theme.spacing(3, 0, 0.8)};
     font-size: ${theme.typography.pxToRem(27)};
   }
 `
-);
+)
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -154,7 +143,7 @@ const AvatarWrapper = styled(Avatar)(
     width: ${theme.spacing(8)};
     height: ${theme.spacing(8)};
 `
-);
+)
 
 const SparklinesChartWrapper = styled(VideoCamerasChart)(
   () => `
@@ -162,51 +151,45 @@ const SparklinesChartWrapper = styled(VideoCamerasChart)(
     position: relative;
     z-index: 6;
 `
-);
+)
 
 function VideoCameras() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const locations = [
     {
       value: 'garden_camera',
-      text: t('Garden camera')
+      text: t('Garden camera'),
     },
     {
       value: 'gate_camera',
-      text: t('Gate camera')
+      text: t('Gate camera'),
     },
     {
       value: 'terrace_camera',
-      text: t('Terrace camera')
-    }
-  ];
+      text: t('Terrace camera'),
+    },
+  ]
 
-  const [location, setLocation] = useState<string>(locations[0].text);
-  const actionRef = useRef<any>(null);
-  const [openLocation, setOpenMenuLocation] = useState<boolean>(false);
-  const theme = useTheme();
+  const [location, setLocation] = useState<string>(locations[0].text)
+  const actionRef = useRef<any>(null)
+  const [openLocation, setOpenMenuLocation] = useState<boolean>(false)
+  const theme = useTheme()
 
   const camera = {
     usage: {
-      data: [74, 34, 78, 72, 88]
+      data: [74, 34, 78, 72, 88],
     },
     battery: {
-      data: [63, 82, 28, 39, 38]
-    }
-  };
+      data: [63, 82, 28, 39, 38],
+    },
+  }
 
   const generic = {
     month: {
-      labels: [
-        'January',
-        'February',
-        'March',
-        'April',
-        'May'
-      ]
-    }
-  };
+      labels: ['January', 'February', 'March', 'April', 'May'],
+    },
+  }
 
   return (
     <>
@@ -214,9 +197,7 @@ function VideoCameras() {
         <Grid item xs={12} md={6} lg={12}>
           <Box mb={3} display="flex" justifyContent="space-between" alignItems="center">
             <Box display="flex" alignItems="center">
-              <Typography variant="h3">
-                {location}
-              </Typography>
+              <Typography variant="h3">{location}</Typography>
             </Box>
             <Button
               endIcon={<UnfoldMoreTwoToneIcon />}
@@ -229,24 +210,21 @@ function VideoCameras() {
               anchorEl={actionRef.current}
               onClose={() => setOpenMenuLocation(false)}
               open={openLocation}
-
               anchorOrigin={{
                 vertical: 'center',
-                horizontal: 'center'
+                horizontal: 'center',
               }}
               transformOrigin={{
                 vertical: 'center',
-                horizontal: 'center'
-              }}
-            >
+                horizontal: 'center',
+              }}>
               {locations.map((_location) => (
                 <MenuItem
                   key={_location.value}
                   onClick={() => {
-                    setLocation(_location.text);
-                    setOpenMenuLocation(false);
-                  }}
-                >
+                    setLocation(_location.text)
+                    setOpenMenuLocation(false)
+                  }}>
                   {_location.text}
                 </MenuItem>
               ))}
@@ -263,7 +241,12 @@ function VideoCameras() {
                     {t('Effects')}: {t('On')}
                   </ButtonDark>
                 </Box>
-                <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" sx={{ maxWidth: 170 }}>
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  justifyContent="center"
+                  flexDirection="column"
+                  sx={{ maxWidth: 170 }}>
                   <TypographyMain gutterBottom fontWeight="bold" textAlign="center">
                     2249 Armory Road
                   </TypographyMain>
@@ -277,14 +260,14 @@ function VideoCameras() {
                   </Tooltip>
                 </Box>
               </Box>
-              <Box sx={{ width: '100%' }} display="flex" alignSelf="flex-end" alignItems="flex-end" justifyContent="space-between">
+              <Box
+                sx={{ width: '100%' }}
+                display="flex"
+                alignSelf="flex-end"
+                alignItems="flex-end"
+                justifyContent="space-between">
                 <Box>
-                  <TalkButton
-                    variant="contained"
-                    size="small"
-                    color="warning"
-                    startIcon={<MicNoneTwoToneIcon />}
-                  >
+                  <TalkButton variant="contained" size="small" color="warning" startIcon={<MicNoneTwoToneIcon />}>
                     {t('Talk')}
                   </TalkButton>
                 </Box>
@@ -301,14 +284,15 @@ function VideoCameras() {
             <AvatarWrapper>
               <PowerTwoToneIcon fontSize="large" />
             </AvatarWrapper>
-            <Typography variant="h1">45 <small>min</small></Typography>
-            <Typography textAlign="center" variant="h5">{t('Last charged to 100%')}</Typography>
+            <Typography variant="h1">
+              45 <small>min</small>
+            </Typography>
+            <Typography textAlign="center" variant="h5">
+              {t('Last charged to 100%')}
+            </Typography>
 
             <Box sx={{ height: 142, margin: '0 0 0 -10px' }}>
-              <SparklinesChartWrapper
-                data={camera.usage.data}
-                labels={generic.month.labels}
-              />
+              <SparklinesChartWrapper data={camera.usage.data} labels={generic.month.labels} />
             </Box>
           </CardWrapper>
         </Grid>
@@ -317,20 +301,21 @@ function VideoCameras() {
             <AvatarWrapper>
               <BatteryCharging50TwoToneIcon fontSize="large" />
             </AvatarWrapper>
-            <Typography variant="h1">82 <small>%</small></Typography>
-            <Typography textAlign="center" variant="h5">{t('Remaining battery')}</Typography>
+            <Typography variant="h1">
+              82 <small>%</small>
+            </Typography>
+            <Typography textAlign="center" variant="h5">
+              {t('Remaining battery')}
+            </Typography>
 
             <Box sx={{ height: 142, margin: '0 0 0 -10px' }}>
-              <SparklinesChartWrapper
-                data={camera.battery.data}
-                labels={generic.month.labels}
-              />
+              <SparklinesChartWrapper data={camera.battery.data} labels={generic.month.labels} />
             </Box>
           </CardWrapper>
         </Grid>
       </Grid>
     </>
-  );
+  )
 }
 
-export default VideoCameras;
+export default VideoCameras

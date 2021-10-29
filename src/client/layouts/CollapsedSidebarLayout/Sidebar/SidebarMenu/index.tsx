@@ -1,8 +1,8 @@
-import { Box, List } from '@mui/material';
-import { useRouter } from 'next/router';
-import SidebarMenuItem from './item';
-import menuItems, { MenuItem } from './items';
-import { styled } from '@mui/material/styles';
+import { Box, List } from '@mui/material'
+import { useRouter } from 'next/router'
+import { styled } from '@mui/material/styles'
+import SidebarMenuItem from './item'
+import menuItems, { MenuItem } from './items'
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -15,7 +15,7 @@ const MenuWrapper = styled(Box)(
     }
   }
 `
-);
+)
 
 const SubMenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -79,33 +79,25 @@ const SubMenuWrapper = styled(Box)(
       }
     }
 `
-);
+)
 
-const renderSidebarMenuItems = ({
-  items,
-  path
-}: {
-  items: MenuItem[];
-  path: string;
-}): JSX.Element => (
+const renderSidebarMenuItems = ({ items, path }: { items: MenuItem[]; path: string }): JSX.Element => (
   <SubMenuWrapper>
-    <List component="div">
-      {items.reduce((ev, item) => reduceChildRoutes({ ev, item, path }), [])}
-    </List>
+    <List component="div">{items.reduce((ev, item) => reduceChildRoutes({ ev, item, path }), [])}</List>
   </SubMenuWrapper>
-);
+)
 
 const reduceChildRoutes = ({
   ev,
   path,
-  item
+  item,
 }: {
-  ev: JSX.Element[];
-  path: string;
-  item: MenuItem;
+  ev: JSX.Element[]
+  path: string
+  item: MenuItem
 }): Array<JSX.Element> => {
-  const key = item.name;
-  const router = useRouter();
+  const key = item.name
+  const router = useRouter()
 
   if (item.items) {
     ev.push(
@@ -116,14 +108,13 @@ const reduceChildRoutes = ({
         name={item.name}
         icon={item.icon}
         link={item.link}
-        badge={item.badge}
-      >
+        badge={item.badge}>
         {renderSidebarMenuItems({
           path,
-          items: item.items
+          items: item.items,
         })}
       </SidebarMenuItem>
-    );
+    )
   } else {
     ev.push(
       <SidebarMenuItem
@@ -134,14 +125,14 @@ const reduceChildRoutes = ({
         badge={item.badge}
         icon={item.icon}
       />
-    );
+    )
   }
 
-  return ev;
+  return ev
 }
 
 function SidebarMenu() {
-  const router = useRouter();
+  const router = useRouter()
 
   return (
     <>
@@ -150,13 +141,13 @@ function SidebarMenu() {
           <List component="div">
             {renderSidebarMenuItems({
               items: section.items,
-              path: router.pathname
+              path: router.pathname,
             })}
           </List>
         </MenuWrapper>
       ))}
     </>
-  );
+  )
 }
 
-export default SidebarMenu;
+export default SidebarMenu

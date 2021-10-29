@@ -1,16 +1,17 @@
-import BlogCard from '@/client/components/Management/Users/Single/BlogCard';
-import { Box, Button, Container, Grid } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import Head from 'next/head';
-import { FC, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Footer from 'src/client/components/Footer';
-import Link from 'src/client/components/Link';
-import Logo from 'src/client/components/LogoSign';
-import BaseLayout from 'src/client/layouts/BaseLayout';
-import LanguageSwitcher from 'src/client/layouts/BoxedSidebarLayout/Header/Buttons/LanguageSwitcher';
+import { Box, Button, Container, Grid } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import Head from 'next/head'
+import { FC, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Footer from 'src/client/components/Footer'
+import Link from 'src/client/components/Link'
+import Logo from 'src/client/components/LogoSign'
+import BaseLayout from 'src/client/layouts/BaseLayout'
+import LanguageSwitcher from 'src/client/layouts/BoxedSidebarLayout/Header/Buttons/LanguageSwitcher'
 
 import type { ReactElement } from 'react'
+import BlogCard from '@/client/components/Management/Users/Single/BlogCard'
+
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
     width: 100%;

@@ -1,6 +1,6 @@
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
+import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
 import {
   Avatar,
   Box,
@@ -16,10 +16,10 @@ import {
   Switch,
   Tooltip,
   Typography,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const CardAddAction = styled(Card)(
   ({ theme }) => `

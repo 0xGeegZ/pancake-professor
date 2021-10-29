@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from 'react'
 import {
   Card,
   CardContent,
@@ -11,47 +11,47 @@ import {
   Button,
   Menu,
   MenuItem,
-  Box
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled, useTheme } from '@mui/material/styles';
+  Box,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled, useTheme } from '@mui/material/styles'
 
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import { buildStyles } from 'react-circular-progressbar';
-import Gauge from 'src/client/components/Gauge';
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import { buildStyles } from 'react-circular-progressbar'
+import Gauge from 'src/client/components/Gauge'
 
 function ProfileGoals() {
-  const { t }: { t: any } = useTranslation();
-  const actionRef1 = useRef<any>(null);
-  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false);
+  const { t }: { t: any } = useTranslation()
+  const actionRef1 = useRef<any>(null)
+  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false)
   // const { user } = useAuth();
-  const theme = useTheme();
+  const theme = useTheme()
 
   const data = {
     weightLoss: 42,
-    sleep: 65
-  };
+    sleep: 65,
+  }
 
   const periods = [
     {
       value: 'today',
-      text: t('Today')
+      text: t('Today'),
     },
     {
       value: 'yesterday',
-      text: t('Yesterday')
+      text: t('Yesterday'),
     },
     {
       value: 'last_month',
-      text: t('Last month')
+      text: t('Last month'),
     },
     {
       value: 'last_year',
-      text: t('Last year')
-    }
-  ];
+      text: t('Last year'),
+    },
+  ]
 
-  const [period, setPeriod] = useState<string>(periods[2].text);
+  const [period, setPeriod] = useState<string>(periods[2].text)
 
   const GoalsBox = styled(Box)(
     ({ theme }) => `
@@ -64,7 +64,7 @@ function ProfileGoals() {
       padding: ${theme.spacing(2)};
       margin-top: ${theme.spacing(3)};
 `
-  );
+  )
 
   const DotLegend = styled('span')(
     ({ theme }) => `
@@ -74,13 +74,13 @@ function ProfileGoals() {
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
 `
-  );
+  )
 
   const TypographyPrimary = styled(Typography)(
     () => `
       color: #fff;
     `
-  );
+  )
 
   return (
     <Card sx={{ p: 3 }}>
@@ -91,7 +91,7 @@ function ProfileGoals() {
               sx={{
                 mr: 2,
                 width: theme.spacing(8),
-                height: theme.spacing(8)
+                height: theme.spacing(8),
               }}
               variant="rounded"
               alt="Margaret Gale"
@@ -163,32 +163,28 @@ function ProfileGoals() {
                 variant="outlined"
                 ref={actionRef1}
                 onClick={() => setOpenMenuPeriod(true)}
-                endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}
-              >
+                endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}>
                 {period}
               </Button>
               <Menu
                 anchorEl={actionRef1.current}
                 onClose={() => setOpenMenuPeriod(false)}
                 open={openPeriod}
-
                 anchorOrigin={{
                   vertical: 'bottom',
-                  horizontal: 'right'
+                  horizontal: 'right',
                 }}
                 transformOrigin={{
                   vertical: 'top',
-                  horizontal: 'right'
-                }}
-              >
+                  horizontal: 'right',
+                }}>
                 {periods.map((_period) => (
                   <MenuItem
                     key={_period.value}
                     onClick={() => {
-                      setPeriod(_period.text);
-                      setOpenMenuPeriod(false);
-                    }}
-                  >
+                      setPeriod(_period.text)
+                      setOpenMenuPeriod(false)
+                    }}>
                     {_period.text}
                   </MenuItem>
                 ))}
@@ -199,26 +195,15 @@ function ProfileGoals() {
 
         <GoalsBox sx={{ background: theme.colors.gradients.blue1 }}>
           <Box>
-            <TypographyPrimary
-              variant="subtitle1"
-              sx={{ py: 0.5, display: 'flex', alignItems: 'center', mr: 2 }}
-            >
+            <TypographyPrimary variant="subtitle1" sx={{ py: 0.5, display: 'flex', alignItems: 'center', mr: 2 }}>
               <DotLegend style={{ background: theme.colors.success.main }} />
               {t('Weight Loss')}
             </TypographyPrimary>
             <Box>
-              <TypographyPrimary
-                variant="h3"
-                fontWeight="bold"
-                sx={{ pr: 0.5, display: 'inline-flex' }}
-              >
+              <TypographyPrimary variant="h3" fontWeight="bold" sx={{ pr: 0.5, display: 'inline-flex' }}>
                 4.2
               </TypographyPrimary>
-              <TypographyPrimary
-                variant="body2"
-                fontWeight="bold"
-                sx={{ pr: 2, display: 'inline-flex' }}
-              >
+              <TypographyPrimary variant="body2" fontWeight="bold" sx={{ pr: 2, display: 'inline-flex' }}>
                 /10 kg
               </TypographyPrimary>
             </Box>
@@ -227,39 +212,28 @@ function ProfileGoals() {
             <Gauge
               circleRatio={1}
               styles={buildStyles({
-                rotation: 0.5
+                rotation: 0.5,
               })}
               value={data.weightLoss}
               strokeWidth={8}
               text={`${data.weightLoss}%`}
               color="trueWhite"
               size="small"
-            ></Gauge>
+            />
           </Box>
         </GoalsBox>
 
         <GoalsBox sx={{ background: theme.colors.gradients.orange1 }}>
           <Box>
-            <TypographyPrimary
-              variant="subtitle1"
-              sx={{ py: 0.5, display: 'flex', alignItems: 'center', mr: 2 }}
-            >
+            <TypographyPrimary variant="subtitle1" sx={{ py: 0.5, display: 'flex', alignItems: 'center', mr: 2 }}>
               <DotLegend style={{ background: theme.colors.error.main }} />
               {t('Sleep')}
             </TypographyPrimary>
             <Box>
-              <TypographyPrimary
-                variant="h3"
-                fontWeight="bold"
-                sx={{ pr: 0.5, display: 'inline-flex' }}
-              >
+              <TypographyPrimary variant="h3" fontWeight="bold" sx={{ pr: 0.5, display: 'inline-flex' }}>
                 37
               </TypographyPrimary>
-              <TypographyPrimary
-                variant="body2"
-                fontWeight="bold"
-                sx={{ pr: 2, display: 'inline-flex' }}
-              >
+              <TypographyPrimary variant="body2" fontWeight="bold" sx={{ pr: 2, display: 'inline-flex' }}>
                 /59 hours
               </TypographyPrimary>
             </Box>
@@ -268,19 +242,19 @@ function ProfileGoals() {
             <Gauge
               circleRatio={1}
               styles={buildStyles({
-                rotation: 0.5
+                rotation: 0.5,
               })}
               value={data.sleep}
               strokeWidth={8}
               text={`${data.sleep}%`}
               color="trueWhite"
               size="small"
-            ></Gauge>
+            />
           </Box>
         </GoalsBox>
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default ProfileGoals;
+export default ProfileGoals

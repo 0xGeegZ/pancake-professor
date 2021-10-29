@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, SyntheticEvent } from 'react';
+import { useState, ChangeEvent, SyntheticEvent } from 'react'
 import {
   ListItemIcon,
   Accordion,
@@ -21,26 +21,26 @@ import {
   Grid,
   lighten,
   ListSubheader,
-  ListItemAvatar
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import { formatDistance, subDays } from 'date-fns';
-import Link from 'src/client/components/Link';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import ContentCopyTwoToneIcon from '@mui/icons-material/ContentCopyTwoTone';
-import TextSnippetTwoToneIcon from '@mui/icons-material/TextSnippetTwoTone';
-import DriveFileRenameOutlineTwoToneIcon from '@mui/icons-material/DriveFileRenameOutlineTwoTone';
-import OpenInNewTwoToneIcon from '@mui/icons-material/OpenInNewTwoTone';
-import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import GradeTwoToneIcon from '@mui/icons-material/GradeTwoTone';
-import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone';
-import DownloadTwoToneIcon from '@mui/icons-material/DownloadTwoTone';
-import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfTwoTone';
-import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone';
-import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone';
+  ListItemAvatar,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import { formatDistance, subDays } from 'date-fns'
+import Link from 'src/client/components/Link'
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import ContentCopyTwoToneIcon from '@mui/icons-material/ContentCopyTwoTone'
+import TextSnippetTwoToneIcon from '@mui/icons-material/TextSnippetTwoTone'
+import DriveFileRenameOutlineTwoToneIcon from '@mui/icons-material/DriveFileRenameOutlineTwoTone'
+import OpenInNewTwoToneIcon from '@mui/icons-material/OpenInNewTwoTone'
+import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import GradeTwoToneIcon from '@mui/icons-material/GradeTwoTone'
+import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
+import DownloadTwoToneIcon from '@mui/icons-material/DownloadTwoTone'
+import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfTwoTone'
+import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone'
+import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone'
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `
@@ -49,7 +49,7 @@ const AvatarPrimary = styled(Avatar)(
     width: ${theme.spacing(8)};
     height: ${theme.spacing(8)};
 `
-);
+)
 
 const ListSubheaderLarge = styled(ListSubheader)(
   ({ theme }) => `
@@ -58,7 +58,7 @@ const ListSubheaderLarge = styled(ListSubheader)(
     font-size: ${theme.typography.pxToRem(19)};
     line-height: ${theme.spacing(6)};
 `
-);
+)
 
 const IconButtonWrapper = styled(IconButton)(
   ({ theme }) => `
@@ -73,14 +73,14 @@ const IconButtonWrapper = styled(IconButton)(
         color: ${theme.colors.alpha.trueWhite[100]};
     }
 `
-);
+)
 
 const ListItemIconWrapper = styled(ListItemIcon)(
   ({ theme }) => `
     min-width: 36px;
     color: ${theme.colors.primary.light};
   `
-);
+)
 
 const AccordionSummaryWrapper = styled(AccordionSummary)(
   ({ theme }) => `
@@ -114,7 +114,7 @@ const AccordionSummaryWrapper = styled(AccordionSummary)(
       }
     }
 `
-);
+)
 
 const TabsContainerWrapper = styled(CardContent)(
   ({ theme }) => `
@@ -124,30 +124,27 @@ const TabsContainerWrapper = styled(CardContent)(
             justify-content: center;
         }
   `
-);
+)
 
 function SidebarDrawer() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
-  const [expanded, setExpanded] = useState<string | false>('section1');
+  const [expanded, setExpanded] = useState<string | false>('section1')
 
-  const handleChange = (section: string) => (
-    _event: SyntheticEvent,
-    isExpanded: boolean
-  ) => {
-    setExpanded(isExpanded ? section : false);
-  };
+  const handleChange = (section: string) => (_event: SyntheticEvent, isExpanded: boolean) => {
+    setExpanded(isExpanded ? section : false)
+  }
 
-  const [currentTab, setCurrentTab] = useState<string>('details');
+  const [currentTab, setCurrentTab] = useState<string>('details')
 
   const tabs = [
     { value: 'details', label: t('Details') },
-    { value: 'activity', label: t('Activity') }
-  ];
+    { value: 'activity', label: t('Activity') },
+  ]
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
-    setCurrentTab(value);
-  };
+    setCurrentTab(value)
+  }
 
   return (
     <Box sx={{ width: { xs: 340, lg: 400 } }}>
@@ -155,10 +152,9 @@ function SidebarDrawer() {
         <AvatarPrimary
           sx={{
             mx: 'auto',
-            my: 3
+            my: 3,
           }}
-          variant="rounded"
-        >
+          variant="rounded">
           <TextSnippetTwoToneIcon fontSize="large" />
         </AvatarPrimary>
         <Typography variant="h3" noWrap gutterBottom>
@@ -167,11 +163,13 @@ function SidebarDrawer() {
         <Typography component="span" variant="subtitle2">
           {t('Edited')}{' '}
           {formatDistance(subDays(new Date(), 1), new Date(), {
-            addSuffix: true
+            addSuffix: true,
           })}{' '}
           {t('by')}{' '}
         </Typography>
-        <Link href="#" underline="hover">Kate</Link>
+        <Link href="#" underline="hover">
+          Kate
+        </Link>
       </Box>
       <Divider sx={{ my: 3 }} />
 
@@ -182,8 +180,7 @@ function SidebarDrawer() {
           variant="scrollable"
           scrollButtons="auto"
           textColor="primary"
-          indicatorColor="primary"
-        >
+          indicatorColor="primary">
           {tabs.map((tab) => (
             <Tab key={tab.value} label={tab.label} value={tab.value} />
           ))}
@@ -197,36 +194,16 @@ function SidebarDrawer() {
             <Box mt={2} display="flex">
               <AvatarGroup max={6}>
                 <Tooltip arrow title="Remy Sharp">
-                  <Avatar
-                    component={Link}
-                    href="#"
-                    alt="Remy Sharp"
-                    src="/static/images/avatars/1.jpg"
-                  />
+                  <Avatar component={Link} href="#" alt="Remy Sharp" src="/static/images/avatars/1.jpg" />
                 </Tooltip>
                 <Tooltip arrow title="Travis Howard">
-                  <Avatar
-                    component={Link}
-                    href="#"
-                    alt="Travis Howard"
-                    src="/static/images/avatars/2.jpg"
-                  />
+                  <Avatar component={Link} href="#" alt="Travis Howard" src="/static/images/avatars/2.jpg" />
                 </Tooltip>
                 <Tooltip arrow title="Cindy Baker">
-                  <Avatar
-                    component={Link}
-                    href="#"
-                    alt="Cindy Baker"
-                    src="/static/images/avatars/3.jpg"
-                  />
+                  <Avatar component={Link} href="#" alt="Cindy Baker" src="/static/images/avatars/3.jpg" />
                 </Tooltip>
                 <Tooltip arrow title="Agnes Walker">
-                  <Avatar
-                    component={Link}
-                    href="#"
-                    alt="Agnes Walker"
-                    src="/static/images/avatars/4.jpg"
-                  />
+                  <Avatar component={Link} href="#" alt="Agnes Walker" src="/static/images/avatars/4.jpg" />
                 </Tooltip>
               </AvatarGroup>
             </Box>
@@ -286,26 +263,16 @@ function SidebarDrawer() {
                 </Typography>
               </Grid>
 
-              <Grid
-                item
-                sm={12}
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
+              <Grid item sm={12} display="flex" alignItems="center" justifyContent="space-between">
                 <Typography variant="subtitle2">{t('Description')}:</Typography>
-                <Button
-                  startIcon={<EditTwoToneIcon />}
-                  variant="text"
-                  size="small"
-                >
+                <Button startIcon={<EditTwoToneIcon />} variant="text" size="small">
                   {t('Edit')}
                 </Button>
               </Grid>
               <Grid item sm={12}>
                 <Typography variant="subtitle2" color="text.primary">
-                  It is a long established fact that a reader will be distracted
-                  by the readable content of a page when looking at its layout.
+                  It is a long established fact that a reader will be distracted by the readable content of a page when
+                  looking at its layout.
                 </Typography>
               </Grid>
             </Grid>
@@ -332,10 +299,7 @@ function SidebarDrawer() {
                 </IconButtonWrapper>
               </Tooltip>
             </Box>
-            <Accordion
-              expanded={expanded === 'section1'}
-              onChange={handleChange('section1')}
-            >
+            <Accordion expanded={expanded === 'section1'} onChange={handleChange('section1')}>
               <AccordionSummaryWrapper expandIcon={<ExpandMoreIcon />}>
                 <Typography variant="h5">{t('More actions')}</Typography>
               </AccordionSummaryWrapper>
@@ -345,46 +309,31 @@ function SidebarDrawer() {
                     <ListItemIconWrapper>
                       <DownloadTwoToneIcon />
                     </ListItemIconWrapper>
-                    <ListItemText
-                      primary={t('Download')}
-                      primaryTypographyProps={{ variant: 'h5' }}
-                    />
+                    <ListItemText primary={t('Download')} primaryTypographyProps={{ variant: 'h5' }} />
                   </ListItem>
                   <ListItem button>
                     <ListItemIconWrapper>
                       <ReportTwoToneIcon />
                     </ListItemIconWrapper>
-                    <ListItemText
-                      primary={t('Report abuse')}
-                      primaryTypographyProps={{ variant: 'h5' }}
-                    />
+                    <ListItemText primary={t('Report abuse')} primaryTypographyProps={{ variant: 'h5' }} />
                   </ListItem>
                   <ListItem button>
                     <ListItemIconWrapper>
                       <ContentCopyTwoToneIcon />
                     </ListItemIconWrapper>
-                    <ListItemText
-                      primary={t('Make a copy')}
-                      primaryTypographyProps={{ variant: 'h5' }}
-                    />
+                    <ListItemText primary={t('Make a copy')} primaryTypographyProps={{ variant: 'h5' }} />
                   </ListItem>
                   <ListItem button>
                     <ListItemIconWrapper>
                       <DriveFileRenameOutlineTwoToneIcon />
                     </ListItemIconWrapper>
-                    <ListItemText
-                      primary={t('Rename')}
-                      primaryTypographyProps={{ variant: 'h5' }}
-                    />
+                    <ListItemText primary={t('Rename')} primaryTypographyProps={{ variant: 'h5' }} />
                   </ListItem>
                   <ListItem button>
                     <ListItemIconWrapper>
                       <GradeTwoToneIcon />
                     </ListItemIconWrapper>
-                    <ListItemText
-                      primary={t('Add to starred')}
-                      primaryTypographyProps={{ variant: 'h5' }}
-                    />
+                    <ListItemText primary={t('Add to starred')} primaryTypographyProps={{ variant: 'h5' }} />
                   </ListItem>
                 </List>
               </AccordionDetails>
@@ -401,7 +350,7 @@ function SidebarDrawer() {
           <Divider />
           <ListSubheader disableSticky color="primary">
             {formatDistance(subDays(new Date(), 15), new Date(), {
-              addSuffix: true
+              addSuffix: true,
             })}
           </ListSubheader>
           <Divider />
@@ -416,47 +365,29 @@ function SidebarDrawer() {
                 color: 'textPrimary',
                 noWrap: true,
                 fontWeight: 'bold',
-                gutterBottom: true
+                gutterBottom: true,
               }}
               secondary={
                 <>
                   <Box display="flex" alignItems="center" py={0.5}>
                     <PictureAsPdfTwoToneIcon />
-                    <Typography
-                      sx={{ pl: 1 }}
-                      variant="body1"
-                      color="text.secondary"
-                    >
+                    <Typography sx={{ pl: 1 }} variant="body1" color="text.secondary">
                       PresentationDeck.pdf
                     </Typography>
                   </Box>
                   <Box display="flex" alignItems="center" py={0.5}>
                     <ArchiveTwoToneIcon />
-                    <Typography
-                      sx={{ pl: 1 }}
-                      variant="body1"
-                      color="text.secondary"
-                    >
+                    <Typography sx={{ pl: 1 }} variant="body1" color="text.secondary">
                       HolidayPictures.zip
                     </Typography>
                   </Box>
                   <Divider sx={{ my: 2 }} />
-                  <Typography
-                    variant="subtitle2"
-                    fontWeight="bold"
-                    gutterBottom
-                    noWrap
-                    color="text.primary"
-                  >
+                  <Typography variant="subtitle2" fontWeight="bold" gutterBottom noWrap color="text.primary">
                     {t('You created a new folder')}
                   </Typography>
                   <Box display="flex" alignItems="center" py={0.5}>
                     <FolderOpenTwoToneIcon />
-                    <Typography
-                      sx={{ pl: 1 }}
-                      variant="body1"
-                      color="text.secondary"
-                    >
+                    <Typography sx={{ pl: 1 }} variant="body1" color="text.secondary">
                       Clients Presentations
                     </Typography>
                   </Box>
@@ -465,7 +396,7 @@ function SidebarDrawer() {
               secondaryTypographyProps={{
                 variant: 'body1',
                 color: 'textPrimary',
-                noWrap: true
+                noWrap: true,
               }}
             />
           </ListItem>
@@ -476,7 +407,7 @@ function SidebarDrawer() {
           <Divider />
           <ListSubheader disableSticky color="primary">
             {formatDistance(subDays(new Date(), 22), new Date(), {
-              addSuffix: true
+              addSuffix: true,
             })}
           </ListSubheader>
           <Divider />
@@ -491,16 +422,12 @@ function SidebarDrawer() {
                 color: 'textPrimary',
                 noWrap: true,
                 fontWeight: 'bold',
-                gutterBottom: true
+                gutterBottom: true,
               }}
               secondary={
                 <Box display="flex" alignItems="center" py={0.5}>
                   <ArchiveTwoToneIcon />
-                  <Typography
-                    sx={{ pl: 1 }}
-                    variant="body1"
-                    color="text.secondary"
-                  >
+                  <Typography sx={{ pl: 1 }} variant="body1" color="text.secondary">
                     InvoicesArchive.zip
                   </Typography>
                 </Box>
@@ -508,7 +435,7 @@ function SidebarDrawer() {
               secondaryTypographyProps={{
                 variant: 'body1',
                 color: 'textPrimary',
-                noWrap: true
+                noWrap: true,
               }}
             />
           </ListItem>
@@ -516,7 +443,7 @@ function SidebarDrawer() {
         </List>
       )}
     </Box>
-  );
+  )
 }
 
-export default SidebarDrawer;
+export default SidebarDrawer

@@ -1,14 +1,13 @@
-import { FC, ReactNode } from 'react';
-import PropTypes from 'prop-types';
-import Header from './Header';
-import Footer from 'src/client/components/Footer';
-import Sidebar from './Sidebar';
-import { styled } from '@mui/material/styles';
-import { Box, Card, Container } from '@mui/material';
-
+import { FC, ReactNode } from 'react'
+import PropTypes from 'prop-types'
+import Footer from 'src/client/components/Footer'
+import { styled } from '@mui/material/styles'
+import { Box, Card, Container } from '@mui/material'
+import Sidebar from './Sidebar'
+import Header from './Header'
 
 interface DocsLayoutProps {
-  children?: ReactNode;
+  children?: ReactNode
 }
 
 const MainWrapper = styled(Box)(
@@ -17,7 +16,7 @@ const MainWrapper = styled(Box)(
     display: flex;
     height: 100%;
 `
-);
+)
 
 const MainContent = styled(Box)(
   ({ theme }) => `
@@ -25,37 +24,34 @@ const MainContent = styled(Box)(
     margin-top: ${theme.spacing(10)};
     overflow: auto;
 `
-);
+)
 
-const DocsLayout: FC<DocsLayoutProps> = ({ children }) => {
-  return (
-    <>
-      <Header />
-      <MainWrapper>
-        <Sidebar />
-        <MainContent>
-          <Container maxWidth="lg">
-            <Card
-              sx={{
-                minHeight: 650,
-                pb: 3,
-                mb: 6,
-                borderTopRightRadius: 0,
-                borderTopLeftRadius: 0
-              }}
-            >
-              {children || {children}}
-            </Card>
-          </Container>
-          <Footer />
-        </MainContent>
-      </MainWrapper>
-    </>
-  );
-};
+const DocsLayout: FC<DocsLayoutProps> = ({ children }) => (
+  <>
+    <Header />
+    <MainWrapper>
+      <Sidebar />
+      <MainContent>
+        <Container maxWidth="lg">
+          <Card
+            sx={{
+              minHeight: 650,
+              pb: 3,
+              mb: 6,
+              borderTopRightRadius: 0,
+              borderTopLeftRadius: 0,
+            }}>
+            {children || { children }}
+          </Card>
+        </Container>
+        <Footer />
+      </MainContent>
+    </MainWrapper>
+  </>
+)
 
 DocsLayout.propTypes = {
-  children: PropTypes.node
-};
+  children: PropTypes.node,
+}
 
-export default DocsLayout;
+export default DocsLayout

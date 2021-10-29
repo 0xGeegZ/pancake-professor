@@ -10,15 +10,15 @@ import {
   Box,
   ListItemText,
   ListItemAvatar,
-  useTheme
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import Label from 'src/client/components/Label';
-import { formatDistance, subDays, subHours, subMinutes } from 'date-fns';
+  useTheme,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import Label from 'src/client/components/Label'
+import { formatDistance, subDays, subHours, subMinutes } from 'date-fns'
 
 function Notifications() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   return (
     <Card>
@@ -44,7 +44,7 @@ function Notifications() {
               secondaryTypographyProps={{
                 variant: 'body2',
                 color: 'textSecondary',
-                noWrap: true
+                noWrap: true,
               }}
             />
             <Label color="error">{t('Time-Off')}</Label>
@@ -54,7 +54,7 @@ function Notifications() {
               </Typography>
               <Typography variant="subtitle1" align="right" noWrap>
                 {formatDistance(subMinutes(new Date(), 12), new Date(), {
-                  addSuffix: true
+                  addSuffix: true,
                 })}
               </Typography>
             </Box>
@@ -76,7 +76,7 @@ function Notifications() {
               secondaryTypographyProps={{
                 variant: 'body2',
                 color: 'textSecondary',
-                noWrap: true
+                noWrap: true,
               }}
             />
             <Label color="info">{t('Patients')}</Label>
@@ -86,7 +86,7 @@ function Notifications() {
               </Typography>
               <Typography variant="subtitle1" align="right" noWrap>
                 {formatDistance(subHours(new Date(), 13), new Date(), {
-                  addSuffix: true
+                  addSuffix: true,
                 })}
               </Typography>
             </Box>
@@ -102,9 +102,8 @@ function Notifications() {
               <Avatar
                 sx={{
                   background: `${theme.colors.primary.main}`,
-                  color: `${theme.colors.alpha.white[100]}`
-                }}
-              >
+                  color: `${theme.colors.alpha.white[100]}`,
+                }}>
                 PD
               </Avatar>
             </ListItemAvatar>
@@ -115,7 +114,7 @@ function Notifications() {
               secondaryTypographyProps={{
                 variant: 'body2',
                 color: 'textSecondary',
-                noWrap: true
+                noWrap: true,
               }}
             />
             <Label color="error">{t('Time-Off')}</Label>
@@ -125,7 +124,7 @@ function Notifications() {
               </Typography>
               <Typography variant="subtitle1" align="right" noWrap>
                 {formatDistance(subDays(new Date(), 14), new Date(), {
-                  addSuffix: true
+                  addSuffix: true,
                 })}
               </Typography>
             </Box>
@@ -136,7 +135,7 @@ function Notifications() {
         </ListItem>
       </List>
     </Card>
-  );
+  )
 }
 
-export default Notifications;
+export default Notifications

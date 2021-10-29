@@ -1,5 +1,5 @@
-import { mock } from 'src/client/utils/axios';
-import type { Product } from 'src/client/models/product';
+import { mock } from 'src/client/utils/axios'
+import type { Product } from 'src/client/models/product'
 
 const products: Product[] = [
   {
@@ -253,15 +253,13 @@ const products: Product[] = [
     `,
     categories: ['Apple', 'Tablets', 'Electronics'],
   },
-];
+]
 
-mock.onGet('/api/products').reply(() => {
-  return [200, { products }];
-});
+mock.onGet('/api/products').reply(() => [200, { products }])
 
 mock.onGet('/api/product').reply((config) => {
-  const { productId } = config.params;
-  const product = products.find((_product) => _product.id === productId);
+  const { productId } = config.params
+  const product = products.find((_product) => _product.id === productId)
 
-  return [200, { product }];
-});
+  return [200, { product }]
+})

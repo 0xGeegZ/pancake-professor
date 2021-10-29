@@ -1,4 +1,4 @@
-import { useRef, useState, ChangeEvent, MouseEvent } from 'react';
+import { useRef, useState, ChangeEvent, MouseEvent } from 'react'
 import {
   Button,
   Card,
@@ -19,15 +19,15 @@ import {
   TablePagination,
   useTheme,
   Badge,
-  TableContainer
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import Label from 'src/client/components/Label';
-import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import { formatDistance, subMinutes, subSeconds, subHours } from 'date-fns';
+  TableContainer,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import Label from 'src/client/components/Label'
+import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import { formatDistance, subMinutes, subSeconds, subHours } from 'date-fns'
 
 const DotLegend = styled('span')(
   ({ theme }) => `
@@ -38,62 +38,57 @@ const DotLegend = styled('span')(
     margin-right: ${theme.spacing(0.5)};
     border: ${theme.colors.alpha.white[100]} solid 2px;
 `
-);
+)
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
     width: ${theme.spacing(5)};
     height: ${theme.spacing(5)};
 `
-);
+)
 
 function PendingTickets() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
-  const [page, setPage] = useState(2);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(2)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
 
-  const handleChangePage = (
-    _event: MouseEvent<HTMLButtonElement> | null,
-    newPage: number
-  ) => {
-    setPage(newPage);
-  };
+  const handleChangePage = (_event: MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+    setPage(newPage)
+  }
 
-  const handleChangeRowsPerPage = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10))
+    setPage(0)
+  }
 
   const periods = [
     {
       value: 'all',
-      text: t('All tickets')
+      text: t('All tickets'),
     },
     {
       value: 'new',
-      text: t('Newest')
+      text: t('Newest'),
     },
     {
       value: 'updated',
-      text: t('Recently updated')
+      text: t('Recently updated'),
     },
     {
       value: 'progress',
-      text: t('In progress')
+      text: t('In progress'),
     },
     {
       value: 'closed',
-      text: t('Closed')
-    }
-  ];
+      text: t('Closed'),
+    },
+  ]
 
-  const actionRef1 = useRef<any>(null);
-  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false);
-  const [period, setPeriod] = useState<string>(periods[2].text);
+  const actionRef1 = useRef<any>(null)
+  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false)
+  const [period, setPeriod] = useState<string>(periods[2].text)
 
   return (
     <Card>
@@ -105,32 +100,28 @@ function PendingTickets() {
               variant="outlined"
               ref={actionRef1}
               onClick={() => setOpenMenuPeriod(true)}
-              endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}
-            >
+              endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}>
               {period}
             </Button>
             <Menu
               anchorEl={actionRef1.current}
               onClose={() => setOpenMenuPeriod(false)}
               open={openPeriod}
-
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'right'
-              }}
-            >
+                horizontal: 'right',
+              }}>
               {periods.map((_period) => (
                 <MenuItem
                   key={_period.value}
                   onClick={() => {
-                    setPeriod(_period.text);
-                    setOpenMenuPeriod(false);
-                  }}
-                >
+                    setPeriod(_period.text)
+                    setOpenMenuPeriod(false)
+                  }}>
                   {_period.text}
                 </MenuItem>
               ))}
@@ -168,35 +159,24 @@ function PendingTickets() {
                     <Badge
                       anchorOrigin={{
                         vertical: 'bottom',
-                        horizontal: 'right'
+                        horizontal: 'right',
                       }}
                       overlap="circular"
                       badgeContent={
                         <Tooltip
                           arrow
                           placement="top"
-                          title={
-                            t('Offline since') +
-                            ' ' +
-                            formatDistance(
-                              subHours(new Date(), 6),
-                              new Date(),
-                              { addSuffix: true }
-                            )
-                          }
-                        >
+                          title={`${t('Offline since')} ${formatDistance(subHours(new Date(), 6), new Date(), {
+                            addSuffix: true,
+                          })}`}>
                           <DotLegend
                             style={{
-                              background: `${theme.colors.error.main}`
+                              background: `${theme.colors.error.main}`,
                             }}
                           />
                         </Tooltip>
-                      }
-                    >
-                      <AvatarWrapper
-                        alt="Remy Sharp"
-                        src="/static/images/avatars/4.jpg"
-                      />
+                      }>
+                      <AvatarWrapper alt="Remy Sharp" src="/static/images/avatars/4.jpg" />
                     </Badge>
                     <Box sx={{ ml: 1 }}>
                       <Typography variant="h5" noWrap>
@@ -216,13 +196,12 @@ function PendingTickets() {
                     <IconButton
                       sx={{
                         '&:hover': {
-                          background: theme.colors.primary.lighter
+                          background: theme.colors.primary.lighter,
                         },
-                        color: theme.palette.primary.main
+                        color: theme.palette.primary.main,
                       }}
                       color="inherit"
-                      size="small"
-                    >
+                      size="small">
                       <LaunchTwoToneIcon fontSize="small" />
                     </IconButton>
                   </Tooltip>
@@ -230,11 +209,10 @@ function PendingTickets() {
                     <IconButton
                       sx={{
                         '&:hover': { background: theme.colors.error.lighter },
-                        color: theme.palette.error.main
+                        color: theme.palette.error.main,
                       }}
                       color="inherit"
-                      size="small"
-                    >
+                      size="small">
                       <DeleteTwoToneIcon fontSize="small" />
                     </IconButton>
                   </Tooltip>
@@ -253,35 +231,24 @@ function PendingTickets() {
                     <Badge
                       anchorOrigin={{
                         vertical: 'bottom',
-                        horizontal: 'right'
+                        horizontal: 'right',
                       }}
                       overlap="circular"
                       badgeContent={
                         <Tooltip
                           arrow
                           placement="top"
-                          title={
-                            t('Online since') +
-                            ' ' +
-                            formatDistance(
-                              subMinutes(new Date(), 37),
-                              new Date(),
-                              { addSuffix: true }
-                            )
-                          }
-                        >
+                          title={`${t('Online since')} ${formatDistance(subMinutes(new Date(), 37), new Date(), {
+                            addSuffix: true,
+                          })}`}>
                           <DotLegend
                             style={{
-                              background: `${theme.colors.success.main}`
+                              background: `${theme.colors.success.main}`,
                             }}
                           />
                         </Tooltip>
-                      }
-                    >
-                      <AvatarWrapper
-                        alt="Remy Sharp"
-                        src="/static/images/avatars/1.jpg"
-                      />
+                      }>
+                      <AvatarWrapper alt="Remy Sharp" src="/static/images/avatars/1.jpg" />
                     </Badge>
                     <Box sx={{ ml: 1 }}>
                       <Typography variant="h5" noWrap>
@@ -303,13 +270,12 @@ function PendingTickets() {
                     <IconButton
                       sx={{
                         '&:hover': {
-                          background: theme.colors.primary.lighter
+                          background: theme.colors.primary.lighter,
                         },
-                        color: theme.palette.primary.main
+                        color: theme.palette.primary.main,
                       }}
                       color="inherit"
-                      size="small"
-                    >
+                      size="small">
                       <LaunchTwoToneIcon fontSize="small" />
                     </IconButton>
                   </Tooltip>
@@ -317,11 +283,10 @@ function PendingTickets() {
                     <IconButton
                       sx={{
                         '&:hover': { background: theme.colors.error.lighter },
-                        color: theme.palette.error.main
+                        color: theme.palette.error.main,
                       }}
                       color="inherit"
-                      size="small"
-                    >
+                      size="small">
                       <DeleteTwoToneIcon fontSize="small" />
                     </IconButton>
                   </Tooltip>
@@ -340,35 +305,24 @@ function PendingTickets() {
                     <Badge
                       anchorOrigin={{
                         vertical: 'bottom',
-                        horizontal: 'right'
+                        horizontal: 'right',
                       }}
                       overlap="circular"
                       badgeContent={
                         <Tooltip
                           arrow
                           placement="top"
-                          title={
-                            t('Idle since') +
-                            ' ' +
-                            formatDistance(
-                              subSeconds(new Date(), 77),
-                              new Date(),
-                              { addSuffix: true }
-                            )
-                          }
-                        >
+                          title={`${t('Idle since')} ${formatDistance(subSeconds(new Date(), 77), new Date(), {
+                            addSuffix: true,
+                          })}`}>
                           <DotLegend
                             style={{
-                              background: `${theme.colors.warning.main}`
+                              background: `${theme.colors.warning.main}`,
                             }}
                           />
                         </Tooltip>
-                      }
-                    >
-                      <AvatarWrapper
-                        alt="Remy Sharp"
-                        src="/static/images/avatars/2.jpg"
-                      />
+                      }>
+                      <AvatarWrapper alt="Remy Sharp" src="/static/images/avatars/2.jpg" />
                     </Badge>
                     <Box sx={{ ml: 1 }}>
                       <Typography variant="h5" noWrap>
@@ -388,13 +342,12 @@ function PendingTickets() {
                     <IconButton
                       sx={{
                         '&:hover': {
-                          background: theme.colors.primary.lighter
+                          background: theme.colors.primary.lighter,
                         },
-                        color: theme.palette.primary.main
+                        color: theme.palette.primary.main,
                       }}
                       color="inherit"
-                      size="small"
-                    >
+                      size="small">
                       <LaunchTwoToneIcon fontSize="small" />
                     </IconButton>
                   </Tooltip>
@@ -402,11 +355,10 @@ function PendingTickets() {
                     <IconButton
                       sx={{
                         '&:hover': { background: theme.colors.error.lighter },
-                        color: theme.palette.error.main
+                        color: theme.palette.error.main,
                       }}
                       color="inherit"
-                      size="small"
-                    >
+                      size="small">
                       <DeleteTwoToneIcon fontSize="small" />
                     </IconButton>
                   </Tooltip>
@@ -429,7 +381,7 @@ function PendingTickets() {
         />
       </Box>
     </Card>
-  );
+  )
 }
 
-export default PendingTickets;
+export default PendingTickets

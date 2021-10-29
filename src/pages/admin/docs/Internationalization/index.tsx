@@ -1,11 +1,12 @@
-import { Container, Grid, Typography } from '@mui/material';
-import Head from 'next/head';
-import { Prism } from 'react-syntax-highlighter';
-import a11yDark from 'react-syntax-highlighter/dist/cjs/styles/prism/a11y-dark';
-import PageHeader from 'src/client/components/PageHeaderDocs';
-import DocsLayout from 'src/client/layouts/DocsLayout';
+import { Container, Grid, Typography } from '@mui/material'
+import Head from 'next/head'
+import { Prism } from 'react-syntax-highlighter'
+import a11yDark from 'react-syntax-highlighter/dist/cjs/styles/prism/a11y-dark'
+import PageHeader from 'src/client/components/PageHeaderDocs'
+import DocsLayout from 'src/client/layouts/DocsLayout'
 
 import type { ReactElement } from 'react'
+
 function Internationalization() {
   const intDir = `📦i18n
   ┣ 📂translations
@@ -38,7 +39,7 @@ export default Logo;`
       <Container maxWidth={false}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <PageHeader heading="Internationalization" subheading=""></PageHeader>
+            <PageHeader heading="Internationalization" subheading="" />
           </Grid>
           <Grid item xs={12}>
             <Typography paragraph>
