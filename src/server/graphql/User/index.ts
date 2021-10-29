@@ -61,18 +61,17 @@ const queries = extendType({
       //   ids: list(stringArg()), // or list('String') -> [String]
       // },
       // resolve: (_, { id }, ctx) => {
-      resolve: (_, args, ctx) => {
+      resolve: (_, args, ctx) =>
         // resolve: (_, __, ctx) => {
         // resolve() {
         // if (!ctx.user?.id) return null
 
         // return prisma.user.findMany({
-        return prisma.user.findMany({
+        prisma.user.findMany({
           // where: {
           //   id: ctx.user.id,
           // },
-        })
-      },
+        }),
     })
   },
 })
@@ -92,15 +91,15 @@ const mutations = extendType({
         if (!ctx.user?.id || id !== ctx.user.id) return null
 
         const data = {
-          name: name ? name : '',
-          email: email ? email : '',
+          name: name || '',
+          email: email || '',
           address,
           // updatedAt: new Date(),
           modifiedAt: new Date(),
         }
 
         return await prisma.user.update({
-          where: { id: id },
+          where: { id },
           data,
         })
       },

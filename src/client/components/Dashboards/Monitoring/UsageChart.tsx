@@ -1,9 +1,9 @@
-import { FC } from 'react';
-import PropTypes from 'prop-types';
-import { Doughnut } from 'react-chartjs-2';
+import { FC } from 'react'
+import PropTypes from 'prop-types'
+import { Doughnut } from 'react-chartjs-2'
 
 interface ChartProps {
-  data: any;
+  data: any
 }
 
 const UsageChart: FC<ChartProps> = ({ data: dataProp, ...rest }) => {
@@ -11,10 +11,10 @@ const UsageChart: FC<ChartProps> = ({ data: dataProp, ...rest }) => {
     datasets: dataProp.datasets.map((dataset) => ({
       ...dataset,
       borderWidth: 0,
-      hoverBorderWidth: 0
+      hoverBorderWidth: 0,
     })),
-    labels: dataProp.labels
-  };
+    labels: dataProp.labels,
+  }
 
   const options = {
     responsive: true,
@@ -22,21 +22,21 @@ const UsageChart: FC<ChartProps> = ({ data: dataProp, ...rest }) => {
     animation: false,
     cutoutPercentage: 60,
     legend: {
-      display: false
+      display: false,
     },
     layout: {
-      padding: 0
+      padding: 0,
     },
     tooltips: {
-      enabled: false
-    }
-  };
+      enabled: false,
+    },
+  }
 
-  return <Doughnut data={data} options={options} {...rest} />;
-};
+  return <Doughnut data={data} options={options} {...rest} />
+}
 
 UsageChart.propTypes = {
-  data: PropTypes.object.isRequired
-};
+  data: PropTypes.object.isRequired,
+}
 
-export default UsageChart;
+export default UsageChart

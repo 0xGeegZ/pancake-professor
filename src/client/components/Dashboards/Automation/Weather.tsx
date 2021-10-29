@@ -1,30 +1,20 @@
-import {
-  Box,
-  Typography,
-  Card,
-  Divider,
-  Grid,
-  Button,
-  useTheme,
-  Stack
-} from '@mui/material';
+import { Box, Typography, Card, Divider, Grid, Button, useTheme, Stack } from '@mui/material'
 
-import { useTranslation } from 'react-i18next';
-import { format } from 'date-fns';
-import { styled } from '@mui/material/styles';
-import CloudTwoToneIcon from '@mui/icons-material/CloudTwoTone';
-import AirTwoToneIcon from '@mui/icons-material/AirTwoTone';
-import MyLocationTwoToneIcon from '@mui/icons-material/MyLocationTwoTone';
-import WbSunnyTwoToneIcon from '@mui/icons-material/WbSunnyTwoTone';
-import WaterTwoToneIcon from '@mui/icons-material/WaterTwoTone';
-import OpacityTwoToneIcon from '@mui/icons-material/OpacityTwoTone';
-import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone';
-import Gauge from 'src/client/components/Gauge';
-import { buildStyles } from 'react-circular-progressbar';
-import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone';
-import { addDays } from 'date-fns';
-import GrainTwoToneIcon from '@mui/icons-material/GrainTwoTone';
-import ThermostatAutoTwoToneIcon from '@mui/icons-material/ThermostatAutoTwoTone';
+import { useTranslation } from 'react-i18next'
+import { format, addDays } from 'date-fns'
+import { styled } from '@mui/material/styles'
+import CloudTwoToneIcon from '@mui/icons-material/CloudTwoTone'
+import AirTwoToneIcon from '@mui/icons-material/AirTwoTone'
+import MyLocationTwoToneIcon from '@mui/icons-material/MyLocationTwoTone'
+import WbSunnyTwoToneIcon from '@mui/icons-material/WbSunnyTwoTone'
+import WaterTwoToneIcon from '@mui/icons-material/WaterTwoTone'
+import OpacityTwoToneIcon from '@mui/icons-material/OpacityTwoTone'
+import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone'
+import Gauge from 'src/client/components/Gauge'
+import { buildStyles } from 'react-circular-progressbar'
+import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone'
+import GrainTwoToneIcon from '@mui/icons-material/GrainTwoTone'
+import ThermostatAutoTwoToneIcon from '@mui/icons-material/ThermostatAutoTwoTone'
 
 const WeatherBox = styled(Card)(
   ({ theme }) => `
@@ -33,7 +23,7 @@ const WeatherBox = styled(Card)(
       overflow: hidden;
       position: relative;
 `
-);
+)
 
 const WeatherBoxContent = styled(Box)(
   ({ theme }) => `
@@ -41,7 +31,7 @@ const WeatherBoxContent = styled(Box)(
       position: relative;
       color: ${theme.colors.alpha.trueWhite[100]};
 `
-);
+)
 
 const TopBarImage = styled(Box)(
   () => `
@@ -53,7 +43,7 @@ const TopBarImage = styled(Box)(
     height: 100%;
     opacity: .3;
 `
-);
+)
 
 const WeatherIcon = styled(Box)(
   () => `
@@ -65,7 +55,7 @@ const WeatherIcon = styled(Box)(
       max-width: 158px;
     }
 `
-);
+)
 
 const BoxWeather = styled(Box)(
   ({ theme }) => `
@@ -75,7 +65,7 @@ const BoxWeather = styled(Box)(
     padding: ${theme.spacing(3)};
     border-radius: ${theme.general.borderRadius};
 `
-);
+)
 
 const BoxWeatherSmall = styled(Box)(
   ({ theme }) => `
@@ -99,7 +89,7 @@ const BoxWeatherSmall = styled(Box)(
       .MuiSvgIcon-root {
         width: 18px;
         height: 18px;
-        margin-right: ${theme.spacing(.5)};
+        margin-right: ${theme.spacing(0.5)};
       }
     }
 
@@ -108,13 +98,13 @@ const BoxWeatherSmall = styled(Box)(
       line-height: 1.5;
     }
 `
-);
+)
 
 const DividerWrapper = styled(Divider)(
   ({ theme }) => `
     background: ${theme.colors.alpha.white[10]};
 `
-);
+)
 
 const LinearHighLow = styled(Box)(
   () => `
@@ -123,7 +113,7 @@ const LinearHighLow = styled(Box)(
     border-radius: 50px;
     background: linear-gradient(90deg, rgba(103,188,255,1) 0%, rgba(255,184,90,1) 100%);
 `
-);
+)
 
 const LinearUv = styled(Box)(
   ({ theme }) => `
@@ -145,7 +135,7 @@ const LinearUv = styled(Box)(
       width: 8px;
     }
 `
-);
+)
 
 const ButtonTransparent = styled(Button)(
   ({ theme }) => `
@@ -157,16 +147,16 @@ const ButtonTransparent = styled(Button)(
       color: ${theme.colors.alpha.trueWhite[100]};
     }
 `
-);
+)
 
 function Weather() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
   // const { user } = useAuth();
-  const theme = useTheme();
+  const theme = useTheme()
 
   const data = {
-    percentage: 67
-  };
+    percentage: 67,
+  }
 
   return (
     <WeatherBox>
@@ -185,7 +175,10 @@ function Weather() {
                 <BoxWeather sx={{ p: 2, display: 'flex', alignItems: 'center', mb: 2 }}>
                   <ThermostatAutoTwoToneIcon />
                   <Typography sx={{ pl: 1 }}>
-                    <b>27<sup>°</sup></b> {t('set for')} <b>3 hours</b>
+                    <b>
+                      27<sup>°</sup>
+                    </b>{' '}
+                    {t('set for')} <b>3 hours</b>
                   </Typography>
                 </BoxWeather>
               </Grid>
@@ -197,17 +190,15 @@ function Weather() {
                   </Typography>
                   <Box display="flex" justifyContent="center" flexDirection="column" sx={{ height: 100 }}>
                     <Box mb={2}>
-                      <Typography variant="h2">
-                        2
-                      </Typography>
-                      <Typography variant="h4">
-                        {t('Low')}
-                      </Typography>
+                      <Typography variant="h2">2</Typography>
+                      <Typography variant="h4">{t('Low')}</Typography>
                     </Box>
                     <LinearUv />
                   </Box>
                   <Typography variant="body2">
-                    Use sun protection<br />from 12PM to 3PM.
+                    Use sun protection
+                    <br />
+                    from 12PM to 3PM.
                   </Typography>
                 </BoxWeatherSmall>
               </Grid>
@@ -219,13 +210,12 @@ function Weather() {
                   </Typography>
                   <Box display="flex" justifyContent="center" flexDirection="column" sx={{ height: 100 }}>
                     <Box mb={2}>
-                      <Typography variant="h1">
-                        92%
-                      </Typography>
+                      <Typography variant="h1">92%</Typography>
                     </Box>
                   </Box>
                   <Typography variant="body2">
-                    The dew point is<br />
+                    The dew point is
+                    <br />
                     16 <sup>°</sup>
                     right now.
                   </Typography>
@@ -239,16 +229,13 @@ function Weather() {
                   </Typography>
                   <Box display="flex" justifyContent="center" flexDirection="column" sx={{ height: 100 }}>
                     <Box mb={2}>
-                      <Typography variant="h2">
-                        1.15"
-                      </Typography>
-                      <Typography variant="h4">
-                        {t('in last 6h')}
-                      </Typography>
+                      <Typography variant="h2">1.15"</Typography>
+                      <Typography variant="h4">{t('in last 6h')}</Typography>
                     </Box>
                   </Box>
                   <Typography variant="body2">
-                    .75" expected in <br />next 24h.
+                    .75" expected in <br />
+                    next 24h.
                   </Typography>
                 </BoxWeatherSmall>
               </Grid>
@@ -264,17 +251,12 @@ function Weather() {
                       styles={buildStyles({ rotation: 1 / 2 + 1 / 5.7 })}
                       value={data.percentage}
                       strokeWidth={10}
-                      text={``}
+                      text=""
                       color="trueWhite"
-                      size="medium"
-                    >
+                      size="medium">
                       <ArrowDownwardTwoToneIcon />
-                      <Typography variant="h3">
-                        29.98
-                      </Typography>
-                      <Typography variant="body2">
-                        inHg
-                      </Typography>
+                      <Typography variant="h3">29.98</Typography>
+                      <Typography variant="body2">inHg</Typography>
                     </Gauge>
                   </Box>
                 </BoxWeatherSmall>
@@ -286,17 +268,23 @@ function Weather() {
               <Grid container spacing={1}>
                 <Grid item md={6}>
                   <WeatherIcon>
-                    <img src="/static/images/placeholders/illustrations/partly-cloudy-day-rain.svg" alt="Partly cloudy" />
+                    <img
+                      src="/static/images/placeholders/illustrations/partly-cloudy-day-rain.svg"
+                      alt="Partly cloudy"
+                    />
                   </WeatherIcon>
                 </Grid>
                 <Grid item md={6}>
-                  <Typography noWrap sx={{ fontWeight: 'bold', fontSize: `${theme.typography.pxToRem(45)}` }} variant="h1">
+                  <Typography
+                    noWrap
+                    sx={{ fontWeight: 'bold', fontSize: `${theme.typography.pxToRem(45)}` }}
+                    variant="h1">
                     17<sup>°</sup>
                   </Typography>
                   <Typography noWrap sx={{ pt: 2, pb: 1 }} variant="h4">
                     {t('Rain Shower')}
                   </Typography>
-                  <Typography fontWeight='normal' noWrap variant="h5">
+                  <Typography fontWeight="normal" noWrap variant="h5">
                     Today, {format(new Date(), 'MMM dd yyyy')}
                   </Typography>
                   <Box display="flex" pt={2} alignItems="center">
@@ -310,9 +298,7 @@ function Weather() {
               <DividerWrapper sx={{ mt: 3, mb: 2 }} />
               <Stack direction="row" justifyContent="space-between" alignItems="center">
                 <Box sx={{ width: 65 }}>
-                  <Typography variant="h5">
-                    {t('Today')}
-                  </Typography>
+                  <Typography variant="h5">{t('Today')}</Typography>
                 </Box>
                 <Box display="flex" alignItems="center" px={2}>
                   <CloudTwoToneIcon />
@@ -452,16 +438,13 @@ function Weather() {
                 </Box>
               </Stack>
               <DividerWrapper sx={{ mt: 2, mb: 3 }} />
-              <ButtonTransparent fullWidth>
-                {t('View 10-day forecast')}
-              </ButtonTransparent>
+              <ButtonTransparent fullWidth>{t('View 10-day forecast')}</ButtonTransparent>
             </BoxWeather>
           </Grid>
         </Grid>
-
       </WeatherBoxContent>
-    </WeatherBox >
-  );
+    </WeatherBox>
+  )
 }
 
-export default Weather;
+export default Weather

@@ -3,6 +3,7 @@ import { FieldProps } from 'formik';
 import { FormControlProps } from '@mui/material/FormControl';
 import { InputLabelProps } from '@mui/material/InputLabel';
 import { InputProps } from '@mui/material/Input';
+
 export interface SimpleFileUploadProps extends FieldProps {
   label: string;
   accept: string;

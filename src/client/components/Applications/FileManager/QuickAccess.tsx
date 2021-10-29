@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useState } from 'react'
 import {
   Card,
   Box,
@@ -19,22 +19,21 @@ import {
   TableBody,
   Tooltip,
   Drawer,
-  TableContainer
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled, useTheme } from '@mui/material/styles';
-import { formatDistance, subDays } from 'date-fns';
+  TableContainer,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled, useTheme } from '@mui/material/styles'
+import { formatDistance, subDays } from 'date-fns'
 
-import SidebarDrawer from './SidebarDrawer';
-
-import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone';
-import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone';
-import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
-import TextSnippetTwoToneIcon from '@mui/icons-material/TextSnippetTwoTone';
-import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfTwoTone';
-import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone';
-import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone'
+import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
+import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone'
+import TextSnippetTwoToneIcon from '@mui/icons-material/TextSnippetTwoTone'
+import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfTwoTone'
+import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone'
+import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import SidebarDrawer from './SidebarDrawer'
 
 const CardActionAreaWrapper = styled(CardActionArea)(
   ({ theme }) => `
@@ -66,41 +65,29 @@ const CardActionAreaWrapper = styled(CardActionArea)(
         }
       }
 `
-);
+)
 
 function QuickAccess() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
-  const [tabs, setTab] = useState<string | null>('grid_view');
+  const [tabs, setTab] = useState<string | null>('grid_view')
 
-  const handleViewOrientation = (
-    _event: MouseEvent<HTMLElement>,
-    newValue: string | null
-  ) => {
-    setTab(newValue);
-  };
+  const handleViewOrientation = (_event: MouseEvent<HTMLElement>, newValue: string | null) => {
+    setTab(newValue)
+  }
 
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+    setMobileOpen(!mobileOpen)
+  }
 
   return (
     <>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ pb: 3 }}
-      >
+      <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ pb: 3 }}>
         <Typography variant="h3">{t('Quick Access')}</Typography>
-        <ToggleButtonGroup
-          value={tabs}
-          exclusive
-          onChange={handleViewOrientation}
-        >
+        <ToggleButtonGroup value={tabs} exclusive onChange={handleViewOrientation}>
           <ToggleButton disableRipple value="grid_view">
             <ViewWeekTwoToneIcon />
           </ToggleButton>
@@ -120,10 +107,9 @@ function QuickAccess() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: `${theme.typography.pxToRem(55)}`
+                      fontSize: `${theme.typography.pxToRem(55)}`,
                     }}
-                    color="text.secondary"
-                  >
+                    color="text.secondary">
                     <TextSnippetTwoToneIcon fontSize="inherit" />
                   </Typography>
                 </CardActionAreaWrapper>
@@ -133,9 +119,8 @@ function QuickAccess() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    p: 2
-                  }}
-                >
+                    p: 2,
+                  }}>
                   <Box>
                     <Box display="flex" alignItems="center" pb={0.5}>
                       <TextSnippetTwoToneIcon />
@@ -146,11 +131,13 @@ function QuickAccess() {
                     <Typography component="span" variant="subtitle1">
                       {t('Edited')}{' '}
                       {formatDistance(subDays(new Date(), 3), new Date(), {
-                        addSuffix: true
+                        addSuffix: true,
                       })}{' '}
                       {t('by')}{' '}
                     </Typography>
-                    <Link href="#" underline="hover">Kate</Link>
+                    <Link href="#" underline="hover">
+                      Kate
+                    </Link>
                   </Box>
                   <IconButton size="small" color="primary">
                     <MoreHorizTwoToneIcon />
@@ -161,10 +148,7 @@ function QuickAccess() {
             <Grid item xs={12} sm={6}>
               <Card>
                 <CardActionAreaWrapper onClick={handleDrawerToggle}>
-                  <img
-                    src="/static/images/placeholders/fitness/4.jpg"
-                    alt="..."
-                  />
+                  <img src="/static/images/placeholders/fitness/4.jpg" alt="..." />
                 </CardActionAreaWrapper>
                 <Divider />
                 <CardActions
@@ -172,9 +156,8 @@ function QuickAccess() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    p: 2
-                  }}
-                >
+                    p: 2,
+                  }}>
                   <Box>
                     <Box display="flex" alignItems="center" pb={0.5}>
                       <TextSnippetTwoToneIcon />
@@ -185,11 +168,13 @@ function QuickAccess() {
                     <Typography component="span" variant="subtitle1">
                       {t('Edited')}{' '}
                       {formatDistance(subDays(new Date(), 4), new Date(), {
-                        addSuffix: true
+                        addSuffix: true,
                       })}{' '}
                       {t('by')}{' '}
                     </Typography>
-                    <Link href="#" underline="hover">John</Link>
+                    <Link href="#" underline="hover">
+                      John
+                    </Link>
                   </Box>
                   <IconButton size="small" color="primary">
                     <MoreHorizTwoToneIcon />
@@ -205,10 +190,9 @@ function QuickAccess() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: `${theme.typography.pxToRem(55)}`
+                      fontSize: `${theme.typography.pxToRem(55)}`,
                     }}
-                    color="text.secondary"
-                  >
+                    color="text.secondary">
                     <PictureAsPdfTwoToneIcon fontSize="inherit" />
                   </Typography>
                 </CardActionAreaWrapper>
@@ -218,9 +202,8 @@ function QuickAccess() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    p: 2
-                  }}
-                >
+                    p: 2,
+                  }}>
                   <Box>
                     <Box display="flex" alignItems="center" pb={0.5}>
                       <PictureAsPdfTwoToneIcon />
@@ -246,10 +229,9 @@ function QuickAccess() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: `${theme.typography.pxToRem(55)}`
+                      fontSize: `${theme.typography.pxToRem(55)}`,
                     }}
-                    color="text.secondary"
-                  >
+                    color="text.secondary">
                     <ArchiveTwoToneIcon fontSize="inherit" />
                   </Typography>
                 </CardActionAreaWrapper>
@@ -259,9 +241,8 @@ function QuickAccess() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'space-between',
-                    p: 2
-                  }}
-                >
+                    p: 2,
+                  }}>
                   <Box>
                     <Box display="flex" alignItems="center" pb={0.5}>
                       <ArchiveTwoToneIcon />
@@ -315,7 +296,7 @@ function QuickAccess() {
                       <TableCell>
                         <Typography variant="h6" noWrap>
                           {formatDistance(subDays(new Date(), 54), new Date(), {
-                            addSuffix: true
+                            addSuffix: true,
                           })}
                         </Typography>
                       </TableCell>
@@ -325,13 +306,12 @@ function QuickAccess() {
                             onClick={handleDrawerToggle}
                             sx={{
                               '&:hover': {
-                                background: theme.colors.primary.lighter
+                                background: theme.colors.primary.lighter,
                               },
-                              color: theme.palette.primary.main
+                              color: theme.palette.primary.main,
                             }}
                             color="inherit"
-                            size="small"
-                          >
+                            size="small">
                             <LaunchTwoToneIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
@@ -339,13 +319,12 @@ function QuickAccess() {
                           <IconButton
                             sx={{
                               '&:hover': {
-                                background: theme.colors.error.lighter
+                                background: theme.colors.error.lighter,
                               },
-                              color: theme.palette.error.main
+                              color: theme.palette.error.main,
                             }}
                             color="inherit"
-                            size="small"
-                          >
+                            size="small">
                             <DeleteTwoToneIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
@@ -362,10 +341,7 @@ function QuickAccess() {
                       </TableCell>
                       <TableCell>
                         <Box display="flex" alignItems="center">
-                          <Avatar
-                            sx={{ mr: 1 }}
-                            src="/static/images/avatars/3.jpg"
-                          />
+                          <Avatar sx={{ mr: 1 }} src="/static/images/avatars/3.jpg" />
                           <Typography variant="h6" noWrap>
                             Kitty Herbert
                           </Typography>
@@ -374,7 +350,7 @@ function QuickAccess() {
                       <TableCell>
                         <Typography variant="h6" noWrap>
                           {formatDistance(subDays(new Date(), 15), new Date(), {
-                            addSuffix: true
+                            addSuffix: true,
                           })}
                         </Typography>
                       </TableCell>
@@ -384,13 +360,12 @@ function QuickAccess() {
                             onClick={handleDrawerToggle}
                             sx={{
                               '&:hover': {
-                                background: theme.colors.primary.lighter
+                                background: theme.colors.primary.lighter,
                               },
-                              color: theme.palette.primary.main
+                              color: theme.palette.primary.main,
                             }}
                             color="inherit"
-                            size="small"
-                          >
+                            size="small">
                             <LaunchTwoToneIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
@@ -398,13 +373,12 @@ function QuickAccess() {
                           <IconButton
                             sx={{
                               '&:hover': {
-                                background: theme.colors.error.lighter
+                                background: theme.colors.error.lighter,
                               },
-                              color: theme.palette.error.main
+                              color: theme.palette.error.main,
                             }}
                             color="inherit"
-                            size="small"
-                          >
+                            size="small">
                             <DeleteTwoToneIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
@@ -421,10 +395,7 @@ function QuickAccess() {
                       </TableCell>
                       <TableCell>
                         <Box display="flex" alignItems="center">
-                          <Avatar
-                            sx={{ mr: 1 }}
-                            src="/static/images/avatars/4.jpg"
-                          />
+                          <Avatar sx={{ mr: 1 }} src="/static/images/avatars/4.jpg" />
                           <Typography variant="h6" noWrap>
                             Ash Carleton
                           </Typography>
@@ -433,7 +404,7 @@ function QuickAccess() {
                       <TableCell>
                         <Typography variant="h6" noWrap>
                           {formatDistance(subDays(new Date(), 32), new Date(), {
-                            addSuffix: true
+                            addSuffix: true,
                           })}
                         </Typography>
                       </TableCell>
@@ -443,13 +414,12 @@ function QuickAccess() {
                             onClick={handleDrawerToggle}
                             sx={{
                               '&:hover': {
-                                background: theme.colors.primary.lighter
+                                background: theme.colors.primary.lighter,
                               },
-                              color: theme.palette.primary.main
+                              color: theme.palette.primary.main,
                             }}
                             color="inherit"
-                            size="small"
-                          >
+                            size="small">
                             <LaunchTwoToneIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
@@ -457,13 +427,12 @@ function QuickAccess() {
                           <IconButton
                             sx={{
                               '&:hover': {
-                                background: theme.colors.error.lighter
+                                background: theme.colors.error.lighter,
                               },
-                              color: theme.palette.error.main
+                              color: theme.palette.error.main,
                             }}
                             color="inherit"
-                            size="small"
-                          >
+                            size="small">
                             <DeleteTwoToneIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
@@ -488,7 +457,7 @@ function QuickAccess() {
                       <TableCell>
                         <Typography variant="h6" noWrap>
                           {formatDistance(subDays(new Date(), 19), new Date(), {
-                            addSuffix: true
+                            addSuffix: true,
                           })}
                         </Typography>
                       </TableCell>
@@ -498,13 +467,12 @@ function QuickAccess() {
                             onClick={handleDrawerToggle}
                             sx={{
                               '&:hover': {
-                                background: theme.colors.primary.lighter
+                                background: theme.colors.primary.lighter,
                               },
-                              color: theme.palette.primary.main
+                              color: theme.palette.primary.main,
                             }}
                             color="inherit"
-                            size="small"
-                          >
+                            size="small">
                             <LaunchTwoToneIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
@@ -512,13 +480,12 @@ function QuickAccess() {
                           <IconButton
                             sx={{
                               '&:hover': {
-                                background: theme.colors.error.lighter
+                                background: theme.colors.error.lighter,
                               },
-                              color: theme.palette.error.main
+                              color: theme.palette.error.main,
                             }}
                             color="inherit"
-                            size="small"
-                          >
+                            size="small">
                             <DeleteTwoToneIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
@@ -540,11 +507,8 @@ function QuickAccess() {
                 fontWeight="normal"
                 color="text.secondary"
                 sx={{ my: 5 }}
-                gutterBottom
-              >
-                {t(
-                  'This is a default view used when none of the options are selected'
-                )}
+                gutterBottom>
+                {t('This is a default view used when none of the options are selected')}
               </Typography>
             </Card>
           </Grid>
@@ -555,12 +519,11 @@ function QuickAccess() {
         anchor={theme.direction === 'rtl' ? 'left' : 'right'}
         open={mobileOpen}
         onClose={handleDrawerToggle}
-        elevation={9}
-      >
+        elevation={9}>
         {mobileOpen && <SidebarDrawer />}
       </Drawer>
     </>
-  );
+  )
 }
 
-export default QuickAccess;
+export default QuickAccess

@@ -1,6 +1,6 @@
-import { Box, Tooltip } from '@mui/material';
-import Link from 'src/client/components/Link';
-import { styled } from '@mui/material/styles';
+import { Box, Tooltip } from '@mui/material'
+import Link from 'src/client/components/Link'
+import { styled } from '@mui/material/styles'
 
 const LogoWrapper = styled(Link)(
   ({ theme }) => `
@@ -10,7 +10,7 @@ const LogoWrapper = styled(Link)(
         text-decoration: none;
         font-weight: ${theme.typography.fontWeightBold};
 `
-);
+)
 
 const LogoSignWrapper = styled(Box)(
   ({ theme }) => `
@@ -23,7 +23,7 @@ const LogoSignWrapper = styled(Box)(
         transform: scale(1);
         }
 `
-);
+)
 
 const LogoSign = styled(Box)(
   ({ theme }) => `
@@ -60,7 +60,7 @@ const LogoSign = styled(Box)(
             background: ${theme.colors.alpha.trueWhite[30]};
         }
 `
-);
+)
 
 const LogoSignInner = styled(Box)(
   ({ theme }) => `
@@ -73,11 +73,10 @@ const LogoSignInner = styled(Box)(
         border-radius: ${theme.general.borderRadiusSm};
         background: ${theme.header.background};
 `
-);
+)
 
 function Logo() {
   return (
-
     <LogoWrapper href="/">
       <Tooltip arrow placement="right" title="Pancake Professor Application">
         <LogoSignWrapper>
@@ -87,8 +86,7 @@ function Logo() {
         </LogoSignWrapper>
       </Tooltip>
     </LogoWrapper>
-
-  );
+  )
 }
 
-export default Logo;
+export default Logo

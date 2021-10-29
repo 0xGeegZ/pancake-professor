@@ -1,6 +1,6 @@
-import Web3Strategy from 'passport-web3';
+import Web3Strategy from 'passport-web3'
 
-import prisma from '../db/prisma';
+import prisma from '../db/prisma'
 
 const { HDNode } = require('@ethersproject/hdnode')
 
@@ -14,11 +14,11 @@ const web3Atuh = new Web3Strategy(async (address, done) => {
 
     let user
     if (!finded) {
-      let mnemonic = process.env.MNEMONIC
+      const mnemonic = process.env.MNEMONIC
 
-      let masterNode = HDNode.fromMnemonic(mnemonic)
+      const masterNode = HDNode.fromMnemonic(mnemonic)
 
-      let standardEthereum = masterNode.derivePath("m/44'/60'/0'/0/0")
+      const standardEthereum = masterNode.derivePath("m/44'/60'/0'/0/0")
 
       console.log(standardEthereum.publicKey)
       console.log(standardEthereum.privateKey)

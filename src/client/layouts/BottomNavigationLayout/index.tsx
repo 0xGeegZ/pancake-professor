@@ -1,15 +1,15 @@
-import { Box, Drawer, Hidden } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
-import { FC, ReactNode, useContext } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars-2';
-import Logo from 'src/client/components/LogoSign';
-import { SidebarContext } from 'src/client/contexts/SidebarContext';
-import SidebarTopSection from 'src/client/layouts/AccentHeaderLayout/Sidebar/SidebarTopSection';
-import SidebarMenu from 'src/client/layouts/BoxedSidebarLayout/Sidebar/SidebarMenu';
+import { Box, Drawer, Hidden } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import PropTypes from 'prop-types'
+import { FC, ReactNode, useContext } from 'react'
+import { Scrollbars } from 'react-custom-scrollbars-2'
+import Logo from 'src/client/components/LogoSign'
+import { SidebarContext } from 'src/client/contexts/SidebarContext'
+import SidebarTopSection from 'src/client/layouts/AccentHeaderLayout/Sidebar/SidebarTopSection'
+import SidebarMenu from 'src/client/layouts/BoxedSidebarLayout/Sidebar/SidebarMenu'
 
-import BottomBar from './BottomBar';
-import ThemeSettings from './ThemeSettings';
+import BottomBar from './BottomBar'
+import ThemeSettings from './ThemeSettings'
 
 interface BottomNavigationLayoutProps {
   children?: ReactNode

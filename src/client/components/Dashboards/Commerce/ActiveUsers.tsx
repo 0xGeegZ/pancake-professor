@@ -1,9 +1,9 @@
-import ArrowDownwardTwoTone from '@mui/icons-material/ArrowDownwardTwoTone';
-import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone';
-import { Box, Card, CardContent, CardHeader, IconButton, Tooltip, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import Label from 'src/client/components/Label';
+import ArrowDownwardTwoTone from '@mui/icons-material/ArrowDownwardTwoTone'
+import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone'
+import { Box, Card, CardContent, CardHeader, IconButton, Tooltip, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import Label from 'src/client/components/Label'
 
 const ArrowDownwardWrapper = styled(ArrowDownwardTwoTone)(
   ({ theme }) => `
@@ -44,7 +44,7 @@ function ActiveUsers() {
         <Typography variant="h3">{data.value}</Typography>
         <Box sx={{ display: 'flex', alignItems: 'center' }}>
           <Label color="error">-5.2%</Label>
-          <ArrowDownwardWrapper sx={{ ml: 0.5, mr: -0.2 }} fontSize="small"></ArrowDownwardWrapper>
+          <ArrowDownwardWrapper sx={{ ml: 0.5, mr: -0.2 }} fontSize="small" />
         </Box>
       </CardContent>
     </Card>

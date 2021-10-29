@@ -1,15 +1,15 @@
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
-import { alpha, Box, Card, Hidden, IconButton, Tooltip } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useContext } from 'react';
-import { SidebarContext } from 'src/client/contexts/SidebarContext';
+import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import { alpha, Box, Card, Hidden, IconButton, Tooltip } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useContext } from 'react'
+import { SidebarContext } from 'src/client/contexts/SidebarContext'
 
-import LanguageSwitcher from './LanguageSwitcher';
-import Logo from './Logo';
-import NavigationMenu from './NavigationMenu';
-import Notifications from './Notifications';
-import Userbox from './Userbox';
+import LanguageSwitcher from './LanguageSwitcher'
+import Logo from './Logo'
+import NavigationMenu from './NavigationMenu'
+import Notifications from './Notifications'
+import Userbox from './Userbox'
 
 const BottomBarWrapper = styled(Card)(
   ({ theme }) => `
@@ -19,7 +19,7 @@ const BottomBarWrapper = styled(Card)(
     padding: 0;
     right: 0;
     z-index: 6;
-    background: ${alpha(theme.colors.primary.main, .85)};
+    background: ${alpha(theme.colors.primary.main, 0.85)};
     backdrop-filter: blur(5px);
     box-shadow: none;
     position: fixed;
@@ -30,7 +30,7 @@ const BottomBarWrapper = styled(Card)(
     border-radius: 0;
     border-top-left-radius: 40px;
 `
-);
+)
 
 const BoxLogoWrapper = styled(Box)(
   ({ theme }) => `
@@ -39,7 +39,7 @@ const BoxLogoWrapper = styled(Box)(
   display: flex;
   width: ${theme.spacing(14)};
 `
-);
+)
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -49,15 +49,15 @@ const MenuWrapper = styled(Box)(
   align-items: center;
   display: flex;
   padding: ${theme.spacing(0, 3)};
-  background: ${alpha(theme.colors.alpha.black[100], .1)};
+  background: ${alpha(theme.colors.alpha.black[100], 0.1)};
 `
-);
+)
 
 const UserActionsWrapper = styled(Box)(
   () => `
   
 `
-);
+)
 
 const NavigationMenuWrapper = styled(Box)(
   () => `
@@ -65,7 +65,7 @@ const NavigationMenuWrapper = styled(Box)(
   align-items: center;
   justify-content: center;
 `
-);
+)
 
 const IconButtonPrimary = styled(IconButton)(
   ({ theme }) => `
@@ -93,10 +93,10 @@ const IconButtonPrimary = styled(IconButton)(
       }
     }
 `
-);
+)
 
 function BottomBar() {
-  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
+  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext)
 
   return (
     <BottomBarWrapper>
@@ -123,7 +123,7 @@ function BottomBar() {
         </UserActionsWrapper>
       </MenuWrapper>
     </BottomBarWrapper>
-  );
+  )
 }
 
-export default BottomBar;
+export default BottomBar

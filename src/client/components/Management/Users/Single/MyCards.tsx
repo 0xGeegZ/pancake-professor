@@ -1,5 +1,5 @@
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
 import {
   Avatar,
   Box,
@@ -17,11 +17,11 @@ import {
   Tooltip,
   Typography,
   Zoom,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useSnackbar } from 'notistack';
-import { ChangeEvent, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useSnackbar } from 'notistack'
+import { ChangeEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const AvatarAddWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -113,7 +113,7 @@ function MyCards() {
 
   return (
     <Card>
-      <CardHeader subheader={data.savedCards + ' ' + t('active strategies')} title={t('Active strategies')} />
+      <CardHeader subheader={`${data.savedCards} ${t('active strategies')}`} title={t('Active strategies')} />
       <Divider />
       <Box p={3}>
         <Grid container spacing={3}>

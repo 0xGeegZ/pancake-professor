@@ -1,5 +1,5 @@
-import { alpha, createTheme, lighten, darken } from '@mui/material';
-import '@mui/lab/themeAugmentation';
+import { alpha, createTheme, lighten, darken } from '@mui/material'
+import '@mui/lab/themeAugmentation'
 
 // import i18n from 'src/client/i18n/i18n';
 
@@ -13,7 +13,7 @@ const themeColors = {
   black: '#223354',
   white: '#ffffff',
   primaryAlt: '#000C57',
-};
+}
 
 const colors = {
   gradients: {
@@ -117,7 +117,7 @@ const colors = {
     main: themeColors.info,
     dark: darken(themeColors.info, 0.2),
   },
-};
+}
 
 export const PureLightTheme = createTheme({
   // direction: i18n.dir(),
@@ -363,7 +363,7 @@ export const PureLightTheme = createTheme({
           borderLeftColor: colors.primary.dark,
         },
         '#nprogress .peg': {
-          boxShadow: '0 0 15px ' + colors.primary.dark + ', 0 0 8px' + colors.primary.dark,
+          boxShadow: `0 0 15px ${colors.primary.dark}, 0 0 8px${colors.primary.dark}`,
         },
         ':root': {
           '--swiper-theme-color': colors.primary.main,
@@ -559,7 +559,7 @@ export const PureLightTheme = createTheme({
         containedSecondary: {
           backgroundColor: colors.secondary.main,
           color: colors.alpha.white[100],
-          border: '1px solid ' + colors.alpha.black[30],
+          border: `1px solid ${colors.alpha.black[30]}`,
         },
         outlinedSecondary: {
           backgroundColor: colors.alpha.white[100],
@@ -736,8 +736,8 @@ export const PureLightTheme = createTheme({
           height: 38,
           minHeight: 38,
           borderRadius: 6,
-          border: '1px solid ' + colors.primary.dark,
-          boxShadow: '0px 2px 10px ' + colors.primary.light,
+          border: `1px solid ${colors.primary.dark}`,
+          boxShadow: `0px 2px 10px ${colors.primary.light}`,
         },
         scrollableX: {
           overflow: 'visible !important',
@@ -917,11 +917,11 @@ export const PureLightTheme = createTheme({
         },
         outlined: {
           backgroundColor: colors.alpha.white[100],
-          boxShadow: '0 0 0 6px ' + colors.alpha.white[100],
+          boxShadow: `0 0 0 6px ${colors.alpha.white[100]}`,
         },
         outlinedPrimary: {
           backgroundColor: colors.alpha.white[100],
-          boxShadow: '0 0 0 6px ' + colors.alpha.white[100],
+          boxShadow: `0 0 0 6px ${colors.alpha.white[100]}`,
         },
       },
     },
@@ -984,13 +984,13 @@ export const PureLightTheme = createTheme({
           },
         },
         thumb: {
-          border: '1px solid ' + colors.alpha.black[30],
-          boxShadow: '0px 9px 14px ' + colors.alpha.black[10] + ', 0px 2px 2px ' + colors.alpha.black[10],
+          border: `1px solid ${colors.alpha.black[30]}`,
+          boxShadow: `0px 9px 14px ${colors.alpha.black[10]}, 0px 2px 2px ${colors.alpha.black[10]}`,
         },
         track: {
           backgroundColor: colors.alpha.black[5],
-          border: '1px solid ' + colors.alpha.black[10],
-          boxShadow: 'inset 0px 1px 1px ' + colors.alpha.black[10],
+          border: `1px solid ${colors.alpha.black[10]}`,
+          boxShadow: `inset 0px 1px 1px ${colors.alpha.black[10]}`,
           opacity: 1,
         },
         colorPrimary: {
@@ -1140,4 +1140,4 @@ export const PureLightTheme = createTheme({
     'none',
     'none',
   ],
-});
+})

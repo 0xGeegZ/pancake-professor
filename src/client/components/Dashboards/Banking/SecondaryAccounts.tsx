@@ -1,31 +1,17 @@
-import {
-  IconButton,
-  Card,
-  CardHeader,
-  Typography,
-  Box,
-  Avatar,
-  Grid
-} from '@mui/material';
-import { useTheme } from '@mui/material/styles';
-import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
+import { IconButton, Card, CardHeader, Typography, Box, Avatar, Grid } from '@mui/material'
+import { useTheme } from '@mui/material/styles'
+import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
 
 function SecondaryAccounts() {
   const data = {
     logo1: '/static/images/placeholders/logo/deutschebank.svg',
-    logo2: '/static/images/placeholders/logo/wellsfargo.svg'
-  };
+    logo2: '/static/images/placeholders/logo/wellsfargo.svg',
+  }
 
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
-    <Grid
-      container
-      direction="row"
-      justifyContent="center"
-      alignItems="stretch"
-      spacing={3}
-    >
+    <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
       <Grid item sm={6} md={12} xs={12}>
         <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
           <CardHeader
@@ -49,11 +35,7 @@ function SecondaryAccounts() {
                 BSB: <b>346 773</b>
               </Typography>
             </Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-            >
+            <Box display="flex" alignItems="center" justifyContent="space-between">
               <Typography variant="h3" component="div">
                 $22,674.32
               </Typography>
@@ -87,11 +69,7 @@ function SecondaryAccounts() {
                 BSB: <b>845 284</b>
               </Typography>
             </Box>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-            >
+            <Box display="flex" alignItems="center" justifyContent="space-between">
               <Typography variant="h3" component="div">
                 $$,854.00
               </Typography>
@@ -103,7 +81,7 @@ function SecondaryAccounts() {
         </Card>
       </Grid>
     </Grid>
-  );
+  )
 }
 
-export default SecondaryAccounts;
+export default SecondaryAccounts

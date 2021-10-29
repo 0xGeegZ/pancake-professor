@@ -1,40 +1,32 @@
-import { Card, Box, Typography, Avatar } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import Label from 'src/client/components/Label';
-import Text from 'src/client/components/Text';
-import WatchListColumn1Chart from './WatchListColumn1Chart';
+import { Card, Box, Typography, Avatar } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import Label from 'src/client/components/Label'
+import Text from 'src/client/components/Text'
+import WatchListColumn1Chart from './WatchListColumn1Chart'
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
         background: transparent;
         margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 const WatchListColumn1ChartWrapper = styled(WatchListColumn1Chart)(
   () => `
         height: 130px;
 `
-);
+)
 
 function WatchListColumn1() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const price = {
     week: {
-      labels: [
-        'Monday',
-        'Tueday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday'
-      ],
-      data: [55.701, 57.598, 48.607, 46.439, 58.755, 46.978, 58.16]
-    }
-  };
+      labels: ['Monday', 'Tueday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
+      data: [55.701, 57.598, 48.607, 46.439, 58.755, 46.978, 58.16],
+    },
+  }
 
   return (
     <Card>
@@ -57,9 +49,8 @@ function WatchListColumn1() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'flex-start',
-            pt: 3
-          }}
-        >
+            pt: 3,
+          }}>
           <Typography variant="h2" sx={{ pr: 1, mb: 1 }}>
             $56,475.99
           </Typography>
@@ -71,9 +62,8 @@ function WatchListColumn1() {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'flex-start'
-          }}
-        >
+            justifyContent: 'flex-start',
+          }}>
           <Label color="success">+$500</Label>
           <Typography variant="body2" color="text.secondary" sx={{ pl: 1 }}>
             {t('last 24h')}
@@ -81,13 +71,10 @@ function WatchListColumn1() {
         </Box>
       </Box>
       <Box height={130} sx={{ ml: -1.5 }}>
-        <WatchListColumn1ChartWrapper
-          data={price.week.data}
-          labels={price.week.labels}
-        />
+        <WatchListColumn1ChartWrapper data={price.week.data} labels={price.week.labels} />
       </Box>
     </Card>
-  );
+  )
 }
 
-export default WatchListColumn1;
+export default WatchListColumn1

@@ -1,18 +1,8 @@
-import {
-  Card,
-  Box,
-  Grid,
-  Typography,
-  Avatar,
-  Badge,
-  Tooltip,
-  useTheme,
-  LinearProgress
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import { formatDistance, subDays, subMinutes, subHours } from 'date-fns';
-import Text from 'src/client/components/Text';
+import { Card, Box, Grid, Typography, Avatar, Badge, Tooltip, useTheme, LinearProgress } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import { formatDistance, subDays, subMinutes, subHours } from 'date-fns'
+import Text from 'src/client/components/Text'
 
 const DotLegend = styled('span')(
   ({ theme }) => `
@@ -23,14 +13,14 @@ const DotLegend = styled('span')(
     margin-right: ${theme.spacing(0.5)};
     border: ${theme.colors.alpha.white[100]} solid 2px;
 `
-);
+)
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
     width: ${theme.spacing(7)};
     height: ${theme.spacing(7)};
 `
-);
+)
 
 const LinearProgressWrapper = styled(LinearProgress)(
   ({ theme }) => `
@@ -45,11 +35,11 @@ const LinearProgressWrapper = styled(LinearProgress)(
           border-radius: ${theme.general.borderRadiusXl};
         }
 `
-);
+)
 
 function TeamOverview() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   return (
     <Grid container spacing={3}>
@@ -59,31 +49,20 @@ function TeamOverview() {
             <Badge
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               overlap="circular"
               badgeContent={
                 <Tooltip
                   arrow
                   placement="top"
-                  title={
-                    t('Offline since') +
-                    ' ' +
-                    formatDistance(subDays(new Date(), 14), new Date(), {
-                      addSuffix: true
-                    })
-                  }
-                >
-                  <DotLegend
-                    style={{ background: `${theme.colors.error.main}` }}
-                  />
+                  title={`${t('Offline since')} ${formatDistance(subDays(new Date(), 14), new Date(), {
+                    addSuffix: true,
+                  })}`}>
+                  <DotLegend style={{ background: `${theme.colors.error.main}` }} />
                 </Tooltip>
-              }
-            >
-              <AvatarWrapper
-                alt="Remy Sharp"
-                src="/static/images/avatars/4.jpg"
-              />
+              }>
+              <AvatarWrapper alt="Remy Sharp" src="/static/images/avatars/4.jpg" />
             </Badge>
             <Box sx={{ ml: 1.5 }}>
               <Typography variant="h4" noWrap gutterBottom>
@@ -96,14 +75,9 @@ function TeamOverview() {
           </Box>
 
           <Typography variant="subtitle2" gutterBottom>
-            <Text color="black">4</Text> {t('out of')}{' '}
-            <Text color="black">6</Text> {t('tasks completed')}
+            <Text color="black">4</Text> {t('out of')} <Text color="black">6</Text> {t('tasks completed')}
           </Typography>
-          <LinearProgressWrapper
-            value={65}
-            color="primary"
-            variant="determinate"
-          />
+          <LinearProgressWrapper value={65} color="primary" variant="determinate" />
         </Card>
       </Grid>
       <Grid item xs={12} md={4}>
@@ -112,31 +86,20 @@ function TeamOverview() {
             <Badge
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               overlap="circular"
               badgeContent={
                 <Tooltip
                   arrow
                   placement="top"
-                  title={
-                    t('Online since') +
-                    ' ' +
-                    formatDistance(subMinutes(new Date(), 6), new Date(), {
-                      addSuffix: true
-                    })
-                  }
-                >
-                  <DotLegend
-                    style={{ background: `${theme.colors.success.main}` }}
-                  />
+                  title={`${t('Online since')} ${formatDistance(subMinutes(new Date(), 6), new Date(), {
+                    addSuffix: true,
+                  })}`}>
+                  <DotLegend style={{ background: `${theme.colors.success.main}` }} />
                 </Tooltip>
-              }
-            >
-              <AvatarWrapper
-                alt="Ann Saris"
-                src="/static/images/avatars/3.jpg"
-              />
+              }>
+              <AvatarWrapper alt="Ann Saris" src="/static/images/avatars/3.jpg" />
             </Badge>
             <Box sx={{ ml: 1.5 }}>
               <Typography variant="h4" noWrap gutterBottom>
@@ -149,14 +112,9 @@ function TeamOverview() {
           </Box>
 
           <Typography variant="subtitle2" gutterBottom>
-            <Text color="black">2</Text> {t('out of')}{' '}
-            <Text color="black">8</Text> {t('tasks completed')}
+            <Text color="black">2</Text> {t('out of')} <Text color="black">8</Text> {t('tasks completed')}
           </Typography>
-          <LinearProgressWrapper
-            value={25}
-            color="primary"
-            variant="determinate"
-          />
+          <LinearProgressWrapper value={25} color="primary" variant="determinate" />
         </Card>
       </Grid>
       <Grid item xs={12} md={4}>
@@ -165,31 +123,20 @@ function TeamOverview() {
             <Badge
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               overlap="circular"
               badgeContent={
                 <Tooltip
                   arrow
                   placement="top"
-                  title={
-                    t('Offline since') +
-                    ' ' +
-                    formatDistance(subHours(new Date(), 7), new Date(), {
-                      addSuffix: true
-                    })
-                  }
-                >
-                  <DotLegend
-                    style={{ background: `${theme.colors.error.main}` }}
-                  />
+                  title={`${t('Offline since')} ${formatDistance(subHours(new Date(), 7), new Date(), {
+                    addSuffix: true,
+                  })}`}>
+                  <DotLegend style={{ background: `${theme.colors.error.main}` }} />
                 </Tooltip>
-              }
-            >
-              <AvatarWrapper
-                alt="James Stanton"
-                src="/static/images/avatars/5.jpg"
-              />
+              }>
+              <AvatarWrapper alt="James Stanton" src="/static/images/avatars/5.jpg" />
             </Badge>
             <Box sx={{ ml: 1.5 }}>
               <Typography variant="h4" noWrap gutterBottom>
@@ -202,18 +149,13 @@ function TeamOverview() {
           </Box>
 
           <Typography variant="subtitle2" gutterBottom>
-            <Text color="black">10</Text> {t('out of')}{' '}
-            <Text color="black">20</Text> {t('tasks completed')}
+            <Text color="black">10</Text> {t('out of')} <Text color="black">20</Text> {t('tasks completed')}
           </Typography>
-          <LinearProgressWrapper
-            value={50}
-            color="primary"
-            variant="determinate"
-          />
+          <LinearProgressWrapper value={50} color="primary" variant="determinate" />
         </Card>
       </Grid>
     </Grid>
-  );
+  )
 }
 
-export default TeamOverview;
+export default TeamOverview

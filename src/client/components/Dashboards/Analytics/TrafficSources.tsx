@@ -1,8 +1,8 @@
-import { useRef, useState, ChangeEvent } from 'react';
-import { useTranslation } from 'react-i18next';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
+import { useRef, useState, ChangeEvent } from 'react'
+import { useTranslation } from 'react-i18next'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 
-import Divider from '@mui/material/Divider';
+import Divider from '@mui/material/Divider'
 import {
   Button,
   Card,
@@ -16,11 +16,11 @@ import {
   Typography,
   Hidden,
   Tabs,
-  Tab
-} from '@mui/material';
+  Tab,
+} from '@mui/material'
 
-import TrafficSourcesChart from './TrafficSourcesChart';
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles'
+import TrafficSourcesChart from './TrafficSourcesChart'
 
 const CardActionsWrapper = styled(CardActions)(
   ({ theme }) => `
@@ -28,19 +28,19 @@ const CardActionsWrapper = styled(CardActions)(
       padding: 0;
       display: block;
 `
-);
+)
 
 const TrafficSourcesChartWrapper = styled(TrafficSourcesChart)(
   () => `
         height: 250px;
 `
-);
+)
 
 const TabsContainerWrapper = styled(CardContent)(
   ({ theme }) => `
       background-color: ${theme.colors.alpha.black[5]};
 `
-);
+)
 
 const EmptyResultsWrapper = styled('img')(
   ({ theme }) => `
@@ -48,29 +48,29 @@ const EmptyResultsWrapper = styled('img')(
       width: ${theme.spacing(66)};
       height: ${theme.spacing(34)};
 `
-);
+)
 
 function TrafficSources() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const periods = [
     {
       value: 'today',
-      text: t('Today')
+      text: t('Today'),
     },
     {
       value: 'yesterday',
-      text: t('Yesterday')
+      text: t('Yesterday'),
     },
     {
       value: 'last_month',
-      text: t('Last month')
+      text: t('Last month'),
     },
     {
       value: 'last_year',
-      text: t('Last year')
-    }
-  ];
+      text: t('Last year'),
+    },
+  ]
 
   const data = {
     users: 2.593,
@@ -78,49 +78,36 @@ function TrafficSources() {
     newSessions: '82.05%',
     avgSessionDuration: '00:03:56',
     bounceRate: '49.75%',
-    sessions: 9.381
-  };
+    sessions: 9.381,
+  }
 
   const referrals = {
     current: [1008, 940, 1010, 821, 1035, 1030, 957, 926, 993, 1021, 997, 879],
-    previous: [648, 745, 897, 743, 635, 842, 811, 696, 878, 987, 747, 731]
-  };
+    previous: [648, 745, 897, 743, 635, 842, 811, 696, 878, 987, 747, 731],
+  }
 
-  const actionRef1 = useRef<any>(null);
-  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false);
-  const [period, setPeriod] = useState<string>('Select period');
+  const actionRef1 = useRef<any>(null)
+  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false)
+  const [period, setPeriod] = useState<string>('Select period')
 
-  const [currentTab, setCurrentTab] = useState<string>('referral');
+  const [currentTab, setCurrentTab] = useState<string>('referral')
 
   const tabs = [
     { value: 'direct', label: t('Direct') },
     { value: 'referral', label: t('Referral') },
     { value: 'organic', label: t('Organic') },
-    { value: 'social', label: t('Social') }
-  ];
+    { value: 'social', label: t('Social') },
+  ]
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
-    setCurrentTab(value);
-  };
+    setCurrentTab(value)
+  }
 
   const generic = {
     month: {
-      labels: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
-      ]
-    }
-  };
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    },
+  }
 
   return (
     <Card>
@@ -132,32 +119,28 @@ function TrafficSources() {
               variant="outlined"
               ref={actionRef1}
               onClick={() => setOpenMenuPeriod(true)}
-              endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}
-            >
+              endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}>
               {period}
             </Button>
             <Menu
               anchorEl={actionRef1.current}
               onClose={() => setOpenMenuPeriod(false)}
               open={openPeriod}
-
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'right'
-              }}
-            >
+                horizontal: 'right',
+              }}>
               {periods.map((_period) => (
                 <MenuItem
                   key={_period.value}
                   onClick={() => {
-                    setPeriod(_period.text);
-                    setOpenMenuPeriod(false);
-                  }}
-                >
+                    setPeriod(_period.text)
+                    setOpenMenuPeriod(false)
+                  }}>
                   {_period.text}
                 </MenuItem>
               ))}
@@ -174,8 +157,7 @@ function TrafficSources() {
           variant="scrollable"
           scrollButtons="auto"
           textColor="primary"
-          indicatorColor="primary"
-        >
+          indicatorColor="primary">
           {tabs.map((tab) => (
             <Tab key={tab.value} label={tab.label} value={tab.value} />
           ))}
@@ -195,8 +177,7 @@ function TrafficSources() {
                 fontWeight="normal"
                 color="text.secondary"
                 sx={{ mt: 3 }}
-                gutterBottom
-              >
+                gutterBottom>
                 There are no charts generated for <b>Direct</b> traffic sources!
               </Typography>
               <Button variant="contained" sx={{ mt: 4 }}>
@@ -207,10 +188,7 @@ function TrafficSources() {
           {currentTab === 'referral' && (
             <Hidden smDown>
               <Box height={250} sx={{ px: { lg: 6 } }}>
-                <TrafficSourcesChartWrapper
-                  data={referrals}
-                  labels={generic.month.labels}
-                />
+                <TrafficSourcesChartWrapper data={referrals} labels={generic.month.labels} />
               </Box>
             </Hidden>
           )}
@@ -224,10 +202,8 @@ function TrafficSources() {
                 fontWeight="normal"
                 color="text.secondary"
                 sx={{ mt: 3 }}
-                gutterBottom
-              >
-                There are no charts generated for <b>Organic</b> traffic
-                sources!
+                gutterBottom>
+                There are no charts generated for <b>Organic</b> traffic sources!
               </Typography>
               <Button variant="contained" sx={{ mt: 4 }}>
                 Generate Chart
@@ -244,8 +220,7 @@ function TrafficSources() {
                 fontWeight="normal"
                 color="text.secondary"
                 sx={{ mt: 3 }}
-                gutterBottom
-              >
+                gutterBottom>
                 There are no charts generated for <b>Social</b> traffic sources!
               </Typography>
               <Button variant="contained" sx={{ mt: 4 }}>
@@ -268,11 +243,7 @@ function TrafficSources() {
                   <Typography align="center" variant="h3" gutterBottom>
                     {data.users}
                   </Typography>
-                  <Typography
-                    align="center"
-                    variant="body1"
-                    color="text.secondary"
-                  >
+                  <Typography align="center" variant="body1" color="text.secondary">
                     {t('Users')}
                   </Typography>
                 </Box>
@@ -288,11 +259,7 @@ function TrafficSources() {
                   <Typography align="center" variant="h3" gutterBottom>
                     {data.sessions}
                   </Typography>
-                  <Typography
-                    align="center"
-                    variant="body1"
-                    color="text.secondary"
-                  >
+                  <Typography align="center" variant="body1" color="text.secondary">
                     {t('Sessions')}
                   </Typography>
                 </Box>
@@ -308,11 +275,7 @@ function TrafficSources() {
                   <Typography align="center" variant="h3" gutterBottom>
                     {data.pagesSession}
                   </Typography>
-                  <Typography
-                    align="center"
-                    variant="body1"
-                    color="text.secondary"
-                  >
+                  <Typography align="center" variant="body1" color="text.secondary">
                     {t('pages/session')}
                   </Typography>
                 </Box>
@@ -328,11 +291,7 @@ function TrafficSources() {
                   <Typography align="center" variant="h3" gutterBottom>
                     {data.avgSessionDuration}
                   </Typography>
-                  <Typography
-                    align="center"
-                    variant="body1"
-                    color="text.secondary"
-                  >
+                  <Typography align="center" variant="body1" color="text.secondary">
                     {t('Avg. Session Duration')}
                   </Typography>
                 </Box>
@@ -348,11 +307,7 @@ function TrafficSources() {
                   <Typography align="center" variant="h3" gutterBottom>
                     {data.newSessions}
                   </Typography>
-                  <Typography
-                    align="center"
-                    variant="body1"
-                    color="text.secondary"
-                  >
+                  <Typography align="center" variant="body1" color="text.secondary">
                     {t('% New Sessions')}
                   </Typography>
                 </Box>
@@ -368,11 +323,7 @@ function TrafficSources() {
                   <Typography align="center" variant="h3" gutterBottom>
                     {data.bounceRate}
                   </Typography>
-                  <Typography
-                    align="center"
-                    variant="body1"
-                    color="text.secondary"
-                  >
+                  <Typography align="center" variant="body1" color="text.secondary">
                     {t('Bounce Rate')}
                   </Typography>
                 </Box>
@@ -383,7 +334,7 @@ function TrafficSources() {
         </Box>
       </CardActionsWrapper>
     </Card>
-  );
+  )
 }
 
-export default TrafficSources;
+export default TrafficSources

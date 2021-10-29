@@ -1,16 +1,17 @@
-import { Grid } from '@mui/material';
-import Head from 'next/head';
-import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance';
-import AccountSecurity from 'src/client/components/Dashboards/Crypto/AccountSecurity';
-import PageHeader from 'src/client/components/Dashboards/Crypto/PageHeader';
-import RecentOrders from 'src/client/components/Dashboards/Crypto/RecentOrders';
-import Wallets from 'src/client/components/Dashboards/Crypto/Wallets';
-import WatchList from 'src/client/components/Dashboards/Crypto/WatchList';
-import Footer from 'src/client/components/Footer';
-import PageTitleWrapper from 'src/client/components/PageTitleWrapper';
-import BoxedSidebarLayout from 'src/client/layouts/BoxedSidebarLayout';
+import { Grid } from '@mui/material'
+import Head from 'next/head'
+import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance'
+import AccountSecurity from 'src/client/components/Dashboards/Crypto/AccountSecurity'
+import PageHeader from 'src/client/components/Dashboards/Crypto/PageHeader'
+import RecentOrders from 'src/client/components/Dashboards/Crypto/RecentOrders'
+import Wallets from 'src/client/components/Dashboards/Crypto/Wallets'
+import WatchList from 'src/client/components/Dashboards/Crypto/WatchList'
+import Footer from 'src/client/components/Footer'
+import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
+import BoxedSidebarLayout from 'src/client/layouts/BoxedSidebarLayout'
 
-import type { ReactElement } from 'react';
+import type { ReactElement } from 'react'
+
 function DashboardCrypto() {
   return (
     <>
@@ -21,14 +22,7 @@ function DashboardCrypto() {
         <PageHeader />
       </PageTitleWrapper>
 
-      <Grid
-        sx={{ px: 4 }}
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={3}
-      >
+      <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
         <Grid item xs={12}>
           <AccountBalance />
         </Grid>
@@ -48,15 +42,11 @@ function DashboardCrypto() {
 
       <Footer />
     </>
-  );
+  )
 }
 
-export default DashboardCrypto;
+export default DashboardCrypto
 
 DashboardCrypto.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <BoxedSidebarLayout>
-      {page}
-    </BoxedSidebarLayout>
-  )
+  return <BoxedSidebarLayout>{page}</BoxedSidebarLayout>
 }

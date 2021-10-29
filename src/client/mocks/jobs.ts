@@ -1,6 +1,6 @@
-import { subDays } from 'date-fns';
-import { mock } from 'src/client/utils/axios';
-import { Job } from 'src/client/models/job';
+import { subDays } from 'date-fns'
+import { mock } from 'src/client/utils/axios'
+import { Job } from 'src/client/models/job'
 
 mock.onGet('/api/jobs').reply(() => {
   const jobs: Job[] = [
@@ -148,7 +148,7 @@ mock.onGet('/api/jobs').reply(() => {
       employment: 'full_time',
       seniority: 'mid',
     },
-  ];
+  ]
 
-  return [200, { jobs }];
-});
+  return [200, { jobs }]
+})

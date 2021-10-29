@@ -1,9 +1,10 @@
-import { TextField, Autocomplete, Box, Card, Grid } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import dynamic from 'next/dynamic';
-const ReactQuill = dynamic(() => import("react-quill"), { ssr: false });
-import 'react-quill/dist/quill.snow.css';
+import { TextField, Autocomplete, Box, Card, Grid } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import dynamic from 'next/dynamic'
+import 'react-quill/dist/quill.snow.css'
+
+const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
 const EditorWrapper = styled(Box)(
   ({ theme }) => `
@@ -42,28 +43,18 @@ const EditorWrapper = styled(Box)(
       }
     }
 `
-);
+)
 
-const productTags = [
-  { title: 'new' },
-  { title: 'fresh' },
-  { title: '2021' },
-  { title: 'electronics' }
-];
+const productTags = [{ title: 'new' }, { title: 'fresh' }, { title: '2021' }, { title: 'electronics' }]
 
 function GeneralSection() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Card sx={{ p: 3 }}>
       <Grid container spacing={3}>
         <Grid item xs={12}>
-          <TextField
-            fullWidth
-            name="title"
-            placeholder={t('Project title here...')}
-            variant="outlined"
-          />
+          <TextField fullWidth name="title" placeholder={t('Project title here...')} variant="outlined" />
         </Grid>
         <Grid item xs={12}>
           <EditorWrapper>
@@ -79,18 +70,13 @@ function GeneralSection() {
             options={productTags}
             getOptionLabel={(option) => option.title}
             renderInput={(params) => (
-              <TextField
-                {...params}
-                fullWidth
-                variant="outlined"
-                placeholder={t('Select project tags...')}
-              />
+              <TextField {...params} fullWidth variant="outlined" placeholder={t('Select project tags...')} />
             )}
           />
         </Grid>
       </Grid>
     </Card>
-  );
+  )
 }
 
-export default GeneralSection;
+export default GeneralSection

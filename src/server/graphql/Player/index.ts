@@ -1,6 +1,6 @@
-import { extendType, list, objectType } from 'nexus';
+import { extendType, list, objectType } from 'nexus'
 
-import loadPlayers from './loadPlayers';
+import loadPlayers from './loadPlayers'
 
 // import { GraphQLList, GraphQLNonNull } from 'graphql'
 const Player = objectType({

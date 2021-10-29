@@ -1,17 +1,17 @@
-import { Card, CardHeader, Typography, Avatar, Box } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import MeetingRoomTwoToneIcon from '@mui/icons-material/MeetingRoomTwoTone';
-import Label from 'src/client/components/Label';
-import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone';
-import AppointmentsAltChart from './AppointmentsAltChart';
+import { Card, CardHeader, Typography, Avatar, Box } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import MeetingRoomTwoToneIcon from '@mui/icons-material/MeetingRoomTwoTone'
+import Label from 'src/client/components/Label'
+import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone'
+import AppointmentsAltChart from './AppointmentsAltChart'
 
 const AppointmentsAltChartWrapper = styled(AppointmentsAltChart)(
   () => `
         height: 90px;
         width: 200px;
 `
-);
+)
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `
@@ -21,33 +21,20 @@ const AvatarPrimary = styled(Avatar)(
       height: ${theme.spacing(6)};
       margin-top: -${theme.spacing(1)};
 `
-);
+)
 
 function AppointmentsAlt() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const appointments = {
-    month: [1083, 649, 312, 1538, 1404, 630, 1714, 853, 1765, 1067, 696, 538]
-  };
+    month: [1083, 649, 312, 1538, 1404, 630, 1714, 853, 1765, 1067, 696, 538],
+  }
 
   const generic = {
     month: {
-      labels: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
-      ]
-    }
-  };
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    },
+  }
 
   return (
     <Card sx={{ px: 1, pt: 1 }}>
@@ -64,11 +51,7 @@ function AppointmentsAlt() {
               <ArrowUpwardTwoToneIcon fontSize="small" />
               <b>+10%</b>
             </Label>
-            <Typography
-              align="right"
-              variant="subtitle1"
-              color="text.secondary"
-            >
+            <Typography align="right" variant="subtitle1" color="text.secondary">
               {t('since last month')}
             </Typography>
           </>
@@ -83,15 +66,12 @@ function AppointmentsAlt() {
             <Typography variant="h2">678</Typography>
           </Box>
           <Box height={90} width={200}>
-            <AppointmentsAltChartWrapper
-              data={appointments}
-              labels={generic.month.labels}
-            />
+            <AppointmentsAltChartWrapper data={appointments} labels={generic.month.labels} />
           </Box>
         </Box>
       </Box>
     </Card>
-  );
+  )
 }
 
-export default AppointmentsAlt;
+export default AppointmentsAlt

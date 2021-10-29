@@ -1,9 +1,10 @@
-import { Container, Grid, List, ListItem, Typography } from '@mui/material';
-import Head from 'next/head';
-import PageHeader from 'src/client/components/PageHeaderDocs';
-import DocsLayout from 'src/client/layouts/DocsLayout';
+import { Container, Grid, List, ListItem, Typography } from '@mui/material'
+import Head from 'next/head'
+import PageHeader from 'src/client/components/PageHeaderDocs'
+import DocsLayout from 'src/client/layouts/DocsLayout'
 
 import type { ReactElement } from 'react'
+
 function Changelog() {
   return (
     <>
@@ -13,7 +14,7 @@ function Changelog() {
       <Container maxWidth={false}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <PageHeader heading="Changelog" subheading=""></PageHeader>
+            <PageHeader heading="Changelog" subheading="" />
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h2" sx={{ mb: 2 }}>

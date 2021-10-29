@@ -1,19 +1,9 @@
-import {
-  Card,
-  Avatar,
-  Tooltip,
-  IconButton,
-  Box,
-  Button,
-  Hidden,
-  TextField,
-  Divider
-} from '@mui/material';
+import { Card, Avatar, Tooltip, IconButton, Box, Button, Hidden, TextField, Divider } from '@mui/material'
 
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import AttachFileTwoToneIcon from '@mui/icons-material/AttachFileTwoTone';
-import SendTwoToneIcon from '@mui/icons-material/SendTwoTone';
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import AttachFileTwoToneIcon from '@mui/icons-material/AttachFileTwoTone'
+import SendTwoToneIcon from '@mui/icons-material/SendTwoTone'
 
 const DividerWrapper = styled(Divider)(
   ({ theme }) => `
@@ -21,14 +11,14 @@ const DividerWrapper = styled(Divider)(
         margin: 0 ${theme.spacing(2)};
         align-self: center;
 `
-);
+)
 
 const Input = styled('input')({
-  display: 'none'
-});
+  display: 'none',
+})
 
 function BottomBarContent() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
   // const { user } = useAuth();
 
   return (
@@ -38,11 +28,7 @@ function BottomBarContent() {
         <DividerWrapper orientation="vertical" flexItem />
       </Hidden>
       <Box sx={{ flex: 1, mr: 2 }}>
-        <TextField
-          hiddenLabel
-          fullWidth
-          placeholder={t('Write here your message...')}
-        />
+        <TextField hiddenLabel fullWidth placeholder={t('Write here your message...')} />
       </Box>
       <Tooltip arrow placement="top" title={t('Choose an emoji')}>
         <IconButton color="primary">😀</IconButton>
@@ -62,7 +48,7 @@ function BottomBarContent() {
         </Button>
       </Hidden>
     </Card>
-  );
+  )
 }
 
-export default BottomBarContent;
+export default BottomBarContent

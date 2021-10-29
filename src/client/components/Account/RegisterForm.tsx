@@ -1,5 +1,5 @@
-import * as Yup from 'yup';
-import { Formik } from 'formik';
+import * as Yup from 'yup'
+import { Formik } from 'formik'
 import {
   Button,
   Checkbox,
@@ -8,15 +8,15 @@ import {
   Typography,
   FormControlLabel,
   Link,
-  CircularProgress
-} from '@mui/material';
+  CircularProgress,
+} from '@mui/material'
 
-import useRefMounted from 'src/client/hooks/useRefMounted';
-import { useTranslation } from 'react-i18next';
+import useRefMounted from 'src/client/hooks/useRefMounted'
+import { useTranslation } from 'react-i18next'
 
 function RegisterForm() {
-  const isMountedRef = useRefMounted();
-  const { t }: { t: any } = useTranslation();
+  const isMountedRef = useRefMounted()
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Formik
@@ -25,7 +25,7 @@ function RegisterForm() {
         name: '',
         password: '',
         terms: false,
-        submit: null
+        submit: null,
       }}
       validationSchema={Yup.object().shape({
         email: Yup.string()
@@ -33,39 +33,23 @@ function RegisterForm() {
           .max(255)
           .required(t('The email field is required')),
         name: Yup.string().max(255).required(t('The name field is required')),
-        password: Yup.string()
-          .min(8)
-          .max(255)
-          .required(t('The password field is required')),
-        terms: Yup.boolean().oneOf(
-          [true],
-          t('You must agree to our terms and conditions')
-        )
+        password: Yup.string().min(8).max(255).required(t('The password field is required')),
+        terms: Yup.boolean().oneOf([true], t('You must agree to our terms and conditions')),
       })}
       onSubmit={async (_values, { setErrors, setStatus, setSubmitting }) => {
         try {
-
           if (isMountedRef.current) {
-            setStatus({ success: true });
-            setSubmitting(false);
+            setStatus({ success: true })
+            setSubmitting(false)
           }
         } catch (err) {
-          console.error(err);
-          setStatus({ success: false });
-          setErrors({ submit: err.message });
-          setSubmitting(false);
+          console.error(err)
+          setStatus({ success: false })
+          setErrors({ submit: err.message })
+          setSubmitting(false)
         }
-      }}
-    >
-      {({
-        errors,
-        handleBlur,
-        handleChange,
-        handleSubmit,
-        isSubmitting,
-        touched,
-        values
-      }) => (
+      }}>
+      {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
         <form noValidate onSubmit={handleSubmit}>
           <TextField
             error={Boolean(touched.name && errors.name)}
@@ -106,14 +90,7 @@ function RegisterForm() {
             variant="outlined"
           />
           <FormControlLabel
-            control={
-              <Checkbox
-                checked={values.terms}
-                name="terms"
-                color="primary"
-                onChange={handleChange}
-              />
-            }
+            control={<Checkbox checked={values.terms} name="terms" color="primary" onChange={handleChange} />}
             label={
               <>
                 <Typography variant="body2">
@@ -126,9 +103,7 @@ function RegisterForm() {
               </>
             }
           />
-          {Boolean(touched.terms && errors.terms) && (
-            <FormHelperText error>{errors.terms}</FormHelperText>
-          )}
+          {Boolean(touched.terms && errors.terms) && <FormHelperText error>{errors.terms}</FormHelperText>}
           <Button
             sx={{ mt: 3 }}
             color="primary"
@@ -137,14 +112,13 @@ function RegisterForm() {
             type="submit"
             fullWidth
             size="large"
-            variant="contained"
-          >
+            variant="contained">
             {t('Create your account')}
           </Button>
         </form>
       )}
     </Formik>
-  );
+  )
 }
 
-export default RegisterForm;
+export default RegisterForm

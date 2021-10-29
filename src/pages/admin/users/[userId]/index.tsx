@@ -1,17 +1,18 @@
-import { Box, Grid, Tabs } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Footer from 'src/client/components/Footer';
-import EditProfileTab from 'src/client/components/Management/Users/Single/EditProfileTab';
-import useRefMounted from 'src/client/hooks/useRefMounted';
-import MainLayout from 'src/client/layouts/MainLayout';
-import axios from 'src/client/utils/axios';
+import { Box, Grid, Tabs } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Footer from 'src/client/components/Footer'
+import EditProfileTab from 'src/client/components/Management/Users/Single/EditProfileTab'
+import useRefMounted from 'src/client/hooks/useRefMounted'
+import MainLayout from 'src/client/layouts/MainLayout'
+import axios from 'src/client/utils/axios'
 
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
+
 const TabsWrapper = styled(Tabs)(
   () => `
     .MuiTabs-scrollableX {
@@ -86,7 +87,7 @@ function UserView() {
           </Grid> */}
           <Grid item xs={12}>
             {/* {currentTab === 'activity' && <ActivityTab />} */}
-            {currentTab === 'edit_profile' && <EditProfileTab isAdmin={true} />}
+            {currentTab === 'edit_profile' && <EditProfileTab isAdmin />}
             {/* {currentTab === 'notifications' && <NotificationsTab />}
             {currentTab === 'security' && <SecurityTab />} */}
           </Grid>

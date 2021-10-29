@@ -1,17 +1,17 @@
 // src/server/graphql/Koi/index.ts
-import { objectType, extendType, nonNull, stringArg } from 'nexus';
-import prisma from '../../db/prisma';
+import { objectType, extendType, nonNull, stringArg } from 'nexus'
+import prisma from '../../db/prisma'
 
 const Pond = objectType({
   name: 'Pond',
   definition(t) {
-    t.model.id();
-    t.model.modifiedAt();
-    t.model.name();
-    t.model.size();
+    t.model.id()
+    t.model.modifiedAt()
+    t.model.name()
+    t.model.size()
     // t.model.updates();
   },
-});
+})
 
 const queries = extendType({
   type: 'Query',
@@ -24,7 +24,7 @@ const queries = extendType({
       },
       resolve: (_, { id }, ctx) => {
         // Only let authenticated users fetch posts
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         return prisma.pond.findFirst({
           where: {
@@ -36,10 +36,10 @@ const queries = extendType({
             },
             id,
           },
-        });
+        })
       },
-    });
+    })
   },
-});
+})
 
-export default [Pond, queries];
+export default [Pond, queries]

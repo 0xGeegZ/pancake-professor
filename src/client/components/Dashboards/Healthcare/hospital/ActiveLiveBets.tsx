@@ -1,12 +1,12 @@
-import 'moment-timezone';
+import 'moment-timezone'
 
-import { Box, Card, CardContent, CardHeader, CircularProgress, Divider, Grid, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import moment from 'moment';
-import { useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Box, Card, CardContent, CardHeader, CircularProgress, Divider, Grid, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import moment from 'moment'
+import { useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import ActiveLiveBetsChart from './ActiveLiveBetsChart';
+import ActiveLiveBetsChart from './ActiveLiveBetsChart'
 
 const DotSuccess = styled('span')(
   ({ theme }) => `

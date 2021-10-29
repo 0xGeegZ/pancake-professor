@@ -1,17 +1,9 @@
-import {
-  Card,
-  Box,
-  Typography,
-  Grid,
-  Pagination,
-  Avatar,
-  CardActionArea
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone';
-import Text from 'src/client/components/Text';
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
+import { Card, Box, Typography, Grid, Pagination, Avatar, CardActionArea } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone'
+import Text from 'src/client/components/Text'
+import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `
@@ -20,7 +12,7 @@ const AvatarPrimary = styled(Avatar)(
       width: ${theme.spacing(6)};
       height: ${theme.spacing(6)};
 `
-);
+)
 
 const CardActionAreaWrapper = styled(CardActionArea)(
   ({ theme }) => `
@@ -47,19 +39,14 @@ const CardActionAreaWrapper = styled(CardActionArea)(
         }
       }
 `
-);
+)
 
 function AllFolders() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ pb: 3 }}
-      >
+      <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ pb: 3 }}>
         <Typography variant="h3">{t('All Folders')}</Typography>
       </Box>
 
@@ -67,22 +54,13 @@ function AllFolders() {
         <Grid item xs={12} sm={6}>
           <Card>
             <CardActionAreaWrapper sx={{ p: 2 }}>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
+              <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Box display="flex" alignItems="center">
                   <AvatarPrimary sx={{ mr: 2 }}>
                     <FolderOpenTwoToneIcon />
                   </AvatarPrimary>
                   <Box>
-                    <Typography
-                      variant="h4"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
+                    <Typography variant="h4" color="text.primary" gutterBottom noWrap>
                       Documents for Clients
                     </Typography>
                     <Typography variant="subtitle1">
@@ -101,22 +79,13 @@ function AllFolders() {
         <Grid item xs={12} sm={6}>
           <Card>
             <CardActionAreaWrapper sx={{ p: 2 }}>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
+              <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Box display="flex" alignItems="center">
                   <AvatarPrimary sx={{ mr: 2 }}>
                     <FolderOpenTwoToneIcon />
                   </AvatarPrimary>
                   <Box>
-                    <Typography
-                      variant="h4"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
+                    <Typography variant="h4" color="text.primary" gutterBottom noWrap>
                       Old Various Documents
                     </Typography>
                     <Typography variant="subtitle1">
@@ -135,22 +104,13 @@ function AllFolders() {
         <Grid item xs={12} sm={6}>
           <Card>
             <CardActionAreaWrapper sx={{ p: 2 }}>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
+              <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Box display="flex" alignItems="center">
                   <AvatarPrimary sx={{ mr: 2 }}>
                     <FolderOpenTwoToneIcon />
                   </AvatarPrimary>
                   <Box>
-                    <Typography
-                      variant="h4"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
+                    <Typography variant="h4" color="text.primary" gutterBottom noWrap>
                       Holiday Pictures
                     </Typography>
                     <Typography variant="subtitle1">
@@ -169,22 +129,13 @@ function AllFolders() {
         <Grid item xs={12} sm={6}>
           <Card>
             <CardActionAreaWrapper sx={{ p: 2 }}>
-              <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
-              >
+              <Box display="flex" justifyContent="space-between" alignItems="center">
                 <Box display="flex" alignItems="center">
                   <AvatarPrimary sx={{ mr: 2 }}>
                     <FolderOpenTwoToneIcon />
                   </AvatarPrimary>
                   <Box>
-                    <Typography
-                      variant="h4"
-                      color="text.primary"
-                      gutterBottom
-                      noWrap
-                    >
+                    <Typography variant="h4" color="text.primary" gutterBottom noWrap>
                       2010 Invoices Archive
                     </Typography>
                     <Typography variant="subtitle1">
@@ -207,7 +158,7 @@ function AllFolders() {
         </Grid>
       </Grid>
     </>
-  );
+  )
 }
 
-export default AllFolders;
+export default AllFolders

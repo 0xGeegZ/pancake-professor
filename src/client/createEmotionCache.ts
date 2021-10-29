@@ -1,4 +1,4 @@
-import createCache from '@emotion/cache';
+import createCache from '@emotion/cache'
 // import stylisRTLPlugin from 'stylis-plugin-rtl';
 
 export default function createEmotionCache() {
@@ -6,5 +6,5 @@ export default function createEmotionCache() {
     key: 'css',
     // // @ts-ignore
     // stylisPlugins: [stylisRTLPlugin]
-  });
+  })
 }

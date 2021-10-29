@@ -1,7 +1,7 @@
-import AutoGraphIcon from '@mui/icons-material/AutoGraph';
-import { Avatar, Box, Button, Card, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+import AutoGraphIcon from '@mui/icons-material/AutoGraph'
+import { Avatar, Box, Button, Card, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const ButtonTransparent = styled(Button)(
   ({ theme }) => `

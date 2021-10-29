@@ -1,28 +1,28 @@
-import 'moment-timezone';
+import 'moment-timezone'
 
-import FollowPlayersPromotion from '@/client/components/Dashboards/Healthcare/doctor/FollowPlayersPromotion';
-import ActiveLiveBets from '@/client/components/Dashboards/Healthcare/hospital/ActiveLiveBets';
-import LiveActivePlayers from '@/client/components/Dashboards/Learning/LiveActivePlayers';
-import { Box, Grid, LinearProgress, Zoom } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { ethers } from 'ethers';
-import Head from 'next/head';
-import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
-import { ChangeEvent, useCallback, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import ActiveTotalAmount from 'src/client/components/Dashboards/Commerce/ActiveTotalAmount';
-import ActiveTotalBears from 'src/client/components/Dashboards/Commerce/ActiveTotalBears';
-import ActiveTotalBets from 'src/client/components/Dashboards/Commerce/ActiveTotalBets';
-import ActiveTotalBulls from 'src/client/components/Dashboards/Commerce/ActiveTotalBulls';
-import Footer from 'src/client/components/Footer';
-import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated';
-import useRefMounted from 'src/client/hooks/useRefMounted';
-import MainLayout from 'src/client/layouts/MainLayout';
-import loadGameData from 'src/client/thegraph/loadGameData';
+import { Box, Grid, LinearProgress, Zoom } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { ethers } from 'ethers'
+import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import ActiveTotalAmount from 'src/client/components/Dashboards/Commerce/ActiveTotalAmount'
+import ActiveTotalBears from 'src/client/components/Dashboards/Commerce/ActiveTotalBears'
+import ActiveTotalBets from 'src/client/components/Dashboards/Commerce/ActiveTotalBets'
+import ActiveTotalBulls from 'src/client/components/Dashboards/Commerce/ActiveTotalBulls'
+import Footer from 'src/client/components/Footer'
+import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
+import useRefMounted from 'src/client/hooks/useRefMounted'
+import MainLayout from 'src/client/layouts/MainLayout'
+import loadGameData from 'src/client/thegraph/loadGameData'
 
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
+import LiveActivePlayers from '@/client/components/Dashboards/Learning/LiveActivePlayers'
+import ActiveLiveBets from '@/client/components/Dashboards/Healthcare/hospital/ActiveLiveBets'
+import FollowPlayersPromotion from '@/client/components/Dashboards/Healthcare/doctor/FollowPlayersPromotion'
 
 const { PREDICTION_CONTRACT_ABI } = require('src/client/abis/pancake-prediction-abi-v3')
 
@@ -86,7 +86,7 @@ const LiveView = () => {
   const { t }: { t: any } = useTranslation()
 
   const isMountedRef = useRefMounted()
-  const [epoch, setEpoch] = useState<String>('')
+  const [epoch, setEpoch] = useState<string>('')
   const [user, setUser] = useState<User | any>(null)
   const [isPaused, setIsPaused] = useState<boolean>(false)
 
@@ -121,7 +121,7 @@ const LiveView = () => {
       return
     }
 
-    const _epoch = epoch ? epoch : await preditionContract.currentEpoch()
+    const _epoch = epoch || (await preditionContract.currentEpoch())
     setEpoch(_epoch)
 
     const {

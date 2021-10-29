@@ -9,13 +9,13 @@ import {
   Avatar,
   IconButton,
   List,
-  ListItem
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import DateRangeTwoToneIcon from '@mui/icons-material/DateRangeTwoTone';
-import ControlPointTwoToneIcon from '@mui/icons-material/ControlPointTwoTone';
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
+  ListItem,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import DateRangeTwoToneIcon from '@mui/icons-material/DateRangeTwoTone'
+import ControlPointTwoToneIcon from '@mui/icons-material/ControlPointTwoTone'
+import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `
@@ -24,7 +24,7 @@ const AvatarPrimary = styled(Avatar)(
       width: ${theme.spacing(5)};
       height: ${theme.spacing(5)};
 `
-);
+)
 
 const BoxWrapper = styled(Box)(
   ({ theme }) => `
@@ -40,7 +40,7 @@ const BoxWrapper = styled(Box)(
       flex-shrink: 0;
       transition: ${theme.transitions.create(['background'])};
 `
-);
+)
 
 const ListItemWrapper = styled(ListItem)(
   ({ theme }) => `
@@ -52,10 +52,10 @@ const ListItemWrapper = styled(ListItem)(
         }
       }
 `
-);
+)
 
 function UpcomingEvents() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Card sx={{ height: '100%' }}>
@@ -86,19 +86,11 @@ function UpcomingEvents() {
             </Box>
           </BoxWrapper>
           <Box>
-            <Typography
-              variant="h4"
-              sx={{ pt: 1 }}
-              color="text.primary"
-              noWrap
-              gutterBottom
-            >
+            <Typography variant="h4" sx={{ pt: 1 }} color="text.primary" noWrap gutterBottom>
               {t('Healthy Body')}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              {t(
-                'You will learn how to have a healthy body and how to stay fit in this event.'
-              )}
+              {t('You will learn how to have a healthy body and how to stay fit in this event.')}
             </Typography>
           </Box>
         </ListItemWrapper>
@@ -113,19 +105,11 @@ function UpcomingEvents() {
             </Box>
           </BoxWrapper>
           <Box>
-            <Typography
-              variant="h4"
-              sx={{ pt: 1 }}
-              color="text.primary"
-              noWrap
-              gutterBottom
-            >
+            <Typography variant="h4" sx={{ pt: 1 }} color="text.primary" noWrap gutterBottom>
               {t('Healthy Nutrition - The Power is in You')}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              {t(
-                'Three day course that will help you harness your inner power in order to have a healthier life.'
-              )}
+              {t('Three day course that will help you harness your inner power in order to have a healthier life.')}
             </Typography>
           </Box>
         </ListItemWrapper>
@@ -140,19 +124,11 @@ function UpcomingEvents() {
             </Box>
           </BoxWrapper>
           <Box>
-            <Typography
-              variant="h4"
-              sx={{ pt: 1 }}
-              color="text.primary"
-              noWrap
-              gutterBottom
-            >
+            <Typography variant="h4" sx={{ pt: 1 }} color="text.primary" noWrap gutterBottom>
               {t('Mindfulness Online Course')}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              {t(
-                'Learn how to better manage the stresses of daily life, improve your overall health.'
-              )}
+              {t('Learn how to better manage the stresses of daily life, improve your overall health.')}
             </Typography>
           </Box>
         </ListItemWrapper>
@@ -167,34 +143,22 @@ function UpcomingEvents() {
             </Box>
           </BoxWrapper>
           <Box>
-            <Typography
-              variant="h4"
-              sx={{ pt: 1 }}
-              color="text.primary"
-              noWrap
-              gutterBottom
-            >
+            <Typography variant="h4" sx={{ pt: 1 }} color="text.primary" noWrap gutterBottom>
               {t('The surprising new science of fitness.')}
             </Typography>
             <Typography variant="body1" color="text.secondary">
-              {t(
-                'This is a description for the above title. Add whatever you need here. Create beautiful designs!'
-              )}
+              {t('This is a description for the above title. Add whatever you need here. Create beautiful designs!')}
             </Typography>
           </Box>
         </ListItemWrapper>
       </List>
       <CardContent sx={{ pt: 3 }}>
-        <Button
-          variant="outlined"
-          size="small"
-          endIcon={<ArrowForwardTwoToneIcon fontSize="small" />}
-        >
+        <Button variant="outlined" size="small" endIcon={<ArrowForwardTwoToneIcon fontSize="small" />}>
           {t('View all')}
         </Button>
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default UpcomingEvents;
+export default UpcomingEvents

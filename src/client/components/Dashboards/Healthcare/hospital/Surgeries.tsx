@@ -1,17 +1,17 @@
-import { Card, CardHeader, Typography, Avatar, Box } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import Label from 'src/client/components/Label';
-import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone';
-import AppointmentsAltChart from './AppointmentsAltChart';
-import MedicalServicesTwoToneIcon from '@mui/icons-material/MedicalServicesTwoTone';
+import { Card, CardHeader, Typography, Avatar, Box } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import Label from 'src/client/components/Label'
+import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone'
+import MedicalServicesTwoToneIcon from '@mui/icons-material/MedicalServicesTwoTone'
+import AppointmentsAltChart from './AppointmentsAltChart'
 
 const AppointmentsAltChartWrapper = styled(AppointmentsAltChart)(
   () => `
         height: 90px;
         width: 200px;
 `
-);
+)
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `
@@ -21,46 +21,20 @@ const AvatarPrimary = styled(Avatar)(
       height: ${theme.spacing(6)};
       margin-top: -${theme.spacing(1)};
 `
-);
+)
 
 function Surgeries() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const surgeries = {
-    month: [
-      1221,
-      1377,
-      1445,
-      1453,
-      1276,
-      1352,
-      1240,
-      1082,
-      1330,
-      1247,
-      1443,
-      1173
-    ]
-  };
+    month: [1221, 1377, 1445, 1453, 1276, 1352, 1240, 1082, 1330, 1247, 1443, 1173],
+  }
 
   const generic = {
     month: {
-      labels: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
-      ]
-    }
-  };
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    },
+  }
 
   return (
     <Card sx={{ px: 1, pt: 1 }}>
@@ -77,11 +51,7 @@ function Surgeries() {
               <ArrowUpwardTwoToneIcon fontSize="small" />
               <b>+25%</b>
             </Label>
-            <Typography
-              align="right"
-              variant="subtitle1"
-              color="text.secondary"
-            >
+            <Typography align="right" variant="subtitle1" color="text.secondary">
               {t('since last month')}
             </Typography>
           </>
@@ -96,15 +66,12 @@ function Surgeries() {
             <Typography variant="h2">82</Typography>
           </Box>
           <Box height={90} width={200}>
-            <AppointmentsAltChartWrapper
-              data={surgeries}
-              labels={generic.month.labels}
-            />
+            <AppointmentsAltChartWrapper data={surgeries} labels={generic.month.labels} />
           </Box>
         </Box>
       </Box>
     </Card>
-  );
+  )
 }
 
-export default Surgeries;
+export default Surgeries

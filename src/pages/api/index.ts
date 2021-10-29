@@ -1,19 +1,19 @@
-import { ApolloServer } from 'apollo-server-micro';
-import prisma from '../../server/db/prisma';
-import { getRequestOrigin } from '../../server/get-request-origin';
-import { schema } from '../../server/graphql/schema';
-import handler from '../../server/api-route';
+import { ApolloServer } from 'apollo-server-micro'
+import prisma from '../../server/db/prisma'
+import { getRequestOrigin } from '../../server/get-request-origin'
+import { schema } from '../../server/graphql/schema'
+import handler from '../../server/api-route'
 
 export const config = {
   api: {
     bodyParser: false,
   },
-};
+}
 
 export interface GraphQLContext {
-  user?: Express.User;
-  prisma: typeof prisma;
-  origin: string;
+  user?: Express.User
+  prisma: typeof prisma
+  origin: string
 }
 
 export default handler().use(
@@ -27,4 +27,4 @@ export default handler().use(
   }).createHandler({
     path: '/api',
   })
-);
+)

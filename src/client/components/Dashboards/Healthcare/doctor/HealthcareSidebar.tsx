@@ -10,26 +10,26 @@ import {
   Card,
   Hidden,
   CardContent,
-  CardActions
-} from '@mui/material';
-import Link from 'src/client/components/Link';
+  CardActions,
+} from '@mui/material'
+import Link from 'src/client/components/Link'
 
-import { useTranslation } from 'react-i18next';
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
+import { useTranslation } from 'react-i18next'
+import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
 
-import { styled, useTheme } from '@mui/material/styles';
+import { styled, useTheme } from '@mui/material/styles'
 
 const TypographyPrimary = styled(Typography)(
   ({ theme }) => `
       color: ${theme.colors.alpha.trueWhite[100]};
 `
-);
+)
 
 const TypographySecondary = styled(Typography)(
   ({ theme }) => `
       color: ${theme.colors.alpha.trueWhite[70]};
 `
-);
+)
 
 const IndicatorWrapper = styled(Box)(
   ({ theme }) => `
@@ -39,7 +39,7 @@ const IndicatorWrapper = styled(Box)(
     width: 56px;
     margin: ${theme.spacing(1)} 0;
 `
-);
+)
 
 const CardActionsWrapper = styled(CardActions)(
   ({ theme }) => `
@@ -47,14 +47,12 @@ const CardActionsWrapper = styled(CardActions)(
     display: block;
     padding: ${theme.spacing(2)};
 `
-);
+)
 
 const BoxUpgrade = styled(Box)(
   ({ theme }) => `
     background: ${theme.colors.gradients.black1};
-    padding: ${theme.spacing(3)} ${theme.spacing(17)} ${theme.spacing(
-    3
-  )} ${theme.spacing(3)};
+    padding: ${theme.spacing(3)} ${theme.spacing(17)} ${theme.spacing(3)} ${theme.spacing(3)};
     position: relative;
     border-radius: ${theme.general.borderRadius};
     
@@ -64,12 +62,12 @@ const BoxUpgrade = styled(Box)(
       right: 0;
     }
 `
-);
+)
 
 function HealthcareSidebar() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
   // const { user } = useAuth();
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <Box p={3}>
@@ -78,8 +76,7 @@ function HealthcareSidebar() {
         href="/dashboards/healthcare/hospital"
         variant="contained"
         fullWidth
-        endIcon={<ArrowForwardTwoToneIcon fontSize="small" />}
-      >
+        endIcon={<ArrowForwardTwoToneIcon fontSize="small" />}>
         {t('Switch to Hospital View')}
       </Button>
 
@@ -90,7 +87,7 @@ function HealthcareSidebar() {
             mb: 2,
             mt: 4,
             width: theme.spacing(12),
-            height: theme.spacing(12)
+            height: theme.spacing(12),
           }}
           variant="rounded"
           alt="Margaret Gale"
@@ -114,12 +111,7 @@ function HealthcareSidebar() {
               <Typography variant="h2" noWrap gutterBottom>
                 4.9
               </Typography>
-              <Rating
-                name="half-rating-read"
-                defaultValue={4.5}
-                precision={0.5}
-                readOnly
-              />
+              <Rating name="half-rating-read" defaultValue={4.5} precision={0.5} readOnly />
             </Box>
           </Grid>
           <Hidden lgDown>
@@ -174,7 +166,7 @@ function HealthcareSidebar() {
         <img src="/static/images/placeholders/illustrations/6.png" alt="..." />
       </BoxUpgrade>
     </Box>
-  );
+  )
 }
 
-export default HealthcareSidebar;
+export default HealthcareSidebar

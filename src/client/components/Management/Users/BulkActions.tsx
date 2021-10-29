@@ -1,22 +1,12 @@
-import { useState, useRef } from 'react';
+import { useState, useRef } from 'react'
 
-import {
-  Box,
-  Menu,
-  Tooltip,
-  IconButton,
-  Button,
-  ListItemText,
-  ListItem,
-  List,
-  Typography
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
+import { Box, Menu, Tooltip, IconButton, Button, ListItemText, ListItem, List, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
 
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
-import VerifiedUserTwoToneIcon from '@mui/icons-material/VerifiedUserTwoTone';
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
+import VerifiedUserTwoToneIcon from '@mui/icons-material/VerifiedUserTwoTone'
 
 const ButtonError = styled(Button)(
   ({ theme }) => `
@@ -27,20 +17,20 @@ const ButtonError = styled(Button)(
         background: ${theme.colors.error.dark};
      }
     `
-);
+)
 
 function BulkActions() {
-  const [onMenuOpen, menuOpen] = useState<boolean>(false);
-  const moreRef = useRef<HTMLButtonElement | null>(null);
-  const { t }: { t: any } = useTranslation();
+  const [onMenuOpen, menuOpen] = useState<boolean>(false)
+  const moreRef = useRef<HTMLButtonElement | null>(null)
+  const { t }: { t: any } = useTranslation()
 
   const openMenu = (): void => {
-    menuOpen(true);
-  };
+    menuOpen(true)
+  }
 
   const closeMenu = (): void => {
-    menuOpen(false);
-  };
+    menuOpen(false)
+  }
 
   return (
     <>
@@ -54,20 +44,11 @@ function BulkActions() {
               <VerifiedUserTwoToneIcon />
             </IconButton>
           </Tooltip>
-          <ButtonError
-            sx={{ ml: 1 }}
-            startIcon={<DeleteTwoToneIcon />}
-            variant="contained"
-          >
+          <ButtonError sx={{ ml: 1 }} startIcon={<DeleteTwoToneIcon />} variant="contained">
             {t('Delete')}
           </ButtonError>
         </Box>
-        <IconButton
-          color="primary"
-          onClick={openMenu}
-          ref={moreRef}
-          sx={{ ml: 2, p: 1 }}
-        >
+        <IconButton color="primary" onClick={openMenu} ref={moreRef} sx={{ ml: 2, p: 1 }}>
           <MoreVertTwoToneIcon />
         </IconButton>
       </Box>
@@ -79,14 +60,12 @@ function BulkActions() {
         onClose={closeMenu}
         anchorOrigin={{
           vertical: 'center',
-          horizontal: 'center'
+          horizontal: 'center',
         }}
         transformOrigin={{
           vertical: 'center',
-          horizontal: 'center'
-        }}
-
-      >
+          horizontal: 'center',
+        }}>
         <List sx={{ p: 1 }} component="nav">
           <ListItem button>
             <ListItemText primary={t('Bulk edit accounts')} />
@@ -97,7 +76,7 @@ function BulkActions() {
         </List>
       </Menu>
     </>
-  );
+  )
 }
 
-export default BulkActions;
+export default BulkActions

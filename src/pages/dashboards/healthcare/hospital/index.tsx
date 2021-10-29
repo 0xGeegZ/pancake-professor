@@ -1,20 +1,20 @@
-import type { ReactElement } from 'react';
-import AccentHeaderLayout from "src/client/layouts/AccentHeaderLayout";
+import type { ReactElement } from 'react'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 
-import Head from 'next/head';
-import PageHeader from 'src/client/components/Dashboards/Healthcare/hospital/PageHeaderHospital';
-import Footer from 'src/client/components/Footer';
-import PageTitleWrapper from 'src/client/components/PageTitleWrapper';
+import Head from 'next/head'
+import PageHeader from 'src/client/components/Dashboards/Healthcare/hospital/PageHeaderHospital'
+import Footer from 'src/client/components/Footer'
+import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
 
-import { Grid } from '@mui/material';
-import OverallStatus from 'src/client/components/Dashboards/Healthcare/hospital/OverallStatus';
-import AppointmentsAlt from 'src/client/components/Dashboards/Healthcare/hospital/AppointmentsAlt';
-import Surgeries from 'src/client/components/Dashboards/Healthcare/hospital/Surgeries';
-import Doctors from 'src/client/components/Dashboards/Healthcare/hospital/Doctors';
-import Departments from 'src/client/components/Dashboards/Healthcare/hospital/Departments';
-import RecentPatients from 'src/client/components/Dashboards/Healthcare/hospital/RecentPatients';
-import Notifications from 'src/client/components/Dashboards/Healthcare/hospital/Notifications';
-import UpcomingConsults from 'src/client/components/Dashboards/Healthcare/hospital/UpcomingConsults';
+import { Grid } from '@mui/material'
+import OverallStatus from 'src/client/components/Dashboards/Healthcare/hospital/OverallStatus'
+import AppointmentsAlt from 'src/client/components/Dashboards/Healthcare/hospital/AppointmentsAlt'
+import Surgeries from 'src/client/components/Dashboards/Healthcare/hospital/Surgeries'
+import Doctors from 'src/client/components/Dashboards/Healthcare/hospital/Doctors'
+import Departments from 'src/client/components/Dashboards/Healthcare/hospital/Departments'
+import RecentPatients from 'src/client/components/Dashboards/Healthcare/hospital/RecentPatients'
+import Notifications from 'src/client/components/Dashboards/Healthcare/hospital/Notifications'
+import UpcomingConsults from 'src/client/components/Dashboards/Healthcare/hospital/UpcomingConsults'
 
 function DashboardHospitalView() {
   return (
@@ -25,25 +25,12 @@ function DashboardHospitalView() {
       <PageTitleWrapper>
         <PageHeader />
       </PageTitleWrapper>
-      <Grid
-        sx={{ px: 4 }}
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={3}
-      >
+      <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
         <Grid item lg={8} xs={12}>
           <OverallStatus />
         </Grid>
         <Grid item lg={4} xs={12}>
-          <Grid
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="stretch"
-            spacing={3}
-          >
+          <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
             <Grid item lg={12} md={6} xs={12}>
               <AppointmentsAlt />
             </Grid>
@@ -70,15 +57,11 @@ function DashboardHospitalView() {
       </Grid>
       <Footer />
     </>
-  );
+  )
 }
 
-export default DashboardHospitalView;
+export default DashboardHospitalView
 
 DashboardHospitalView.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <AccentHeaderLayout>
-      {page}
-    </AccentHeaderLayout>
-  )
+  return <AccentHeaderLayout>{page}</AccentHeaderLayout>
 }

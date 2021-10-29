@@ -1,7 +1,7 @@
-import { addDays } from 'date-fns';
-import _ from 'lodash';
-import { mock } from 'src/client/utils/axios';
-import type { Project } from 'src/client/models/projects_board';
+import { addDays } from 'date-fns'
+import _ from 'lodash'
+import { mock } from 'src/client/utils/axios'
+import type { Project } from 'src/client/models/projects_board'
 
 const project: Project = {
   lists: [
@@ -173,71 +173,71 @@ const project: Project = {
       name: 'Maria Calzoni',
     },
   ],
-};
+}
 
-mock.onGet('/api/projects_board/board').reply(200, { project });
+mock.onGet('/api/projects_board/board').reply(200, { project })
 
 mock.onPost('/api/projects_board/list/update').reply((request) => {
   try {
-    const { listId, update } = JSON.parse(request.data);
-    const list = project.lists.find((_list) => _list.id === listId);
+    const { listId, update } = JSON.parse(request.data)
+    const list = project.lists.find((_list) => _list.id === listId)
 
-    _.assign(list, update);
+    _.assign(list, update)
 
-    return [200, { list }];
+    return [200, { list }]
   } catch (err) {
-    console.error(err);
-    return [500, { message: 'Encountered a server error' }];
+    console.error(err)
+    return [500, { message: 'Encountered a server error' }]
   }
-});
+})
 
 mock.onPost('/api/projects_board/tasks/update').reply((request) => {
   try {
-    const { taskId, update } = JSON.parse(request.data);
-    const task = project.tasks.find((_task) => _task.id === taskId);
+    const { taskId, update } = JSON.parse(request.data)
+    const task = project.tasks.find((_task) => _task.id === taskId)
 
-    _.assign(task, update);
+    _.assign(task, update)
 
-    return [200, { task }];
+    return [200, { task }]
   } catch (err) {
-    console.error(err);
-    return [500, { message: 'Encountered a server error' }];
+    console.error(err)
+    return [500, { message: 'Encountered a server error' }]
   }
-});
+})
 
 mock.onPost('/api/projects_board/tasks/move').reply((request) => {
   try {
-    const { taskId, position, listId } = JSON.parse(request.data);
-    const task = project.tasks.find((_task) => _task.id === taskId);
+    const { taskId, position, listId } = JSON.parse(request.data)
+    const task = project.tasks.find((_task) => _task.id === taskId)
 
     if (!task) {
-      return [400, 'Card not found'];
+      return [400, 'Card not found']
     }
 
-    const sourceList = project.lists.find((list) => list.id === task.listId);
+    const sourceList = project.lists.find((list) => list.id === task.listId)
 
     if (!sourceList) {
-      return [500, 'List not found'];
+      return [500, 'List not found']
     }
 
-    _.pull(sourceList.taskIds, taskId);
+    _.pull(sourceList.taskIds, taskId)
 
     if (listId) {
-      const destinationList = project.lists.find((list) => list.id === task.listId);
+      const destinationList = project.lists.find((list) => list.id === task.listId)
 
       if (!destinationList) {
-        return [500, 'List not found'];
+        return [500, 'List not found']
       }
 
-      sourceList.taskIds.splice(position, 0, task.id);
-      task.listId = destinationList.id;
+      sourceList.taskIds.splice(position, 0, task.id)
+      task.listId = destinationList.id
     } else {
-      sourceList.taskIds.splice(position, 0, task.id);
+      sourceList.taskIds.splice(position, 0, task.id)
     }
 
-    return [200, true];
+    return [200, true]
   } catch (err) {
-    console.error(err);
-    return [500, { message: 'Encountered a server error' }];
+    console.error(err)
+    return [500, { message: 'Encountered a server error' }]
   }
-});
+})

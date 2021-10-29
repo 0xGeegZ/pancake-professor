@@ -1,4 +1,4 @@
-import { MouseEvent, useState } from 'react';
+import { MouseEvent, useState } from 'react'
 import {
   Card,
   Box,
@@ -15,56 +15,44 @@ import {
   TableCell,
   TableBody,
   Tooltip,
-  TableContainer
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled, useTheme } from '@mui/material/styles';
-import { formatDistance, subDays, subMonths } from 'date-fns';
+  TableContainer,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled, useTheme } from '@mui/material/styles'
+import { formatDistance, subDays, subMonths } from 'date-fns'
 
-import Link from 'src/client/components/Link';
+import Link from 'src/client/components/Link'
 
-import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone';
-import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone';
-import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone';
-import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone';
-import Text from 'src/client/components/Text';
+import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone'
+import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
+import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
+import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone'
+import Text from 'src/client/components/Text'
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `
       background: ${theme.colors.primary.lighter};
       color: ${theme.colors.primary.main};
 `
-);
+)
 
 function TeamFolders() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
-  const [tabs, setTab] = useState<string | null>('grid_view');
+  const [tabs, setTab] = useState<string | null>('grid_view')
 
-  const handleViewOrientation = (
-    _event: MouseEvent<HTMLElement>,
-    newValue: string | null
-  ) => {
-    setTab(newValue);
-  };
+  const handleViewOrientation = (_event: MouseEvent<HTMLElement>, newValue: string | null) => {
+    setTab(newValue)
+  }
 
   return (
     <>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ pb: 3 }}
-      >
+      <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ pb: 3 }}>
         <Typography variant="h3">{t('Team Folders')}</Typography>
-        <ToggleButtonGroup
-          value={tabs}
-          exclusive
-          onChange={handleViewOrientation}
-        >
+        <ToggleButtonGroup value={tabs} exclusive onChange={handleViewOrientation}>
           <ToggleButton disableRipple value="grid_view">
             <ViewWeekTwoToneIcon />
           </ToggleButton>
@@ -78,12 +66,7 @@ function TeamFolders() {
           <>
             <Grid item xs={12} sm={6}>
               <Card sx={{ p: 2 }}>
-                <Box
-                  mb={2}
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
+                <Box mb={2} display="flex" justifyContent="space-between" alignItems="center">
                   <Box display="flex" alignItems="center">
                     <AvatarPrimary sx={{ mr: 1 }}>
                       <FolderOpenTwoToneIcon />
@@ -136,12 +119,7 @@ function TeamFolders() {
                   Documents for Clients
                 </Link>
 
-                <Box
-                  mt={2}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
+                <Box mt={2} display="flex" alignItems="center" justifyContent="space-between">
                   <Typography variant="subtitle1">
                     <Text color="black">
                       <b>15</b>
@@ -152,13 +130,9 @@ function TeamFolders() {
                     <Typography lineHeight={1} variant="subtitle1">
                       {t('Created')}
                     </Typography>
-                    <Typography
-                      fontWeight="bold"
-                      color="text.primary"
-                      variant="subtitle1"
-                    >
+                    <Typography fontWeight="bold" color="text.primary" variant="subtitle1">
                       {formatDistance(subDays(new Date(), 21), new Date(), {
-                        addSuffix: true
+                        addSuffix: true,
                       })}
                     </Typography>
                   </Box>
@@ -167,12 +141,7 @@ function TeamFolders() {
             </Grid>
             <Grid item xs={12} sm={6}>
               <Card sx={{ p: 2 }}>
-                <Box
-                  mb={2}
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                >
+                <Box mb={2} display="flex" justifyContent="space-between" alignItems="center">
                   <Box display="flex" alignItems="center">
                     <AvatarPrimary sx={{ mr: 1 }}>
                       <FolderOpenTwoToneIcon />
@@ -207,12 +176,7 @@ function TeamFolders() {
                   2010 Invoices Archive
                 </Link>
 
-                <Box
-                  mt={2}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
+                <Box mt={2} display="flex" alignItems="center" justifyContent="space-between">
                   <Typography variant="subtitle1">
                     <Text color="black">
                       <b>6</b>
@@ -223,13 +187,9 @@ function TeamFolders() {
                     <Typography lineHeight={1} variant="subtitle1">
                       {t('Created')}
                     </Typography>
-                    <Typography
-                      fontWeight="bold"
-                      color="text.primary"
-                      variant="subtitle1"
-                    >
+                    <Typography fontWeight="bold" color="text.primary" variant="subtitle1">
                       {formatDistance(subMonths(new Date(), 37), new Date(), {
-                        addSuffix: true
+                        addSuffix: true,
                       })}
                     </Typography>
                   </Box>
@@ -314,7 +274,7 @@ function TeamFolders() {
                       </TableCell>
                       <TableCell>
                         {formatDistance(subDays(new Date(), 21), new Date(), {
-                          addSuffix: true
+                          addSuffix: true,
                         })}
                       </TableCell>
                       <TableCell align="right">
@@ -322,13 +282,12 @@ function TeamFolders() {
                           <IconButton
                             sx={{
                               '&:hover': {
-                                background: theme.colors.primary.lighter
+                                background: theme.colors.primary.lighter,
                               },
-                              color: theme.palette.primary.main
+                              color: theme.palette.primary.main,
                             }}
                             color="inherit"
-                            size="small"
-                          >
+                            size="small">
                             <LaunchTwoToneIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
@@ -336,13 +295,12 @@ function TeamFolders() {
                           <IconButton
                             sx={{
                               '&:hover': {
-                                background: theme.colors.error.lighter
+                                background: theme.colors.error.lighter,
                               },
-                              color: theme.palette.error.main
+                              color: theme.palette.error.main,
                             }}
                             color="inherit"
-                            size="small"
-                          >
+                            size="small">
                             <DeleteTwoToneIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
@@ -390,7 +348,7 @@ function TeamFolders() {
                       </TableCell>
                       <TableCell>
                         {formatDistance(subMonths(new Date(), 37), new Date(), {
-                          addSuffix: true
+                          addSuffix: true,
                         })}{' '}
                       </TableCell>
                       <TableCell align="right">
@@ -398,13 +356,12 @@ function TeamFolders() {
                           <IconButton
                             sx={{
                               '&:hover': {
-                                background: theme.colors.primary.lighter
+                                background: theme.colors.primary.lighter,
                               },
-                              color: theme.palette.primary.main
+                              color: theme.palette.primary.main,
                             }}
                             color="inherit"
-                            size="small"
-                          >
+                            size="small">
                             <LaunchTwoToneIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
@@ -412,13 +369,12 @@ function TeamFolders() {
                           <IconButton
                             sx={{
                               '&:hover': {
-                                background: theme.colors.error.lighter
+                                background: theme.colors.error.lighter,
                               },
-                              color: theme.palette.error.main
+                              color: theme.palette.error.main,
                             }}
                             color="inherit"
-                            size="small"
-                          >
+                            size="small">
                             <DeleteTwoToneIcon fontSize="small" />
                           </IconButton>
                         </Tooltip>
@@ -440,18 +396,15 @@ function TeamFolders() {
                 fontWeight="normal"
                 color="text.secondary"
                 sx={{ my: 5 }}
-                gutterBottom
-              >
-                {t(
-                  'This is a default view used when none of the options are selected'
-                )}
+                gutterBottom>
+                {t('This is a default view used when none of the options are selected')}
               </Typography>
             </Card>
           </Grid>
         )}
       </Grid>
     </>
-  );
+  )
 }
 
-export default TeamFolders;
+export default TeamFolders

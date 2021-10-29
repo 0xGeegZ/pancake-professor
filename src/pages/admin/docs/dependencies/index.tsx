@@ -1,9 +1,10 @@
-import { Container, Divider, Grid, List, ListItem, ListItemText, Typography } from '@mui/material';
-import Head from 'next/head';
-import PageHeader from 'src/client/components/PageHeaderDocs';
-import DocsLayout from 'src/client/layouts/DocsLayout';
+import { Container, Divider, Grid, List, ListItem, ListItemText, Typography } from '@mui/material'
+import Head from 'next/head'
+import PageHeader from 'src/client/components/PageHeaderDocs'
+import DocsLayout from 'src/client/layouts/DocsLayout'
 
 import type { ReactElement } from 'react'
+
 function Dependencies() {
   return (
     <>
@@ -13,7 +14,7 @@ function Dependencies() {
       <Container maxWidth={false}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <PageHeader heading="Dependencies" subheading=""></PageHeader>
+            <PageHeader heading="Dependencies" subheading="" />
           </Grid>
           <Grid item xs={12}>
             <Typography paragraph>

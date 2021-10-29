@@ -1,23 +1,16 @@
-import {
-  Card,
-  CardHeader,
-  Typography,
-  CardActionArea,
-  IconButton,
-  Divider
-} from '@mui/material';
+import { Card, CardHeader, Typography, CardActionArea, IconButton, Divider } from '@mui/material'
 
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import SwiperCore, { Navigation, Pagination } from 'swiper';
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
-import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper.min.css';
-import 'swiper/components/navigation/navigation.min.css';
-import 'swiper/components/pagination/pagination.min.css';
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import SwiperCore, { Navigation, Pagination } from 'swiper'
+import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
+import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/swiper.min.css'
+import 'swiper/components/navigation/navigation.min.css'
+import 'swiper/components/pagination/pagination.min.css'
 
-SwiperCore.use([Navigation, Pagination]);
+SwiperCore.use([Navigation, Pagination])
 
 const SwipeIndicator = styled(IconButton)(
   ({ theme }) => `
@@ -32,7 +25,7 @@ const SwipeIndicator = styled(IconButton)(
           background: ${theme.colors.alpha.black[5]};
         }
 `
-);
+)
 
 const CardWrapper = styled(Card)(
   ({ theme }) => `
@@ -45,10 +38,10 @@ const CardWrapper = styled(Card)(
           margin: ${theme.spacing(2)} 0 ${theme.spacing(3)};
         }
 `
-);
+)
 
 function TrainingPrograms() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Card>
@@ -72,34 +65,28 @@ function TrainingPrograms() {
         loop
         navigation={{
           nextEl: '.MuiSwipe-right',
-          prevEl: '.MuiSwipe-left'
+          prevEl: '.MuiSwipe-left',
         }}
         breakpoints={{
           500: {
             slidesPerView: 2,
-            spaceBetween: 0
+            spaceBetween: 0,
           },
           768: {
             slidesPerView: 3,
-            spaceBetween: 0
+            spaceBetween: 0,
           },
           1200: {
             slidesPerView: 4,
-            spaceBetween: 0
-          }
+            spaceBetween: 0,
+          },
         }}
-        pagination={{ dynamicBullets: true, clickable: true }}
-      >
+        pagination={{ dynamicBullets: true, clickable: true }}>
         <SwiperSlide>
           <CardWrapper>
             <CardActionArea>
               <img src="/static/images/placeholders/fitness/1.jpg" alt="..." />
-              <Typography
-                align="center"
-                variant="h3"
-                color="text.primary"
-                gutterBottom
-              >
+              <Typography align="center" variant="h3" color="text.primary" gutterBottom>
                 {t('Stretching')}
               </Typography>
               <Typography align="center" variant="subtitle2" sx={{ mb: 3 }}>
@@ -112,12 +99,7 @@ function TrainingPrograms() {
           <CardWrapper>
             <CardActionArea>
               <img src="/static/images/placeholders/fitness/2.jpg" alt="..." />
-              <Typography
-                align="center"
-                variant="h3"
-                color="text.primary"
-                gutterBottom
-              >
+              <Typography align="center" variant="h3" color="text.primary" gutterBottom>
                 {t('Rope Jumping')}
               </Typography>
               <Typography align="center" variant="subtitle2" sx={{ mb: 3 }}>
@@ -130,12 +112,7 @@ function TrainingPrograms() {
           <CardWrapper>
             <CardActionArea>
               <img src="/static/images/placeholders/fitness/3.jpg" alt="..." />
-              <Typography
-                align="center"
-                variant="h3"
-                color="text.primary"
-                gutterBottom
-              >
+              <Typography align="center" variant="h3" color="text.primary" gutterBottom>
                 {t('Yoga')}
               </Typography>
               <Typography align="center" variant="subtitle2" sx={{ mb: 3 }}>
@@ -148,12 +125,7 @@ function TrainingPrograms() {
           <CardWrapper>
             <CardActionArea>
               <img src="/static/images/placeholders/fitness/4.jpg" alt="..." />
-              <Typography
-                align="center"
-                variant="h3"
-                color="text.primary"
-                gutterBottom
-              >
+              <Typography align="center" variant="h3" color="text.primary" gutterBottom>
                 {t('Fitness')}
               </Typography>
               <Typography align="center" variant="subtitle2" sx={{ mb: 3 }}>
@@ -164,7 +136,7 @@ function TrainingPrograms() {
         </SwiperSlide>
       </Swiper>
     </Card>
-  );
+  )
 }
 
-export default TrainingPrograms;
+export default TrainingPrograms

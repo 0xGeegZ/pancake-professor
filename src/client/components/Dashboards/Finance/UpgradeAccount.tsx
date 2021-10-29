@@ -1,17 +1,7 @@
-import {
-  Button,
-  Card,
-  CardContent,
-  CardHeader,
-  Box,
-  Typography,
-  IconButton,
-  alpha,
-  Hidden
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { styled } from '@mui/material/styles';
+import { Button, Card, CardContent, CardHeader, Box, Typography, IconButton, alpha, Hidden } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import { styled } from '@mui/material/styles'
 
 const IconButtonWrapper = styled(IconButton)(
   ({ theme }) => `
@@ -25,10 +15,10 @@ const IconButtonWrapper = styled(IconButton)(
           background-color: ${alpha(theme.colors.secondary.light, 0.3)};
       }
 `
-);
+)
 
 function UpgradeAccount() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Card
@@ -36,9 +26,8 @@ function UpgradeAccount() {
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
-        p: 3
-      }}
-    >
+        p: 3,
+      }}>
       <Box>
         <CardHeader
           title={t('Upgrade Your Account to PRO')}
@@ -46,26 +35,18 @@ function UpgradeAccount() {
             variant: 'h2',
             gutterBottom: true,
             noWrap: true,
-            color: 'textPrimary'
+            color: 'textPrimary',
           }}
-          subheader={t(
-            'You get a lot more features when upgrading to a PRO plan.'
-          )}
+          subheader={t('You get a lot more features when upgrading to a PRO plan.')}
           subheaderTypographyProps={{
             variant: 'subtitle2',
             gutterBottom: true,
             sx: { pt: 1 },
-            noWrap: true
+            noWrap: true,
           }}
         />
         <CardContent sx={{ pt: 0 }}>
-          <Typography
-            variant="h4"
-            fontWeight="normal"
-            sx={{ pb: 3 }}
-            color="text.primary"
-            component="p"
-          >
+          <Typography variant="h4" fontWeight="normal" sx={{ pb: 3 }} color="text.primary" component="p">
             {t('Manage your finances in style!')}
           </Typography>
           <Button variant="outlined" color="primary">
@@ -82,7 +63,7 @@ function UpgradeAccount() {
         </IconButtonWrapper>
       </Hidden>
     </Card>
-  );
+  )
 }
 
-export default UpgradeAccount;
+export default UpgradeAccount

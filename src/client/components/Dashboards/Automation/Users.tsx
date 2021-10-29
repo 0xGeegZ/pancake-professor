@@ -1,29 +1,14 @@
-import {
-  Box,
-  Typography,
-  Card,
-  Avatar,
-  Stack,
-  Tooltip,
-  Divider,
-  IconButton
-} from '@mui/material';
+import { Box, Typography, Card, Avatar, Stack, Tooltip, Divider, IconButton } from '@mui/material'
 
-import KeyboardArrowRightTwoToneIcon from '@mui/icons-material/KeyboardArrowRightTwoTone';
-import { useTranslation } from 'react-i18next';
-
+import KeyboardArrowRightTwoToneIcon from '@mui/icons-material/KeyboardArrowRightTwoTone'
+import { useTranslation } from 'react-i18next'
 
 function Users() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        mb={1}
-      >
+      <Box display="flex" alignItems="center" justifyContent="space-between" mb={1}>
         <Typography variant="h3">{t('Top users')}</Typography>
         <Tooltip placement="top" title={t('View all')} arrow>
           <IconButton size="large" color="primary">
@@ -36,46 +21,30 @@ function Users() {
           spacing={3}
           direction="row"
           justifyContent="space-evenly"
-          divider={<Divider orientation="vertical" flexItem />}
-        >
+          divider={<Divider orientation="vertical" flexItem />}>
           <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
             <Tooltip placement="top" title={t('View profile')} arrow>
-              <Avatar component="a" href="#"
-                sx={{ mb: 1, width: 56, height: 56 }}
-                src="/static/images/avatars/3.jpg"
-              />
+              <Avatar component="a" href="#" sx={{ mb: 1, width: 56, height: 56 }} src="/static/images/avatars/3.jpg" />
             </Tooltip>
-            <Typography variant="h4">
-              Randy
-            </Typography>
+            <Typography variant="h4">Randy</Typography>
             <Typography variant="subtitle2" textAlign="center" noWrap>
               Admin
             </Typography>
           </Box>
           <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
             <Tooltip placement="top" title={t('View profile')} arrow>
-              <Avatar component="a" href="#"
-                sx={{ mb: 1, width: 56, height: 56 }}
-                src="/static/images/avatars/1.jpg"
-              />
+              <Avatar component="a" href="#" sx={{ mb: 1, width: 56, height: 56 }} src="/static/images/avatars/1.jpg" />
             </Tooltip>
-            <Typography variant="h4">
-              Adeline
-            </Typography>
+            <Typography variant="h4">Adeline</Typography>
             <Typography variant="subtitle2" textAlign="center" noWrap>
               Admin
             </Typography>
           </Box>
           <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
             <Tooltip placement="top" title={t('View profile')} arrow>
-              <Avatar component="a" href="#"
-                sx={{ mb: 1, width: 56, height: 56 }}
-                src="/static/images/avatars/4.jpg"
-              />
+              <Avatar component="a" href="#" sx={{ mb: 1, width: 56, height: 56 }} src="/static/images/avatars/4.jpg" />
             </Tooltip>
-            <Typography variant="h4">
-              Benjamin
-            </Typography>
+            <Typography variant="h4">Benjamin</Typography>
             <Typography variant="subtitle2" textAlign="center" noWrap>
               Restricted
             </Typography>
@@ -83,7 +52,7 @@ function Users() {
         </Stack>
       </Card>
     </>
-  );
+  )
 }
 
-export default Users;
+export default Users

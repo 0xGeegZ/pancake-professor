@@ -1,17 +1,17 @@
 // src/server/graphql/Koi/index.ts
-import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus';
-import prisma from '../../db/prisma';
+import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus'
+import prisma from '../../db/prisma'
 
 const KoiHistory = objectType({
   name: 'KoiHistory',
   definition(t) {
-    t.model.length();
-    t.model.date();
-    t.model.image();
-    t.model.id();
-    t.model.koiId();
+    t.model.length()
+    t.model.date()
+    t.model.image()
+    t.model.id()
+    t.model.koiId()
   },
-});
+})
 
 const queries = extendType({
   type: 'Query',
@@ -23,17 +23,17 @@ const queries = extendType({
       },
       resolve: (_, { id }, ctx) => {
         // Only let authenticated users fetch posts
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         return prisma.koiHistory.findUnique({
           where: {
-            id: id,
+            id,
           },
-        });
+        })
       },
-    });
+    })
   },
-});
+})
 
 const mutations = extendType({
   type: 'Mutation',
@@ -48,7 +48,7 @@ const mutations = extendType({
       },
       resolve: async (_, args, ctx) => {
         // Only let authenticated users create history
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         return await prisma.koiHistory.create({
           data: {
@@ -61,9 +61,9 @@ const mutations = extendType({
               },
             },
           },
-        });
+        })
       },
-    });
+    })
 
     t.nullable.field('updateKoiHistory', {
       type: 'KoiHistory',
@@ -74,7 +74,7 @@ const mutations = extendType({
         image: stringArg(),
       },
       resolve: async (_, args, ctx) => {
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         const hasAccess = await prisma.koiHistory.findFirst({
           where: {
@@ -87,9 +87,9 @@ const mutations = extendType({
             },
             id: args.id,
           },
-        });
+        })
 
-        if (!hasAccess) return null;
+        if (!hasAccess) return null
 
         return await prisma.koiHistory.update({
           where: { id: args.id },
@@ -98,9 +98,9 @@ const mutations = extendType({
             date: args.date as string,
             image: args.image as string,
           },
-        });
+        })
       },
-    });
+    })
 
     t.nullable.field('deleteKoiHistory', {
       type: 'KoiHistory',
@@ -108,18 +108,18 @@ const mutations = extendType({
         id: nonNull(stringArg()),
       },
       resolve: async (_, { id }, ctx) => {
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         const koiHistory = await prisma.koiHistory.delete({
           where: {
-            id: id,
+            id,
           },
-        });
+        })
 
-        return koiHistory;
+        return koiHistory
       },
-    });
+    })
   },
-});
+})
 
-export default [KoiHistory, queries, mutations];
+export default [KoiHistory, queries, mutations]

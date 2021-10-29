@@ -1,9 +1,13 @@
 /// <reference types="react" />
 import { SwitchProps as MuiSwitchProps } from '@mui/material/Switch';
 import { FieldProps } from 'formik';
+
 export interface SwitchProps
   extends FieldProps,
-    Omit<MuiSwitchProps, 'checked' | 'name' | 'value' | 'defaultChecked' | 'form' | 'type'> {
+    Omit<
+      MuiSwitchProps,
+      'checked' | 'name' | 'value' | 'defaultChecked' | 'form' | 'type'
+    > {
   type?: string;
 }
 export declare function fieldToSwitch({

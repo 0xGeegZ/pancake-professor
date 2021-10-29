@@ -1,20 +1,16 @@
-import { FC } from 'react';
-import PropTypes from 'prop-types';
-import { Line } from 'react-chartjs-2';
-import { useTheme } from '@mui/material';
+import { FC } from 'react'
+import PropTypes from 'prop-types'
+import { Line } from 'react-chartjs-2'
+import { useTheme } from '@mui/material'
 
 interface ActivityChartProps {
-  className?: string;
-  data: any;
-  labels: string[];
+  className?: string
+  data: any
+  labels: string[]
 }
 
-const ActivityChart: FC<ActivityChartProps> = ({
-  data: dataProp,
-  labels,
-  ...rest
-}) => {
-  const theme = useTheme();
+const ActivityChart: FC<ActivityChartProps> = ({ data: dataProp, labels, ...rest }) => {
+  const theme = useTheme()
 
   const data = {
     datasets: [
@@ -33,7 +29,7 @@ const ActivityChart: FC<ActivityChartProps> = ({
         pointHoverBorderWidth: 4,
         pointBackgroundColor: theme.palette.primary.main,
         borderDash: [10, 5],
-        type: 'line'
+        type: 'line',
       },
       {
         label: 'Current Period',
@@ -48,34 +44,34 @@ const ActivityChart: FC<ActivityChartProps> = ({
         pointHoverBorderColor: theme.palette.common.white,
         pointHoverColor: theme.palette.error.main,
         pointHoverBorderWidth: 4,
-        pointBackgroundColor: theme.palette.error.main
-      }
+        pointBackgroundColor: theme.palette.error.main,
+      },
     ],
-    labels
-  };
+    labels,
+  }
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     cornerRadius: 6,
     legend: {
-      display: false
+      display: false,
     },
     layout: {
-      padding: 0
+      padding: 0,
     },
     scales: {
       xAxes: [
         {
           gridLines: {
             display: false,
-            drawBorder: false
+            drawBorder: false,
           },
           ticks: {
             padding: 18,
-            fontColor: theme.palette.text.secondary
-          }
-        }
+            fontColor: theme.palette.text.secondary,
+          },
+        },
       ],
       yAxes: [
         {
@@ -86,17 +82,17 @@ const ActivityChart: FC<ActivityChartProps> = ({
             drawBorder: false,
             zeroLineBorderDash: [6],
             zeroLineBorderDashOffset: [0],
-            zeroLineColor: theme.palette.divider
+            zeroLineColor: theme.palette.divider,
           },
           ticks: {
             padding: 12,
             fontColor: theme.palette.text.secondary,
             beginAtZero: true,
             min: 0,
-            maxTicksLimit: 5
-          }
-        }
-      ]
+            maxTicksLimit: 5,
+          },
+        },
+      ],
     },
     tooltips: {
       enabled: true,
@@ -113,24 +109,24 @@ const ActivityChart: FC<ActivityChartProps> = ({
       backgroundColor: theme.palette.common.black,
       titleFontColor: theme.palette.common.white,
       bodyFontColor: theme.palette.common.white,
-      footerFontColor: theme.palette.common.white
+      footerFontColor: theme.palette.common.white,
     },
     hover: {
       mode: 'nearest',
-      intersect: true
-    }
-  };
+      intersect: true,
+    },
+  }
 
   return (
     <div {...rest}>
       <Line data={data} options={options} />
     </div>
-  );
-};
+  )
+}
 
 ActivityChart.propTypes = {
   data: PropTypes.object.isRequired,
-  labels: PropTypes.array.isRequired
-};
+  labels: PropTypes.array.isRequired,
+}
 
-export default ActivityChart;
+export default ActivityChart

@@ -1,11 +1,11 @@
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
-import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
-import { Box, Divider, Popover, Stack, Tooltip, Typography } from '@mui/material';
-import Fab from '@mui/material/Fab';
-import { styled } from '@mui/material/styles';
-import { FC, useContext, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { ThemeContext } from 'src/client/theme/ThemeProvider';
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone'
+import { Box, Divider, Popover, Stack, Tooltip, Typography } from '@mui/material'
+import Fab from '@mui/material/Fab'
+import { styled } from '@mui/material/styles'
+import { FC, useContext, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { ThemeContext } from 'src/client/theme/ThemeProvider'
 
 const ThemeSettingsButton = styled(Box)(
   ({ theme }) => `

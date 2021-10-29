@@ -1,27 +1,27 @@
-import { useState, useCallback, ChangeEvent, useEffect } from 'react';
-import type { ReactElement } from 'react';
-import BoxedSidebarLayout from "src/client/layouts/BoxedSidebarLayout";
+import { useState, useCallback, ChangeEvent, useEffect } from 'react'
+import type { ReactElement } from 'react'
+import BoxedSidebarLayout from 'src/client/layouts/BoxedSidebarLayout'
 
-import Head from 'next/head';
-import Footer from 'src/client/components/Footer';
+import Head from 'next/head'
+import Footer from 'src/client/components/Footer'
 
-import { Box, Tabs, Tab, Grid } from '@mui/material';
-import { useRouter } from 'next/router';
-import useRefMounted from 'src/client/hooks/useRefMounted';
-import { useTranslation } from 'react-i18next';
-import type { User } from 'src/client/models/user';
-import ProfileCover from 'src/client/components/Management/Users/Single/ProfileCover';
-import RecentActivity from 'src/client/components/Management/Users/Single/RecentActivity';
-import Feed from 'src/client/components/Management/Users/Single/Feed';
-import PopularTags from 'src/client/components/Management/Users/Single/PopularTags';
-import MyCards from 'src/client/components/Management/Users/Single/MyCards';
-import Addresses from 'src/client/components/Management/Users/Single/Addresses';
-import ActivityTab from 'src/client/components/Management/Users/Single/ActivityTab';
-import EditProfileTab from 'src/client/components/Management/Users/Single/EditProfileTab';
-import NotificationsTab from 'src/client/components/Management/Users/Single/NotificationsTab';
-import SecurityTab from 'src/client/components/Management/Users/Single/SecurityTab';
-import { styled } from '@mui/material/styles';
-import axios from 'src/client/utils/axios';
+import { Box, Tabs, Tab, Grid } from '@mui/material'
+import { useRouter } from 'next/router'
+import useRefMounted from 'src/client/hooks/useRefMounted'
+import { useTranslation } from 'react-i18next'
+import type { User } from 'src/client/models/user'
+import ProfileCover from 'src/client/components/Management/Users/Single/ProfileCover'
+import RecentActivity from 'src/client/components/Management/Users/Single/RecentActivity'
+import Feed from 'src/client/components/Management/Users/Single/Feed'
+import PopularTags from 'src/client/components/Management/Users/Single/PopularTags'
+import MyCards from 'src/client/components/Management/Users/Single/MyCards'
+import Addresses from 'src/client/components/Management/Users/Single/Addresses'
+import ActivityTab from 'src/client/components/Management/Users/Single/ActivityTab'
+import EditProfileTab from 'src/client/components/Management/Users/Single/EditProfileTab'
+import NotificationsTab from 'src/client/components/Management/Users/Single/NotificationsTab'
+import SecurityTab from 'src/client/components/Management/Users/Single/SecurityTab'
+import { styled } from '@mui/material/styles'
+import axios from 'src/client/utils/axios'
 
 const TabsWrapper = styled(Tabs)(
   () => `
@@ -29,49 +29,49 @@ const TabsWrapper = styled(Tabs)(
       overflow-x: auto !important;
     }
 `
-);
+)
 
 function UserView() {
-  const isMountedRef = useRefMounted();
-  const [user, setUser] = useState<User | null>(null);
-  const router = useRouter();
-  const { userId } = router.query;
-  const { t }: { t: any } = useTranslation();
+  const isMountedRef = useRefMounted()
+  const [user, setUser] = useState<User | null>(null)
+  const router = useRouter()
+  const { userId } = router.query
+  const { t }: { t: any } = useTranslation()
 
-  const [currentTab, setCurrentTab] = useState<string>('activity');
+  const [currentTab, setCurrentTab] = useState<string>('activity')
 
   const tabs = [
     { value: 'activity', label: t('Activity') },
     { value: 'edit_profile', label: t('Edit Profile') },
     { value: 'notifications', label: t('Notifications') },
-    { value: 'security', label: t('Passwords/Security') }
-  ];
+    { value: 'security', label: t('Passwords/Security') },
+  ]
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
-    setCurrentTab(value);
-  };
+    setCurrentTab(value)
+  }
 
   const getUser = useCallback(async () => {
     try {
       const response = await axios.get<{ user: User }>('/api/user', {
         params: {
-          userId
-        }
-      });
+          userId,
+        },
+      })
       if (isMountedRef.current) {
-        setUser(response.data.user);
+        setUser(response.data.user)
       }
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
-  }, [userId, isMountedRef]);
+  }, [userId, isMountedRef])
 
   useEffect(() => {
-    getUser();
-  }, [getUser]);
+    getUser()
+  }, [getUser])
 
   if (!user) {
-    return null;
+    return null
   }
 
   return (
@@ -80,14 +80,7 @@ function UserView() {
         <title>{user.name} - Profile Details</title>
       </Head>
       <Box sx={{ mt: 3 }}>
-        <Grid
-          sx={{ px: 4 }}
-          container
-          direction="row"
-          justifyContent="center"
-          alignItems="stretch"
-          spacing={3}
-        >
+        <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
           <Grid item xs={12} md={8}>
             <ProfileCover user={user} />
           </Grid>
@@ -113,8 +106,7 @@ function UserView() {
               variant="scrollable"
               scrollButtons="auto"
               textColor="primary"
-              indicatorColor="primary"
-            >
+              indicatorColor="primary">
               {tabs.map((tab) => (
                 <Tab key={tab.value} label={tab.label} value={tab.value} />
               ))}
@@ -130,15 +122,11 @@ function UserView() {
       </Box>
       <Footer />
     </>
-  );
+  )
 }
 
-export default UserView;
+export default UserView
 
 UserView.getLayout = function getLayout(page: ReactElement) {
-  return (
-      <BoxedSidebarLayout>
-          {page}
-      </BoxedSidebarLayout>
-  )
+  return <BoxedSidebarLayout>{page}</BoxedSidebarLayout>
 }

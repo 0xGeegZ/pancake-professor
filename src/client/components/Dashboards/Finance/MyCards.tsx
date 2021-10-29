@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent } from 'react'
 import {
   Card,
   Box,
@@ -14,23 +14,23 @@ import {
   LinearProgress,
   ListItemAvatar,
   ListItemText,
-  alpha
-} from '@mui/material';
-import Link from 'src/client/components/Link';
+  alpha,
+} from '@mui/material'
+import Link from 'src/client/components/Link'
 
-import { useTranslation } from 'react-i18next';
-import { styled, useTheme } from '@mui/material/styles';
-import SwiperCore, { Navigation, Pagination } from 'swiper/core';
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
-import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone';
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper.min.css';
-import 'swiper/components/navigation/navigation.min.css';
-import 'swiper/components/pagination/pagination.min.css';
+import { useTranslation } from 'react-i18next'
+import { styled, useTheme } from '@mui/material/styles'
+import SwiperCore, { Navigation, Pagination } from 'swiper/core'
+import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
+import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/swiper.min.css'
+import 'swiper/components/navigation/navigation.min.css'
+import 'swiper/components/pagination/pagination.min.css'
 
-SwiperCore.use([Navigation, Pagination]);
+SwiperCore.use([Navigation, Pagination])
 
 const RootWrapper = styled(Card)(
   ({ theme }) => `
@@ -76,7 +76,7 @@ const RootWrapper = styled(Card)(
       }
     }
 `
-);
+)
 
 const CardWrapper = styled(Card)(
   ({ theme }) => `
@@ -112,13 +112,13 @@ const CardWrapper = styled(Card)(
         background: ${theme.colors.alpha.trueWhite[100]};
     }
 `
-);
+)
 
 const ListItemWrapper = styled(ListItem)(
   () => `
     border-radius: 0;
 `
-);
+)
 
 const SwipeIndicator = styled(IconButton)(
   ({ theme }) => `
@@ -147,7 +147,7 @@ const SwipeIndicator = styled(IconButton)(
       right: ${theme.spacing(1.5)};
     }
 `
-);
+)
 
 const SwiperWrapper = styled(Box)(
   ({ theme }) => `
@@ -164,7 +164,7 @@ const SwiperWrapper = styled(Box)(
       }
     }
 `
-);
+)
 
 const LinearProgressWrapper = styled(LinearProgress)(
   ({ theme }) => `
@@ -179,7 +179,7 @@ const LinearProgressWrapper = styled(LinearProgress)(
       border-bottom-right-radius: ${theme.general.borderRadius};
     }
 `
-);
+)
 
 const IconButtonDotted = styled(IconButton)(
   ({ theme }) => `
@@ -187,38 +187,38 @@ const IconButtonDotted = styled(IconButton)(
     border: 1px dashed ${theme.colors.alpha.trueWhite[100]};
     color: ${theme.colors.alpha.trueWhite[100]};
 `
-);
+)
 
 const TypographyPrimary = styled(Typography)(
   ({ theme }) => `
     color: ${theme.colors.alpha.trueWhite[100]};
 `
-);
+)
 
 const TypographySecondary = styled(Typography)(
   ({ theme }) => `
     color: ${theme.colors.alpha.trueWhite[70]};
 `
-);
+)
 
 function MyCards() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   const [state, setState] = useState({
-    interest: true
-  });
+    interest: true,
+  })
 
   const interestActivate = (event: ChangeEvent<HTMLInputElement>) => {
     setState({
       ...state,
-      [event.target.name]: event.target.checked
-    });
-  };
+      [event.target.name]: event.target.checked,
+    })
+  }
 
   const data = {
-    logo1: '/static/images/placeholders/logo/deutschebank_light.svg'
-  };
+    logo1: '/static/images/placeholders/logo/deutschebank_light.svg',
+  }
 
   return (
     <RootWrapper sx={{ height: '100%' }}>
@@ -236,35 +236,32 @@ function MyCards() {
           maxWidth: 500,
           position: 'relative',
           py: 2,
-          px: { xs: 2, sm: 8 }
-        }}
-      >
+          px: { xs: 2, sm: 8 },
+        }}>
         <Swiper
           spaceBetween={150}
           slidesPerView={1}
           loop
           navigation={{
             nextEl: '.MuiSwipe-right',
-            prevEl: '.MuiSwipe-left'
+            prevEl: '.MuiSwipe-left',
           }}
-          pagination={{ dynamicBullets: true, clickable: true }}
-        >
+          pagination={{ dynamicBullets: true, clickable: true }}>
           <SwiperSlide>
             <CardWrapper
               sx={{
                 height: '100%',
                 background: theme.colors.gradients.purple1,
                 display: 'flex',
-                flexDirection: 'column'
-              }}
-            >
+                flexDirection: 'column',
+              }}>
               <CardHeader
                 sx={{ alignItems: 'flex-start', pt: 3 }}
                 action={
                   <Avatar
                     sx={{
                       width: theme.spacing(4),
-                      height: theme.spacing(4)
+                      height: theme.spacing(4),
                     }}
                     variant="square"
                     alt="Deutsche Bank"
@@ -275,20 +272,10 @@ function MyCards() {
                 subheader="$22,674.32"
                 subheaderTypographyProps={{ variant: 'h2' }}
               />
-              <Box
-                sx={{ pl: 2, py: 2 }}
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
+              <Box sx={{ pl: 2, py: 2 }} display="flex" alignItems="center" justifyContent="space-between">
                 <Typography variant="h4">**** 4856</Typography>
                 <Tooltip arrow title={t('Disable Account')}>
-                  <Switch
-                    checked={state.interest}
-                    onChange={interestActivate}
-                    color="primary"
-                    name="interest"
-                  />
+                  <Switch checked={state.interest} onChange={interestActivate} color="primary" name="interest" />
                 </Tooltip>
               </Box>
             </CardWrapper>
@@ -299,16 +286,15 @@ function MyCards() {
                 height: '100%',
                 background: theme.colors.gradients.blue1,
                 display: 'flex',
-                flexDirection: 'column'
-              }}
-            >
+                flexDirection: 'column',
+              }}>
               <CardHeader
                 sx={{ alignItems: 'flex-start', pt: 3 }}
                 action={
                   <Avatar
                     sx={{
                       width: theme.spacing(4),
-                      height: theme.spacing(4)
+                      height: theme.spacing(4),
                     }}
                     variant="square"
                     alt="Deutsche Bank"
@@ -319,20 +305,10 @@ function MyCards() {
                 subheader="$15,689.36"
                 subheaderTypographyProps={{ variant: 'h2' }}
               />
-              <Box
-                sx={{ pl: 2, py: 2 }}
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
+              <Box sx={{ pl: 2, py: 2 }} display="flex" alignItems="center" justifyContent="space-between">
                 <Typography variant="h4">**** 3466</Typography>
                 <Tooltip arrow title={t('Disable Account')}>
-                  <Switch
-                    checked={state.interest}
-                    onChange={interestActivate}
-                    color="primary"
-                    name="interest"
-                  />
+                  <Switch checked={state.interest} onChange={interestActivate} color="primary" name="interest" />
                 </Tooltip>
               </Box>
             </CardWrapper>
@@ -343,16 +319,15 @@ function MyCards() {
                 height: '100%',
                 background: theme.colors.gradients.orange1,
                 display: 'flex',
-                flexDirection: 'column'
-              }}
-            >
+                flexDirection: 'column',
+              }}>
               <CardHeader
                 sx={{ alignItems: 'flex-start', pt: 3 }}
                 action={
                   <Avatar
                     sx={{
                       width: theme.spacing(4),
-                      height: theme.spacing(4)
+                      height: theme.spacing(4),
                     }}
                     variant="square"
                     alt="Deutsche Bank"
@@ -363,20 +338,10 @@ function MyCards() {
                 subheader="$54,345.23"
                 subheaderTypographyProps={{ variant: 'h2' }}
               />
-              <Box
-                sx={{ pl: 2, py: 2 }}
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
+              <Box sx={{ pl: 2, py: 2 }} display="flex" alignItems="center" justifyContent="space-between">
                 <Typography variant="h4">**** 6545</Typography>
                 <Tooltip arrow title={t('Disable Account')}>
-                  <Switch
-                    checked={state.interest}
-                    onChange={interestActivate}
-                    color="primary"
-                    name="interest"
-                  />
+                  <Switch checked={state.interest} onChange={interestActivate} color="primary" name="interest" />
                 </Tooltip>
               </Box>
             </CardWrapper>
@@ -392,51 +357,30 @@ function MyCards() {
       <CardHeader title={t('Latest Expenses')} />
       <List disablePadding>
         <ListItemWrapper>
-          <ListItemAvatar
-            sx={{ minWidth: '36px', display: 'flex', alignItems: 'center' }}
-          >
-            <img
-              alt="Spotify"
-              src="/static/images/placeholders/logo/spotify.svg"
-            />
+          <ListItemAvatar sx={{ minWidth: '36px', display: 'flex', alignItems: 'center' }}>
+            <img alt="Spotify" src="/static/images/placeholders/logo/spotify.svg" />
           </ListItemAvatar>
-          <ListItemText
-            primary="Spotify"
-            primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-          />
+          <ListItemText primary="Spotify" primaryTypographyProps={{ variant: 'h5', noWrap: true }} />
           <Typography align="right" variant="body1" noWrap sx={{ mr: 2 }}>
             -$9.99
           </Typography>
           <ChevronRightTwoToneIcon />
         </ListItemWrapper>
         <ListItemWrapper>
-          <ListItemAvatar
-            sx={{ minWidth: '36px', display: 'flex', alignItems: 'center' }}
-          >
+          <ListItemAvatar sx={{ minWidth: '36px', display: 'flex', alignItems: 'center' }}>
             <img alt="Slack" src="/static/images/placeholders/logo/slack.svg" />
           </ListItemAvatar>
-          <ListItemText
-            primary="Slack"
-            primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-          />
+          <ListItemText primary="Slack" primaryTypographyProps={{ variant: 'h5', noWrap: true }} />
           <Typography align="right" variant="body1" noWrap sx={{ mr: 2 }}>
             -$4.99
           </Typography>
           <ChevronRightTwoToneIcon />
         </ListItemWrapper>
         <ListItemWrapper>
-          <ListItemAvatar
-            sx={{ minWidth: '36px', display: 'flex', alignItems: 'center' }}
-          >
-            <img
-              alt="AirBnB"
-              src="/static/images/placeholders/logo/airbnb.svg"
-            />
+          <ListItemAvatar sx={{ minWidth: '36px', display: 'flex', alignItems: 'center' }}>
+            <img alt="AirBnB" src="/static/images/placeholders/logo/airbnb.svg" />
           </ListItemAvatar>
-          <ListItemText
-            primary="AirBnB"
-            primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-          />
+          <ListItemText primary="AirBnB" primaryTypographyProps={{ variant: 'h5', noWrap: true }} />
           <Typography align="right" variant="body1" noWrap sx={{ mr: 2 }}>
             -$229.00
           </Typography>
@@ -447,29 +391,17 @@ function MyCards() {
         title={t('Spending Limit')}
         action={
           <>
-            <TypographyPrimary
-              variant="h6"
-              fontWeight="bold"
-              sx={{ pr: 0.5, display: 'inline-flex' }}
-            >
+            <TypographyPrimary variant="h6" fontWeight="bold" sx={{ pr: 0.5, display: 'inline-flex' }}>
               $300
             </TypographyPrimary>
-            <TypographySecondary
-              variant="body2"
-              fontWeight="bold"
-              sx={{ pr: 2, display: 'inline-flex' }}
-            >
+            <TypographySecondary variant="body2" fontWeight="bold" sx={{ pr: 2, display: 'inline-flex' }}>
               /$500
             </TypographySecondary>
           </>
         }
       />
       <Box sx={{ mx: 2, mb: 2 }}>
-        <LinearProgressWrapper
-          value={65}
-          color="primary"
-          variant="determinate"
-        />
+        <LinearProgressWrapper value={65} color="primary" variant="determinate" />
       </Box>
       <CardHeader title={t('Quick Payments')} />
       <Box
@@ -478,65 +410,29 @@ function MyCards() {
           mb: 3,
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'flex-start'
-        }}
-      >
+          justifyContent: 'flex-start',
+        }}>
         <AvatarGroup max={6}>
-          <Tooltip arrow title={t('View profile for') + ' Remy Sharp'}>
-            <Avatar
-              component={Link}
-              href="#"
-              alt="Remy Sharp"
-              src="/static/images/avatars/1.jpg"
-            />
+          <Tooltip arrow title={`${t('View profile for')} Remy Sharp`}>
+            <Avatar component={Link} href="#" alt="Remy Sharp" src="/static/images/avatars/1.jpg" />
           </Tooltip>
-          <Tooltip arrow title={t('View profile for') + ' Travis Howard'}>
-            <Avatar
-              component={Link}
-              href="#"
-              alt="Travis Howard"
-              src="/static/images/avatars/2.jpg"
-            />
+          <Tooltip arrow title={`${t('View profile for')} Travis Howard`}>
+            <Avatar component={Link} href="#" alt="Travis Howard" src="/static/images/avatars/2.jpg" />
           </Tooltip>
-          <Tooltip arrow title={t('View profile for') + ' Cindy Baker'}>
-            <Avatar
-              component={Link}
-              href="#"
-              alt="Cindy Baker"
-              src="/static/images/avatars/3.jpg"
-            />
+          <Tooltip arrow title={`${t('View profile for')} Cindy Baker`}>
+            <Avatar component={Link} href="#" alt="Cindy Baker" src="/static/images/avatars/3.jpg" />
           </Tooltip>
-          <Tooltip arrow title={t('View profile for') + ' Agnes Walker'}>
-            <Avatar
-              component={Link}
-              href="#"
-              alt="Agnes Walker"
-              src="/static/images/avatars/4.jpg"
-            />
+          <Tooltip arrow title={`${t('View profile for')} Agnes Walker`}>
+            <Avatar component={Link} href="#" alt="Agnes Walker" src="/static/images/avatars/4.jpg" />
           </Tooltip>
-          <Tooltip arrow title={t('View profile for') + ' Trevor Henderson'}>
-            <Avatar
-              component={Link}
-              href="#"
-              alt="Trevor Henderson"
-              src="/static/images/avatars/5.jpg"
-            />
+          <Tooltip arrow title={`${t('View profile for')} Trevor Henderson`}>
+            <Avatar component={Link} href="#" alt="Trevor Henderson" src="/static/images/avatars/5.jpg" />
           </Tooltip>
-          <Tooltip arrow title={t('View profile for') + ' Remy Sharp'}>
-            <Avatar
-              component={Link}
-              href="#"
-              alt="Remy Sharp"
-              src="/static/images/avatars/1.jpg"
-            />
+          <Tooltip arrow title={`${t('View profile for')} Remy Sharp`}>
+            <Avatar component={Link} href="#" alt="Remy Sharp" src="/static/images/avatars/1.jpg" />
           </Tooltip>
-          <Tooltip arrow title={t('View profile for') + ' Remy Sharp'}>
-            <Avatar
-              component={Link}
-              href="#"
-              alt="Remy Sharp"
-              src="/static/images/avatars/2.jpg"
-            />
+          <Tooltip arrow title={`${t('View profile for')} Remy Sharp`}>
+            <Avatar component={Link} href="#" alt="Remy Sharp" src="/static/images/avatars/2.jpg" />
           </Tooltip>
         </AvatarGroup>
         <Tooltip arrow title={t('Add Quick Payment Profile')}>
@@ -546,7 +442,7 @@ function MyCards() {
         </Tooltip>
       </Box>
     </RootWrapper>
-  );
+  )
 }
 
-export default MyCards;
+export default MyCards

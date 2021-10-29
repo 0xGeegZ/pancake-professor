@@ -1,20 +1,16 @@
-import { FC } from 'react';
-import PropTypes from 'prop-types';
-import { Bar } from 'react-chartjs-2';
-import { useTheme } from '@mui/material';
+import { FC } from 'react'
+import PropTypes from 'prop-types'
+import { Bar } from 'react-chartjs-2'
+import { useTheme } from '@mui/material'
 
 interface TransactionsStatisticsChartProps {
-  className?: string;
-  data: any;
-  labels: string[];
+  className?: string
+  data: any
+  labels: string[]
 }
 
-const TransactionsStatisticsChart: FC<TransactionsStatisticsChartProps> = ({
-  data: dataProp,
-  labels,
-  ...rest
-}) => {
-  const theme = useTheme();
+const TransactionsStatisticsChart: FC<TransactionsStatisticsChartProps> = ({ data: dataProp, labels, ...rest }) => {
+  const theme = useTheme()
 
   const data = {
     datasets: [
@@ -25,7 +21,7 @@ const TransactionsStatisticsChart: FC<TransactionsStatisticsChartProps> = ({
         barThickness: 12,
         maxBarThickness: 18,
         barPercentage: 0.5,
-        categoryPercentage: 0.5
+        categoryPercentage: 0.5,
       },
       {
         label: 'Income',
@@ -34,11 +30,11 @@ const TransactionsStatisticsChart: FC<TransactionsStatisticsChartProps> = ({
         barThickness: 12,
         maxBarThickness: 18,
         barPercentage: 0.5,
-        categoryPercentage: 0.5
-      }
+        categoryPercentage: 0.5,
+      },
     ],
-    labels
-  };
+    labels,
+  }
 
   const options = {
     responsive: true,
@@ -46,23 +42,23 @@ const TransactionsStatisticsChart: FC<TransactionsStatisticsChartProps> = ({
     cornerRadius: 6,
     animation: false,
     legend: {
-      display: false
+      display: false,
     },
     layout: {
-      padding: 0
+      padding: 0,
     },
     scales: {
       xAxes: [
         {
           gridLines: {
             display: false,
-            drawBorder: false
+            drawBorder: false,
           },
           ticks: {
             padding: 18,
-            fontColor: theme.palette.text.secondary
-          }
-        }
+            fontColor: theme.palette.text.secondary,
+          },
+        },
       ],
       yAxes: [
         {
@@ -73,17 +69,17 @@ const TransactionsStatisticsChart: FC<TransactionsStatisticsChartProps> = ({
             drawBorder: false,
             zeroLineBorderDash: [6],
             zeroLineBorderDashOffset: [0],
-            zeroLineColor: theme.palette.divider
+            zeroLineColor: theme.palette.divider,
           },
           ticks: {
             padding: 12,
             fontColor: theme.palette.text.secondary,
             beginAtZero: true,
             min: 0,
-            maxTicksLimit: 8
-          }
-        }
-      ]
+            maxTicksLimit: 8,
+          },
+        },
+      ],
     },
     tooltips: {
       enabled: true,
@@ -100,20 +96,20 @@ const TransactionsStatisticsChart: FC<TransactionsStatisticsChartProps> = ({
       backgroundColor: theme.palette.common.black,
       titleFontColor: theme.palette.common.white,
       bodyFontColor: theme.palette.common.white,
-      footerFontColor: theme.palette.common.white
-    }
-  };
+      footerFontColor: theme.palette.common.white,
+    },
+  }
 
   return (
     <div {...rest}>
       <Bar data={data} options={options} />
     </div>
-  );
-};
+  )
+}
 
 TransactionsStatisticsChart.propTypes = {
   data: PropTypes.object.isRequired,
-  labels: PropTypes.array.isRequired
-};
+  labels: PropTypes.array.isRequired,
+}
 
-export default TransactionsStatisticsChart;
+export default TransactionsStatisticsChart

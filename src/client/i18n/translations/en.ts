@@ -1,3 +1,3 @@
-const enJSON = {};
+const enJSON = {}
 
-export default enJSON;
+export default enJSON

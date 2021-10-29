@@ -1,17 +1,11 @@
-import {
-  Box,
-  Card,
-  Link,
-  Typography,
-  Container,
-} from '@mui/material';
-import Head from 'next/head';
-import type { ReactElement } from 'react';
-import BaseLayout from "src/client/layouts/BaseLayout";
-import LoginForm from 'src/client/components/Account/LoginForm';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import Logo from 'src/client/components/LogoSign';
+import { Box, Card, Link, Typography, Container } from '@mui/material'
+import Head from 'next/head'
+import type { ReactElement } from 'react'
+import BaseLayout from 'src/client/layouts/BaseLayout'
+import LoginForm from 'src/client/components/Account/LoginForm'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import Logo from 'src/client/components/LogoSign'
 
 const MainContent = styled(Box)(
   () => `
@@ -20,7 +14,7 @@ const MainContent = styled(Box)(
     flex: 1;
     flex-direction: column;
 `
-);
+)
 
 const TopWrapper = styled(Box)(
   ({ theme }) => `
@@ -31,11 +25,10 @@ const TopWrapper = styled(Box)(
   justify-content: center;
   padding: ${theme.spacing(6)};
 `
-);
+)
 
 function LoginBasic() {
-
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <>
@@ -51,23 +44,13 @@ function LoginBasic() {
                 <Typography variant="h2" sx={{ mb: 1 }}>
                   {t('Sign in')}
                 </Typography>
-                <Typography
-                  variant="h4"
-                  color="text.secondary"
-                  fontWeight="normal"
-                  sx={{ mb: 3 }}
-                >
+                <Typography variant="h4" color="text.secondary" fontWeight="normal" sx={{ mb: 3 }}>
                   {t('Fill in the fields below to sign into your account.')}
                 </Typography>
               </Box>
               <LoginForm />
               <Box my={4}>
-                <Typography
-                  component="span"
-                  variant="subtitle2"
-                  color="text.primary"
-                  fontWeight="bold"
-                >
+                <Typography component="span" variant="subtitle2" color="text.primary" fontWeight="bold">
                   {t('Don’t have an account, yet?')}
                 </Typography>{' '}
                 <Link underline="hover" href="/account/register-basic">
@@ -79,15 +62,11 @@ function LoginBasic() {
         </TopWrapper>
       </MainContent>
     </>
-  );
+  )
 }
 
-export default LoginBasic;
+export default LoginBasic
 
 LoginBasic.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <BaseLayout>
-      {page}
-    </BaseLayout>
-  )
+  return <BaseLayout>{page}</BaseLayout>
 }

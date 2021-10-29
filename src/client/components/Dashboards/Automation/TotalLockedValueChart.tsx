@@ -1,7 +1,7 @@
-import { alpha, useTheme } from '@mui/material';
-import PropTypes from 'prop-types';
-import { FC } from 'react';
-import { Line } from 'react-chartjs-2';
+import { alpha, useTheme } from '@mui/material'
+import PropTypes from 'prop-types'
+import { FC } from 'react'
+import { Line } from 'react-chartjs-2'
 
 interface TotalLockedValueChartProps {
   data: any[]
@@ -105,9 +105,7 @@ const TotalLockedValueChart: FC<TotalLockedValueChartProps> = ({ data: dataProp,
       footerFontColor: theme.palette.common.white,
       callbacks: {
         title: () => {},
-        label: (tooltipItem: any) => {
-          return `New Users: ${tooltipItem.yLabel}`
-        },
+        label: (tooltipItem: any) => `New Users: ${tooltipItem.yLabel}`,
       },
     },
   }

@@ -1,17 +1,7 @@
-import {
-  Button,
-  Card,
-  Grid,
-  Box,
-  CardContent,
-  Typography,
-  Avatar,
-  Tooltip,
-  CardActionArea
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
+import { Button, Card, Grid, Box, CardContent, Typography, Avatar, Tooltip, CardActionArea } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -20,7 +10,7 @@ const AvatarWrapper = styled(Avatar)(
         margin-bottom: ${theme.spacing(1)};
         margin-top: ${theme.spacing(2)};
 `
-);
+)
 
 const AvatarAddWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -29,7 +19,7 @@ const AvatarAddWrapper = styled(Avatar)(
         width: ${theme.spacing(8)};
         height: ${theme.spacing(8)};
 `
-);
+)
 
 const CardAddAction = styled(Card)(
   ({ theme }) => `
@@ -52,25 +42,16 @@ const CardAddAction = styled(Card)(
           border-color: ${theme.colors.alpha.black[100]};
         }
 `
-);
+)
 
 function Wallets() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ pb: 3 }}
-      >
+      <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ pb: 3 }}>
         <Typography variant="h3">{t('Wallets')}</Typography>
-        <Button
-          size="small"
-          variant="outlined"
-          startIcon={<AddTwoToneIcon fontSize="small" />}
-        >
+        <Button size="small" variant="outlined" startIcon={<AddTwoToneIcon fontSize="small" />}>
           {t('Add new wallet')}
         </Button>
       </Box>
@@ -79,10 +60,7 @@ function Wallets() {
           <Card sx={{ px: 1 }}>
             <CardContent>
               <AvatarWrapper>
-                <img
-                  alt="BTC"
-                  src="/static/images/placeholders/logo/bitcoin.png"
-                />
+                <img alt="BTC" src="/static/images/placeholders/logo/bitcoin.png" />
               </AvatarWrapper>
               <Typography variant="h5" noWrap>
                 Bitcoin
@@ -105,10 +83,7 @@ function Wallets() {
           <Card sx={{ px: 1 }}>
             <CardContent>
               <AvatarWrapper>
-                <img
-                  alt="Ripple"
-                  src="/static/images/placeholders/logo/ripple.png"
-                />
+                <img alt="Ripple" src="/static/images/placeholders/logo/ripple.png" />
               </AvatarWrapper>
               <Typography variant="h5" noWrap>
                 Ripple
@@ -131,10 +106,7 @@ function Wallets() {
           <Card sx={{ px: 1 }}>
             <CardContent>
               <AvatarWrapper>
-                <img
-                  alt="Cardano"
-                  src="/static/images/placeholders/logo/cardano.png"
-                />
+                <img alt="Cardano" src="/static/images/placeholders/logo/cardano.png" />
               </AvatarWrapper>
               <Typography variant="h5" noWrap>
                 Cardano
@@ -168,7 +140,7 @@ function Wallets() {
         </Grid>
       </Grid>
     </>
-  );
+  )
 }
 
-export default Wallets;
+export default Wallets
