@@ -1,4 +1,4 @@
-const winston = require('winston')
+import winston from 'winston'
 
 const logFormat = winston.format.printf(
   (info) => `${new Date().toLocaleString('fr-FR')} - ${info.level} : ${JSON.stringify(info.message, null, 4)}`

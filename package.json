@@ -18,6 +18,7 @@
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "prettier:watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
     "eslint": "eslint --cache --cache-location=node_modules/.cache/.eslintcache --fix",
+    "lint:fix": "yarn run eslint . --fix",
     "lint": "yarn run eslint . --ext .js,.jsx,.ts,.tsx",
     "typechain": "typechain --target ethers-v5 --outDir ./src/client/contracts/types './src/client/contracts/*.json'",
     "generate": "yarn run generate:prisma && yarn run generate:nexus && yarn run generate:graphql-codegen",
@@ -115,6 +116,7 @@
     "swiper": "6.8.4",
     "urql": "^2.0.1",
     "uuid": "8.3.2",
+    "winston": "^3.3.3",
     "yup": "0.32.11"
   },
   "devDependencies": {
