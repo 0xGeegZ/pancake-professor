@@ -1,15 +1,15 @@
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
-import { Box, Button, CircularProgress, Grid, Hidden, IconButton, Tooltip } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { FC, useCallback, useContext, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Link from 'src/client/components/Link';
-import Logo from 'src/client/components/Logo';
-import { SidebarContext } from 'src/client/contexts/SidebarContext';
+import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import { Box, Button, CircularProgress, Grid, Hidden, IconButton, Tooltip } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { FC, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
+import Logo from 'src/client/components/Logo'
+import { SidebarContext } from 'src/client/contexts/SidebarContext'
 
-import LanguageSwitcher from './Buttons/LanguageSwitcher';
-import HeaderUserbox from './Userbox';
+import LanguageSwitcher from './Buttons/LanguageSwitcher'
+import HeaderUserbox from './Userbox'
 
 const HeaderWrapper: FC = styled(Box)(
   ({ theme }) => `

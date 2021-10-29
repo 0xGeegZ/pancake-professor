@@ -12,25 +12,25 @@ import {
   ListItemAvatar,
   Avatar,
   ListItemText,
-  Pagination
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import { formatDistance, subHours, subMinutes } from 'date-fns';
+  Pagination,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import { formatDistance, subHours, subMinutes } from 'date-fns'
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
     width: ${theme.spacing(8)};
     height: ${theme.spacing(8)};
 `
-);
+)
 
 const BoxWrapper = styled(Box)(
   ({ theme }) => `
     border-radius: ${theme.general.borderRadius};
     background: ${theme.colors.alpha.black[10]};
 `
-);
+)
 
 const ButtonWrapper = styled(Button)(
   ({ theme }) => `
@@ -43,32 +43,25 @@ const ButtonWrapper = styled(Button)(
       background: ${theme.colors.alpha.white[100]};
     }
 `
-);
+)
 
 const DividerWrapper = styled(Divider)(
   ({ theme }) => `
     background: ${theme.colors.alpha.black[10]};
 `
-);
+)
 
 function RecentQuestions() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Card>
       <CardHeader title={t('Recent Questions')} />
       <Divider />
       <List disablePadding>
-        <ListItem
-          alignItems="flex-start"
-          sx={{ display: { xs: 'block', sm: 'flex' }, py: 3 }}
-        >
+        <ListItem alignItems="flex-start" sx={{ display: { xs: 'block', sm: 'flex' }, py: 3 }}>
           <ListItemAvatar sx={{ mr: 2 }}>
-            <AvatarWrapper
-              sx={{ mb: { xs: 2, sm: 0 } }}
-              variant="rounded"
-              src="/static/images/avatars/2.jpg"
-            />
+            <AvatarWrapper sx={{ mb: { xs: 2, sm: 0 } }} variant="rounded" src="/static/images/avatars/2.jpg" />
           </ListItemAvatar>
           <ListItemText
             primary={
@@ -77,10 +70,13 @@ function RecentQuestions() {
                   <b>Joe</b> {t('asked this question')}{' '}
                   <b>
                     {formatDistance(subHours(new Date(), 6), new Date(), {
-                      addSuffix: true
+                      addSuffix: true,
                     })}
                   </b>
-                  , {t('in')} <Link href="#" underline="hover">{t('Product Support')}</Link>
+                  , {t('in')}{' '}
+                  <Link href="#" underline="hover">
+                    {t('Product Support')}
+                  </Link>
                 </Typography>
                 Can I use this template in React apps?
               </>
@@ -89,31 +85,16 @@ function RecentQuestions() {
             secondary={
               <>
                 <div>
-                  Nor again is there anyone who loves or pursues or desires to
-                  obtain pain of itself, because it is pain, but because
-                  occasionally circumstances occur in which toil and pain can
-                  procure him some great pleasure.
+                  Nor again is there anyone who loves or pursues or desires to obtain pain of itself, because it is
+                  pain, but because occasionally circumstances occur in which toil and pain can procure him some great
+                  pleasure.
                 </div>
-                <BoxWrapper
-                  display="flex"
-                  alignItems="stretch"
-                  justifyContent="space-between"
-                  mt={2}
-                  p={1}
-                >
+                <BoxWrapper display="flex" alignItems="stretch" justifyContent="space-between" mt={2} p={1}>
                   <Box display="flex" alignItems="center">
-                    <ButtonWrapper
-                      size="small"
-                      color="secondary"
-                      variant="text"
-                    >
+                    <ButtonWrapper size="small" color="secondary" variant="text">
                       <b>14</b>&nbsp;{t('replies')}
                     </ButtonWrapper>
-                    <DividerWrapper
-                      sx={{ mx: 2 }}
-                      orientation="vertical"
-                      flexItem
-                    />
+                    <DividerWrapper sx={{ mx: 2 }} orientation="vertical" flexItem />
                     <Typography variant="body2" color="text.primary">
                       <b>420</b> {t('views')}
                     </Typography>
@@ -126,21 +107,14 @@ function RecentQuestions() {
             }
             secondaryTypographyProps={{
               variant: 'body1',
-              color: 'textPrimary'
+              color: 'textPrimary',
             }}
           />
         </ListItem>
         <Divider component="li" />
-        <ListItem
-          alignItems="flex-start"
-          sx={{ display: { xs: 'block', sm: 'flex' }, py: 3 }}
-        >
+        <ListItem alignItems="flex-start" sx={{ display: { xs: 'block', sm: 'flex' }, py: 3 }}>
           <ListItemAvatar sx={{ mr: 2 }}>
-            <AvatarWrapper
-              sx={{ mb: { xs: 2, sm: 0 } }}
-              variant="rounded"
-              src="/static/images/avatars/4.jpg"
-            />
+            <AvatarWrapper sx={{ mb: { xs: 2, sm: 0 } }} variant="rounded" src="/static/images/avatars/4.jpg" />
           </ListItemAvatar>
           <ListItemText
             primary={
@@ -149,10 +123,13 @@ function RecentQuestions() {
                   <b>Horia</b> {t('asked this question')}{' '}
                   <b>
                     {formatDistance(subMinutes(new Date(), 32), new Date(), {
-                      addSuffix: true
+                      addSuffix: true,
                     })}
                   </b>
-                  , {t('in')} <Link href="#" underline="hover">{t('Troubleshooting')}</Link>
+                  , {t('in')}{' '}
+                  <Link href="#" underline="hover">
+                    {t('Troubleshooting')}
+                  </Link>
                 </Typography>
                 How should I proceed with integration?
               </>
@@ -161,32 +138,17 @@ function RecentQuestions() {
             secondary={
               <>
                 <div>
-                  A long established fact that a reader will be distracted by
-                  the readable content of a page when looking at its layout. The
-                  point of using Lorem Ipsum is that it has a more-or-less
-                  normal distribution of letters, as opposed to using 'Content
-                  here, content here', making it look like readable English.
+                  A long established fact that a reader will be distracted by the readable content of a page when
+                  looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal
+                  distribution of letters, as opposed to using 'Content here, content here', making it look like
+                  readable English.
                 </div>
-                <BoxWrapper
-                  display="flex"
-                  alignItems="stretch"
-                  justifyContent="space-between"
-                  mt={2}
-                  p={1}
-                >
+                <BoxWrapper display="flex" alignItems="stretch" justifyContent="space-between" mt={2} p={1}>
                   <Box display="flex" alignItems="center">
-                    <ButtonWrapper
-                      size="small"
-                      color="secondary"
-                      variant="text"
-                    >
+                    <ButtonWrapper size="small" color="secondary" variant="text">
                       <b>3</b>&nbsp;{t('replies')}
                     </ButtonWrapper>
-                    <DividerWrapper
-                      sx={{ mx: 2 }}
-                      orientation="vertical"
-                      flexItem
-                    />
+                    <DividerWrapper sx={{ mx: 2 }} orientation="vertical" flexItem />
                     <Typography variant="body2" color="text.primary">
                       <b>323</b> {t('views')}
                     </Typography>
@@ -199,16 +161,13 @@ function RecentQuestions() {
             }
             secondaryTypographyProps={{
               variant: 'body1',
-              color: 'textPrimary'
+              color: 'textPrimary',
             }}
           />
         </ListItem>
       </List>
       <Divider />
-      <CardActions
-        disableSpacing
-        sx={{ p: 2, display: 'flex', justifyContent: 'center' }}
-      >
+      <CardActions disableSpacing sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
         <Pagination
           variant="outlined"
           showFirstButton
@@ -222,7 +181,7 @@ function RecentQuestions() {
         />
       </CardActions>
     </Card>
-  );
+  )
 }
 
-export default RecentQuestions;
+export default RecentQuestions

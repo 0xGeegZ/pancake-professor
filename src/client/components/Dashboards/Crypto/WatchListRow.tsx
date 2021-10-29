@@ -1,25 +1,16 @@
-import {
-  Button,
-  Card,
-  Box,
-  CardActions,
-  Grid,
-  Typography,
-  Avatar,
-  Divider
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import Text from 'src/client/components/Text';
-import Label from 'src/client/components/Label';
-import WatchListRowChart from './WatchListRowChart';
+import { Button, Card, Box, CardActions, Grid, Typography, Avatar, Divider } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import Text from 'src/client/components/Text'
+import Label from 'src/client/components/Label'
+import WatchListRowChart from './WatchListRowChart'
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
         background: transparent;
         margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 const LabelWrapper = styled(Box)(
   ({ theme }) => `
@@ -27,33 +18,25 @@ const LabelWrapper = styled(Box)(
         right: ${theme.spacing(2)};
         top: ${theme.spacing(2)};
 `
-);
+)
 
 const WatchListRowChartWrapper = styled(WatchListRowChart)(
   () => `
         height: 100px;
 `
-);
+)
 
 function WatchListRow() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const price = {
     week: {
-      labels: [
-        'Monday',
-        'Tueday',
-        'Wednesday',
-        'Thursday',
-        'Friday',
-        'Saturday',
-        'Sunday'
-      ],
+      labels: ['Monday', 'Tueday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'],
       bitcoin: [55.701, 57.598, 48.607, 46.439, 58.755, 46.978, 58.16],
       ethereum: [1.854, 1.773, 2.092, 2.009, 1.909, 1.842, 1.884],
-      cardano: [13, 16, 14, 21, 8, 11, 20]
-    }
-  };
+      cardano: [13, 16, 14, 21, 8, 11, 20],
+    },
+  }
 
   return (
     <Card>
@@ -65,10 +48,7 @@ function WatchListRow() {
             </LabelWrapper>
             <Box display="flex" alignItems="center">
               <AvatarWrapper>
-                <img
-                  alt="BTC"
-                  src="/static/images/placeholders/logo/bitcoin.png"
-                />
+                <img alt="BTC" src="/static/images/placeholders/logo/bitcoin.png" />
               </AvatarWrapper>
               <Box>
                 <Typography variant="h4" noWrap>
@@ -84,9 +64,8 @@ function WatchListRow() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'flex-start',
-                pt: 3
-              }}
-            >
+                pt: 3,
+              }}>
               <Typography variant="h2" sx={{ pr: 1, mb: 1 }}>
                 $56,475.99
               </Typography>
@@ -95,10 +74,7 @@ function WatchListRow() {
               </Text>
             </Box>
             <Box height={100} sx={{ ml: -1.5 }}>
-              <WatchListRowChartWrapper
-                data={price.week.bitcoin}
-                labels={price.week.labels}
-              />
+              <WatchListRowChartWrapper data={price.week.bitcoin} labels={price.week.labels} />
             </Box>
           </Box>
         </Grid>
@@ -110,10 +86,7 @@ function WatchListRow() {
             </LabelWrapper>
             <Box display="flex" alignItems="center">
               <AvatarWrapper>
-                <img
-                  alt="ETH"
-                  src="/static/images/placeholders/logo/ethereum.png"
-                />
+                <img alt="ETH" src="/static/images/placeholders/logo/ethereum.png" />
               </AvatarWrapper>
               <Box>
                 <Typography variant="h4" noWrap>
@@ -129,9 +102,8 @@ function WatchListRow() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'flex-start',
-                pt: 3
-              }}
-            >
+                pt: 3,
+              }}>
               <Typography variant="h2" sx={{ pr: 1, mb: 1 }}>
                 $1,968.00
               </Typography>
@@ -140,10 +112,7 @@ function WatchListRow() {
               </Text>
             </Box>
             <Box height={100} sx={{ ml: -1.5 }}>
-              <WatchListRowChartWrapper
-                data={price.week.ethereum}
-                labels={price.week.labels}
-              />
+              <WatchListRowChartWrapper data={price.week.ethereum} labels={price.week.labels} />
             </Box>
           </Box>
         </Grid>
@@ -155,10 +124,7 @@ function WatchListRow() {
             </LabelWrapper>
             <Box display="flex" alignItems="center">
               <AvatarWrapper>
-                <img
-                  alt="ADA"
-                  src="/static/images/placeholders/logo/cardano.png"
-                />
+                <img alt="ADA" src="/static/images/placeholders/logo/cardano.png" />
               </AvatarWrapper>
               <Box>
                 <Typography variant="h4" noWrap>
@@ -174,9 +140,8 @@ function WatchListRow() {
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'flex-start',
-                pt: 3
-              }}
-            >
+                pt: 3,
+              }}>
               <Typography variant="h2" sx={{ pr: 1, mb: 1 }}>
                 $23.00
               </Typography>
@@ -185,23 +150,17 @@ function WatchListRow() {
               </Text>
             </Box>
             <Box height={100} sx={{ ml: -1.5 }}>
-              <WatchListRowChartWrapper
-                data={price.week.cardano}
-                labels={price.week.labels}
-              />
+              <WatchListRowChartWrapper data={price.week.cardano} labels={price.week.labels} />
             </Box>
           </Box>
         </Grid>
       </Grid>
       <Divider />
-      <CardActions
-        disableSpacing
-        sx={{ p: 3, display: 'flex', justifyContent: 'center' }}
-      >
+      <CardActions disableSpacing sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
         <Button variant="outlined">{t('View more assets')}</Button>
       </CardActions>
     </Card>
-  );
+  )
 }
 
-export default WatchListRow;
+export default WatchListRow

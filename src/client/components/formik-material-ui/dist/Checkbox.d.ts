@@ -1,9 +1,19 @@
 /// <reference types="react" />
 import { CheckboxProps as MuiCheckboxProps } from '@mui/material/Checkbox';
 import { FieldProps } from 'formik';
+
 export interface CheckboxProps
   extends FieldProps,
-    Omit<MuiCheckboxProps, 'name' | 'value' | 'error' | 'form' | 'checked' | 'defaultChecked' | 'type'> {
+    Omit<
+      MuiCheckboxProps,
+      | 'name'
+      | 'value'
+      | 'error'
+      | 'form'
+      | 'checked'
+      | 'defaultChecked'
+      | 'type'
+    > {
   type?: string;
 }
 export declare function fieldToCheckbox({

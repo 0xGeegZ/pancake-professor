@@ -1,10 +1,10 @@
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import { Box, Button, Card, CardContent, CardHeader, Divider, Menu, MenuItem, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import { Box, Button, Card, CardContent, CardHeader, Divider, Menu, MenuItem, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import BalanceHistoryChart from './BalanceHistoryChart';
+import BalanceHistoryChart from './BalanceHistoryChart'
 
 const DotSuccess = styled('span')(
   ({ theme }) => `

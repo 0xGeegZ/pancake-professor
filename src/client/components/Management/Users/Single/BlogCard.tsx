@@ -1,7 +1,7 @@
-import CommentTwoToneIcon from '@mui/icons-material/CommentTwoTone';
-import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
-import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone';
-import ThumbUpAltTwoToneIcon from '@mui/icons-material/ThumbUpAltTwoTone';
+import CommentTwoToneIcon from '@mui/icons-material/CommentTwoTone'
+import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone'
+import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone'
+import ThumbUpAltTwoToneIcon from '@mui/icons-material/ThumbUpAltTwoTone'
 import {
   Avatar,
   Box,
@@ -14,10 +14,10 @@ import {
   IconButton,
   Link,
   Typography,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import Text from 'src/client/components/Text';
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import Text from 'src/client/components/Text'
 
 const CardActionsWrapper = styled(CardActions)(
   ({ theme }) => `

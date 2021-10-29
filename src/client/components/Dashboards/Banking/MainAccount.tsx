@@ -8,28 +8,28 @@ import {
   Box,
   Avatar,
   Grid,
-  Hidden
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled, useTheme } from '@mui/material/styles';
+  Hidden,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled, useTheme } from '@mui/material/styles'
 
 const CardActionsWrapper = styled(CardActions)(
   ({ theme }) => `
       background-color: ${theme.colors.alpha.black[5]};
 `
-);
+)
 
 const TypographySucccess = styled(Typography)(
   ({ theme }) => `
       color: ${theme.palette.success.main};
 `
-);
+)
 
 const CardContentWrapper = styled(CardContent)(
   () => `
       position: relative;
 `
-);
+)
 
 const BankLogoImg = styled('img')(
   ({ theme }) => `
@@ -41,10 +41,10 @@ const BankLogoImg = styled('img')(
       right: ${theme.spacing(3)};
       margin-top: -100px;
 `
-);
+)
 
 function MainAccount() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const data = {
     funds: '$98,346.53',
@@ -52,10 +52,10 @@ function MainAccount() {
     account: '00 2222 5555 2222 72',
     acc: '3544 57214',
     bsb: '721 352',
-    logo: '/static/images/placeholders/logo/bankofamerica.svg'
-  };
+    logo: '/static/images/placeholders/logo/bankofamerica.svg',
+  }
 
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -83,7 +83,7 @@ function MainAccount() {
               sx={{
                 mr: 2,
                 width: theme.spacing(12),
-                height: theme.spacing(8)
+                height: theme.spacing(8),
               }}
               variant="square"
               alt={data.name}
@@ -94,11 +94,7 @@ function MainAccount() {
             <Typography variant="h4" component="div">
               {data.name}
             </Typography>
-            <Typography
-              variant="h3"
-              sx={{ mt: 1, fontWeight: 'normal' }}
-              color="text.secondary"
-            >
+            <Typography variant="h3" sx={{ mt: 1, fontWeight: 'normal' }} color="text.secondary">
               {data.account}
             </Typography>
             <Box sx={{ mt: 2 }}>
@@ -117,7 +113,7 @@ function MainAccount() {
         <Button variant="contained">{t('Link accounts')}</Button>
       </CardActionsWrapper>
     </Card>
-  );
+  )
 }
 
-export default MainAccount;
+export default MainAccount

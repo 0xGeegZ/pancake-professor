@@ -7,20 +7,20 @@ import {
   FormControlLabel,
   Checkbox,
   FormGroup,
-  Tooltip
-} from '@mui/material';
-import Timeline from '@mui/lab/Timeline';
-import TimelineItem from '@mui/lab/TimelineItem';
-import TimelineSeparator from '@mui/lab/TimelineSeparator';
-import TimelineConnector from '@mui/lab/TimelineConnector';
-import TimelineContent from '@mui/lab/TimelineContent';
-import TimelineDot from '@mui/lab/TimelineDot';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone';
-import AssignmentTwoToneIcon from '@mui/icons-material/AssignmentTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
-import BusinessCenterTwoToneIcon from '@mui/icons-material/BusinessCenterTwoTone';
+  Tooltip,
+} from '@mui/material'
+import Timeline from '@mui/lab/Timeline'
+import TimelineItem from '@mui/lab/TimelineItem'
+import TimelineSeparator from '@mui/lab/TimelineSeparator'
+import TimelineConnector from '@mui/lab/TimelineConnector'
+import TimelineContent from '@mui/lab/TimelineContent'
+import TimelineDot from '@mui/lab/TimelineDot'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone'
+import AssignmentTwoToneIcon from '@mui/icons-material/AssignmentTwoTone'
+import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone'
+import BusinessCenterTwoToneIcon from '@mui/icons-material/BusinessCenterTwoTone'
 
 const TimelineWrapper = styled(Timeline)(
   ({ theme }) => `
@@ -44,16 +44,16 @@ const TimelineWrapper = styled(Timeline)(
       color: ${theme.colors.alpha.black[50]};
     }
 `
-);
+)
 
 const CheckboxWrapper = styled(Checkbox)(
   ({ theme }) => `
     padding: ${theme.spacing(0.5)};
 `
-);
+)
 
 function Checklist() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Card>
@@ -145,7 +145,7 @@ function Checklist() {
         </TimelineWrapper>
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default Checklist;
+export default Checklist

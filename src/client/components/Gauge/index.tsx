@@ -1,27 +1,19 @@
-import { FC, ReactNode } from 'react';
-import PropTypes from 'prop-types';
-import { styled } from '@mui/material/styles';
+import { FC, ReactNode } from 'react'
+import PropTypes from 'prop-types'
+import { styled } from '@mui/material/styles'
 
-import { CircularProgressbarWithChildren } from 'react-circular-progressbar';
+import { CircularProgressbarWithChildren } from 'react-circular-progressbar'
 
 interface GaugeProps {
-  className?: string;
-  color?:
-  | 'primary'
-  | 'secondary'
-  | 'error'
-  | 'warning'
-  | 'success'
-  | 'info'
-  | 'white'
-  | 'trueWhite';
-  size?: 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge';
-  circleRatio?: number;
-  styles?: any;
-  value?: number;
-  text: any;
-  strokeWidth?: number;
-  children?: ReactNode;
+  className?: string
+  color?: 'primary' | 'secondary' | 'error' | 'warning' | 'success' | 'info' | 'white' | 'trueWhite'
+  size?: 'xsmall' | 'small' | 'medium' | 'large' | 'xlarge' | 'xxlarge'
+  circleRatio?: number
+  styles?: any
+  value?: number
+  text: any
+  strokeWidth?: number
+  children?: ReactNode
 }
 
 const GaugeWrapper = styled(CircularProgressbarWithChildren)(
@@ -128,7 +120,7 @@ const GaugeWrapper = styled(CircularProgressbarWithChildren)(
     }
   }
 `
-);
+)
 
 const Gauge: FC<GaugeProps> = ({
   className = '',
@@ -141,21 +133,18 @@ const Gauge: FC<GaugeProps> = ({
   strokeWidth,
   children,
   ...rest
-}) => {
-  return (
-    <GaugeWrapper
-      circleRatio={circleRatio}
-      value={value}
-      text={text}
-      strokeWidth={strokeWidth}
-      styles={styles}
-      className={`MuiGauge-${color} MuiGauge-${size}`}
-      {...rest}
-    >
-      {children}
-    </GaugeWrapper>
-  );
-};
+}) => (
+  <GaugeWrapper
+    circleRatio={circleRatio}
+    value={value}
+    text={text}
+    strokeWidth={strokeWidth}
+    styles={styles}
+    className={`MuiGauge-${color} MuiGauge-${size}`}
+    {...rest}>
+    {children}
+  </GaugeWrapper>
+)
 
 Gauge.propTypes = {
   children: PropTypes.node,
@@ -165,24 +154,8 @@ Gauge.propTypes = {
   text: PropTypes.any,
   strokeWidth: PropTypes.number,
   circleRatio: PropTypes.number,
-  color: PropTypes.oneOf([
-    'primary',
-    'secondary',
-    'error',
-    'warning',
-    'success',
-    'info',
-    'white',
-    'trueWhite'
-  ]),
-  size: PropTypes.oneOf([
-    'xsmall',
-    'small',
-    'medium',
-    'large',
-    'xlarge',
-    'xxlarge'
-  ])
-};
+  color: PropTypes.oneOf(['primary', 'secondary', 'error', 'warning', 'success', 'info', 'white', 'trueWhite']),
+  size: PropTypes.oneOf(['xsmall', 'small', 'medium', 'large', 'xlarge', 'xxlarge']),
+}
 
-export default Gauge;
+export default Gauge

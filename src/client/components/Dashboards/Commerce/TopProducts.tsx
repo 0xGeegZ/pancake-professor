@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
-import numeral from 'numeral';
-import PropTypes from 'prop-types';
+import { useCallback, useEffect, useState } from 'react'
+import numeral from 'numeral'
+import PropTypes from 'prop-types'
 import {
   Box,
   Button,
@@ -14,49 +14,43 @@ import {
   TableRow,
   Typography,
   TableContainer,
-  Avatar
-} from '@mui/material';
-import axios from 'src/client/utils/axios';
-import useRefMounted from 'src/client/hooks/useRefMounted';
-import { Product } from 'src/client/models/dashboards';
-import { useTranslation } from 'react-i18next';
-import { useTheme } from '@mui/material/styles';
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
+  Avatar,
+} from '@mui/material'
+import axios from 'src/client/utils/axios'
+import useRefMounted from 'src/client/hooks/useRefMounted'
+import { Product } from 'src/client/models/dashboards'
+import { useTranslation } from 'react-i18next'
+import { useTheme } from '@mui/material/styles'
+import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
 
 function TopProducts() {
-  const isMountedRef = useRefMounted();
-  const [products, setProducts] = useState<Product[]>([]);
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const isMountedRef = useRefMounted()
+  const [products, setProducts] = useState<Product[]>([])
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   const getProducts = useCallback(async () => {
     try {
-      const response = await axios.get<{ products: Product[] }>(
-        '/api/products/top'
-      );
+      const response = await axios.get<{ products: Product[] }>('/api/products/top')
 
       if (isMountedRef.current) {
-        setProducts(response.data.products);
+        setProducts(response.data.products)
       }
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
-  }, [isMountedRef]);
+  }, [isMountedRef])
 
   useEffect(() => {
-    getProducts();
-  }, [getProducts]);
+    getProducts()
+  }, [getProducts])
 
   return (
     <Card>
       <CardHeader
         title={t('Top Products')}
         action={
-          <Button
-            variant="contained"
-            size="small"
-            endIcon={<ArrowForwardTwoToneIcon fontSize="small" />}
-          >
+          <Button variant="contained" size="small" endIcon={<ArrowForwardTwoToneIcon fontSize="small" />}>
             {t('Create Product')}
           </Button>
         }
@@ -80,17 +74,13 @@ function TopProducts() {
                       sx={{
                         mr: 2,
                         width: theme.spacing(8.185),
-                        height: theme.spacing(8.185)
+                        height: theme.spacing(8.185),
                       }}
                       variant="square"
                       alt={product.name}
                       src={product.image}
                     />
-                    <Typography
-                      variant="h4"
-                      sx={{ fontWeight: 'normal' }}
-                      noWrap
-                    >
+                    <Typography variant="h4" sx={{ fontWeight: 'normal' }} noWrap>
                       {product.name}
                     </Typography>
                   </Box>
@@ -102,11 +92,7 @@ function TopProducts() {
                   </Typography>
                 </TableCell>
                 <TableCell align="right">
-                  <Typography variant="h4">
-                    {numeral(product.revenue).format(
-                      `${product.currency}0,0.00`
-                    )}
-                  </Typography>
+                  <Typography variant="h4">{numeral(product.revenue).format(`${product.currency}0,0.00`)}</Typography>
                   <Typography variant="subtitle2" noWrap>
                     {product.revenuePercent}
                     {t('% of sales')}
@@ -121,11 +107,11 @@ function TopProducts() {
         <Button variant="outlined">{t('View all Products')}</Button>
       </Box>
     </Card>
-  );
-};
+  )
+}
 
 TopProducts.propTypes = {
-  className: PropTypes.string
-};
+  className: PropTypes.string,
+}
 
-export default TopProducts;
+export default TopProducts

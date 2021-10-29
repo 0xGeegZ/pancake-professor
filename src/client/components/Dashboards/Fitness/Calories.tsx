@@ -1,13 +1,7 @@
-import {
-  Card,
-  Box,
-  Typography,
-  Avatar,
-  LinearProgress
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import FastfoodTwoToneIcon from '@mui/icons-material/FastfoodTwoTone';
+import { Card, Box, Typography, Avatar, LinearProgress } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import FastfoodTwoToneIcon from '@mui/icons-material/FastfoodTwoTone'
 
 const AvatarWrapperError = styled(Avatar)(
   ({ theme }) => `
@@ -18,10 +12,10 @@ const AvatarWrapperError = styled(Avatar)(
       color:  ${theme.colors.error.main};
       margin-bottom: ${theme.spacing(3)};
 `
-);
+)
 
 function Steps() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Card sx={{ p: 3 }}>
@@ -31,18 +25,14 @@ function Steps() {
       <Typography variant="h3" sx={{ pb: 1 }}>
         {t('Calories')}
       </Typography>
-      <Typography
-        color="text.primary"
-        variant="h2"
-        sx={{ pr: 0.5, display: 'inline-flex' }}
-      >
+      <Typography color="text.primary" variant="h2" sx={{ pr: 0.5, display: 'inline-flex' }}>
         76%
       </Typography>
       <Box pt={3}>
         <LinearProgress value={76} color="primary" variant="determinate" />
       </Box>
     </Card>
-  );
+  )
 }
 
-export default Steps;
+export default Steps

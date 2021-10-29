@@ -1,16 +1,8 @@
-import {
-  Card,
-  Box,
-  CardContent,
-  CardHeader,
-  Typography,
-  Avatar,
-  LinearProgress
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import AssignmentTurnedInTwoToneIcon from '@mui/icons-material/AssignmentTurnedInTwoTone';
-import CancelPresentationTwoToneIcon from '@mui/icons-material/CancelPresentationTwoTone';
+import { Card, Box, CardContent, CardHeader, Typography, Avatar, LinearProgress } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import AssignmentTurnedInTwoToneIcon from '@mui/icons-material/AssignmentTurnedInTwoTone'
+import CancelPresentationTwoToneIcon from '@mui/icons-material/CancelPresentationTwoTone'
 
 const RootWrapper = styled(Card)(
   ({ theme }) => `
@@ -21,7 +13,7 @@ const RootWrapper = styled(Card)(
       color: ${theme.colors.alpha.trueWhite[100]};
     }
 `
-);
+)
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -31,7 +23,7 @@ const AvatarSuccess = styled(Avatar)(
       height: ${theme.spacing(8)};
       box-shadow: ${theme.colors.shadows.success};
 `
-);
+)
 
 const AvatarError = styled(Avatar)(
   ({ theme }) => `
@@ -41,13 +33,13 @@ const AvatarError = styled(Avatar)(
       height: ${theme.spacing(8)};
       box-shadow: ${theme.colors.shadows.error};
 `
-);
+)
 
 const TypographySecondary = styled(Typography)(
   ({ theme }) => `
       color: ${theme.colors.alpha.trueWhite[70]};
 `
-);
+)
 
 const LinearProgressWrapper = styled(LinearProgress)(
   ({ theme }) => `
@@ -62,17 +54,14 @@ const LinearProgressWrapper = styled(LinearProgress)(
           border-bottom-right-radius: ${theme.general.borderRadius};
         }
 `
-);
+)
 
 function Performance() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <RootWrapper sx={{ p: 1 }}>
-      <CardHeader
-        title={t('Performance')}
-        titleTypographyProps={{ variant: 'h3' }}
-      />
+      <CardHeader title={t('Performance')} titleTypographyProps={{ variant: 'h3' }} />
       <CardContent>
         <Box display="flex" sx={{ px: 2, pb: 3 }} alignItems="center">
           <AvatarSuccess sx={{ mr: 2 }} variant="rounded">
@@ -97,15 +86,11 @@ function Performance() {
           </Box>
         </Box>
         <Box pt={3}>
-          <LinearProgressWrapper
-            value={73}
-            color="primary"
-            variant="determinate"
-          />
+          <LinearProgressWrapper value={73} color="primary" variant="determinate" />
         </Box>
       </CardContent>
     </RootWrapper>
-  );
+  )
 }
 
-export default Performance;
+export default Performance

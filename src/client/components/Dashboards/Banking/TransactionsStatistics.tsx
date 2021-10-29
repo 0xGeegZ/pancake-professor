@@ -1,28 +1,15 @@
-import { useRef, useState } from 'react';
-import {
-  Button,
-  Card,
-  Box,
-  CardContent,
-  CardHeader,
-  Menu,
-  MenuItem,
-  Typography,
-  Divider,
-  Grid
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import TransactionsStatisticsChart from './TransactionsStatisticsChart';
+import { useRef, useState } from 'react'
+import { Button, Card, Box, CardContent, CardHeader, Menu, MenuItem, Typography, Divider, Grid } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import TransactionsStatisticsChart from './TransactionsStatisticsChart'
 
-const TransactionsStatisticsChartWrapper = styled(
-  TransactionsStatisticsChart
-)(
+const TransactionsStatisticsChartWrapper = styled(TransactionsStatisticsChart)(
   () => `
         height: 200px;
 `
-);
+)
 
 const DotPrimaryLight = styled('span')(
   ({ theme }) => `
@@ -33,7 +20,7 @@ const DotPrimaryLight = styled('span')(
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 const DotPrimary = styled('span')(
   ({ theme }) => `
@@ -44,58 +31,45 @@ const DotPrimary = styled('span')(
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 function TransactionsStatistics() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const transactions = {
     income: [1769, 791, 1093, 189, 869, 1065, 980, 1419, 380, 1146, 797, 659],
-    expenses: [1083, 649, 312, 1538, 1404, 630, 1714, 853, 1765, 1067, 696, 538]
-  };
+    expenses: [1083, 649, 312, 1538, 1404, 630, 1714, 853, 1765, 1067, 696, 538],
+  }
 
   const generic = {
     month: {
-      labels: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
-      ]
-    }
-  };
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    },
+  }
   const periods = [
     {
       value: 'current_year',
-      text: t('Current Year')
+      text: t('Current Year'),
     },
     {
       value: 'last_year',
-      text: t('Last Year')
+      text: t('Last Year'),
     },
     {
       value: 'all_time',
-      text: t('All time')
-    }
-  ];
+      text: t('All time'),
+    },
+  ]
 
   const data = {
     bills: '$684.00',
     income: '$3,200.00',
     expenses: '$1596.85',
-    taxes: '$785.00'
-  };
-  const actionRef1 = useRef<any>(null);
-  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false);
-  const [period, setPeriod] = useState<string>(periods[0].text);
+    taxes: '$785.00',
+  }
+  const actionRef1 = useRef<any>(null)
+  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false)
+  const [period, setPeriod] = useState<string>(periods[0].text)
 
   return (
     <Card>
@@ -108,24 +82,15 @@ function TransactionsStatistics() {
             variant="outlined"
             ref={actionRef1}
             onClick={() => setOpenMenuPeriod(true)}
-            endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}
-          >
+            endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}>
             {period}
           </Button>
           <Box display="flex" alignItems="center">
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{ display: 'flex', alignItems: 'center', mr: 2 }}
-            >
+            <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
               <DotPrimary />
               {t('income')}
             </Typography>
-            <Typography
-              variant="body2"
-              color="text.secondary"
-              sx={{ display: 'flex', alignItems: 'center' }}
-            >
+            <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center' }}>
               <DotPrimaryLight />
               {t('expenses')}
             </Typography>
@@ -135,34 +100,28 @@ function TransactionsStatistics() {
           anchorEl={actionRef1.current}
           onClose={() => setOpenMenuPeriod(false)}
           open={openPeriod}
-
           anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'left'
+            horizontal: 'left',
           }}
           transformOrigin={{
             vertical: 'top',
-            horizontal: 'left'
-          }}
-        >
+            horizontal: 'left',
+          }}>
           {periods.map((_period) => (
             <MenuItem
               key={_period.value}
               onClick={() => {
-                setPeriod(_period.text);
-                setOpenMenuPeriod(false);
-              }}
-            >
+                setPeriod(_period.text)
+                setOpenMenuPeriod(false)
+              }}>
               {_period.text}
             </MenuItem>
           ))}
         </Menu>
 
         <Box height={200} sx={{ py: 3, px: { lg: 2 } }}>
-          <TransactionsStatisticsChartWrapper
-            data={transactions}
-            labels={generic.month.labels}
-          />
+          <TransactionsStatisticsChartWrapper data={transactions} labels={generic.month.labels} />
         </Box>
 
         <Box sx={{ pt: 8, pb: 0, textAlign: 'center' }}>
@@ -195,7 +154,7 @@ function TransactionsStatistics() {
         </Box>
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default TransactionsStatistics;
+export default TransactionsStatistics

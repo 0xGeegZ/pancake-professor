@@ -1,10 +1,10 @@
-import ArrowDownwardTwoTone from '@mui/icons-material/ArrowDownwardTwoTone';
-import ArrowUpwardTwoTone from '@mui/icons-material/ArrowUpwardTwoTone';
-import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone';
-import { Box, Card, CardContent, CardHeader, IconButton, Tooltip, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import Label from 'src/client/components/Label';
+import ArrowDownwardTwoTone from '@mui/icons-material/ArrowDownwardTwoTone'
+import ArrowUpwardTwoTone from '@mui/icons-material/ArrowUpwardTwoTone'
+import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone'
+import { Box, Card, CardContent, CardHeader, IconButton, Tooltip, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import Label from 'src/client/components/Label'
 
 const DotError = styled('span')(
   ({ theme }) => `

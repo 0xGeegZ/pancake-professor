@@ -1,19 +1,9 @@
-import { useRef, useState } from 'react';
-import {
-  Button,
-  Card,
-  Box,
-  CardContent,
-  CardHeader,
-  Typography,
-  Divider,
-  Menu,
-  MenuItem
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import OverallStatusChart from './OverallStatusChart';
+import { useRef, useState } from 'react'
+import { Button, Card, Box, CardContent, CardHeader, Typography, Divider, Menu, MenuItem } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import OverallStatusChart from './OverallStatusChart'
 
 const DotSuccess = styled('span')(
   ({ theme }) => `
@@ -24,7 +14,7 @@ const DotSuccess = styled('span')(
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 const DotPrimary = styled('span')(
   ({ theme }) => `
@@ -35,86 +25,48 @@ const DotPrimary = styled('span')(
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 const OverallStatusChartWrapper = styled(OverallStatusChart)(
   () => `
         height: 220px;
 `
-);
+)
 
 function OverallStatus() {
-  const { t }: { t: any } = useTranslation();
-  const actionRef1 = useRef<any>(null);
-  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false);
+  const { t }: { t: any } = useTranslation()
+  const actionRef1 = useRef<any>(null)
+  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false)
 
   const periods = [
     {
       value: 'today',
-      text: t('Today')
+      text: t('Today'),
     },
     {
       value: 'yesterday',
-      text: t('Yesterday')
+      text: t('Yesterday'),
     },
     {
       value: 'last_month',
-      text: t('Last month')
+      text: t('Last month'),
     },
     {
       value: 'last_year',
-      text: t('Last year')
-    }
-  ];
+      text: t('Last year'),
+    },
+  ]
 
-  const [period, setPeriod] = useState<string>(periods[2].text);
+  const [period, setPeriod] = useState<string>(periods[2].text)
 
   const status = {
     month: {
-      current: [
-        1401,
-        565,
-        1105,
-        696,
-        1469,
-        1250,
-        1341,
-        1231,
-        505,
-        783,
-        998,
-        738
-      ],
-      previous: [
-        1103,
-        626,
-        924,
-        560,
-        1130,
-        1081,
-        971,
-        1156,
-        522,
-        975,
-        1054,
-        1421
-      ]
-    }
-  };
+      current: [1401, 565, 1105, 696, 1469, 1250, 1341, 1231, 505, 783, 998, 738],
+      previous: [1103, 626, 924, 560, 1130, 1081, 971, 1156, 522, 975, 1054, 1421],
+    },
+  }
 
-  const month = [
-    'Jan',
-    'Feb',
-    'Mar',
-    'Apr',
-    'May',
-    'Jun',
-    'Aug',
-    'Sep',
-    'Oct',
-    'Nov',
-    'Dec'
-  ];
+  const month = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
   return (
     <Card sx={{ height: '100%' }}>
@@ -126,32 +78,28 @@ function OverallStatus() {
               variant="outlined"
               ref={actionRef1}
               onClick={() => setOpenMenuPeriod(true)}
-              endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}
-            >
+              endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}>
               {period}
             </Button>
             <Menu
               anchorEl={actionRef1.current}
               onClose={() => setOpenMenuPeriod(false)}
               open={openPeriod}
-
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'right'
-              }}
-            >
+                horizontal: 'right',
+              }}>
               {periods.map((_period) => (
                 <MenuItem
                   key={_period.value}
                   onClick={() => {
-                    setPeriod(_period.text);
-                    setOpenMenuPeriod(false);
-                  }}
-                >
+                    setPeriod(_period.text)
+                    setOpenMenuPeriod(false)
+                  }}>
                   {_period.text}
                 </MenuItem>
               ))}
@@ -162,25 +110,12 @@ function OverallStatus() {
       />
       <Divider />
       <CardContent>
-        <Box
-          pb={4}
-          display="flex"
-          alignItems="center"
-          justifyContent="flex-end"
-        >
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ display: 'flex', alignItems: 'center', mr: 2 }}
-          >
+        <Box pb={4} display="flex" alignItems="center" justifyContent="flex-end">
+          <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
             <DotPrimary />
             {t('patients')}
           </Typography>
-          <Typography
-            variant="body2"
-            color="text.secondary"
-            sx={{ display: 'flex', alignItems: 'center' }}
-          >
+          <Typography variant="body2" color="text.secondary" sx={{ display: 'flex', alignItems: 'center' }}>
             <DotSuccess />
             {t('consultations')}
           </Typography>
@@ -191,7 +126,7 @@ function OverallStatus() {
         </Box>
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default OverallStatus;
+export default OverallStatus

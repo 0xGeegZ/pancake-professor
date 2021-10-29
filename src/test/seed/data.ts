@@ -1,4 +1,4 @@
-import { SeedData } from './index';
+import { SeedData } from './index'
 
 export const testData: SeedData = {
   users: [
@@ -16,4 +16,4 @@ export const testData: SeedData = {
       users: ['test'],
     },
   ],
-};
+}

@@ -1,21 +1,13 @@
-import { MouseEvent, useState } from 'react';
-import {
-  Button,
-  Box,
-  ToggleButton,
-  ToggleButtonGroup,
-  Grid,
-  Card,
-  Typography
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone';
-import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone';
-import WatchListColumn1 from './WatchListColumn1';
-import WatchListColumn2 from './WatchListColumn2';
-import WatchListColumn3 from './WatchListColumn3';
-import WatchListRow from './WatchListRow';
+import { MouseEvent, useState } from 'react'
+import { Button, Box, ToggleButton, ToggleButtonGroup, Grid, Card, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone'
+import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
+import WatchListColumn1 from './WatchListColumn1'
+import WatchListColumn2 from './WatchListColumn2'
+import WatchListColumn3 from './WatchListColumn3'
+import WatchListRow from './WatchListRow'
 
 const EmptyResultsWrapper = styled('img')(
   ({ theme }) => `
@@ -23,34 +15,22 @@ const EmptyResultsWrapper = styled('img')(
       width: ${theme.spacing(66)};
       height: ${theme.spacing(34)};
 `
-);
+)
 
 function WatchList() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
-  const [tabs, setTab] = useState<string | null>('watch_list_columns');
+  const [tabs, setTab] = useState<string | null>('watch_list_columns')
 
-  const handleViewOrientation = (
-    _event: MouseEvent<HTMLElement>,
-    newValue: string | null
-  ) => {
-    setTab(newValue);
-  };
+  const handleViewOrientation = (_event: MouseEvent<HTMLElement>, newValue: string | null) => {
+    setTab(newValue)
+  }
 
   return (
     <>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ pb: 3 }}
-      >
+      <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ pb: 3 }}>
         <Typography variant="h3">{t('Watch List')}</Typography>
-        <ToggleButtonGroup
-          value={tabs}
-          exclusive
-          onChange={handleViewOrientation}
-        >
+        <ToggleButtonGroup value={tabs} exclusive onChange={handleViewOrientation}>
           <ToggleButton disableRipple value="watch_list_columns">
             <ViewWeekTwoToneIcon />
           </ToggleButton>
@@ -59,13 +39,7 @@ function WatchList() {
           </ToggleButton>
         </ToggleButtonGroup>
       </Box>
-      <Grid
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={3}
-      >
+      <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
         {tabs === 'watch_list_columns' && (
           <>
             <Grid item lg={4} xs={12}>
@@ -97,8 +71,7 @@ function WatchList() {
                 fontWeight="normal"
                 color="text.secondary"
                 sx={{ mt: 3 }}
-                gutterBottom
-              >
+                gutterBottom>
                 {t('Click something, anything!')}
               </Typography>
               <Button variant="contained" size="large" sx={{ mt: 4 }}>
@@ -109,7 +82,7 @@ function WatchList() {
         )}
       </Grid>
     </>
-  );
+  )
 }
 
-export default WatchList;
+export default WatchList

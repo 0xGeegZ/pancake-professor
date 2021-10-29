@@ -1,5 +1,5 @@
-import { mock } from 'src/client/utils/axios';
-import type { User } from 'src/client/models/user';
+import { mock } from 'src/client/utils/axios'
+import type { User } from 'src/client/models/user'
 
 const users: User[] = [
   {
@@ -297,15 +297,13 @@ const users: User[] = [
     description: 'Sed accumsan felis. Ut at dolor quis odio consequat varius. Integer ac leo.',
     posts: '54',
   },
-];
+]
 
-mock.onGet('/api/users').reply(() => {
-  return [200, { users }];
-});
+mock.onGet('/api/users').reply(() => [200, { users }])
 
 mock.onGet('/api/user').reply((config) => {
-  const { userId } = config.params;
-  const user = users.find((_user) => _user.id === userId);
+  const { userId } = config.params
+  const user = users.find((_user) => _user.id === userId)
 
-  return [200, { user }];
-});
+  return [200, { user }]
+})

@@ -1,7 +1,10 @@
 /// <reference types="react" />
 import { SelectProps as MuiSelectProps } from '@mui/material/Select';
 import { FieldProps } from 'formik';
-export interface SelectProps extends FieldProps, Omit<MuiSelectProps, 'name' | 'value'> {}
+
+export interface SelectProps
+  extends FieldProps,
+    Omit<MuiSelectProps, 'name' | 'value'> {}
 export declare function fieldToSelect({
   disabled,
   field: { onBlur: fieldOnBlur, ...field },

@@ -1,47 +1,37 @@
-import AccentHeaderLayout from "src/client/layouts/AccentHeaderLayout";
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 
-import { useState, useEffect, useCallback } from 'react';
-import type { ReactElement } from 'react';
+import { useState, useEffect, useCallback } from 'react'
+import type { ReactElement } from 'react'
 
-import Head from 'next/head';
-import PageHeader from 'src/client/components/Applications/JobsPlatform/PageHeader';
-import Footer from 'src/client/components/Footer';
-import Sidebar from 'src/client/components/Applications/JobsPlatform/Sidebar';
+import Head from 'next/head'
+import PageHeader from 'src/client/components/Applications/JobsPlatform/PageHeader'
+import Footer from 'src/client/components/Footer'
+import Sidebar from 'src/client/components/Applications/JobsPlatform/Sidebar'
 
-import {
-  TextField,
-  Divider,
-  Card,
-  Hidden,
-  Box,
-  Autocomplete,
-  Grid,
-  IconButton,
-  Drawer
-} from '@mui/material';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import { styled, useTheme } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import axios from 'src/client/utils/axios';
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
+import { TextField, Divider, Card, Hidden, Box, Autocomplete, Grid, IconButton, Drawer } from '@mui/material'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+import { styled, useTheme } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import axios from 'src/client/utils/axios'
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
 
-import useRefMounted from 'src/client/hooks/useRefMounted';
-import type { Job } from 'src/client/models/job';
+import useRefMounted from 'src/client/hooks/useRefMounted'
+import type { Job } from 'src/client/models/job'
 
-import Results from 'src/client/components/Applications/JobsPlatform/Results';
-import { Scrollbars } from 'react-custom-scrollbars-2';
+import Results from 'src/client/components/Applications/JobsPlatform/Results'
+import { Scrollbars } from 'react-custom-scrollbars-2'
 
 const sidebarContent = (
   <Scrollbars universal autoHide>
     <Sidebar />
   </Scrollbars>
-);
+)
 
 const SearchIconWrapper = styled(SearchTwoToneIcon)(
   ({ theme }) => `
         color: ${theme.colors.alpha.black[30]}
 `
-);
+)
 
 const DrawerWrapperMobile = styled(Drawer)(
   () => `
@@ -53,7 +43,7 @@ const DrawerWrapperMobile = styled(Drawer)(
         z-index: 3;
   }
 `
-);
+)
 
 const IconButtonToggle = styled(IconButton)(
   ({ theme }) => `
@@ -64,14 +54,14 @@ const IconButtonToggle = styled(IconButton)(
   z-index: 5;
   top: calc(${theme.header.height} + ${theme.spacing(4)});
 `
-);
+)
 
 const jobsTags = [
   { title: 'QA Engineer' },
   { title: 'Team Lead' },
   { title: 'React Developer' },
-  { title: 'Project Manager' }
-];
+  { title: 'Project Manager' },
+]
 
 const jobsLocations = [
   { title: 'Bucharest, Romania' },
@@ -79,37 +69,37 @@ const jobsLocations = [
   { title: 'Madrid, Spain' },
   { title: 'Berlin, Germany' },
   { title: 'Paris, France' },
-  { title: 'London, UK' }
-];
+  { title: 'London, UK' },
+]
 
 function ApplicationsJobsPlatform() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+    setMobileOpen(!mobileOpen)
+  }
 
-  const isMountedRef = useRefMounted();
-  const [jobs, setJobs] = useState<Job[]>([]);
+  const isMountedRef = useRefMounted()
+  const [jobs, setJobs] = useState<Job[]>([])
 
   const getJobs = useCallback(async () => {
     try {
-      const response = await axios.get<{ jobs: Job[] }>('/api/jobs');
+      const response = await axios.get<{ jobs: Job[] }>('/api/jobs')
 
       if (isMountedRef.current) {
-        setJobs(response.data.jobs);
+        setJobs(response.data.jobs)
       }
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
-  }, [isMountedRef]);
+  }, [isMountedRef])
 
   useEffect(() => {
-    getJobs();
-  }, [getJobs]);
+    getJobs()
+  }, [getJobs])
 
   return (
     <>
@@ -117,24 +107,13 @@ function ApplicationsJobsPlatform() {
         <title>Jobs Platform - Applications</title>
       </Head>
 
-      <Grid
-        sx={{ px: 4 }}
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={3}
-      >
+      <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
         <Grid item xs={12}>
           <Box mt={3}>
             <PageHeader />
           </Box>
           <Hidden mdUp>
-            <IconButtonToggle
-              color="primary"
-              onClick={handleDrawerToggle}
-              size="small"
-            >
+            <IconButtonToggle color="primary" onClick={handleDrawerToggle} size="small">
               <MenuTwoToneIcon />
             </IconButtonToggle>
           </Hidden>
@@ -145,18 +124,12 @@ function ApplicationsJobsPlatform() {
               pl: { xs: 1, lg: 3 },
               pr: 1,
               display: 'flex',
-              alignItems: 'center'
-            }}
-          >
+              alignItems: 'center',
+            }}>
             <Hidden lgDown>
               <SearchIconWrapper />
             </Hidden>
-            <Grid
-              alignItems="center"
-              justifyContent="space-around"
-              container
-              spacing={0}
-            >
+            <Grid alignItems="center" justifyContent="space-around" container spacing={0}>
               <Hidden lgDown>
                 <Divider orientation="vertical" sx={{ height: 48, mx: 2 }} />
               </Hidden>
@@ -218,22 +191,17 @@ function ApplicationsJobsPlatform() {
           variant="temporary"
           anchor={theme.direction === 'rtl' ? 'right' : 'left'}
           open={mobileOpen}
-          onClose={handleDrawerToggle}
-        >
+          onClose={handleDrawerToggle}>
           {sidebarContent}
         </DrawerWrapperMobile>
       </Hidden>
       <Footer />
     </>
-  );
+  )
 }
 
-export default ApplicationsJobsPlatform;
+export default ApplicationsJobsPlatform
 
 ApplicationsJobsPlatform.getLayout = function getLayout(page: ReactElement) {
-  return (
-      <AccentHeaderLayout>
-          {page}
-      </AccentHeaderLayout>
-  )
+  return <AccentHeaderLayout>{page}</AccentHeaderLayout>
 }

@@ -1,8 +1,8 @@
-import { Box, Card, Grid, Typography } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import numeral from 'numeral';
-import Text from 'src/client/components/Text';
+import { Box, Card, Grid, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import numeral from 'numeral'
+import Text from 'src/client/components/Text'
 
 const DotInfo = styled('span')(
   ({ theme }) => `
@@ -13,7 +13,7 @@ const DotInfo = styled('span')(
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 const DotPending = styled('span')(
   ({ theme }) => `
@@ -24,17 +24,17 @@ const DotPending = styled('span')(
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 function Statistics() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const data = {
     currency: '$',
     totalReceived: '78593',
     drafts: '16859',
-    pending: '5748'
-  };
+    pending: '5748',
+  }
 
   return (
     <Grid container spacing={3}>
@@ -45,32 +45,17 @@ function Statistics() {
             py: 4,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between'
-          }}
-        >
-          <Box
-            display="flex"
-            flex={1}
-            alignItems="center"
-            justifyContent="center"
-          >
-            <Typography variant="h2">
-              {numeral(data.totalReceived).format(`${data.currency}0,0.00`)}
-            </Typography>
+            justifyContent: 'space-between',
+          }}>
+          <Box display="flex" flex={1} alignItems="center" justifyContent="center">
+            <Typography variant="h2">{numeral(data.totalReceived).format(`${data.currency}0,0.00`)}</Typography>
           </Box>
           <Box px={3}>
-            <Typography
-              variant="caption"
-              fontWeight="bold"
-              color="text.primary"
-              gutterBottom
-            >
+            <Typography variant="caption" fontWeight="bold" color="text.primary" gutterBottom>
               {t('Total Received')}
             </Typography>
             <Typography variant="subtitle2">
-              <Text color="success">+50%</Text>
-              {' '}
-              {t('increase since last month')}
+              <Text color="success">+50%</Text> {t('increase since last month')}
             </Typography>
           </Box>
         </Card>
@@ -83,22 +68,18 @@ function Statistics() {
             py: 3,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
+            justifyContent: 'center',
+          }}>
           <Box>
             <Typography
               variant="body2"
               color="text.secondary"
               gutterBottom
-              sx={{ display: 'flex', alignItems: 'center', mr: 2 }}
-            >
+              sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
               <DotInfo />
               {t('In drafts')}
             </Typography>
-            <Typography variant="h3">
-              {numeral(data.drafts).format(`${data.currency}0,0.00`)}
-            </Typography>
+            <Typography variant="h3">{numeral(data.drafts).format(`${data.currency}0,0.00`)}</Typography>
           </Box>
         </Card>
       </Grid>
@@ -110,27 +91,23 @@ function Statistics() {
             py: 3,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'center'
-          }}
-        >
+            justifyContent: 'center',
+          }}>
           <Box>
             <Typography
               variant="body2"
               color="text.secondary"
               gutterBottom
-              sx={{ display: 'flex', alignItems: 'center', mr: 2 }}
-            >
+              sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
               <DotPending />
               {t('Pending')}
             </Typography>
-            <Typography variant="h3">
-              {numeral(data.pending).format(`${data.currency}0,0.00`)}
-            </Typography>
+            <Typography variant="h3">{numeral(data.pending).format(`${data.currency}0,0.00`)}</Typography>
           </Box>
         </Card>
       </Grid>
     </Grid>
-  );
+  )
 }
 
-export default Statistics;
+export default Statistics

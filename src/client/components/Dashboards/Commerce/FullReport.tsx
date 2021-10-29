@@ -1,6 +1,6 @@
-import { Button, Card, Box, CardHeader, CardActions } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
+import { Button, Card, Box, CardHeader, CardActions } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
 
 const ImgWrapper = styled('img')(
   ({ theme }) => `
@@ -10,10 +10,10 @@ const ImgWrapper = styled('img')(
       top: 50%;
       margin-top: -${theme.spacing(9)};
 `
-);
+)
 
 function FullReport() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Card
@@ -23,9 +23,8 @@ function FullReport() {
         display: 'flex',
         flexDirection: 'row',
         p: 3,
-        position: 'relative'
-      }}
-    >
+        position: 'relative',
+      }}>
       <Box>
         <CardHeader
           sx={{ p: 0 }}
@@ -33,14 +32,14 @@ function FullReport() {
           subheader={t('Get it today by clicking the button below.')}
           subheaderTypographyProps={{ variant: 'body1' }}
           titleTypographyProps={{ variant: 'h3', gutterBottom: true }}
-        ></CardHeader>
+        />
         <ImgWrapper src="/static/images/placeholders/illustrations/5.svg" />
         <CardActions sx={{ px: 0, pb: 0, pt: 3 }}>
           <Button variant="outlined">{t('Download now')}</Button>
         </CardActions>
       </Box>
     </Card>
-  );
+  )
 }
 
-export default FullReport;
+export default FullReport

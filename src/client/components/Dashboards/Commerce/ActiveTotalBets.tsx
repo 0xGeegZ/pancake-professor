@@ -1,8 +1,8 @@
-import ArrowUpwardTwoTone from '@mui/icons-material/ArrowUpwardTwoTone';
-import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone';
-import { Card, CardContent, CardHeader, IconButton, Tooltip, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+import ArrowUpwardTwoTone from '@mui/icons-material/ArrowUpwardTwoTone'
+import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone'
+import { Card, CardContent, CardHeader, IconButton, Tooltip, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const ArrowUpwardWrapper = styled(ArrowUpwardTwoTone)(
   ({ theme }) => `

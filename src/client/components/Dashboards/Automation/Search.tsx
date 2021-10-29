@@ -1,16 +1,12 @@
-import {
-    TextField,
-    InputAdornment,
-    IconButton
-} from '@mui/material';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import { styled } from '@mui/material/styles';
-import MicTwoToneIcon from '@mui/icons-material/MicTwoTone';
+import { TextField, InputAdornment, IconButton } from '@mui/material'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+import { styled } from '@mui/material/styles'
+import MicTwoToneIcon from '@mui/icons-material/MicTwoTone'
 
-import { useTranslation } from 'react-i18next';
+import { useTranslation } from 'react-i18next'
 
 const SearchInputWrapper = styled(TextField)(
-    ({ theme }) => `
+  ({ theme }) => `
   
     .MuiSvgIcon-root {
       opacity: .7;
@@ -25,34 +21,34 @@ const SearchInputWrapper = styled(TextField)(
     }
   
     .MuiInputBase-adornedEnd {
-      padding-right: ${theme.spacing(.5)};
+      padding-right: ${theme.spacing(0.5)};
     }
   `
-);
+)
 
 function Search() {
-    const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
-    return (
-        <SearchInputWrapper
-            InputProps={{
-                startAdornment: (
-                    <InputAdornment position="start">
-                        <SearchTwoToneIcon />
-                    </InputAdornment>
-                ),
-                endAdornment: (
-                    <InputAdornment position="end">
-                        <IconButton>
-                            <MicTwoToneIcon />
-                        </IconButton>
-                    </InputAdornment>
-                )
-            }}
-            placeholder={t('Search...')}
-            fullWidth
-        />
-    );
+  return (
+    <SearchInputWrapper
+      InputProps={{
+        startAdornment: (
+          <InputAdornment position="start">
+            <SearchTwoToneIcon />
+          </InputAdornment>
+        ),
+        endAdornment: (
+          <InputAdornment position="end">
+            <IconButton>
+              <MicTwoToneIcon />
+            </IconButton>
+          </InputAdornment>
+        ),
+      }}
+      placeholder={t('Search...')}
+      fullWidth
+    />
+  )
 }
 
-export default Search;
+export default Search

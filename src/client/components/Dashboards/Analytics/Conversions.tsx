@@ -1,51 +1,42 @@
-import { useTranslation } from 'react-i18next';
-import {
-  CardHeader,
-  Divider,
-  CardContent,
-  Avatar,
-  Card,
-  ListItemText,
-  List,
-  ListItem
-} from '@mui/material';
-import Gauge from 'src/client/components/Gauge';
-import { buildStyles } from 'react-circular-progressbar';
-import TrendingDown from '@mui/icons-material/TrendingDown';
-import TrendingUp from '@mui/icons-material/TrendingUp';
-import TrendingFlat from '@mui/icons-material/TrendingFlat';
-import { styled } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next'
+import { CardHeader, Divider, CardContent, Avatar, Card, ListItemText, List, ListItem } from '@mui/material'
+import Gauge from 'src/client/components/Gauge'
+import { buildStyles } from 'react-circular-progressbar'
+import TrendingDown from '@mui/icons-material/TrendingDown'
+import TrendingUp from '@mui/icons-material/TrendingUp'
+import TrendingFlat from '@mui/icons-material/TrendingFlat'
+import { styled } from '@mui/material/styles'
 
 const AvatarWrapperError = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.error.lighter};
       color:  ${theme.colors.error.main};
 `
-);
+)
 
 const AvatarWrapperSuccess = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.success.lighter};
       color:  ${theme.colors.success.main};
 `
-);
+)
 
 const AvatarWrapperWarning = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.warning.lighter};
       color:  ${theme.colors.warning.main};
 `
-);
+)
 
 function Conversions() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const data = {
     percentage: 67,
     sales: 127,
     customers: 1.358,
-    earnings: '$15,864.00'
-  };
+    earnings: '$15,864.00',
+  }
 
   return (
     <Card>
@@ -60,7 +51,7 @@ function Conversions() {
           text={`${data.percentage}%`}
           color="primary"
           size="xxlarge"
-        ></Gauge>
+        />
 
         <List disablePadding dense>
           <ListItem>
@@ -69,13 +60,13 @@ function Conversions() {
               primaryTypographyProps={{
                 variant: 'subtitle2',
                 gutterBottom: true,
-                noWrap: true
+                noWrap: true,
               }}
               secondary={data.sales}
               secondaryTypographyProps={{
                 variant: 'h3',
                 color: 'textPrimary',
-                noWrap: true
+                noWrap: true,
               }}
             />
             <AvatarWrapperError>
@@ -89,12 +80,12 @@ function Conversions() {
               primaryTypographyProps={{
                 variant: 'subtitle2',
                 gutterBottom: true,
-                noWrap: true
+                noWrap: true,
               }}
               secondary={data.customers}
               secondaryTypographyProps={{
                 variant: 'h3',
-                color: 'textPrimary'
+                color: 'textPrimary',
               }}
             />
             <AvatarWrapperWarning>
@@ -108,12 +99,12 @@ function Conversions() {
               primaryTypographyProps={{
                 variant: 'subtitle2',
                 gutterBottom: true,
-                noWrap: true
+                noWrap: true,
               }}
               secondary={data.earnings}
               secondaryTypographyProps={{
                 variant: 'h3',
-                color: 'textPrimary'
+                color: 'textPrimary',
               }}
             />
             <AvatarWrapperSuccess>
@@ -123,7 +114,7 @@ function Conversions() {
         </List>
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default Conversions;
+export default Conversions

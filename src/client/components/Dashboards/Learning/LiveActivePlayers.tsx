@@ -229,7 +229,7 @@ function LiveActivePlayers({ userBulls, userBears }) {
           <> */}
         <Divider />
         <CardActions disableSpacing sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
-          <Button disabled={[].concat(userBulls, userBears).length ? false : true} size="small">
+          <Button disabled={![].concat(userBulls, userBears).length} size="small">
             {t('View all bets for this epoch')}
           </Button>
         </CardActions>

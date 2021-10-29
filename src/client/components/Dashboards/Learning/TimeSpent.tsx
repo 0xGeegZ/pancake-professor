@@ -1,25 +1,18 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  Avatar,
-  Box
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
+import { Card, CardContent, CardHeader, Typography, Avatar, Box } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
 
-import Label from 'src/client/components/Label';
-import TimeSpentChart from './TimeSpentChart';
+import Label from 'src/client/components/Label'
 
-import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone';
-import CalendarTodayTwoToneIcon from '@mui/icons-material/CalendarTodayTwoTone';
+import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone'
+import CalendarTodayTwoToneIcon from '@mui/icons-material/CalendarTodayTwoTone'
+import TimeSpentChart from './TimeSpentChart'
 
 const TimeSpentChartWrapper = styled(TimeSpentChart)(
   () => `
         height: 350px;
 `
-);
+)
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -28,34 +21,21 @@ const AvatarSuccess = styled(Avatar)(
       width: ${theme.spacing(5)};
       height: ${theme.spacing(5)};
 `
-);
+)
 
 function TimeSpent() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const time = {
     current: [1008, 940, 1010, 821, 1035, 1030, 957, 926, 993, 1021, 997, 879],
-    previous: [648, 745, 897, 743, 635, 842, 811, 696, 878, 987, 747, 731]
-  };
+    previous: [648, 745, 897, 743, 635, 842, 811, 696, 878, 987, 747, 731],
+  }
 
   const generic = {
     month: {
-      labels: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
-      ]
-    }
-  };
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    },
+  }
 
   return (
     <Card>
@@ -76,11 +56,7 @@ function TimeSpent() {
               <Typography align="center" variant="h4">
                 23h 40min
               </Typography>
-              <Typography
-                align="center"
-                variant="subtitle2"
-                color="text.secondary"
-              >
+              <Typography align="center" variant="subtitle2" color="text.secondary">
                 {t('total spent')}
               </Typography>
             </Box>
@@ -95,7 +71,7 @@ function TimeSpent() {
         </Box>
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default TimeSpent;
+export default TimeSpent

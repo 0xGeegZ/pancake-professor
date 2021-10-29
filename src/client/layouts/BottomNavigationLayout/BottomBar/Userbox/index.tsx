@@ -1,7 +1,7 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from 'react'
 
-import Link from 'src/client/components/Link';
-import { useRouter } from 'next/router';
+import Link from 'src/client/components/Link'
+import { useRouter } from 'next/router'
 
 import {
   Avatar,
@@ -14,14 +14,14 @@ import {
   ListItem,
   ListItemText,
   Popover,
-  Typography
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
-import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
+  Typography,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone'
+import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone'
+import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone'
 
 const IconButtonPrimary = styled(IconButton)(
   ({ theme }) => `
@@ -48,21 +48,21 @@ const IconButtonPrimary = styled(IconButton)(
       }
     }
 `
-);
+)
 
 const MenuUserBox = styled(Box)(
   ({ theme }) => `
         background: ${theme.colors.alpha.black[5]};
         padding: ${theme.spacing(2)};
 `
-);
+)
 
 const UserBoxText = styled(Box)(
   ({ theme }) => `
         text-align: left;
         padding-left: ${theme.spacing(1)};
 `
-);
+)
 
 const UserBoxLabel = styled(Typography)(
   ({ theme }) => `
@@ -70,40 +70,38 @@ const UserBoxLabel = styled(Typography)(
         color: ${theme.palette.secondary.main};
         display: block;
 `
-);
+)
 
 const UserBoxDescription = styled(Typography)(
   ({ theme }) => `
         color: ${theme.palette.secondary.light}
 `
-);
+)
 
 function Userbox() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
-  const router = useRouter();
+  const router = useRouter()
 
-  
-
-  const ref = useRef<any>(null);
-  const [isOpen, setOpen] = useState<boolean>(false);
+  const ref = useRef<any>(null)
+  const [isOpen, setOpen] = useState<boolean>(false)
 
   const handleOpen = (): void => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = (): void => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const handleLogout = async (): Promise<void> => {
     try {
-      handleClose();
-      router.push('/');
+      handleClose()
+      router.push('/')
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
-  };
+  }
 
   return (
     <>
@@ -124,34 +122,33 @@ function Userbox() {
         transformOrigin={{
           vertical: 'bottom',
           horizontal: 'right',
-        }}
-      >
+        }}>
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
           <Avatar variant="rounded" alt="Margaret Gale" src="/static/images/avatars/1.jpg" />
           <UserBoxText>
             <UserBoxLabel variant="body1">Margaret Gale</UserBoxLabel>
-            <UserBoxDescription variant="body2">
-              Lead Developer
-            </UserBoxDescription>
+            <UserBoxDescription variant="body2">Lead Developer</UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
         <Divider sx={{ mb: 0 }} />
         <List sx={{ p: 1 }} component="nav">
           <ListItem
             button
-            onClick={() => { handleClose() }}
+            onClick={() => {
+              handleClose()
+            }}
             href="/management/users/1"
-            component={Link}
-          >
+            component={Link}>
             <AccountBoxTwoToneIcon fontSize="small" />
             <ListItemText primary={t('Profile')} />
           </ListItem>
           <ListItem
             button
-            onClick={() => { handleClose() }}
+            onClick={() => {
+              handleClose()
+            }}
             href="/applications/projects-board"
-            component={Link}
-          >
+            component={Link}>
             <AccountTreeTwoToneIcon fontSize="small" />
             <ListItemText primary={t('Projects')} />
           </ListItem>
@@ -165,7 +162,7 @@ function Userbox() {
         </Box>
       </Popover>
     </>
-  );
+  )
 }
 
-export default Userbox;
+export default Userbox

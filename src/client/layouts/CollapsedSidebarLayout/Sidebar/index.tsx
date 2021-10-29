@@ -1,11 +1,11 @@
-import { Box, Drawer, Hidden } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useContext } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars-2';
-import Logo from 'src/client/components/LogoSign';
-import { SidebarContext } from 'src/client/contexts/SidebarContext';
+import { Box, Drawer, Hidden } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useContext } from 'react'
+import { Scrollbars } from 'react-custom-scrollbars-2'
+import Logo from 'src/client/components/LogoSign'
+import { SidebarContext } from 'src/client/contexts/SidebarContext'
 
-import SidebarMenu from './SidebarMenu';
+import SidebarMenu from './SidebarMenu'
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
@@ -22,7 +22,7 @@ const SidebarWrapper = styled(Box)(
             border-bottom-right-radius: ${theme.general.borderRadius};
         }
 `
-);
+)
 
 const TopSection = styled(Box)(
   ({ theme }) => `
@@ -32,11 +32,11 @@ const TopSection = styled(Box)(
         margin: 0 ${theme.spacing(2)} ${theme.spacing(2)};
         border-bottom: ${theme.sidebar.dividerBg} solid 1px;
 `
-);
+)
 
 function Sidebar() {
-  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
-  const closeSidebar = () => toggleSidebar();
+  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext)
+  const closeSidebar = () => toggleSidebar()
 
   return (
     <>
@@ -51,13 +51,7 @@ function Sidebar() {
         </SidebarWrapper>
       </Hidden>
       <Hidden mdUp>
-        <Drawer
-          anchor="left"
-          open={sidebarToggle}
-          onClose={closeSidebar}
-          variant="temporary"
-          elevation={9}
-        >
+        <Drawer anchor="left" open={sidebarToggle} onClose={closeSidebar} variant="temporary" elevation={9}>
           <SidebarWrapper>
             <Scrollbars universal autoHide>
               <TopSection>
@@ -69,7 +63,7 @@ function Sidebar() {
         </Drawer>
       </Hidden>
     </>
-  );
+  )
 }
 
-export default Sidebar;
+export default Sidebar

@@ -1,11 +1,11 @@
-import AttachMoneyIcon from '@mui/icons-material/AttachMoney';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import { Box, Button, Card, Menu, MenuItem, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import AttachMoneyIcon from '@mui/icons-material/AttachMoney'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import { Box, Button, Card, Menu, MenuItem, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import TotalLockedValueChart from './TotalLockedValueChart';
+import TotalLockedValueChart from './TotalLockedValueChart'
 
 const TotalLockedValueChartWrapper = styled(TotalLockedValueChart)(
   ({ theme }) => `

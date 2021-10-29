@@ -1,15 +1,15 @@
-import logout from '@/pages/api/auth/logout';
-import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
-import AccountCircleIcon from '@mui/icons-material/AccountCircle';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import { Box, Button, Divider, Hidden, List, ListItem, ListItemText, Popover, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useRouter } from 'next/router';
-import { useSnackbar } from 'notistack';
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Link from 'src/client/components/Link';
+import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone'
+import AccountCircleIcon from '@mui/icons-material/AccountCircle'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone'
+import { Box, Button, Divider, Hidden, List, ListItem, ListItemText, Popover, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
+import { useCallback, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
+import logout from '@/pages/api/auth/logout'
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `

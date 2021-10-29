@@ -1,24 +1,24 @@
 // src/server/graphql/Koi/index.ts
-import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus';
-import prisma from '../../db/prisma';
+import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus'
+import prisma from '../../db/prisma'
 
 const Koi = objectType({
   name: 'Koi',
   definition(t) {
-    t.model.id();
-    t.model.modifiedAt();
-    t.model.birthDate();
-    t.model.youtube();
-    t.model.variety();
-    t.model.breeder();
-    t.model.bloodline();
-    t.model.skinType();
-    t.model.sex();
-    t.model.user();
-    t.model.updates();
-    t.model.purchasePrice();
+    t.model.id()
+    t.model.modifiedAt()
+    t.model.birthDate()
+    t.model.youtube()
+    t.model.variety()
+    t.model.breeder()
+    t.model.bloodline()
+    t.model.skinType()
+    t.model.sex()
+    t.model.user()
+    t.model.updates()
+    t.model.purchasePrice()
   },
-});
+})
 
 const queries = extendType({
   type: 'Query',
@@ -31,7 +31,7 @@ const queries = extendType({
       },
       resolve: (_, { id }, ctx) => {
         // Only let authenticated users fetch posts
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         return prisma.koi.findFirst({
           where: {
@@ -43,11 +43,11 @@ const queries = extendType({
             // },
             id,
           },
-        });
+        })
       },
-    });
+    })
   },
-});
+})
 
 const mutations = extendType({
   type: 'Mutation',
@@ -66,7 +66,7 @@ const mutations = extendType({
         purchasePrice: intArg(),
       },
       resolve: async (_, args, ctx) => {
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         return await prisma.koi.create({
           data: {
@@ -85,9 +85,9 @@ const mutations = extendType({
               },
             },
           },
-        });
+        })
       },
-    });
+    })
 
     t.nullable.field('updateKoi', {
       type: 'Koi',
@@ -103,7 +103,7 @@ const mutations = extendType({
         purchasePrice: intArg(),
       },
       resolve: async (_, args, ctx) => {
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         const hasAccess = await prisma.koi.findFirst({
           where: {
@@ -114,9 +114,9 @@ const mutations = extendType({
             },
             id: args.id,
           },
-        });
+        })
 
-        if (!hasAccess) return null;
+        if (!hasAccess) return null
 
         return await prisma.koi.update({
           where: { id: args.id },
@@ -130,9 +130,9 @@ const mutations = extendType({
             youtube: args.youtube,
             purchasePrice: args.purchasePrice,
           },
-        });
+        })
       },
-    });
+    })
 
     t.nullable.field('deleteKoi', {
       type: 'Koi',
@@ -140,7 +140,7 @@ const mutations = extendType({
         id: nonNull(stringArg()),
       },
       resolve: async (_, { id }, ctx) => {
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         const hasAccess = await prisma.koi.findFirst({
           where: {
@@ -149,28 +149,28 @@ const mutations = extendType({
                 id: ctx.user.id,
               },
             },
-            id: id,
+            id,
           },
-        });
+        })
 
-        if (!hasAccess) return null;
+        if (!hasAccess) return null
 
         await prisma.koiHistory.deleteMany({
           where: {
             koiId: id,
           },
-        });
+        })
 
         const koi = await prisma.koi.delete({
           where: {
-            id: id,
+            id,
           },
-        });
+        })
 
-        return koi;
+        return koi
       },
-    });
+    })
   },
-});
+})
 
-export default [Koi, queries, mutations];
+export default [Koi, queries, mutations]

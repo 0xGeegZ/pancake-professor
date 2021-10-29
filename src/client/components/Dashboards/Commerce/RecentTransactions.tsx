@@ -9,38 +9,38 @@ import {
   Link,
   Divider,
   ListItem,
-  ListItemText
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import TrendingDown from '@mui/icons-material/TrendingDown';
-import CloseIcon from '@mui/icons-material/Close';
-import CheckIcon from '@mui/icons-material/Check';
-import Text from 'src/client/components/Text';
+  ListItemText,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import TrendingDown from '@mui/icons-material/TrendingDown'
+import CloseIcon from '@mui/icons-material/Close'
+import CheckIcon from '@mui/icons-material/Check'
+import Text from 'src/client/components/Text'
 
 function RecentTransactions() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const AvatarWrapperError = styled(Avatar)(
     ({ theme }) => `
       background-color: ${theme.colors.error.lighter};
       color:  ${theme.colors.error.main};
 `
-  );
+  )
 
   const AvatarWrapperSuccess = styled(Avatar)(
     ({ theme }) => `
       background-color: ${theme.colors.success.lighter};
       color:  ${theme.colors.success.main};
 `
-  );
+  )
 
   const AvatarWrapperWarning = styled(Avatar)(
     ({ theme }) => `
       background-color: ${theme.colors.warning.lighter};
       color:  ${theme.colors.warning.main};
 `
-  );
+  )
 
   return (
     <Card>
@@ -71,11 +71,9 @@ function RecentTransactions() {
                 variant: 'body1',
                 color: 'textPrimary',
                 gutterBottom: true,
-                noWrap: true
+                noWrap: true,
               }}
-              secondary={
-                <Text color="success">{t('Completed Successfully')}</Text>
-              }
+              secondary={<Text color="success">{t('Completed Successfully')}</Text>}
               secondaryTypographyProps={{ variant: 'body2', noWrap: true }}
             />
           </ListItem>
@@ -89,15 +87,14 @@ function RecentTransactions() {
             <ListItemText
               primary={
                 <Text color="black">
-                  <b>Horia S.</b> is paying <b>$399</b> for a Google Nest
-                  Thermostat
+                  <b>Horia S.</b> is paying <b>$399</b> for a Google Nest Thermostat
                 </Text>
               }
               primaryTypographyProps={{
                 variant: 'body1',
                 color: 'textPrimary',
                 gutterBottom: true,
-                noWrap: true
+                noWrap: true,
               }}
               secondary={<Text color="warning">{t('Pending Payment')}</Text>}
               secondaryTypographyProps={{ variant: 'body2', noWrap: true }}
@@ -113,15 +110,14 @@ function RecentTransactions() {
             <ListItemText
               primary={
                 <Text color="black">
-                  <b>Poppy Freddy</b> tried paying <b>$199</b> for a Ring Smart
-                  Door Bell
+                  <b>Poppy Freddy</b> tried paying <b>$199</b> for a Ring Smart Door Bell
                 </Text>
               }
               primaryTypographyProps={{
                 variant: 'body1',
                 color: 'textPrimary',
                 gutterBottom: true,
-                noWrap: true
+                noWrap: true,
               }}
               secondary={<Text color="error">{t('Payment Failed')}</Text>}
               secondaryTypographyProps={{ variant: 'body2', noWrap: true }}
@@ -139,25 +135,25 @@ function RecentTransactions() {
               primary={
                 <Text color="black">
                   <b>Guest purchase</b> of <b>$999</b> made today in{' '}
-                  <Link href="#" underline="hover">Electronics</Link>
+                  <Link href="#" underline="hover">
+                    Electronics
+                  </Link>
                 </Text>
               }
               primaryTypographyProps={{
                 variant: 'body1',
                 color: 'textPrimary',
                 gutterBottom: true,
-                noWrap: true
+                noWrap: true,
               }}
-              secondary={
-                <Text color="success">{t('Completed Successfully')}</Text>
-              }
+              secondary={<Text color="success">{t('Completed Successfully')}</Text>}
               secondaryTypographyProps={{ variant: 'body2', noWrap: true }}
             />
           </ListItem>
         </List>
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default RecentTransactions;
+export default RecentTransactions

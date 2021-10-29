@@ -1,17 +1,10 @@
-import {
-  Box,
-  List,
-  ListItem,
-  ListItemText,
-  Menu,
-  MenuItem
-} from '@mui/material';
-import { useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import { Box, List, ListItem, ListItemText, Menu, MenuItem } from '@mui/material'
+import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-import Link from 'src/client/components/Link';
-import { styled } from '@mui/material/styles';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
+import Link from 'src/client/components/Link'
+import { styled } from '@mui/material/styles'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 
 const ListWrapper = styled(Box)(
   ({ theme }) => `
@@ -62,54 +55,33 @@ const ListWrapper = styled(Box)(
             }
         }
 `
-);
+)
 
 function HeaderMenu() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
-  const ref = useRef<any>(null);
-  const [isOpen, setOpen] = useState<boolean>(false);
+  const ref = useRef<any>(null)
+  const [isOpen, setOpen] = useState<boolean>(false)
 
   const handleOpen = (): void => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = (): void => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <>
       <ListWrapper>
         <List disablePadding component={Box} display="flex">
-          <ListItem
-            classes={{ root: 'MuiListItem-indicators' }}
-            button
-            component={Link}
-            href="/management/users"
-          >
-            <ListItemText
-              primaryTypographyProps={{ noWrap: true }}
-              primary={t('Users')}
-            />
+          <ListItem classes={{ root: 'MuiListItem-indicators' }} button component={Link} href="/management/users">
+            <ListItemText primaryTypographyProps={{ noWrap: true }} primary={t('Users')} />
           </ListItem>
-          <ListItem
-            classes={{ root: 'MuiListItem-indicators' }}
-            button
-            component={Link}
-            href="/dashboards/banking"
-          >
-            <ListItemText
-              primaryTypographyProps={{ noWrap: true }}
-              primary={t('Banking')}
-            />
+          <ListItem classes={{ root: 'MuiListItem-indicators' }} button component={Link} href="/dashboards/banking">
+            <ListItemText primaryTypographyProps={{ noWrap: true }} primary={t('Banking')} />
           </ListItem>
-          <ListItem
-            classes={{ root: 'MuiListItem-indicators' }}
-            button
-            ref={ref}
-            onClick={handleOpen}
-          >
+          <ListItem classes={{ root: 'MuiListItem-indicators' }} button ref={ref} onClick={handleOpen}>
             <ListItemText
               primaryTypographyProps={{ noWrap: true }}
               primary={
@@ -136,7 +108,7 @@ function HeaderMenu() {
         </MenuItem>
       </Menu>
     </>
-  );
+  )
 }
 
-export default HeaderMenu;
+export default HeaderMenu

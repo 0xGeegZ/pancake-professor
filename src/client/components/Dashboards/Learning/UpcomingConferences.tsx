@@ -1,33 +1,22 @@
-import { useState } from 'react';
-import {
-  Button,
-  Card,
-  Box,
-  Typography,
-  Avatar,
-  Grid,
-  useTheme,
-  Tooltip,
-  AvatarGroup,
-  IconButton
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizaitonProvider from '@mui/lab/LocalizationProvider';
-import CalendarPicker from '@mui/lab/CalendarPicker';
-import Label from 'src/client/components/Label';
-import EventSeatTwoToneIcon from '@mui/icons-material/EventSeatTwoTone';
-import Link from 'src/client/components/Link';
-import SwiperCore, { Navigation, Pagination } from 'swiper';
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
-import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper.min.css';
-import 'swiper/components/navigation/navigation.min.css';
-import 'swiper/components/pagination/pagination.min.css';
+import { useState } from 'react'
+import { Button, Card, Box, Typography, Avatar, Grid, useTheme, Tooltip, AvatarGroup, IconButton } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import LocalizaitonProvider from '@mui/lab/LocalizationProvider'
+import CalendarPicker from '@mui/lab/CalendarPicker'
+import Label from 'src/client/components/Label'
+import EventSeatTwoToneIcon from '@mui/icons-material/EventSeatTwoTone'
+import Link from 'src/client/components/Link'
+import SwiperCore, { Navigation, Pagination } from 'swiper'
+import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
+import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/swiper.min.css'
+import 'swiper/components/navigation/navigation.min.css'
+import 'swiper/components/pagination/pagination.min.css'
 
-SwiperCore.use([Navigation, Pagination]);
+SwiperCore.use([Navigation, Pagination])
 
 const CardCalendarWrapper = styled(Card)(
   ({ theme }) => `
@@ -59,7 +48,7 @@ const CardCalendarWrapper = styled(Card)(
         }
       }
 `
-);
+)
 
 const SwipeIndicator = styled(IconButton)(
   ({ theme }) => `
@@ -73,22 +62,17 @@ const SwipeIndicator = styled(IconButton)(
         background: ${theme.colors.alpha.black[10]};
       }
 `
-);
+)
 
 function UpcomingConferences() {
-  const { t }: { t: any } = useTranslation();
-  const [date, setDate] = useState<Date | null>(new Date());
+  const { t }: { t: any } = useTranslation()
+  const [date, setDate] = useState<Date | null>(new Date())
 
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ pb: 3 }}
-      >
+      <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ pb: 3 }}>
         <Typography variant="h3">{t('Upcoming Conferences')}</Typography>
         <Box>
           <SwipeIndicator className="MuiSwipe-root MuiSwipe-left">
@@ -114,32 +98,28 @@ function UpcomingConferences() {
             loop
             navigation={{
               nextEl: '.MuiSwipe-right',
-              prevEl: '.MuiSwipe-left'
+              prevEl: '.MuiSwipe-left',
             }}
-            pagination={{ dynamicBullets: true, clickable: true }}
-          >
+            pagination={{ dynamicBullets: true, clickable: true }}>
             <SwiperSlide>
               <Card sx={{ boxShadow: 'none', p: 2 }}>
                 <Box
                   sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    alignItems: 'center'
-                  }}
-                >
+                    alignItems: 'center',
+                  }}>
                   <Box
                     sx={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      alignItems: 'center'
-                    }}
-                  >
+                      alignItems: 'center',
+                    }}>
                     <Avatar
                       sx={{
                         mr: 1,
-                        background: `${theme.colors.gradients.black1}`
-                      }}
-                    >
+                        background: `${theme.colors.gradients.black1}`,
+                      }}>
                       A
                     </Avatar>
                     <Typography variant="h5">Apple</Typography>
@@ -150,18 +130,13 @@ function UpcomingConferences() {
                   <Typography variant="subtitle2" gutterBottom>
                     10/16/2021 - {t('Remote')}
                   </Typography>
-                  <Typography variant="h3">
-                    Apple World Wide Developer Conference 2021
-                  </Typography>
+                  <Typography variant="h3">Apple World Wide Developer Conference 2021</Typography>
                 </Box>
 
                 <Typography variant="subtitle1">{t('Hosted by')}:</Typography>
                 <Box display="flex" justifyContent="flex-start" sx={{ pb: 3 }}>
                   <AvatarGroup max={5}>
-                    <Tooltip
-                      arrow
-                      title={t('View profile for') + ' Remy Sharp'}
-                    >
+                    <Tooltip arrow title={`${t('View profile for')} Remy Sharp`}>
                       <Avatar
                         sx={{ width: 30, height: 30 }}
                         component={Link}
@@ -170,10 +145,7 @@ function UpcomingConferences() {
                         src="/static/images/avatars/1.jpg"
                       />
                     </Tooltip>
-                    <Tooltip
-                      arrow
-                      title={t('View profile for') + ' Travis Howard'}
-                    >
+                    <Tooltip arrow title={`${t('View profile for')} Travis Howard`}>
                       <Avatar
                         sx={{ width: 30, height: 30 }}
                         component={Link}
@@ -182,10 +154,7 @@ function UpcomingConferences() {
                         src="/static/images/avatars/2.jpg"
                       />
                     </Tooltip>
-                    <Tooltip
-                      arrow
-                      title={t('View profile for') + ' Cindy Baker'}
-                    >
+                    <Tooltip arrow title={`${t('View profile for')} Cindy Baker`}>
                       <Avatar
                         sx={{ width: 30, height: 30 }}
                         component={Link}
@@ -194,10 +163,7 @@ function UpcomingConferences() {
                         src="/static/images/avatars/3.jpg"
                       />
                     </Tooltip>
-                    <Tooltip
-                      arrow
-                      title={t('View profile for') + ' Agnes Walker'}
-                    >
+                    <Tooltip arrow title={`${t('View profile for')} Agnes Walker`}>
                       <Avatar
                         sx={{ width: 30, height: 30 }}
                         component={Link}
@@ -206,10 +172,7 @@ function UpcomingConferences() {
                         src="/static/images/avatars/4.jpg"
                       />
                     </Tooltip>
-                    <Tooltip
-                      arrow
-                      title={t('View profile for') + ' Trevor Henderson'}
-                    >
+                    <Tooltip arrow title={`${t('View profile for')} Trevor Henderson`}>
                       <Avatar
                         sx={{ width: 30, height: 30 }}
                         component={Link}
@@ -221,12 +184,7 @@ function UpcomingConferences() {
                   </AvatarGroup>
                 </Box>
                 <Box>
-                  <Button
-                    sx={{ mb: 1 }}
-                    fullWidth
-                    startIcon={<EventSeatTwoToneIcon />}
-                    variant="contained"
-                  >
+                  <Button sx={{ mb: 1 }} fullWidth startIcon={<EventSeatTwoToneIcon />} variant="contained">
                     {t('Book a seat')}
                   </Button>
                   <Button fullWidth variant="outlined">
@@ -241,20 +199,15 @@ function UpcomingConferences() {
                   sx={{
                     display: 'flex',
                     justifyContent: 'space-between',
-                    alignItems: 'center'
-                  }}
-                >
+                    alignItems: 'center',
+                  }}>
                   <Box
                     sx={{
                       display: 'flex',
                       justifyContent: 'space-between',
-                      alignItems: 'center'
-                    }}
-                  >
-                    <Avatar
-                      src="/static/images/logo/google.svg"
-                      sx={{ mr: 1 }}
-                    />
+                      alignItems: 'center',
+                    }}>
+                    <Avatar src="/static/images/logo/google.svg" sx={{ mr: 1 }} />
                     <Typography variant="h5">Google</Typography>
                   </Box>
                   <Label color="error">
@@ -265,18 +218,13 @@ function UpcomingConferences() {
                   <Typography variant="subtitle2" gutterBottom>
                     10/23/2021 - {t('Remote')}
                   </Typography>
-                  <Typography variant="h3">
-                    Google 2021 Mobile Devices Conference
-                  </Typography>
+                  <Typography variant="h3">Google 2021 Mobile Devices Conference</Typography>
                 </Box>
 
                 <Typography variant="subtitle1">{t('Hosted by')}:</Typography>
                 <Box display="flex" justifyContent="flex-start" sx={{ pb: 3 }}>
                   <AvatarGroup max={5}>
-                    <Tooltip
-                      arrow
-                      title={t('View profile for') + ' Agnes Walker'}
-                    >
+                    <Tooltip arrow title={`${t('View profile for')} Agnes Walker`}>
                       <Avatar
                         sx={{ width: 30, height: 30 }}
                         component={Link}
@@ -285,10 +233,7 @@ function UpcomingConferences() {
                         src="/static/images/avatars/4.jpg"
                       />
                     </Tooltip>
-                    <Tooltip
-                      arrow
-                      title={t('View profile for') + ' Cindy Baker'}
-                    >
+                    <Tooltip arrow title={`${t('View profile for')} Cindy Baker`}>
                       <Avatar
                         sx={{ width: 30, height: 30 }}
                         component={Link}
@@ -297,10 +242,7 @@ function UpcomingConferences() {
                         src="/static/images/avatars/3.jpg"
                       />
                     </Tooltip>
-                    <Tooltip
-                      arrow
-                      title={t('View profile for') + ' Trevor Henderson'}
-                    >
+                    <Tooltip arrow title={`${t('View profile for')} Trevor Henderson`}>
                       <Avatar
                         sx={{ width: 30, height: 30 }}
                         component={Link}
@@ -309,10 +251,7 @@ function UpcomingConferences() {
                         src="/static/images/avatars/5.jpg"
                       />
                     </Tooltip>
-                    <Tooltip
-                      arrow
-                      title={t('View profile for') + ' Travis Howard'}
-                    >
+                    <Tooltip arrow title={`${t('View profile for')} Travis Howard`}>
                       <Avatar
                         sx={{ width: 30, height: 30 }}
                         component={Link}
@@ -324,13 +263,7 @@ function UpcomingConferences() {
                   </AvatarGroup>
                 </Box>
                 <Box>
-                  <Button
-                    disabled
-                    sx={{ mb: 1 }}
-                    fullWidth
-                    startIcon={<EventSeatTwoToneIcon />}
-                    variant="contained"
-                  >
+                  <Button disabled sx={{ mb: 1 }} fullWidth startIcon={<EventSeatTwoToneIcon />} variant="contained">
                     {t('Book a seat')}
                   </Button>
                   <Button fullWidth variant="outlined">
@@ -343,7 +276,7 @@ function UpcomingConferences() {
         </Grid>
       </Grid>
     </>
-  );
+  )
 }
 
-export default UpcomingConferences;
+export default UpcomingConferences

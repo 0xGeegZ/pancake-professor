@@ -8,29 +8,29 @@ import {
   Divider,
   List,
   ListItem,
-  LinearProgress
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import deFlag from 'country-flag-icons/3x2/DE.svg';
-import usFlag from 'country-flag-icons/3x2/US.svg';
-import esFlag from 'country-flag-icons/3x2/ES.svg';
+  LinearProgress,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import deFlag from 'country-flag-icons/3x2/DE.svg'
+import usFlag from 'country-flag-icons/3x2/US.svg'
+import esFlag from 'country-flag-icons/3x2/ES.svg'
 
 const ImageWrapper = styled('img')(
   ({ theme }) => `
         width: 36px;
         margin-right: ${theme.spacing(1)};
 `
-);
+)
 
 const LinearProgressWrapper = styled(LinearProgress)(
   () => `
         flex-grow: 1;
 `
-);
+)
 
 function SalesByCountry() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Card>
@@ -39,9 +39,7 @@ function SalesByCountry() {
       <List disablePadding component="div">
         <ListItem component="div" sx={{ py: 2, flexDirection: 'column' }}>
           <Box display="flex" alignItems="center" width="100%">
-            <ListItemAvatar
-              sx={{ minWidth: '36px', display: 'flex', alignItems: 'center' }}
-            >
+            <ListItemAvatar sx={{ minWidth: '36px', display: 'flex', alignItems: 'center' }}>
               <ImageWrapper alt="USA" src={usFlag} />
             </ListItemAvatar>
             <ListItemText
@@ -49,18 +47,13 @@ function SalesByCountry() {
               primaryTypographyProps={{
                 variant: 'h5',
                 color: 'textPrimary',
-                noWrap: true
+                noWrap: true,
               }}
             />
 
             <Box display="flex" alignItems="center">
               <Box sx={{ mr: 3 }}>
-                <Typography
-                  align="right"
-                  variant="subtitle2"
-                  noWrap
-                  gutterBottom
-                >
+                <Typography align="right" variant="subtitle2" noWrap gutterBottom>
                   {t('Orders')}
                 </Typography>
                 <Typography align="right" variant="h5">
@@ -68,12 +61,7 @@ function SalesByCountry() {
                 </Typography>
               </Box>
               <Box>
-                <Typography
-                  align="right"
-                  variant="subtitle2"
-                  noWrap
-                  gutterBottom
-                >
+                <Typography align="right" variant="subtitle2" noWrap gutterBottom>
                   {t('Total')}
                 </Typography>
                 <Typography align="right" variant="h5">
@@ -83,19 +71,13 @@ function SalesByCountry() {
             </Box>
           </Box>
           <Box display="block" width="100%" sx={{ mt: 2 }}>
-            <LinearProgressWrapper
-              value={57}
-              color="primary"
-              variant="determinate"
-            />
+            <LinearProgressWrapper value={57} color="primary" variant="determinate" />
           </Box>
         </ListItem>
         <Divider />
         <ListItem component="div" sx={{ py: 2, flexDirection: 'column' }}>
           <Box display="flex" alignItems="center" width="100%">
-            <ListItemAvatar
-              sx={{ minWidth: '36px', display: 'flex', alignItems: 'center' }}
-            >
+            <ListItemAvatar sx={{ minWidth: '36px', display: 'flex', alignItems: 'center' }}>
               <ImageWrapper alt="ES" src={esFlag} />
             </ListItemAvatar>
             <ListItemText
@@ -103,18 +85,13 @@ function SalesByCountry() {
               primaryTypographyProps={{
                 variant: 'h5',
                 color: 'textPrimary',
-                noWrap: true
+                noWrap: true,
               }}
             />
 
             <Box display="flex" alignItems="center">
               <Box sx={{ mr: 3 }}>
-                <Typography
-                  align="right"
-                  variant="subtitle2"
-                  noWrap
-                  gutterBottom
-                >
+                <Typography align="right" variant="subtitle2" noWrap gutterBottom>
                   {t('Orders')}
                 </Typography>
                 <Typography align="right" variant="h5">
@@ -122,12 +99,7 @@ function SalesByCountry() {
                 </Typography>
               </Box>
               <Box>
-                <Typography
-                  align="right"
-                  variant="subtitle2"
-                  noWrap
-                  gutterBottom
-                >
+                <Typography align="right" variant="subtitle2" noWrap gutterBottom>
                   {t('Total')}
                 </Typography>
                 <Typography align="right" variant="h5">
@@ -137,19 +109,13 @@ function SalesByCountry() {
             </Box>
           </Box>
           <Box display="block" width="100%" sx={{ mt: 2 }}>
-            <LinearProgressWrapper
-              value={119}
-              color="primary"
-              variant="determinate"
-            />
+            <LinearProgressWrapper value={119} color="primary" variant="determinate" />
           </Box>
         </ListItem>
         <Divider />
         <ListItem component="div" sx={{ py: 2, flexDirection: 'column' }}>
           <Box display="flex" alignItems="center" width="100%">
-            <ListItemAvatar
-              sx={{ minWidth: '36px', display: 'flex', alignItems: 'center' }}
-            >
+            <ListItemAvatar sx={{ minWidth: '36px', display: 'flex', alignItems: 'center' }}>
               <ImageWrapper alt="DE" src={deFlag} />
             </ListItemAvatar>
             <ListItemText
@@ -157,18 +123,13 @@ function SalesByCountry() {
               primaryTypographyProps={{
                 variant: 'h5',
                 color: 'textPrimary',
-                noWrap: true
+                noWrap: true,
               }}
             />
 
             <Box display="flex" alignItems="center">
               <Box sx={{ mr: 3 }}>
-                <Typography
-                  align="right"
-                  variant="subtitle2"
-                  noWrap
-                  gutterBottom
-                >
+                <Typography align="right" variant="subtitle2" noWrap gutterBottom>
                   {t('Orders')}
                 </Typography>
                 <Typography align="right" variant="h5">
@@ -176,12 +137,7 @@ function SalesByCountry() {
                 </Typography>
               </Box>
               <Box>
-                <Typography
-                  align="right"
-                  variant="subtitle2"
-                  noWrap
-                  gutterBottom
-                >
+                <Typography align="right" variant="subtitle2" noWrap gutterBottom>
                   {t('Total')}
                 </Typography>
                 <Typography align="right" variant="h5">
@@ -191,17 +147,13 @@ function SalesByCountry() {
             </Box>
           </Box>
           <Box display="block" width="100%" sx={{ mt: 2 }}>
-            <LinearProgressWrapper
-              value={34}
-              color="primary"
-              variant="determinate"
-            />
+            <LinearProgressWrapper value={34} color="primary" variant="determinate" />
           </Box>
         </ListItem>
         <Divider />
       </List>
     </Card>
-  );
+  )
 }
 
-export default SalesByCountry;
+export default SalesByCountry

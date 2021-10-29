@@ -1,17 +1,10 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  LinearProgress,
-  Typography,
-  Avatar
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import FastfoodTwoToneIcon from '@mui/icons-material/FastfoodTwoTone';
+import { Card, CardContent, CardHeader, LinearProgress, Typography, Avatar } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import FastfoodTwoToneIcon from '@mui/icons-material/FastfoodTwoTone'
 
 function ProteinAlt() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const AvatarPrimary = styled(Avatar)(
     ({ theme }) => `
@@ -21,7 +14,7 @@ function ProteinAlt() {
       height: ${theme.spacing(6)};
       margin-top: -${theme.spacing(1)};
 `
-  );
+  )
 
   return (
     <Card sx={{ p: 1 }}>
@@ -36,11 +29,7 @@ function ProteinAlt() {
             <Typography align="right" variant="h3">
               3566
             </Typography>
-            <Typography
-              align="right"
-              variant="subtitle2"
-              color="text.secondary"
-            >
+            <Typography align="right" variant="subtitle2" color="text.secondary">
               {t('grams')}
             </Typography>
           </>
@@ -53,7 +42,7 @@ function ProteinAlt() {
         <LinearProgress value={49} color="primary" variant="determinate" />
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default ProteinAlt;
+export default ProteinAlt

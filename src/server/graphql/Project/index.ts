@@ -1,29 +1,29 @@
-import { enumType, extendType, nonNull, objectType, stringArg } from 'nexus';
-import prisma from '../../db/prisma';
-import { getProjectPaidPlan } from '../../get-project-paid-plan';
-import { plans } from '../../stripe/plans';
-import slug from 'slug';
-import { generateInvitationToken } from '../../invitations/token';
-import { sendEmail } from '../../send-email';
-import stripe from '../../stripe';
+import { enumType, extendType, nonNull, objectType, stringArg } from 'nexus'
+import slug from 'slug'
+import prisma from '../../db/prisma'
+import { getProjectPaidPlan } from '../../get-project-paid-plan'
+import { plans } from '../../stripe/plans'
+import { generateInvitationToken } from '../../invitations/token'
+import { sendEmail } from '../../send-email'
+import stripe from '../../stripe'
 
 export const PaidPlan = enumType({
   name: `PaidPlan`,
   members: Object.keys(plans),
-});
+})
 
 const Project = objectType({
   name: 'Project',
   definition(t) {
-    t.model.id();
-    t.model.users();
-    t.model.name();
-    t.model.slug();
+    t.model.id()
+    t.model.users()
+    t.model.name()
+    t.model.slug()
 
     t.nullable.field('paidPlan', {
       type: `PaidPlan`,
       resolve: async ({ id }, _, ctx) => {
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         // This makes sure the user has access to the project
         const project = await prisma.project.findFirst({
@@ -35,13 +35,13 @@ const Project = objectType({
             },
             id,
           },
-        });
+        })
 
-        return getProjectPaidPlan(project);
+        return getProjectPaidPlan(project)
       },
-    });
+    })
   },
-});
+})
 
 const queries = extendType({
   type: 'Query',
@@ -53,9 +53,9 @@ const queries = extendType({
         slug: stringArg(),
       },
       resolve: async (_, { id, slug }, ctx) => {
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
         if ((!id && !slug) || (id && slug))
-          throw new Error('Please provide either an ID or a slug to the project query');
+          throw new Error('Please provide either an ID or a slug to the project query')
 
         const project = await prisma.project.findFirst({
           where: {
@@ -68,15 +68,15 @@ const queries = extendType({
             id: id as string,
             slug: slug as string,
           },
-        });
+        })
 
-        if (!project) return null;
+        if (!project) return null
 
-        return project;
+        return project
       },
-    });
+    })
   },
-});
+})
 
 const mutations = extendType({
   type: 'Mutation',
@@ -88,7 +88,7 @@ const mutations = extendType({
         slug: stringArg(),
       },
       resolve: async (_, args, ctx) => {
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         return await prisma.project.create({
           data: {
@@ -100,9 +100,9 @@ const mutations = extendType({
               },
             },
           },
-        });
+        })
       },
-    });
+    })
 
     t.nullable.field('createStripeCheckoutBillingPortalUrl', {
       type: 'String',
@@ -110,7 +110,7 @@ const mutations = extendType({
         projectId: nonNull(stringArg()),
       },
       resolve: async (_, { projectId }, ctx) => {
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         const project = await prisma.project.findFirst({
           where: {
@@ -121,18 +121,18 @@ const mutations = extendType({
             },
             id: projectId,
           },
-        });
+        })
 
-        if (!project || !project.stripeCustomerId) return null;
+        if (!project || !project.stripeCustomerId) return null
 
         const { url } = await stripe.billingPortal.sessions.create({
           customer: project.stripeCustomerId,
           return_url: `${ctx.origin}/app/${project.slug}/settings`,
-        });
+        })
 
-        return url;
+        return url
       },
-    });
+    })
 
     t.nullable.field('createStripeCheckoutSession', {
       type: 'String',
@@ -141,11 +141,11 @@ const mutations = extendType({
         projectId: nonNull(stringArg()),
       },
       resolve: async (_, { projectId, plan }, ctx) => {
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
-        const priceId = plans[plan];
+        const priceId = plans[plan]
 
-        if (!priceId) return null;
+        if (!priceId) return null
 
         const project = await prisma.project.findFirst({
           where: {
@@ -156,9 +156,9 @@ const mutations = extendType({
             },
             id: projectId,
           },
-        });
+        })
 
-        if (!project) return null;
+        if (!project) return null
 
         // checkout.sessions.create can only be called with *either* a customer ID (if it exists) *or* a customer_email (if no ID exists yet)
         const customerMetadata = project.stripeCustomerId
@@ -167,7 +167,7 @@ const mutations = extendType({
             }
           : {
               customer_email: ctx.user.email,
-            };
+            }
 
         const session = await stripe.checkout.sessions.create({
           mode: 'subscription',
@@ -187,11 +187,11 @@ const mutations = extendType({
           billing_address_collection: 'auto',
           success_url: `${ctx.origin}/app/${project.slug}/?upgraded=true`,
           cancel_url: `${ctx.origin}/app/${project.slug}`,
-        });
+        })
 
-        return session.id;
+        return session.id
       },
-    });
+    })
 
     t.nullable.field('inviteToProject', {
       type: 'Boolean',
@@ -200,13 +200,13 @@ const mutations = extendType({
         email: nonNull(stringArg()),
       },
       resolve: async (_, { projectId, email }, ctx) => {
-        if (!ctx.user?.id) return null;
+        if (!ctx.user?.id) return null
 
         const inviter = await prisma.user.findUnique({
           where: {
             id: ctx.user.id,
           },
-        });
+        })
 
         const project = await prisma.project.findFirst({
           where: {
@@ -217,25 +217,25 @@ const mutations = extendType({
             },
             id: projectId,
           },
-        });
+        })
 
-        if (!project || !inviter) return null;
+        if (!project || !inviter) return null
 
         const token = generateInvitationToken({
           destination: email,
           projectId,
-        });
+        })
 
         await sendEmail({
           to: email,
           subject: `${inviter.name || inviter.email} invited you`,
           text: `Hey! Click on this link to accept your invite: ${ctx.origin}/api/invitations/accept/?token=${token}`,
-        });
+        })
 
-        return true;
+        return true
       },
-    });
+    })
   },
-});
+})
 
-export default [Project, mutations, queries];
+export default [Project, mutations, queries]

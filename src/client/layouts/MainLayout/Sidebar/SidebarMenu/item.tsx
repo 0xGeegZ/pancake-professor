@@ -1,11 +1,11 @@
-import ExpandLessTwoToneIcon from '@mui/icons-material/ExpandLessTwoTone';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import { Badge, Button, Collapse, ListItem } from '@mui/material';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import { FC, ReactNode, useContext, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import { SidebarContext } from 'src/client/contexts/SidebarContext';
+import ExpandLessTwoToneIcon from '@mui/icons-material/ExpandLessTwoTone'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import { Badge, Button, Collapse, ListItem } from '@mui/material'
+import clsx from 'clsx'
+import PropTypes from 'prop-types'
+import { FC, ReactNode, useContext, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { SidebarContext } from 'src/client/contexts/SidebarContext'
 
 interface SidebarMenuItemProps {
   children?: ReactNode

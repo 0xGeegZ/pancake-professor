@@ -1,20 +1,16 @@
-import { FC } from 'react';
-import PropTypes from 'prop-types';
-import { Bar } from 'react-chartjs-2';
-import { useTheme } from '@mui/material';
+import { FC } from 'react'
+import PropTypes from 'prop-types'
+import { Bar } from 'react-chartjs-2'
+import { useTheme } from '@mui/material'
 
 interface VisitorsOverviewChartProps {
-  className?: string;
-  data: any;
-  labels: string[];
+  className?: string
+  data: any
+  labels: string[]
 }
 
-const VisitorsOverviewChart: FC<VisitorsOverviewChartProps> = ({
-  data: dataProp,
-  labels,
-  ...rest
-}) => {
-  const theme = useTheme();
+const VisitorsOverviewChart: FC<VisitorsOverviewChartProps> = ({ data: dataProp, labels, ...rest }) => {
+  const theme = useTheme()
 
   const data = {
     datasets: [
@@ -32,7 +28,7 @@ const VisitorsOverviewChart: FC<VisitorsOverviewChartProps> = ({
         pointHoverColor: theme.palette.error.main,
         pointHoverBorderWidth: 4,
         pointBackgroundColor: theme.palette.error.main,
-        type: 'line'
+        type: 'line',
       },
       {
         label: 'Revenue',
@@ -41,34 +37,34 @@ const VisitorsOverviewChart: FC<VisitorsOverviewChartProps> = ({
         barThickness: 18,
         maxBarThickness: 22,
         barPercentage: 0.4,
-        categoryPercentage: 0.4
-      }
+        categoryPercentage: 0.4,
+      },
     ],
-    labels
-  };
+    labels,
+  }
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     cornerRadius: 6,
     legend: {
-      display: false
+      display: false,
     },
     layout: {
-      padding: 0
+      padding: 0,
     },
     scales: {
       xAxes: [
         {
           gridLines: {
             display: false,
-            drawBorder: false
+            drawBorder: false,
           },
           ticks: {
             padding: 18,
-            fontColor: theme.palette.text.secondary
-          }
-        }
+            fontColor: theme.palette.text.secondary,
+          },
+        },
       ],
       yAxes: [
         {
@@ -79,17 +75,17 @@ const VisitorsOverviewChart: FC<VisitorsOverviewChartProps> = ({
             drawBorder: false,
             zeroLineBorderDash: [6],
             zeroLineBorderDashOffset: [0],
-            zeroLineColor: theme.palette.divider
+            zeroLineColor: theme.palette.divider,
           },
           ticks: {
             padding: 12,
             fontColor: theme.palette.text.secondary,
             beginAtZero: true,
             min: 0,
-            maxTicksLimit: 10
-          }
-        }
-      ]
+            maxTicksLimit: 10,
+          },
+        },
+      ],
     },
     tooltips: {
       enabled: true,
@@ -106,24 +102,24 @@ const VisitorsOverviewChart: FC<VisitorsOverviewChartProps> = ({
       backgroundColor: theme.palette.common.black,
       titleFontColor: theme.palette.common.white,
       bodyFontColor: theme.palette.common.white,
-      footerFontColor: theme.palette.common.white
+      footerFontColor: theme.palette.common.white,
     },
     hover: {
       mode: 'nearest',
-      intersect: true
-    }
-  };
+      intersect: true,
+    },
+  }
 
   return (
     <div {...rest}>
       <Bar data={data} options={options} />
     </div>
-  );
-};
+  )
+}
 
 VisitorsOverviewChart.propTypes = {
   data: PropTypes.object.isRequired,
-  labels: PropTypes.array.isRequired
-};
+  labels: PropTypes.array.isRequired,
+}
 
-export default VisitorsOverviewChart;
+export default VisitorsOverviewChart

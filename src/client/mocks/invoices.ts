@@ -1,6 +1,6 @@
-import { mock } from 'src/client/utils/axios';
-import type { Invoice } from 'src/client/models/invoice';
-import { subHours } from 'date-fns';
+import { mock } from 'src/client/utils/axios'
+import type { Invoice } from 'src/client/models/invoice'
+import { subHours } from 'date-fns'
 
 const invoices: Invoice[] = [
   {
@@ -168,15 +168,13 @@ const invoices: Invoice[] = [
     currency: '$',
     status: 'draft',
   },
-];
+]
 
-mock.onGet('/api/invoices').reply(() => {
-  return [200, { invoices }];
-});
+mock.onGet('/api/invoices').reply(() => [200, { invoices }])
 
 mock.onGet('/api/invoice').reply((config) => {
-  const { invoiceId } = config.params;
-  const invoice = invoices.find((_invoice) => _invoice.id === invoiceId);
+  const { invoiceId } = config.params
+  const invoice = invoices.find((_invoice) => _invoice.id === invoiceId)
 
-  return [200, { invoice }];
-});
+  return [200, { invoice }]
+})

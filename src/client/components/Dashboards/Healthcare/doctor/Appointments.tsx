@@ -12,15 +12,15 @@ import {
   ListItem,
   Chip,
   List,
-  useTheme
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import Label from 'src/client/components/Label';
-import Text from 'src/client/components/Text';
-import { styled } from '@mui/material/styles';
-import Link from 'src/client/components/Link';
-import { useSnackbar } from 'notistack';
-import { format, subDays } from 'date-fns';
+  useTheme,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import Label from 'src/client/components/Label'
+import Text from 'src/client/components/Text'
+import { styled } from '@mui/material/styles'
+import Link from 'src/client/components/Link'
+import { useSnackbar } from 'notistack'
+import { format, subDays } from 'date-fns'
 
 const DotLegend = styled('span')(
   ({ theme }) => `
@@ -31,7 +31,7 @@ const DotLegend = styled('span')(
     margin-right: ${theme.spacing(1)};
     margin-top: -${theme.spacing(0.1)};
 `
-);
+)
 
 const BoxItemWrapper = styled(Box)(
   ({ theme }) => `
@@ -68,24 +68,24 @@ const BoxItemWrapper = styled(Box)(
       }
     }
 `
-);
+)
 
 function Appointments() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
-  const { enqueueSnackbar } = useSnackbar();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
+  const { enqueueSnackbar } = useSnackbar()
 
   const handleDelete = () => {
     enqueueSnackbar(t('You clicked on delete!'), {
-      variant: 'error'
-    });
-  };
+      variant: 'error',
+    })
+  }
 
   const handleClick = () => {
     enqueueSnackbar(t('You clicked on the chip!'), {
-      variant: 'success'
-    });
-  };
+      variant: 'success',
+    })
+  }
 
   return (
     <Card>
@@ -94,7 +94,7 @@ function Appointments() {
         action={
           <Box sx={{ pt: { xs: 2, sm: 0 } }} display="flex" alignItems="center">
             <AvatarGroup max={6} sx={{ mr: 2 }}>
-              <Tooltip arrow title={t('View profile for') + ' Remy Sharp'}>
+              <Tooltip arrow title={`${t('View profile for')} Remy Sharp`}>
                 <Avatar
                   sx={{ width: 30, height: 30 }}
                   component={Link}
@@ -103,7 +103,7 @@ function Appointments() {
                   src="/static/images/avatars/1.jpg"
                 />
               </Tooltip>
-              <Tooltip arrow title={t('View profile for') + ' Travis Howard'}>
+              <Tooltip arrow title={`${t('View profile for')} Travis Howard`}>
                 <Avatar
                   sx={{ width: 30, height: 30 }}
                   component={Link}
@@ -112,7 +112,7 @@ function Appointments() {
                   src="/static/images/avatars/2.jpg"
                 />
               </Tooltip>
-              <Tooltip arrow title={t('View profile for') + ' Cindy Baker'}>
+              <Tooltip arrow title={`${t('View profile for')} Cindy Baker`}>
                 <Avatar
                   sx={{ width: 30, height: 30 }}
                   component={Link}
@@ -121,7 +121,7 @@ function Appointments() {
                   src="/static/images/avatars/3.jpg"
                 />
               </Tooltip>
-              <Tooltip arrow title={t('View profile for') + ' Agnes Walker'}>
+              <Tooltip arrow title={`${t('View profile for')} Agnes Walker`}>
                 <Avatar
                   sx={{ width: 30, height: 30 }}
                   component={Link}
@@ -130,10 +130,7 @@ function Appointments() {
                   src="/static/images/avatars/4.jpg"
                 />
               </Tooltip>
-              <Tooltip
-                arrow
-                title={t('View profile for') + ' Trevor Henderson'}
-              >
+              <Tooltip arrow title={`${t('View profile for')} Trevor Henderson`}>
                 <Avatar
                   sx={{ width: 30, height: 30 }}
                   component={Link}
@@ -142,7 +139,7 @@ function Appointments() {
                   src="/static/images/avatars/5.jpg"
                 />
               </Tooltip>
-              <Tooltip arrow title={t('View profile for') + ' Remy Sharp'}>
+              <Tooltip arrow title={`${t('View profile for')} Remy Sharp`}>
                 <Avatar
                   sx={{ width: 30, height: 30 }}
                   component={Link}
@@ -151,7 +148,7 @@ function Appointments() {
                   src="/static/images/avatars/1.jpg"
                 />
               </Tooltip>
-              <Tooltip arrow title={t('View profile for') + ' Remy Sharp'}>
+              <Tooltip arrow title={`${t('View profile for')} Remy Sharp`}>
                 <Avatar
                   sx={{ width: 30, height: 30 }}
                   component={Link}
@@ -177,9 +174,8 @@ function Appointments() {
             background: `${theme.colors.alpha.white[100]}`,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between'
-          }}
-        >
+            justifyContent: 'space-between',
+          }}>
           <Box>{t('Upcoming Appointments')}</Box>
           <Box>
             <Label color="warning">{t('Today')}</Label>
@@ -188,18 +184,9 @@ function Appointments() {
         <Divider />
         <ListItem component="div" sx={{ pt: 2, pb: 0 }}>
           <BoxItemWrapper>
-            <Typography
-              variant="body2"
-              sx={{ display: 'flex', alignItems: 'center', mr: 2 }}
-            >
-              <Tooltip
-                arrow
-                placement="top"
-                title={t('Appointment has been confirmed with the Patient.')}
-              >
-                <DotLegend
-                  style={{ background: `${theme.colors.success.main}` }}
-                />
+            <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
+              <Tooltip arrow placement="top" title={t('Appointment has been confirmed with the Patient.')}>
+                <DotLegend style={{ background: `${theme.colors.success.main}` }} />
               </Tooltip>
               <span>
                 <Typography component="span" sx={{ fontWeight: 'bold' }}>
@@ -235,18 +222,9 @@ function Appointments() {
         </ListItem>
         <ListItem component="div" sx={{ pt: 2, pb: 0 }}>
           <BoxItemWrapper className="wrapper-warning">
-            <Typography
-              variant="body2"
-              sx={{ display: 'flex', alignItems: 'center', mr: 2 }}
-            >
-              <Tooltip
-                arrow
-                placement="top"
-                title={t('Appointment has been canceled!')}
-              >
-                <DotLegend
-                  style={{ background: `${theme.colors.error.main}` }}
-                />
+            <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
+              <Tooltip arrow placement="top" title={t('Appointment has been canceled!')}>
+                <DotLegend style={{ background: `${theme.colors.error.main}` }} />
               </Tooltip>
               <span>
                 <Typography component="span" sx={{ fontWeight: 'bold' }}>
@@ -288,26 +266,18 @@ function Appointments() {
             background: `${theme.colors.alpha.white[100]}`,
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between'
-          }}
-        >
+            justifyContent: 'space-between',
+          }}>
           <Box>{t('Past Appointments')}</Box>
           <Box>
-            <Text color="black">
-              {format(subDays(new Date(), 14), 'MMMM dd yyyy')}
-            </Text>
+            <Text color="black">{format(subDays(new Date(), 14), 'MMMM dd yyyy')}</Text>
           </Box>
         </ListSubheader>
         <Divider />
         <ListItem component="div" sx={{ py: 2 }}>
           <BoxItemWrapper className="wrapper-info">
-            <Typography
-              variant="body2"
-              sx={{ display: 'flex', alignItems: 'center', mr: 2 }}
-            >
-              <DotLegend
-                style={{ background: `${theme.colors.success.main}` }}
-              />
+            <Typography variant="body2" sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
+              <DotLegend style={{ background: `${theme.colors.success.main}` }} />
               <span>
                 <Typography component="span" sx={{ fontWeight: 'bold' }}>
                   Wesley Joyce
@@ -334,7 +304,7 @@ function Appointments() {
         <Divider />
       </List>
     </Card>
-  );
+  )
 }
 
-export default Appointments;
+export default Appointments

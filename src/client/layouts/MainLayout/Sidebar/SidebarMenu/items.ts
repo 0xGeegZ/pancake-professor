@@ -1,10 +1,10 @@
-import AnalyticsTwoToneIcon from '@mui/icons-material/AnalyticsTwoTone';
-import DashboardCustomizeTwoToneIcon from '@mui/icons-material/DashboardCustomizeTwoTone';
-import LiveTvIcon from '@mui/icons-material/LiveTv';
-import LocalLibraryTwoToneIcon from '@mui/icons-material/LocalLibraryTwoTone';
-import PeopleIcon from '@mui/icons-material/People';
-import SmartToyTwoToneIcon from '@mui/icons-material/SmartToyTwoTone';
-import SupportTwoToneIcon from '@mui/icons-material/SupportTwoTone';
+import AnalyticsTwoToneIcon from '@mui/icons-material/AnalyticsTwoTone'
+import DashboardCustomizeTwoToneIcon from '@mui/icons-material/DashboardCustomizeTwoTone'
+import LiveTvIcon from '@mui/icons-material/LiveTv'
+import LocalLibraryTwoToneIcon from '@mui/icons-material/LocalLibraryTwoTone'
+import PeopleIcon from '@mui/icons-material/People'
+import SmartToyTwoToneIcon from '@mui/icons-material/SmartToyTwoTone'
+import SupportTwoToneIcon from '@mui/icons-material/SupportTwoTone'
 
 import type { ReactNode } from 'react'
 

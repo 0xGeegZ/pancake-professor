@@ -1,13 +1,14 @@
-import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone';
-import LoadingButton from '@mui/lab/LoadingButton';
-import { Box, Button, Container, Grid, Hidden, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import Head from 'next/head';
-import { useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import BaseLayout from 'src/client/layouts/BaseLayout';
+import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone'
+import LoadingButton from '@mui/lab/LoadingButton'
+import { Box, Button, Container, Grid, Hidden, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import Head from 'next/head'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import BaseLayout from 'src/client/layouts/BaseLayout'
 
 import type { ReactElement } from 'react'
+
 const GridWrapper = styled(Grid)(
   ({ theme }) => `
     background: ${theme.colors.gradients.black1};

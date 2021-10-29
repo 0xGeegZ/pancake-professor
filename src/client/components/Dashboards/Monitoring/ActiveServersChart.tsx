@@ -1,20 +1,16 @@
-import { FC } from 'react';
-import PropTypes from 'prop-types';
-import { Bar } from 'react-chartjs-2';
-import { useTheme } from '@mui/material';
+import { FC } from 'react'
+import PropTypes from 'prop-types'
+import { Bar } from 'react-chartjs-2'
+import { useTheme } from '@mui/material'
 
 interface ActiveServersChartProps {
-  className?: string;
-  data: any;
-  labels: string[];
+  className?: string
+  data: any
+  labels: string[]
 }
 
-const ActiveServersChart: FC<ActiveServersChartProps> = ({
-  data: dataProp,
-  labels,
-  ...rest
-}) => {
-  const theme = useTheme();
+const ActiveServersChart: FC<ActiveServersChartProps> = ({ data: dataProp, labels, ...rest }) => {
+  const theme = useTheme()
 
   const data = {
     datasets: [
@@ -33,7 +29,7 @@ const ActiveServersChart: FC<ActiveServersChartProps> = ({
         pointHoverBorderWidth: 4,
         pointBackgroundColor: theme.palette.primary.main,
         borderDash: [5, 10],
-        type: 'line'
+        type: 'line',
       },
       {
         label: 'Current Period',
@@ -42,40 +38,40 @@ const ActiveServersChart: FC<ActiveServersChartProps> = ({
         barThickness: 18,
         maxBarThickness: 20,
         barPercentage: 0.8,
-        categoryPercentage: 0.8
-      }
+        categoryPercentage: 0.8,
+      },
     ],
-    labels
-  };
+    labels,
+  }
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     cornerRadius: 66,
     legend: {
-      display: false
+      display: false,
     },
     layout: {
-      padding: 0
+      padding: 0,
     },
     scales: {
       xAxes: [
         {
           gridLines: {
             display: false,
-            drawBorder: false
+            drawBorder: false,
           },
           ticks: {
             display: false,
 
-            fontColor: theme.palette.text.secondary
-          }
-        }
+            fontColor: theme.palette.text.secondary,
+          },
+        },
       ],
       yAxes: [
         {
           gridLines: {
-            display: false
+            display: false,
           },
           ticks: {
             display: false,
@@ -83,10 +79,10 @@ const ActiveServersChart: FC<ActiveServersChartProps> = ({
             fontColor: theme.palette.text.secondary,
             beginAtZero: true,
             min: 4,
-            maxTicksLimit: 8
-          }
-        }
-      ]
+            maxTicksLimit: 8,
+          },
+        },
+      ],
     },
     tooltips: {
       enabled: true,
@@ -103,24 +99,24 @@ const ActiveServersChart: FC<ActiveServersChartProps> = ({
       backgroundColor: theme.palette.common.black,
       titleFontColor: theme.palette.common.white,
       bodyFontColor: theme.palette.common.white,
-      footerFontColor: theme.palette.common.white
+      footerFontColor: theme.palette.common.white,
     },
     hover: {
       mode: 'nearest',
-      intersect: true
-    }
-  };
+      intersect: true,
+    },
+  }
 
   return (
     <div {...rest}>
       <Bar data={data} options={options} />
     </div>
-  );
-};
+  )
+}
 
 ActiveServersChart.propTypes = {
   data: PropTypes.object.isRequired,
-  labels: PropTypes.array.isRequired
-};
+  labels: PropTypes.array.isRequired,
+}
 
-export default ActiveServersChart;
+export default ActiveServersChart

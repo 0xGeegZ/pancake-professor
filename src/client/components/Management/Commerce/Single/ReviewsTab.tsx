@@ -13,16 +13,16 @@ import {
   useTheme,
   IconButton,
   Avatar,
-  lighten
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import RateReviewTwoToneIcon from '@mui/icons-material/RateReviewTwoTone';
-import usFlag from 'country-flag-icons/3x2/US.svg';
-import deFlag from 'country-flag-icons/3x2/DE.svg';
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
-import ThumbUpTwoToneIcon from '@mui/icons-material/ThumbUpTwoTone';
-import ThumbDownTwoToneIcon from '@mui/icons-material/ThumbDownTwoTone';
+  lighten,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import RateReviewTwoToneIcon from '@mui/icons-material/RateReviewTwoTone'
+import usFlag from 'country-flag-icons/3x2/US.svg'
+import deFlag from 'country-flag-icons/3x2/DE.svg'
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import ThumbUpTwoToneIcon from '@mui/icons-material/ThumbUpTwoTone'
+import ThumbDownTwoToneIcon from '@mui/icons-material/ThumbDownTwoTone'
 
 const IconButtonSuccess = styled(IconButton)(
   ({ theme }) => `
@@ -36,7 +36,7 @@ const IconButtonSuccess = styled(IconButton)(
           background: ${lighten(theme.colors.success.lighter, 0.4)};
       }
 `
-);
+)
 
 const IconButtonError = styled(IconButton)(
   ({ theme }) => `
@@ -50,7 +50,7 @@ const IconButtonError = styled(IconButton)(
           background: ${lighten(theme.colors.error.lighter, 0.4)};
       }
 `
-);
+)
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -59,7 +59,7 @@ const AvatarSuccess = styled(Avatar)(
     width: ${theme.spacing(5)};
     height: ${theme.spacing(5)};
 `
-);
+)
 
 const LinearProgressWrapper = styled(LinearProgress)(
   ({ theme }) => `
@@ -73,30 +73,25 @@ const LinearProgressWrapper = styled(LinearProgress)(
         border-bottom-right-radius: ${theme.general.borderRadius};
       }
 `
-);
+)
 
 const ImageWrapper = styled('img')(
   ({ theme }) => `
         width: 36px;
         margin-right: ${theme.spacing(1)};
 `
-);
+)
 
 function ReviewsTab() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   return (
     <>
       <Grid container spacing={0}>
         <Grid xs={12} md={6} item sx={{ position: 'relative' }}>
           <Hidden mdDown>
-            <Divider
-              absolute
-              sx={{ height: '100%', left: 'auto', right: 0 }}
-              orientation="vertical"
-              flexItem
-            />
+            <Divider absolute sx={{ height: '100%', left: 'auto', right: 0 }} orientation="vertical" flexItem />
           </Hidden>
           <Box p={3}>
             <Typography variant="h2">
@@ -112,11 +107,7 @@ function ReviewsTab() {
                   <Typography variant="h5">5 {t('stars')}</Typography>
                 </Box>
                 <Box px={2} flexGrow={1}>
-                  <LinearProgressWrapper
-                    value={84}
-                    color="primary"
-                    variant="determinate"
-                  />
+                  <LinearProgressWrapper value={84} color="primary" variant="determinate" />
                 </Box>
                 <Box sx={{ minWidth: 30 }}>
                   <Typography variant="h4">84%</Typography>
@@ -127,11 +118,7 @@ function ReviewsTab() {
                   <Typography variant="h5">4 {t('stars')}</Typography>
                 </Box>
                 <Box px={2} flexGrow={1}>
-                  <LinearProgressWrapper
-                    value={7}
-                    color="primary"
-                    variant="determinate"
-                  />
+                  <LinearProgressWrapper value={7} color="primary" variant="determinate" />
                 </Box>
                 <Box sx={{ minWidth: 30 }}>
                   <Typography variant="h4">7%</Typography>
@@ -142,11 +129,7 @@ function ReviewsTab() {
                   <Typography variant="h5">3 {t('stars')}</Typography>
                 </Box>
                 <Box px={2} flexGrow={1}>
-                  <LinearProgressWrapper
-                    value={5}
-                    color="primary"
-                    variant="determinate"
-                  />
+                  <LinearProgressWrapper value={5} color="primary" variant="determinate" />
                 </Box>
                 <Box sx={{ minWidth: 30 }}>
                   <Typography variant="h4">5%</Typography>
@@ -157,11 +140,7 @@ function ReviewsTab() {
                   <Typography variant="h5">2 {t('stars')}</Typography>
                 </Box>
                 <Box px={2} flexGrow={1}>
-                  <LinearProgressWrapper
-                    value={3}
-                    color="primary"
-                    variant="determinate"
-                  />
+                  <LinearProgressWrapper value={3} color="primary" variant="determinate" />
                 </Box>
                 <Box sx={{ minWidth: 30 }}>
                   <Typography variant="h4">3%</Typography>
@@ -172,11 +151,7 @@ function ReviewsTab() {
                   <Typography variant="h5">1 {t('star')}</Typography>
                 </Box>
                 <Box px={2} flexGrow={1}>
-                  <LinearProgressWrapper
-                    value={1}
-                    color="primary"
-                    variant="determinate"
-                  />
+                  <LinearProgressWrapper value={1} color="primary" variant="determinate" />
                 </Box>
                 <Box sx={{ minWidth: 30 }}>
                   <Typography variant="h4">1%</Typography>
@@ -188,16 +163,9 @@ function ReviewsTab() {
         <Grid item xs={12} md={6}>
           <Box p={4} flex={1}>
             <Box>
-              <Typography
-                sx={{ fontSize: `${theme.typography.pxToRem(51)}` }}
-                variant="h1"
-              >
+              <Typography sx={{ fontSize: `${theme.typography.pxToRem(51)}` }} variant="h1">
                 4.9
-                <Typography
-                  component="span"
-                  color="text.secondary"
-                  variant="h1"
-                >
+                <Typography component="span" color="text.secondary" variant="h1">
                   /5
                 </Typography>
               </Typography>
@@ -205,18 +173,9 @@ function ReviewsTab() {
             <Box py={2}>
               <Rating size="large" defaultValue={4} precision={1} />
             </Box>
-            <Tooltip
-              placement="top"
-              arrow
-              title={t('Only verified customers can write reviews')}
-            >
+            <Tooltip placement="top" arrow title={t('Only verified customers can write reviews')}>
               <Box component="span">
-                <Button
-                  disabled
-                  startIcon={<RateReviewTwoToneIcon />}
-                  variant="contained"
-                  size="large"
-                >
+                <Button disabled startIcon={<RateReviewTwoToneIcon />} variant="contained" size="large">
                   {t('Write review')}
                 </Button>
               </Box>
@@ -236,15 +195,10 @@ function ReviewsTab() {
           </Box>
           <Box flex={1}>
             <Typography sx={{ mb: 3 }}>
-              Quis autem vel eum iure reprehenderit qui in ea voluptate velit
-              esse quam nihil molestiae consequatur, vel illum qui dolorem eum
-              fugiat quo voluptas nulla pariatur?
+              Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel
+              illum qui dolorem eum fugiat quo voluptas nulla pariatur?
             </Typography>
-            <Box
-              sx={{ display: { xs: 'block', md: 'flex' } }}
-              alignItems="center"
-              justifyContent="space-between"
-            >
+            <Box sx={{ display: { xs: 'block', md: 'flex' } }} alignItems="center" justifyContent="space-between">
               <Box display="flex" alignItems="center">
                 <AvatarSuccess sx={{ mr: 1 }}>
                   <CheckTwoToneIcon />
@@ -281,15 +235,10 @@ function ReviewsTab() {
           </Box>
           <Box flex={1}>
             <Typography sx={{ mb: 3 }}>
-              Quis autem vel eum iure reprehenderit qui in ea voluptate velit
-              esse quam nihil molestiae consequatur, vel illum qui dolorem eum
-              fugiat quo voluptas nulla pariatur?
+              Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel
+              illum qui dolorem eum fugiat quo voluptas nulla pariatur?
             </Typography>
-            <Box
-              sx={{ display: { xs: 'block', md: 'flex' } }}
-              alignItems="center"
-              justifyContent="space-between"
-            >
+            <Box sx={{ display: { xs: 'block', md: 'flex' } }} alignItems="center" justifyContent="space-between">
               <Box display="flex" alignItems="center">
                 <AvatarSuccess sx={{ mr: 1 }}>
                   <CheckTwoToneIcon />
@@ -317,7 +266,7 @@ function ReviewsTab() {
         </ListItem>
       </List>
     </>
-  );
+  )
 }
 
-export default ReviewsTab;
+export default ReviewsTab

@@ -1,9 +1,10 @@
-import { Container, Grid, Typography } from '@mui/material';
-import Head from 'next/head';
-import PageHeader from 'src/client/components/PageHeaderDocs';
-import DocsLayout from 'src/client/layouts/DocsLayout';
+import { Container, Grid, Typography } from '@mui/material'
+import Head from 'next/head'
+import PageHeader from 'src/client/components/PageHeaderDocs'
+import DocsLayout from 'src/client/layouts/DocsLayout'
 
 import type { ReactElement } from 'react'
+
 function ContactSupport() {
   return (
     <>
@@ -13,7 +14,7 @@ function ContactSupport() {
       <Container maxWidth={false}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <PageHeader heading="Contact Support" subheading=""></PageHeader>
+            <PageHeader heading="Contact Support" subheading="" />
           </Grid>
           <Grid item xs={12}>
             <Typography sx={{ mb: 2 }} variant="h2">

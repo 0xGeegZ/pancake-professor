@@ -1,11 +1,12 @@
-import { Container, Divider, Grid, List, ListItem, ListItemText, Typography } from '@mui/material';
-import Head from 'next/head';
-import { Prism } from 'react-syntax-highlighter';
-import a11yDark from 'react-syntax-highlighter/dist/cjs/styles/prism/a11y-dark';
-import PageHeader from 'src/client/components/PageHeaderDocs';
-import DocsLayout from 'src/client/layouts/DocsLayout';
+import { Container, Divider, Grid, List, ListItem, ListItemText, Typography } from '@mui/material'
+import Head from 'next/head'
+import { Prism } from 'react-syntax-highlighter'
+import a11yDark from 'react-syntax-highlighter/dist/cjs/styles/prism/a11y-dark'
+import PageHeader from 'src/client/components/PageHeaderDocs'
+import DocsLayout from 'src/client/layouts/DocsLayout'
 
 import type { ReactElement } from 'react'
+
 function Installation() {
   const npmInstall = `// the -g parameter install npm globally on your system
 
@@ -71,7 +72,7 @@ npm install`
       <Container maxWidth={false}>
         <Grid container spacing={3}>
           <Grid item xs={12}>
-            <PageHeader heading="Installation" subheading=""></PageHeader>
+            <PageHeader heading="Installation" subheading="" />
           </Grid>
           <Grid item xs={12}>
             <Typography variant="h2" sx={{ mb: 2 }}>
@@ -87,7 +88,8 @@ npm install`
                   primaryTypographyProps={{ variant: 'h4', gutterBottom: true }}
                   secondaryTypographyProps={{ variant: 'subtitle2' }}
                   primary="Install Node.js"
-                  secondary="Before proceeding you will need to have Node.js installed on your system. Download and install the latest stable version from https://nodejs.org/"></ListItemText>
+                  secondary="Before proceeding you will need to have Node.js installed on your system. Download and install the latest stable version from https://nodejs.org/"
+                />
               </ListItem>
               <Divider component="li" />
               <ListItem sx={{ my: 2 }}>
@@ -106,7 +108,8 @@ npm install`
                         {npmInstall}
                       </Prism>
                     </>
-                  }></ListItemText>
+                  }
+                />
               </ListItem>
               <Divider component="li" />
               <ListItem sx={{ my: 2 }}>
@@ -122,7 +125,8 @@ npm install`
                         {npmDeps}
                       </Prism>
                     </>
-                  }></ListItemText>
+                  }
+                />
               </ListItem>
             </List>
             <br />

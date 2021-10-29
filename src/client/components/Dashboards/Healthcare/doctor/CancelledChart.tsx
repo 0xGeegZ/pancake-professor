@@ -1,20 +1,16 @@
-import { FC } from 'react';
-import PropTypes from 'prop-types';
-import { Bar } from 'react-chartjs-2';
-import { useTheme } from '@mui/material';
+import { FC } from 'react'
+import PropTypes from 'prop-types'
+import { Bar } from 'react-chartjs-2'
+import { useTheme } from '@mui/material'
 
 interface CancelledChartProps {
-  className?: string;
-  data: any;
-  labels: string[];
+  className?: string
+  data: any
+  labels: string[]
 }
 
-const CancelledChart: FC<CancelledChartProps> = ({
-  data: dataProp,
-  labels,
-  ...rest
-}) => {
-  const theme = useTheme();
+const CancelledChart: FC<CancelledChartProps> = ({ data: dataProp, labels, ...rest }) => {
+  const theme = useTheme()
 
   const data = {
     datasets: [
@@ -32,7 +28,7 @@ const CancelledChart: FC<CancelledChartProps> = ({
         pointHoverColor: theme.palette.error.main,
         pointHoverBorderWidth: 4,
         pointBackgroundColor: theme.palette.error.main,
-        type: 'line'
+        type: 'line',
       },
       {
         label: 'Cancelled',
@@ -41,48 +37,48 @@ const CancelledChart: FC<CancelledChartProps> = ({
         barThickness: 16,
         maxBarThickness: 20,
         barPercentage: 0.4,
-        categoryPercentage: 0.4
-      }
+        categoryPercentage: 0.4,
+      },
     ],
-    labels
-  };
+    labels,
+  }
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     cornerRadius: 6,
     legend: {
-      display: false
+      display: false,
     },
     layout: {
-      padding: 0
+      padding: 0,
     },
     scales: {
       xAxes: [
         {
           gridLines: {
             display: false,
-            drawBorder: false
+            drawBorder: false,
           },
           ticks: {
             padding: 18,
             beginAtZero: true,
-            fontColor: theme.palette.text.secondary
-          }
-        }
+            fontColor: theme.palette.text.secondary,
+          },
+        },
       ],
       yAxes: [
         {
           gridLines: {
             display: false,
-            drawBorder: false
+            drawBorder: false,
           },
           ticks: {
             display: false,
-            beginAtZero: true
-          }
-        }
-      ]
+            beginAtZero: true,
+          },
+        },
+      ],
     },
     tooltips: {
       enabled: true,
@@ -99,24 +95,24 @@ const CancelledChart: FC<CancelledChartProps> = ({
       backgroundColor: theme.palette.common.black,
       titleFontColor: theme.palette.common.white,
       bodyFontColor: theme.palette.common.white,
-      footerFontColor: theme.palette.common.white
+      footerFontColor: theme.palette.common.white,
     },
     hover: {
       mode: 'nearest',
-      intersect: true
-    }
-  };
+      intersect: true,
+    },
+  }
 
   return (
     <div {...rest}>
       <Bar data={data} options={options} />
     </div>
-  );
-};
+  )
+}
 
 CancelledChart.propTypes = {
   data: PropTypes.object.isRequired,
-  labels: PropTypes.array.isRequired
-};
+  labels: PropTypes.array.isRequired,
+}
 
-export default CancelledChart;
+export default CancelledChart

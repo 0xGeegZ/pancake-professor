@@ -1,27 +1,23 @@
-import { FC } from 'react';
-import PropTypes from 'prop-types';
-import { Line } from 'react-chartjs-2';
-import { alpha, useTheme } from '@mui/material';
+import { FC } from 'react'
+import PropTypes from 'prop-types'
+import { Line } from 'react-chartjs-2'
+import { alpha, useTheme } from '@mui/material'
 
 interface PowerConsumptionChartProps {
-  data: any[];
-  labels: string[];
+  data: any[]
+  labels: string[]
 }
 
-const PowerConsumptionChart: FC<PowerConsumptionChartProps> = ({
-  data: dataProp,
-  labels,
-  ...rest
-}) => {
-  const theme = useTheme();
+const PowerConsumptionChart: FC<PowerConsumptionChartProps> = ({ data: dataProp, labels, ...rest }) => {
+  const theme = useTheme()
 
   const data = (canvas: HTMLCanvasElement) => {
-    const ctx = canvas.getContext('2d');
-    const primaryGradient = ctx.createLinearGradient(0, 0, 0, 180);
+    const ctx = canvas.getContext('2d')
+    const primaryGradient = ctx.createLinearGradient(0, 0, 0, 180)
 
-    primaryGradient.addColorStop(0, alpha(theme.colors.warning.main, 0.5));
-    primaryGradient.addColorStop(0.5, alpha(theme.colors.warning.main, 0.2));
-    primaryGradient.addColorStop(1, alpha(theme.colors.warning.main, 0));
+    primaryGradient.addColorStop(0, alpha(theme.colors.warning.main, 0.5))
+    primaryGradient.addColorStop(0.5, alpha(theme.colors.warning.main, 0.2))
+    primaryGradient.addColorStop(1, alpha(theme.colors.warning.main, 0))
 
     return {
       datasets: [
@@ -38,21 +34,21 @@ const PowerConsumptionChart: FC<PowerConsumptionChartProps> = ({
           pointHoverColor: theme.colors.warning.main,
           pointHoverBorderWidth: 2,
           borderWidth: 2,
-          pointBackgroundColor: theme.palette.common.white
-        }
+          pointBackgroundColor: theme.palette.common.white,
+        },
       ],
-      labels
-    };
-  };
+      labels,
+    }
+  }
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     legend: {
-      display: false
+      display: false,
     },
     layout: {
-      padding: 0
+      padding: 0,
     },
     scales: {
       xAxes: [
@@ -64,13 +60,13 @@ const PowerConsumptionChart: FC<PowerConsumptionChartProps> = ({
             drawBorder: false,
             zeroLineBorderDash: [6],
             zeroLineBorderDashOffset: [0],
-            zeroLineColor: theme.palette.divider
+            zeroLineColor: theme.palette.divider,
           },
           ticks: {
             padding: 10,
-            fontColor: theme.palette.text.secondary
-          }
-        }
+            fontColor: theme.palette.text.secondary,
+          },
+        },
       ],
       yAxes: [
         {
@@ -81,17 +77,17 @@ const PowerConsumptionChart: FC<PowerConsumptionChartProps> = ({
             drawBorder: false,
             zeroLineBorderDash: [6],
             zeroLineBorderDashOffset: [0],
-            zeroLineColor: theme.palette.divider
+            zeroLineColor: theme.palette.divider,
           },
           ticks: {
             padding: 12,
             fontColor: theme.palette.text.secondary,
             beginAtZero: true,
             min: 0,
-            maxTicksLimit: 5
-          }
-        }
-      ]
+            maxTicksLimit: 5,
+          },
+        },
+      ],
     },
     tooltips: {
       enabled: true,
@@ -108,24 +104,22 @@ const PowerConsumptionChart: FC<PowerConsumptionChartProps> = ({
       bodyFontColor: theme.palette.common.white,
       footerFontColor: theme.palette.common.white,
       callbacks: {
-        title: () => { },
-        label: (tooltipItem: any) => {
-          return `New Users: ${tooltipItem.yLabel}`;
-        }
-      }
-    }
-  };
+        title: () => {},
+        label: (tooltipItem: any) => `New Users: ${tooltipItem.yLabel}`,
+      },
+    },
+  }
 
   return (
     <div {...rest}>
       <Line data={data} options={options} />
     </div>
-  );
-};
+  )
+}
 
 PowerConsumptionChart.propTypes = {
   data: PropTypes.array.isRequired,
-  labels: PropTypes.array.isRequired
-};
+  labels: PropTypes.array.isRequired,
+}
 
-export default PowerConsumptionChart;
+export default PowerConsumptionChart

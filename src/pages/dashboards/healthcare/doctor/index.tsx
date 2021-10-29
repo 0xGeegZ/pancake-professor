@@ -1,20 +1,21 @@
-import SoonAvailable from '@/client/components/Dashboards/Healthcare/doctor/SoonAvailable';
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
-import { alpha, Box, Drawer, Grid, Hidden, IconButton, useTheme } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import Head from 'next/head';
-import { useState } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars-2';
-import Appointments from 'src/client/components/Dashboards/Healthcare/doctor/Appointments';
-import Cancelled from 'src/client/components/Dashboards/Healthcare/doctor/Cancelled';
-import Consultations from 'src/client/components/Dashboards/Healthcare/doctor/Consultations';
-import HealthcareSidebar from 'src/client/components/Dashboards/Healthcare/doctor/HealthcareSidebar';
-import PageHeader from 'src/client/components/Dashboards/Healthcare/doctor/PageHeader';
-import PrescriptionRequests from 'src/client/components/Dashboards/Healthcare/doctor/PrescriptionRequests';
-import Footer from 'src/client/components/Footer';
-import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout';
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import { alpha, Box, Drawer, Grid, Hidden, IconButton, useTheme } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import Head from 'next/head'
+import { useState } from 'react'
+import { Scrollbars } from 'react-custom-scrollbars-2'
+import Appointments from 'src/client/components/Dashboards/Healthcare/doctor/Appointments'
+import Cancelled from 'src/client/components/Dashboards/Healthcare/doctor/Cancelled'
+import Consultations from 'src/client/components/Dashboards/Healthcare/doctor/Consultations'
+import HealthcareSidebar from 'src/client/components/Dashboards/Healthcare/doctor/HealthcareSidebar'
+import PageHeader from 'src/client/components/Dashboards/Healthcare/doctor/PageHeader'
+import PrescriptionRequests from 'src/client/components/Dashboards/Healthcare/doctor/PrescriptionRequests'
+import Footer from 'src/client/components/Footer'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 
 import type { ReactElement } from 'react'
+import SoonAvailable from '@/client/components/Dashboards/Healthcare/doctor/SoonAvailable'
+
 const DrawerWrapper = styled(Drawer)(
   ({ theme }) => `
     width: 400px;

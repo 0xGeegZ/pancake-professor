@@ -1,12 +1,12 @@
-import { Box, Drawer, Hidden } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useContext } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars-2';
-import Logo from 'src/client/components/LogoSign';
-import { SidebarContext } from 'src/client/contexts/SidebarContext';
+import { Box, Drawer, Hidden } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useContext } from 'react'
+import { Scrollbars } from 'react-custom-scrollbars-2'
+import Logo from 'src/client/components/LogoSign'
+import { SidebarContext } from 'src/client/contexts/SidebarContext'
 
-import SidebarMenu from './SidebarMenu';
-import SidebarTopSection from './SidebarTopSection';
+import SidebarMenu from './SidebarMenu'
+import SidebarTopSection from './SidebarTopSection'
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
@@ -21,17 +21,17 @@ const SidebarWrapper = styled(Box)(
             z-index: 10;
         }
 `
-);
+)
 
 const TopSection = styled(Box)(
   ({ theme }) => `
         margin: ${theme.spacing(2)};
 `
-);
+)
 
 function Sidebar() {
-  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
-  const closeSidebar = () => toggleSidebar();
+  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext)
+  const closeSidebar = () => toggleSidebar()
 
   return (
     <>
@@ -49,13 +49,7 @@ function Sidebar() {
         </SidebarWrapper>
       </Hidden>
       <Hidden lgUp>
-        <Drawer
-          anchor="left"
-          open={sidebarToggle}
-          onClose={closeSidebar}
-          variant="temporary"
-          elevation={9}
-        >
+        <Drawer anchor="left" open={sidebarToggle} onClose={closeSidebar} variant="temporary" elevation={9}>
           <SidebarWrapper>
             <Scrollbars universal autoHide>
               <TopSection>
@@ -70,7 +64,7 @@ function Sidebar() {
         </Drawer>
       </Hidden>
     </>
-  );
+  )
 }
 
-export default Sidebar;
+export default Sidebar

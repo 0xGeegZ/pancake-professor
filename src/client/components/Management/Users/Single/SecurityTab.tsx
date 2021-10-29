@@ -1,4 +1,4 @@
-import { useState, MouseEvent, ChangeEvent } from 'react';
+import { useState, MouseEvent, ChangeEvent } from 'react'
 import {
   Box,
   Typography,
@@ -22,13 +22,13 @@ import {
   TablePagination,
   TableRow,
   TableContainer,
-  useTheme
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import { format, subHours, subWeeks, subDays } from 'date-fns';
+  useTheme,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import DoneTwoToneIcon from '@mui/icons-material/DoneTwoTone'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import { format, subHours, subWeeks, subDays } from 'date-fns'
 
 const ButtonError = styled(Button)(
   ({ theme }) => `
@@ -39,7 +39,7 @@ const ButtonError = styled(Button)(
         background: ${theme.colors.error.dark};
      }
     `
-);
+)
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -47,35 +47,30 @@ const AvatarSuccess = styled(Avatar)(
     width: ${theme.spacing(5)};
     height: ${theme.spacing(5)};
 `
-);
+)
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
     width: ${theme.spacing(5)};
     height: ${theme.spacing(5)};
 `
-);
+)
 
 function SecurityTab() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
-  const [page, setPage] = useState(2);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
+  const [page, setPage] = useState(2)
+  const [rowsPerPage, setRowsPerPage] = useState(10)
 
-  const handleChangePage = (
-    _event: MouseEvent<HTMLButtonElement> | null,
-    newPage: number
-  ) => {
-    setPage(newPage);
-  };
+  const handleChangePage = (_event: MouseEvent<HTMLButtonElement> | null, newPage: number) => {
+    setPage(newPage)
+  }
 
-  const handleChangeRowsPerPage = (
-    event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  const handleChangeRowsPerPage = (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10))
+    setPage(0)
+  }
 
   const logs = [
     {
@@ -83,46 +78,44 @@ function SecurityTab() {
       browser: ' Safari/537.36',
       ipaddress: '3.70.73.142',
       location: 'United States',
-      date: subDays(new Date(), 2).getTime()
+      date: subDays(new Date(), 2).getTime(),
     },
     {
       id: 2,
       browser: 'Chrome/36.0.1985.67',
       ipaddress: '138.13.136.179',
       location: 'China',
-      date: subDays(new Date(), 6).getTime()
+      date: subDays(new Date(), 6).getTime(),
     },
     {
       id: 3,
       browser: 'Googlebot/2.1',
       ipaddress: '119.229.170.253',
       location: 'China',
-      date: subHours(new Date(), 15).getTime()
+      date: subHours(new Date(), 15).getTime(),
     },
     {
       id: 4,
       browser: 'AppleWebKit/535.1',
       ipaddress: '206.8.99.49',
       location: 'Philippines',
-      date: subDays(new Date(), 4).getTime()
+      date: subDays(new Date(), 4).getTime(),
     },
     {
       id: 5,
       browser: 'Mozilla/5.0',
       ipaddress: '235.40.59.85',
       location: 'China',
-      date: subWeeks(new Date(), 3).getTime()
-    }
-  ];
+      date: subWeeks(new Date(), 3).getTime(),
+    },
+  ]
 
   return (
     <Grid container spacing={3}>
       <Grid item xs={12}>
         <Box pb={2}>
           <Typography variant="h3">{t('Social Accounts')}</Typography>
-          <Typography variant="subtitle2">
-            {t('Manage connected social accounts options')}
-          </Typography>
+          <Typography variant="subtitle2">{t('Manage connected social accounts options')}</Typography>
         </Box>
         <Card>
           <List>
@@ -134,12 +127,10 @@ function SecurityTab() {
                 primaryTypographyProps={{ variant: 'h5', gutterBottom: true }}
                 secondaryTypographyProps={{
                   variant: 'subtitle2',
-                  lineHeight: 1
+                  lineHeight: 1,
                 }}
                 primary={t('Google')}
-                secondary={t(
-                  'A Google account hasn’t been yet added to your account'
-                )}
+                secondary={t('A Google account hasn’t been yet added to your account')}
               />
               <Button color="secondary" size="large" variant="contained">
                 {t('Connect')}
@@ -161,12 +152,10 @@ function SecurityTab() {
                 primaryTypographyProps={{ variant: 'h5', gutterBottom: true }}
                 secondaryTypographyProps={{
                   variant: 'subtitle2',
-                  lineHeight: 1
+                  lineHeight: 1,
                 }}
                 primary={t('Facebook')}
-                secondary={t(
-                  'Your Facebook account has been successfully connected'
-                )}
+                secondary={t('Your Facebook account has been successfully connected')}
               />
               <ButtonError size="large" variant="contained">
                 {t('Revoke access')}
@@ -183,12 +172,10 @@ function SecurityTab() {
                 primaryTypographyProps={{ variant: 'h5', gutterBottom: true }}
                 secondaryTypographyProps={{
                   variant: 'subtitle2',
-                  lineHeight: 1
+                  lineHeight: 1,
                 }}
                 primary={t('Twitter')}
-                secondary={t(
-                  'Your Twitter account was last syncronized 6 days ago'
-                )}
+                secondary={t('Your Twitter account was last syncronized 6 days ago')}
               />
               <ButtonError size="large" variant="contained">
                 {t('Revoke access')}
@@ -200,9 +187,7 @@ function SecurityTab() {
       <Grid item xs={12}>
         <Box pb={2}>
           <Typography variant="h3">{t('Security')}</Typography>
-          <Typography variant="subtitle2">
-            {t('Change your security preferences below')}
-          </Typography>
+          <Typography variant="subtitle2">{t('Change your security preferences below')}</Typography>
         </Box>
         <Card>
           <List>
@@ -211,7 +196,7 @@ function SecurityTab() {
                 primaryTypographyProps={{ variant: 'h5', gutterBottom: true }}
                 secondaryTypographyProps={{
                   variant: 'subtitle2',
-                  lineHeight: 1
+                  lineHeight: 1,
                 }}
                 primary={t('Change Password')}
                 secondary={t('You can change your password here')}
@@ -226,12 +211,10 @@ function SecurityTab() {
                 primaryTypographyProps={{ variant: 'h5', gutterBottom: true }}
                 secondaryTypographyProps={{
                   variant: 'subtitle2',
-                  lineHeight: 1
+                  lineHeight: 1,
                 }}
                 primary={t('Two-Factor Authentication')}
-                secondary={t(
-                  'Enable PIN verification for all sign in attempts'
-                )}
+                secondary={t('Enable PIN verification for all sign in attempts')}
               />
               <Switch color="primary" />
             </ListItem>
@@ -264,21 +247,18 @@ function SecurityTab() {
                     <TableCell>{log.browser}</TableCell>
                     <TableCell>{log.ipaddress}</TableCell>
                     <TableCell>{log.location}</TableCell>
-                    <TableCell>
-                      {format(log.date, 'dd MMMM, yyyy - h:mm:ss a')}
-                    </TableCell>
+                    <TableCell>{format(log.date, 'dd MMMM, yyyy - h:mm:ss a')}</TableCell>
                     <TableCell align="right">
                       <Tooltip placement="top" title={t('Delete')} arrow>
                         <IconButton
                           sx={{
                             '&:hover': {
-                              background: theme.colors.error.lighter
+                              background: theme.colors.error.lighter,
                             },
-                            color: theme.palette.error.main
+                            color: theme.palette.error.main,
                           }}
                           color="inherit"
-                          size="small"
-                        >
+                          size="small">
                           <DeleteTwoToneIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
@@ -301,7 +281,7 @@ function SecurityTab() {
         </Card>
       </Grid>
     </Grid>
-  );
+  )
 }
 
-export default SecurityTab;
+export default SecurityTab

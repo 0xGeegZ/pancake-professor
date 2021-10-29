@@ -1,7 +1,7 @@
-import ChevronRightIcon from '@mui/icons-material/ChevronRight';
-import { alpha, Box, Button, Card, CardContent, CardHeader, Hidden, IconButton, Link, Typography } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+import ChevronRightIcon from '@mui/icons-material/ChevronRight'
+import { alpha, Box, Button, Card, CardContent, CardHeader, Hidden, IconButton, Link, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const IconButtonWrapper = styled(IconButton)(
   ({ theme }) => `
@@ -49,7 +49,7 @@ function UpgradeAccount() {
           <Typography variant="h4" fontWeight="normal" sx={{ pb: 3 }} color="text.primary" component="p">
             {t('Be part of the first beta testors!')}
           </Typography>
-          <Button disabled={true} variant="outlined" color="secondary">
+          <Button disabled variant="outlined" color="secondary">
             {t('Join waiting list')}
           </Button>
         </CardContent>

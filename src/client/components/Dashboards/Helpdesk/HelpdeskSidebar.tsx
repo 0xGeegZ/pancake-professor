@@ -1,21 +1,14 @@
-import {
-  Box,
-  Typography,
-  Divider,
-  LinearProgress,
-  Avatar,
-  useTheme
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import HelpdeskSidebarChart from './HelpdeskSidebarChart';
-import Text from 'src/client/components/Text';
+import { Box, Typography, Divider, LinearProgress, Avatar, useTheme } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import Text from 'src/client/components/Text'
+import HelpdeskSidebarChart from './HelpdeskSidebarChart'
 
 const HelpdeskSidebarChartWrapper = styled(HelpdeskSidebarChart)(
   () => `
     width: 160px;
 `
-);
+)
 
 const BoxChartWrapperText = styled(Box)(
   ({ theme }) => `
@@ -39,7 +32,7 @@ const BoxChartWrapperText = styled(Box)(
       flex-direction: column;
     }
 `
-);
+)
 
 const LinearProgressWrapper = styled(LinearProgress)(
   ({ theme }) => `
@@ -54,7 +47,7 @@ const LinearProgressWrapper = styled(LinearProgress)(
         border-radius: ${theme.general.borderRadiusXl};
       }
 `
-);
+)
 
 const AvatarUnhappy = styled(Avatar)(
   ({ theme }) => `
@@ -66,7 +59,7 @@ const AvatarUnhappy = styled(Avatar)(
       color: ${theme.colors.error.main};
       margin-right: ${theme.spacing(2)};
 `
-);
+)
 const AvatarOk = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.alpha.white[100]};
@@ -77,7 +70,7 @@ const AvatarOk = styled(Avatar)(
       color: ${theme.colors.warning.main};
       margin-right: ${theme.spacing(2)};
 `
-);
+)
 const AvatarHappy = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.alpha.white[100]};
@@ -88,11 +81,11 @@ const AvatarHappy = styled(Avatar)(
       color: ${theme.colors.success.main};
       margin-right: ${theme.spacing(2)};
 `
-);
+)
 
 function HelpdeskSidebar() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   const data = {
     datasets: [
@@ -102,33 +95,31 @@ function HelpdeskSidebar() {
           theme.palette.primary.main,
           theme.palette.success.main,
           theme.palette.warning.main,
-          theme.palette.info.main
+          theme.palette.info.main,
         ],
         hoverBackgroundColor: [
           theme.palette.primary.light,
           theme.palette.success.light,
           theme.palette.warning.light,
-          theme.palette.info.light
+          theme.palette.info.light,
         ],
         hoverBorderColor: [
           theme.colors.primary.lighter,
           theme.colors.success.lighter,
           theme.colors.warning.lighter,
-          theme.colors.info.lighter
-        ]
-      }
+          theme.colors.info.lighter,
+        ],
+      },
     ],
-    labels: [t('Bad'), t('Ok'), t('Great')]
-  };
+    labels: [t('Bad'), t('Ok'), t('Great')],
+  }
 
   return (
     <Box p={4}>
       <Typography variant="h4" gutterBottom>
         {t('Customer Satisfaction')}
       </Typography>
-      <Typography variant="subtitle2">
-        {t('See how satisfied are customers with this helpdesk')}
-      </Typography>
+      <Typography variant="subtitle2">{t('See how satisfied are customers with this helpdesk')}</Typography>
 
       <BoxChartWrapperText sx={{ my: 3 }}>
         <div className="ChartText">
@@ -179,61 +170,37 @@ function HelpdeskSidebar() {
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Typography variant="h5">
             {t('Website')}{' '}
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              component="span"
-            >
+            <Typography variant="subtitle1" color="text.secondary" component="span">
               (23)
             </Typography>
           </Typography>
           <Typography variant="h5">20%</Typography>
         </Box>
-        <LinearProgressWrapper
-          value={20}
-          color="primary"
-          variant="determinate"
-        />
+        <LinearProgressWrapper value={20} color="primary" variant="determinate" />
       </Box>
       <Box py={2}>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Typography variant="h5">
             {t('Email')}{' '}
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              component="span"
-            >
+            <Typography variant="subtitle1" color="text.secondary" component="span">
               (23)
             </Typography>
           </Typography>
           <Typography variant="h5">65%</Typography>
         </Box>
-        <LinearProgressWrapper
-          value={65}
-          color="primary"
-          variant="determinate"
-        />
+        <LinearProgressWrapper value={65} color="primary" variant="determinate" />
       </Box>
       <Box pt={2}>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Typography variant="h5">
             {t('Social Accounts')}{' '}
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              component="span"
-            >
+            <Typography variant="subtitle1" color="text.secondary" component="span">
               (23)
             </Typography>
           </Typography>
           <Typography variant="h5">15%</Typography>
         </Box>
-        <LinearProgressWrapper
-          value={15}
-          color="primary"
-          variant="determinate"
-        />
+        <LinearProgressWrapper value={15} color="primary" variant="determinate" />
       </Box>
 
       <Divider sx={{ my: 4 }} />
@@ -246,64 +213,40 @@ function HelpdeskSidebar() {
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Typography variant="h5">
             {t('Shipment')}{' '}
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              component="span"
-            >
+            <Typography variant="subtitle1" color="text.secondary" component="span">
               (15)
             </Typography>
           </Typography>
           <Typography variant="h5">20%</Typography>
         </Box>
-        <LinearProgressWrapper
-          value={20}
-          color="primary"
-          variant="determinate"
-        />
+        <LinearProgressWrapper value={20} color="primary" variant="determinate" />
       </Box>
       <Box py={2}>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Typography variant="h5">
             {t('Troubleshooting')}{' '}
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              component="span"
-            >
+            <Typography variant="subtitle1" color="text.secondary" component="span">
               (12)
             </Typography>
           </Typography>
           <Typography variant="h5">52%</Typography>
         </Box>
-        <LinearProgressWrapper
-          value={52}
-          color="primary"
-          variant="determinate"
-        />
+        <LinearProgressWrapper value={52} color="primary" variant="determinate" />
       </Box>
       <Box pt={2}>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <Typography variant="h5">
             {t('eCommerce Issues')}{' '}
-            <Typography
-              variant="subtitle1"
-              color="text.secondary"
-              component="span"
-            >
+            <Typography variant="subtitle1" color="text.secondary" component="span">
               (66)
             </Typography>
           </Typography>
           <Typography variant="h5">28%</Typography>
         </Box>
-        <LinearProgressWrapper
-          value={28}
-          color="primary"
-          variant="determinate"
-        />
+        <LinearProgressWrapper value={28} color="primary" variant="determinate" />
       </Box>
     </Box>
-  );
+  )
 }
 
-export default HelpdeskSidebar;
+export default HelpdeskSidebar

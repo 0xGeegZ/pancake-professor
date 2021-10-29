@@ -1,22 +1,14 @@
-import {
-  Card,
-  Box,
-  Typography,
-  Avatar,
-  Divider,
-  Grid,
-  LinearProgress
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled, useTheme } from '@mui/material/styles';
-import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone';
+import { Card, Box, Typography, Avatar, Divider, Grid, LinearProgress } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled, useTheme } from '@mui/material/styles'
+import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone'
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
     width: ${theme.spacing(8)};
     height: ${theme.spacing(8)};
 `
-);
+)
 
 const DotLegend = styled('span')(
   ({ theme }) => `
@@ -26,7 +18,7 @@ const DotLegend = styled('span')(
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `
@@ -35,7 +27,7 @@ const AvatarPrimary = styled(Avatar)(
       width: ${theme.spacing(5)};
       height: ${theme.spacing(5)};
 `
-);
+)
 
 const LinearProgressWrapper = styled(LinearProgress)(
   ({ theme }) => `
@@ -52,29 +44,22 @@ const LinearProgressWrapper = styled(LinearProgress)(
           border-radius: ${theme.general.borderRadiusXl};
         }
 `
-);
+)
 
 function TopAgents2() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   return (
     <Card>
       <Box sx={{ p: 4 }}>
-        <AvatarWrapper
-          sx={{ mb: 2 }}
-          variant="rounded"
-          src="/static/images/avatars/4.jpg"
-        />
+        <AvatarWrapper sx={{ mb: 2 }} variant="rounded" src="/static/images/avatars/4.jpg" />
         <Typography variant="h3">Zain Vetrovs</Typography>
         <Typography variant="subtitle2" gutterBottom>
           {t('Technical Support Team')}
         </Typography>
 
-        <Typography
-          variant="body1"
-          sx={{ pt: 0.5, display: 'flex', alignItems: 'center' }}
-        >
+        <Typography variant="body1" sx={{ pt: 0.5, display: 'flex', alignItems: 'center' }}>
           <DotLegend style={{ background: theme.colors.warning.main }} />
           {t('idle')}
           <Typography variant="body1" color="text.secondary" component="span">
@@ -90,25 +75,13 @@ function TopAgents2() {
               {t('Capacity')}
             </Typography>
             <Box>
-              <Typography
-                color="text.primary"
-                variant="h2"
-                sx={{ pr: 0.5, display: 'inline-flex' }}
-              >
+              <Typography color="text.primary" variant="h2" sx={{ pr: 0.5, display: 'inline-flex' }}>
                 7
               </Typography>
-              <Typography
-                color="text.secondary"
-                variant="h4"
-                sx={{ pr: 2, display: 'inline-flex' }}
-              >
+              <Typography color="text.secondary" variant="h4" sx={{ pr: 2, display: 'inline-flex' }}>
                 /10
               </Typography>
-              <LinearProgressWrapper
-                value={70}
-                color="primary"
-                variant="determinate"
-              />
+              <LinearProgressWrapper value={70} color="primary" variant="determinate" />
             </Box>
           </Grid>
           <Grid item sm={6}>
@@ -127,7 +100,7 @@ function TopAgents2() {
         </Grid>
       </Box>
     </Card>
-  );
+  )
 }
 
-export default TopAgents2;
+export default TopAgents2

@@ -1,7 +1,10 @@
 /// <reference types="react" />
 import { RadioGroupProps as MuiRadioGroupProps } from '@mui/material/RadioGroup';
 import { FieldProps } from 'formik';
-export interface RadioGroupProps extends FieldProps, Omit<MuiRadioGroupProps, 'name' | 'value'> {}
+
+export interface RadioGroupProps
+  extends FieldProps,
+    Omit<MuiRadioGroupProps, 'name' | 'value'> {}
 export declare function fieldToRadioGroup({
   field: { onBlur: fieldOnBlur, ...field },
   form,

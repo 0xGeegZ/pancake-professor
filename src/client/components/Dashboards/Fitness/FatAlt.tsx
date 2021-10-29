@@ -1,17 +1,10 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  LinearProgress,
-  Typography,
-  Avatar
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import LocalPharmacyTwoToneIcon from '@mui/icons-material/LocalPharmacyTwoTone';
+import { Card, CardContent, CardHeader, LinearProgress, Typography, Avatar } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import LocalPharmacyTwoToneIcon from '@mui/icons-material/LocalPharmacyTwoTone'
 
 function FatAlt() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const AvatarPrimary = styled(Avatar)(
     ({ theme }) => `
@@ -21,7 +14,7 @@ function FatAlt() {
       height: ${theme.spacing(6)};
       margin-top: -${theme.spacing(1)};
 `
-  );
+  )
 
   return (
     <Card sx={{ p: 1 }}>
@@ -36,11 +29,7 @@ function FatAlt() {
             <Typography align="right" variant="h3">
               1505
             </Typography>
-            <Typography
-              align="right"
-              variant="subtitle2"
-              color="text.secondary"
-            >
+            <Typography align="right" variant="subtitle2" color="text.secondary">
               {t('grams')}
             </Typography>
           </>
@@ -53,7 +42,7 @@ function FatAlt() {
         <LinearProgress value={79} color="primary" variant="determinate" />
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default FatAlt;
+export default FatAlt

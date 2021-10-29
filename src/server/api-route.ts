@@ -1,18 +1,18 @@
-import cookieSession from 'cookie-session';
-import { NextApiRequest, NextApiResponse } from 'next';
-import nc from 'next-connect';
-import { error } from 'next/dist/build/output/log';
-import passport from './passport';
-import { trustProxyMiddleware } from './trust-proxy-middleware';
+import cookieSession from 'cookie-session'
+import { NextApiRequest, NextApiResponse } from 'next'
+import nc from 'next-connect'
+import { error } from 'next/dist/build/output/log'
+import passport from './passport'
+import { trustProxyMiddleware } from './trust-proxy-middleware'
 
 export interface Request extends NextApiRequest {
   // Passport adds these to the request object
-  logout: () => void;
-  user?: Express.User;
-  protocol?: string;
+  logout: () => void
+  user?: Express.User
+  protocol?: string
 }
 
-const COOKIE_SECRET = process.env.COOKIE_SECRET;
+const { COOKIE_SECRET } = process.env
 
 /**
  * Create an API route handler with next-connect and all the necessary middlewares
@@ -23,13 +23,13 @@ const COOKIE_SECRET = process.env.COOKIE_SECRET;
  * ```
  */
 function handler() {
-  if (!COOKIE_SECRET) throw new Error(`Please add COOKIE_SECRET to your .env.local file!`);
+  if (!COOKIE_SECRET) throw new Error(`Please add COOKIE_SECRET to your .env.local file!`)
 
   return (
     nc<Request, NextApiResponse>({
       onError: (err, _, res) => {
-        error(err);
-        res.status(500).end(err.toString());
+        error(err)
+        res.status(500).end(err.toString())
       },
     })
       // In order for authentication to work on Vercel, req.protocol needs to be set correctly.
@@ -48,7 +48,7 @@ function handler() {
       )
       .use(passport.initialize())
       .use(passport.session())
-  );
+  )
 }
 
-export default handler;
+export default handler

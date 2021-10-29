@@ -1,12 +1,12 @@
-import { Typography, Avatar, Grid } from '@mui/material';
+import { Typography, Avatar, Grid } from '@mui/material'
 
-import { useTranslation } from 'react-i18next';
-import { useTheme } from '@mui/material/styles';
+import { useTranslation } from 'react-i18next'
+import { useTheme } from '@mui/material/styles'
 
 function PageHeader() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
   // const { user } = useAuth();
-  const theme = useTheme();
+  const theme = useTheme()
 
   return (
     <Grid container alignItems="center">
@@ -22,12 +22,10 @@ function PageHeader() {
         <Typography variant="h3" component="h3" gutterBottom>
           {t('Welcome')}, Margaret Gale!
         </Typography>
-        <Typography variant="subtitle2">
-          {t('Today is a good day to start trading crypto assets!')}
-        </Typography>
+        <Typography variant="subtitle2">{t('Today is a good day to start trading crypto assets!')}</Typography>
       </Grid>
     </Grid>
-  );
+  )
 }
 
-export default PageHeader;
+export default PageHeader

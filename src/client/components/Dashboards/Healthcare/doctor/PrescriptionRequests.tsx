@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from 'react'
 import {
   Button,
   Card,
@@ -16,31 +16,31 @@ import {
   FormControl,
   InputLabel,
   Select,
-  MenuItem
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import FilterAltTwoToneIcon from '@mui/icons-material/FilterAltTwoTone';
-import Text from 'src/client/components/Text';
-import { format, subDays } from 'date-fns';
-import LockTwoToneIcon from '@mui/icons-material/LockTwoTone';
+  MenuItem,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import FilterAltTwoToneIcon from '@mui/icons-material/FilterAltTwoTone'
+import Text from 'src/client/components/Text'
+import { format, subDays } from 'date-fns'
+import LockTwoToneIcon from '@mui/icons-material/LockTwoTone'
 
 function PrescriptionRequests() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
-  const actionRef1 = useRef<any>(null);
-  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false);
+  const actionRef1 = useRef<any>(null)
+  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false)
 
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState('')
 
   const handleStatus = (event) => {
-    setStatus(event.target.value);
-  };
+    setStatus(event.target.value)
+  }
 
-  const [type, setType] = useState('');
+  const [type, setType] = useState('')
 
   const handleType = (event) => {
-    setType(event.target.value);
-  };
+    setType(event.target.value)
+  }
 
   return (
     <Card>
@@ -52,73 +52,47 @@ function PrescriptionRequests() {
               variant="outlined"
               ref={actionRef1}
               onClick={() => setOpenMenuPeriod(true)}
-              endIcon={<FilterAltTwoToneIcon fontSize="small" />}
-            >
+              endIcon={<FilterAltTwoToneIcon fontSize="small" />}>
               {t('Filters')}
             </Button>
             <Menu
               anchorEl={actionRef1.current}
               onClose={() => setOpenMenuPeriod(false)}
               open={openPeriod}
-
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'right'
-              }}
-            >
+                horizontal: 'right',
+              }}>
               <Box sx={{ pt: 1, minWidth: '360px', outline: 'none' }}>
                 <Grid container spacing={3}>
                   <Grid item md={6}>
                     <FormControl fullWidth variant="outlined" size="small">
                       <InputLabel>{t('Type')}</InputLabel>
-                      <Select
-                        label={t('Type')}
-                        value={type}
-                        onChange={handleType}
-                      >
+                      <Select label={t('Type')} value={type} onChange={handleType}>
                         <MenuItem value={0}>{t('All types')}</MenuItem>
-                        <MenuItem value={1}>
-                          {t('Prescription-only medicines')}
-                        </MenuItem>
-                        <MenuItem value={2}>
-                          {t('Over-the-Counter Drugs')}
-                        </MenuItem>
+                        <MenuItem value={1}>{t('Prescription-only medicines')}</MenuItem>
+                        <MenuItem value={2}>{t('Over-the-Counter Drugs')}</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
                   <Grid item md={6}>
                     <FormControl fullWidth variant="outlined" size="small">
                       <InputLabel>{t('Status')}</InputLabel>
-                      <Select
-                        label="Status"
-                        value={status}
-                        onChange={handleStatus}
-                      >
+                      <Select label="Status" value={status} onChange={handleStatus}>
                         <MenuItem value={0}>{t('All statuses')}</MenuItem>
-                        <MenuItem value={1}>
-                          {t('Active Prescriptions')}
-                        </MenuItem>
+                        <MenuItem value={1}>{t('Active Prescriptions')}</MenuItem>
                         <MenuItem value={2}>{t('Refill Requests')}</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
                 </Grid>
                 <Divider sx={{ mb: 2, mt: 2 }} />
-                <Box
-                  pb={1}
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="center"
-                >
-                  <Button
-                    onClick={() => setOpenMenuPeriod(false)}
-                    variant="contained"
-                    size="small"
-                  >
+                <Box pb={1} display="flex" alignItems="center" justifyContent="center">
+                  <Button onClick={() => setOpenMenuPeriod(false)} variant="contained" size="small">
                     {t('Filter results')}
                   </Button>
                 </Box>
@@ -139,11 +113,7 @@ function PrescriptionRequests() {
                 </Text>{' '}
                 <span>(Valium)</span>
                 <Text color="primary">
-                  <Tooltip
-                    arrow
-                    placement="top"
-                    title={t('Original prescription required!')}
-                  >
+                  <Tooltip arrow placement="top" title={t('Original prescription required!')}>
                     <LockTwoToneIcon sx={{ ml: 0.5 }} fontSize="small" />
                   </Tooltip>
                 </Text>
@@ -155,7 +125,7 @@ function PrescriptionRequests() {
               fontWeight: 'bold',
               color: 'textSecondary',
               gutterBottom: true,
-              noWrap: true
+              noWrap: true,
             }}
             secondary={
               <>
@@ -171,35 +141,23 @@ function PrescriptionRequests() {
             <Grid container spacing={0}>
               <Grid xs={6} item>
                 <Box pl={3}>
-                  <Tooltip
-                    arrow
-                    placement="top"
-                    title={t('View') + ' ' + t('active prescriptions')}
-                  >
+                  <Tooltip arrow placement="top" title={`${t('View')} ${t('active prescriptions')}`}>
                     <Link variant="h3" underline="none" gutterBottom href="#">
                       51
                     </Link>
                   </Tooltip>
-                  <Typography variant="subtitle2">
-                    {t('active prescriptions')}
-                  </Typography>
+                  <Typography variant="subtitle2">{t('active prescriptions')}</Typography>
                 </Box>
               </Grid>
               <Grid sx={{ position: 'relative' }} xs={6} item>
                 <Divider absolute orientation="vertical" flexItem />
                 <Box pl={3}>
-                  <Tooltip
-                    arrow
-                    placement="top"
-                    title={t('View') + ' ' + t('refill requests')}
-                  >
+                  <Tooltip arrow placement="top" title={`${t('View')} ${t('refill requests')}`}>
                     <Link variant="h3" underline="none" gutterBottom href="#">
                       9
                     </Link>
                   </Tooltip>
-                  <Typography variant="subtitle2">
-                    {t('refill requests')}
-                  </Typography>
+                  <Typography variant="subtitle2">{t('refill requests')}</Typography>
                 </Box>
               </Grid>
             </Grid>
@@ -215,11 +173,7 @@ function PrescriptionRequests() {
                 </Text>{' '}
                 <span>(Dextroamphetamine)</span>
                 <Text color="primary">
-                  <Tooltip
-                    arrow
-                    placement="top"
-                    title={t('Original prescription required!')}
-                  >
+                  <Tooltip arrow placement="top" title={t('Original prescription required!')}>
                     <LockTwoToneIcon sx={{ ml: 0.5 }} fontSize="small" />
                   </Tooltip>
                 </Text>
@@ -231,7 +185,7 @@ function PrescriptionRequests() {
               fontWeight: 'bold',
               color: 'textSecondary',
               gutterBottom: true,
-              noWrap: true
+              noWrap: true,
             }}
             secondary={
               <>
@@ -247,35 +201,23 @@ function PrescriptionRequests() {
             <Grid container spacing={0}>
               <Grid xs={6} item>
                 <Box pl={3}>
-                  <Tooltip
-                    arrow
-                    placement="top"
-                    title={t('View') + ' ' + t('active prescriptions')}
-                  >
+                  <Tooltip arrow placement="top" title={`${t('View')} ${t('active prescriptions')}`}>
                     <Link variant="h3" underline="none" gutterBottom href="#">
                       14
                     </Link>
                   </Tooltip>
-                  <Typography variant="subtitle2">
-                    {t('active prescriptions')}
-                  </Typography>
+                  <Typography variant="subtitle2">{t('active prescriptions')}</Typography>
                 </Box>
               </Grid>
               <Grid sx={{ position: 'relative' }} xs={6} item>
                 <Divider absolute orientation="vertical" flexItem />
                 <Box pl={3}>
-                  <Tooltip
-                    arrow
-                    placement="top"
-                    title={t('View') + ' ' + t('refill requests')}
-                  >
+                  <Tooltip arrow placement="top" title={`${t('View')} ${t('refill requests')}`}>
                     <Link variant="h3" underline="none" gutterBottom href="#">
                       2
                     </Link>
                   </Tooltip>
-                  <Typography variant="subtitle2">
-                    {t('refill requests')}
-                  </Typography>
+                  <Typography variant="subtitle2">{t('refill requests')}</Typography>
                 </Box>
               </Grid>
             </Grid>
@@ -298,7 +240,7 @@ function PrescriptionRequests() {
               fontWeight: 'bold',
               color: 'textSecondary',
               gutterBottom: true,
-              noWrap: true
+              noWrap: true,
             }}
             secondary={
               <>
@@ -314,35 +256,23 @@ function PrescriptionRequests() {
             <Grid container spacing={0}>
               <Grid xs={6} item>
                 <Box pl={3}>
-                  <Tooltip
-                    arrow
-                    placement="top"
-                    title={t('View') + ' ' + t('active prescriptions')}
-                  >
+                  <Tooltip arrow placement="top" title={`${t('View')} ${t('active prescriptions')}`}>
                     <Link variant="h3" underline="none" gutterBottom href="#">
                       7
                     </Link>
                   </Tooltip>
-                  <Typography variant="subtitle2">
-                    {t('active prescriptions')}
-                  </Typography>
+                  <Typography variant="subtitle2">{t('active prescriptions')}</Typography>
                 </Box>
               </Grid>
               <Grid sx={{ position: 'relative' }} xs={6} item>
                 <Divider absolute orientation="vertical" flexItem />
                 <Box pl={3}>
-                  <Tooltip
-                    arrow
-                    placement="top"
-                    title={t('View') + ' ' + t('refill requests')}
-                  >
+                  <Tooltip arrow placement="top" title={`${t('View')} ${t('refill requests')}`}>
                     <Link variant="h3" underline="none" gutterBottom href="#">
                       34
                     </Link>
                   </Tooltip>
-                  <Typography variant="subtitle2">
-                    {t('refill requests')}
-                  </Typography>
+                  <Typography variant="subtitle2">{t('refill requests')}</Typography>
                 </Box>
               </Grid>
             </Grid>
@@ -351,7 +281,7 @@ function PrescriptionRequests() {
         <Divider />
       </List>
     </Card>
-  );
+  )
 }
 
-export default PrescriptionRequests;
+export default PrescriptionRequests

@@ -1,50 +1,49 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { error } from 'next/dist/build/output/log';
-import getRawBody from 'raw-body';
-import Stripe from 'stripe';
-import prisma from '../../../server/db/prisma';
-import stripe from '../../../server/stripe';
+import { NextApiRequest, NextApiResponse } from 'next'
+import { error } from 'next/dist/build/output/log'
+import getRawBody from 'raw-body'
+import Stripe from 'stripe'
+import prisma from '../../../server/db/prisma'
+import stripe from '../../../server/stripe'
 
-const secondsToMsDate = (seconds: number) => new Date(seconds * 1000);
+const secondsToMsDate = (seconds: number) => new Date(seconds * 1000)
 
 interface StripeSession {
-  customer: string;
+  customer: string
   metadata: {
-    projectId: string;
-  };
-  subscription: string;
+    projectId: string
+  }
+  subscription: string
 }
 
 /**
  * Syncs Stripe's payment state to our database via their webhooks
  */
 export default async (request: NextApiRequest, response: NextApiResponse) => {
-  const sig = request.headers['stripe-signature'] as string;
-  const body = await getRawBody(request);
+  const sig = request.headers['stripe-signature'] as string
+  const body = await getRawBody(request)
 
-  let event: Stripe.Event | null;
+  let event: Stripe.Event | null
 
-  const WEBHOOK_ENDPOINT_SECRET = process.env.STRIPE_WEBHOOK_ENDPOINT_SECRET;
+  const WEBHOOK_ENDPOINT_SECRET = process.env.STRIPE_WEBHOOK_ENDPOINT_SECRET
 
-  if (!WEBHOOK_ENDPOINT_SECRET)
-    throw new Error('Please provide a STRIPE_WEBHOOK_ENDPOINT_SECRET environment variable!');
+  if (!WEBHOOK_ENDPOINT_SECRET) throw new Error('Please provide a STRIPE_WEBHOOK_ENDPOINT_SECRET environment variable!')
 
   // Verify that this is a genuine Stripe request and not just somebody pinging us
   try {
-    event = stripe.webhooks.constructEvent(body, sig, WEBHOOK_ENDPOINT_SECRET);
+    event = stripe.webhooks.constructEvent(body, sig, WEBHOOK_ENDPOINT_SECRET)
   } catch (err) {
     // @ts-ignore: don't know fix
-    error(err);
+    error(err)
     // @ts-ignore: don't know fix
-    response.status(400).send(`Webhook Error: ${err.message}`);
-    return;
+    response.status(400).send(`Webhook Error: ${err.message}`)
+    return
   }
 
-  const session = event.data?.object as StripeSession;
+  const session = event.data?.object as StripeSession
 
   // Initial upgrade to paid
   if (event.type === 'checkout.session.completed') {
-    const subscription = await stripe.subscriptions.retrieve(session.subscription);
+    const subscription = await stripe.subscriptions.retrieve(session.subscription)
 
     await prisma.project.update({
       where: {
@@ -56,12 +55,12 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         stripeCustomerId: session.customer,
         stripePriceId: subscription.items.data[0].price.id,
       },
-    });
+    })
   }
 
   // Recurring payments
   if (event.type === 'invoice.payment_succeeded') {
-    const subscription = await stripe.subscriptions.retrieve(session.subscription);
+    const subscription = await stripe.subscriptions.retrieve(session.subscription)
 
     await prisma.project.update({
       where: {
@@ -71,15 +70,15 @@ export default async (request: NextApiRequest, response: NextApiResponse) => {
         stripeCurrentPeriodEnd: secondsToMsDate(subscription.current_period_end),
         stripePriceId: subscription.items.data[0].price.id,
       },
-    });
+    })
   }
 
-  response.json({ received: true });
-};
+  response.json({ received: true })
+}
 
 export const config = {
   api: {
     // Stripe parses the body themselves
     bodyParser: false,
   },
-};
+}

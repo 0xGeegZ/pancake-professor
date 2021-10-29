@@ -1,6 +1,7 @@
 // import utils from '../../utils/utils';
 
 const { GraphQLClient, gql } = require('graphql-request')
+
 const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
 
 const loadGameData = async ({ epoch }) => {
@@ -32,7 +33,7 @@ const loadGameData = async ({ epoch }) => {
     const variables = {
       epoch: epoch.toString(),
     }
-    let data = await graphQLClient.request(query, variables)
+    const data = await graphQLClient.request(query, variables)
 
     const {
       rounds: [round],
@@ -42,7 +43,6 @@ const loadGameData = async ({ epoch }) => {
   } catch (error) {
     console.error('GraphQL query error')
     console.error(error)
-    return
   }
 }
 

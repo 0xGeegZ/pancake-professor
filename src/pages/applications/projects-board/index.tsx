@@ -1,4 +1,4 @@
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import {
   Autocomplete,
   Avatar,
@@ -16,25 +16,26 @@ import {
   Tooltip,
   Typography,
   Zoom,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import Head from 'next/head';
-import { useSnackbar } from 'notistack';
-import { ChangeEvent, Fragment, useEffect, useState } from 'react';
-import { DragDropContext } from 'react-beautiful-dnd';
-import { useTranslation } from 'react-i18next';
-import Footer from 'src/client/components/Footer';
-import Label from 'src/client/components/Label';
-import PageTitleWrapper from 'src/client/components/PageTitleWrapper';
-import PageHeader from 'src/client/components/ProjectsBoard/PageHeader';
-import Results from 'src/client/components/ProjectsBoard/Results';
-import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout';
-import { getBoard, moveTask } from 'src/client/slices/projects_board';
-import { useDispatch, useSelector } from 'src/client/store';
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import Head from 'next/head'
+import { useSnackbar } from 'notistack'
+import { ChangeEvent, Fragment, useEffect, useState } from 'react'
+import { DragDropContext } from 'react-beautiful-dnd'
+import { useTranslation } from 'react-i18next'
+import Footer from 'src/client/components/Footer'
+import Label from 'src/client/components/Label'
+import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
+import PageHeader from 'src/client/components/ProjectsBoard/PageHeader'
+import Results from 'src/client/components/ProjectsBoard/Results'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
+import { getBoard, moveTask } from 'src/client/slices/projects_board'
+import { useDispatch, useSelector } from 'src/client/store'
 
-import type { ReactElement } from 'react';
+import type { ReactElement } from 'react'
 
-import type { DropResult } from 'react-beautiful-dnd';
+import type { DropResult } from 'react-beautiful-dnd'
+
 const TasksWrapper = styled(Box)(
   ({ theme }) => `
       display: flex;
@@ -43,13 +44,13 @@ const TasksWrapper = styled(Box)(
       flex-direction: row;
       padding: ${theme.spacing(2)};
   `
-);
+)
 
 const TasksWrapperContent = styled(Box)(
   ({ theme }) => `
       margin: 0 -${theme.spacing(2)};
   `
-);
+)
 
 const CardAddAction = styled(Card)(
   ({ theme }) => `
@@ -74,7 +75,7 @@ const CardAddAction = styled(Card)(
           border-color: ${theme.colors.alpha.black[100]};
         }
 `
-);
+)
 
 const AvatarAddWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -83,14 +84,14 @@ const AvatarAddWrapper = styled(Avatar)(
         width: ${theme.spacing(8)};
         height: ${theme.spacing(8)};
 `
-);
+)
 
 const FilterOptions = styled(Card)(
   ({ theme }) => `
       padding: ${theme.spacing(2)};
       border: 1px solid ${theme.colors.alpha.black[10]};
   `
-);
+)
 
 const LinearProgressWrapper = styled(LinearProgress)(
   ({ theme }) => `
@@ -104,7 +105,7 @@ const LinearProgressWrapper = styled(LinearProgress)(
         border-bottom-right-radius: ${theme.general.borderRadius};
       }
 `
-);
+)
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -186,122 +187,113 @@ const TabsContainerWrapper = styled(Box)(
           }
       }
   `
-);
+)
 
 function ApplicationsProjectsBoard() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
-  const [currentTab, setCurrentTab] = useState<string>('development_meeting');
+  const [currentTab, setCurrentTab] = useState<string>('development_meeting')
 
   const tabs = [
     { value: 'react_migration', label: t('React Project Migration') },
     { value: 'development_meeting', label: t('Development Meeting') },
-    { value: 'marketing_campaign', label: t('Marketing Campaign') }
-  ];
+    { value: 'marketing_campaign', label: t('Marketing Campaign') },
+  ]
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
-    setCurrentTab(value);
-  };
+    setCurrentTab(value)
+  }
 
-  const dispatch = useDispatch();
-  const { lists } = useSelector((state) => state.projectsBoard);
-  const { enqueueSnackbar } = useSnackbar();
+  const dispatch = useDispatch()
+  const { lists } = useSelector((state) => state.projectsBoard)
+  const { enqueueSnackbar } = useSnackbar()
 
-  const handleDragEnd = async ({
-    source,
-    destination,
-    draggableId
-  }: DropResult): Promise<void> => {
+  const handleDragEnd = async ({ source, destination, draggableId }: DropResult): Promise<void> => {
     try {
       if (!destination) {
-        return;
+        return
       }
 
-      if (
-        source.droppableId === destination.droppableId &&
-        source.index === destination.index
-      ) {
-        return;
+      if (source.droppableId === destination.droppableId && source.index === destination.index) {
+        return
       }
 
       if (source.droppableId === destination.droppableId) {
-        await dispatch(moveTask(draggableId, destination.index));
+        await dispatch(moveTask(draggableId, destination.index))
       } else {
-        await dispatch(
-          moveTask(draggableId, destination.index, destination.droppableId)
-        );
+        await dispatch(moveTask(draggableId, destination.index, destination.droppableId))
       }
 
       enqueueSnackbar(t('Task has been successfully moved'), {
         variant: 'info',
         anchorOrigin: {
           vertical: 'bottom',
-          horizontal: 'center'
+          horizontal: 'center',
         },
-        TransitionComponent: Zoom
-      });
+        TransitionComponent: Zoom,
+      })
     } catch (err) {
-      console.error(err);
+      console.error(err)
       enqueueSnackbar(t('There was an error, try again later'), {
         variant: 'error',
         anchorOrigin: {
           vertical: 'bottom',
-          horizontal: 'center'
+          horizontal: 'center',
         },
-        TransitionComponent: Zoom
-      });
+        TransitionComponent: Zoom,
+      })
     }
-  };
+  }
 
   useEffect(() => {
-    dispatch(getBoard());
-  }, [dispatch]);
+    dispatch(getBoard())
+  }, [dispatch])
 
   const assignees = [
     {
       avatar: '/static/images/avatars/1.jpg',
-      name: 'Maren Lipshutz'
+      name: 'Maren Lipshutz',
     },
     {
       avatar: '/static/images/avatars/2.jpg',
-      name: 'Zain Vetrovs'
+      name: 'Zain Vetrovs',
     },
     {
       avatar: '/static/images/avatars/3.jpg',
-      name: 'Hanna Siphron'
+      name: 'Hanna Siphron',
     },
     {
       avatar: '/static/images/avatars/4.jpg',
-      name: 'Cristofer Aminoff'
+      name: 'Cristofer Aminoff',
     },
     {
       avatar: '/static/images/avatars/5.jpg',
-      name: 'Maria Calzoni'
-    }
-  ];
+      name: 'Maria Calzoni',
+    },
+  ]
 
   const sprints = [
     {
       progress: 58,
-      name: 'Sprint 1'
+      name: 'Sprint 1',
     },
     {
       progress: 43,
-      name: 'Sprint 2'
+      name: 'Sprint 2',
     },
     {
       progress: 65,
-      name: 'Sprint 3'
+      name: 'Sprint 3',
     },
     {
       progress: 84,
-      name: 'Sprint 4'
+      name: 'Sprint 4',
     },
     {
       progress: 43,
-      name: 'Sprint 5'
-    }
-  ];
+      name: 'Sprint 5',
+    },
+  ]
 
   return (
     <>
@@ -312,14 +304,7 @@ function ApplicationsProjectsBoard() {
         <PageHeader />
       </PageTitleWrapper>
 
-      <Grid
-        sx={{ px: 4 }}
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={3}
-      >
+      <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
         <Grid item xs={12}>
           <TabsContainerWrapper>
             <Tabs
@@ -327,8 +312,7 @@ function ApplicationsProjectsBoard() {
               value={currentTab}
               variant="scrollable"
               textColor="primary"
-              indicatorColor="primary"
-            >
+              indicatorColor="primary">
               {tabs.map((tab) => (
                 <Tab key={tab.value} label={tab.label} value={tab.value} />
               ))}
@@ -344,13 +328,7 @@ function ApplicationsProjectsBoard() {
             </Tabs>
           </TabsContainerWrapper>
           <FilterOptions>
-            <Grid
-              container
-              direction="row"
-              justifyContent="center"
-              alignItems="stretch"
-              spacing={3}
-            >
+            <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
               <Grid item xs={12} lg={6} md={6}>
                 <Autocomplete
                   multiple
@@ -370,7 +348,7 @@ function ApplicationsProjectsBoard() {
                       variant="outlined"
                       fullWidth
                       InputLabelProps={{
-                        shrink: true
+                        shrink: true,
                       }}
                       label={t('Assigned')}
                       placeholder={t('Select assignees...')}
@@ -398,23 +376,12 @@ function ApplicationsProjectsBoard() {
                     <Fragment key={option.name}>
                       <li {...props}>
                         <Box flex={1} py={1}>
-                          <Box
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="space-between"
-                            pb={1}
-                          >
-                            <Typography variant="h5">
-                              {option.name}
-                            </Typography>
+                          <Box display="flex" alignItems="center" justifyContent="space-between" pb={1}>
+                            <Typography variant="h5">{option.name}</Typography>
                             <Label color="success">{option.progress}%</Label>
                           </Box>
 
-                          <LinearProgressWrapper
-                            value={option.progress}
-                            color="primary"
-                            variant="determinate"
-                          />
+                          <LinearProgressWrapper value={option.progress} color="primary" variant="determinate" />
                         </Box>
                       </li>
                       <Divider />
@@ -427,7 +394,7 @@ function ApplicationsProjectsBoard() {
                       variant="outlined"
                       fullWidth
                       InputLabelProps={{
-                        shrink: true
+                        shrink: true,
                       }}
                       label={t('Sprint')}
                       placeholder={t('Select sprint...')}
@@ -464,15 +431,11 @@ function ApplicationsProjectsBoard() {
       </Grid>
       <Footer />
     </>
-  );
+  )
 }
 
-export default ApplicationsProjectsBoard;
+export default ApplicationsProjectsBoard
 
 ApplicationsProjectsBoard.getLayout = function getLayout(page: ReactElement) {
-  return (
-      <AccentHeaderLayout>
-          {page}
-      </AccentHeaderLayout>
-  )
+  return <AccentHeaderLayout>{page}</AccentHeaderLayout>
 }

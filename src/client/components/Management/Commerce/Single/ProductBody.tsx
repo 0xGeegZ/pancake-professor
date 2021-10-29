@@ -1,9 +1,9 @@
-import { FC, useState, ChangeEvent } from 'react';
-import PropTypes from 'prop-types';
-import type { Product } from 'src/client/models/product';
-import numeral from 'numeral';
-import Text from 'src/client/components/Text';
-import { useSnackbar } from 'notistack';
+import { FC, useState, ChangeEvent } from 'react'
+import PropTypes from 'prop-types'
+import type { Product } from 'src/client/models/product'
+import numeral from 'numeral'
+import Text from 'src/client/components/Text'
+import { useSnackbar } from 'notistack'
 
 import {
   Typography,
@@ -22,26 +22,26 @@ import {
   Select,
   Slide,
   MenuItem,
-  useTheme
-} from '@mui/material';
-import AddShoppingCartTwoToneIcon from '@mui/icons-material/AddShoppingCartTwoTone';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import SwiperCore, { Navigation, Thumbs } from 'swiper/core';
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
-import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone';
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/swiper.min.css';
-import 'swiper/components/navigation/navigation.min.css';
-import 'swiper/components/pagination/pagination.min.css';
+  useTheme,
+} from '@mui/material'
+import AddShoppingCartTwoToneIcon from '@mui/icons-material/AddShoppingCartTwoTone'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import SwiperCore, { Navigation, Thumbs } from 'swiper/core'
+import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
+import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import 'swiper/swiper.min.css'
+import 'swiper/components/navigation/navigation.min.css'
+import 'swiper/components/pagination/pagination.min.css'
 
-import ReviewsTab from './ReviewsTab';
-import AdditionalInfoTab from './AdditionalInfoTab';
+import ReviewsTab from './ReviewsTab'
+import AdditionalInfoTab from './AdditionalInfoTab'
 
-SwiperCore.use([Navigation, Thumbs]);
+SwiperCore.use([Navigation, Thumbs])
 
 interface ProductBodyProps {
-  product: Product;
+  product: Product
 }
 
 const SwipeIndicator = styled(IconButton)(
@@ -73,7 +73,7 @@ const SwipeIndicator = styled(IconButton)(
       right: ${theme.spacing(0.5)};
     }
 `
-);
+)
 
 const SwiperWrapper = styled(Box)(
   ({ theme }) => `
@@ -126,43 +126,43 @@ const SwiperWrapper = styled(Box)(
     }
   }
 `
-);
+)
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
       background-color: ${theme.colors.alpha.black[5]};
       padding: ${theme.spacing(2)};
   `
-);
+)
 
 const ProductBody: FC<ProductBodyProps> = ({ product }) => {
-  const { t }: { t: any } = useTranslation();
-  const [thumbsSwiper, setThumbsSwiper] = useState(null);
-  const theme = useTheme();
-  const { enqueueSnackbar } = useSnackbar();
+  const { t }: { t: any } = useTranslation()
+  const [thumbsSwiper, setThumbsSwiper] = useState(null)
+  const theme = useTheme()
+  const { enqueueSnackbar } = useSnackbar()
 
-  const [option1, setOption1] = useState('10');
+  const [option1, setOption1] = useState('10')
 
   const handleChange1 = (event: ChangeEvent<HTMLInputElement>): void => {
-    setOption1(event.target.value);
-  };
+    setOption1(event.target.value)
+  }
 
-  const [option2, setOption2] = useState('20');
+  const [option2, setOption2] = useState('20')
 
   const handleChange2 = (event: ChangeEvent<HTMLInputElement>): void => {
-    setOption2(event.target.value);
-  };
+    setOption2(event.target.value)
+  }
 
-  const [currentTab, setCurrentTab] = useState<string>('reviews');
+  const [currentTab, setCurrentTab] = useState<string>('reviews')
 
   const tabs = [
     { value: 'reviews', label: t('Reviews') },
-    { value: 'additional_info', label: t('Additional Informations') }
-  ];
+    { value: 'additional_info', label: t('Additional Informations') },
+  ]
 
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
-    setCurrentTab(value);
-  };
+    setCurrentTab(value)
+  }
 
   const handleCart = () => {
     enqueueSnackbar(t('You added a product to cart'), {
@@ -170,31 +170,20 @@ const ProductBody: FC<ProductBodyProps> = ({ product }) => {
       preventDuplicate: true,
       anchorOrigin: {
         vertical: 'top',
-        horizontal: 'right'
+        horizontal: 'right',
       },
-      TransitionComponent: Slide
-    });
-  };
+      TransitionComponent: Slide,
+    })
+  }
 
   return (
-    <Grid
-      container
-      direction="row"
-      justifyContent="center"
-      alignItems="stretch"
-      spacing={3}
-    >
+    <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
       <Grid item xs={12}>
         <Card>
           <Grid container spacing={0}>
             <Grid xs={12} md={6} item sx={{ position: 'relative' }}>
               <Hidden mdDown>
-                <Divider
-                  absolute
-                  sx={{ height: '100%', left: 'auto', right: 0 }}
-                  orientation="vertical"
-                  flexItem
-                />
+                <Divider absolute sx={{ height: '100%', left: 'auto', right: 0 }} orientation="vertical" flexItem />
               </Hidden>
               <Box p={6}>
                 <SwiperWrapper>
@@ -207,16 +196,13 @@ const ProductBody: FC<ProductBodyProps> = ({ product }) => {
                       loop
                       navigation={{
                         nextEl: '.MuiSwipe-right',
-                        prevEl: '.MuiSwipe-left'
-                      }}
-                    >
-                      {product.images.map((value) => {
-                        return (
-                          <SwiperSlide key={value}>
-                            <img src={value} alt="..." />
-                          </SwiperSlide>
-                        );
-                      })}
+                        prevEl: '.MuiSwipe-left',
+                      }}>
+                      {product.images.map((value) => (
+                        <SwiperSlide key={value}>
+                          <img src={value} alt="..." />
+                        </SwiperSlide>
+                      ))}
                     </Swiper>
                     <SwipeIndicator className="MuiSwipe-root MuiSwipe-left">
                       <ChevronLeftTwoToneIcon />
@@ -231,33 +217,24 @@ const ProductBody: FC<ProductBodyProps> = ({ product }) => {
                     watchSlidesVisibility
                     watchSlidesProgress
                     slidesPerView={4}
-                    spaceBetween={15}
-                  >
-                    {product.images.map((value) => {
-                      return (
-                        <SwiperSlide key={value}>
-                          <img src={value} alt="..." />
-                        </SwiperSlide>
-                      );
-                    })}
+                    spaceBetween={15}>
+                    {product.images.map((value) => (
+                      <SwiperSlide key={value}>
+                        <img src={value} alt="..." />
+                      </SwiperSlide>
+                    ))}
                   </Swiper>
                 </SwiperWrapper>
               </Box>
             </Grid>
             <Grid item xs={12} md={6}>
               <Box p={4} flex={1}>
-                <Rating
-                  readOnly
-                  defaultValue={product.rating}
-                  precision={0.5}
-                />
+                <Rating readOnly defaultValue={product.rating} precision={0.5} />
                 <Typography variant="h3" sx={{ pb: 2, pt: 1 }} component="h3">
                   {product.name}
                 </Typography>
                 <Typography variant="subtitle2">
-                  <div
-                    dangerouslySetInnerHTML={{ __html: product.description }}
-                  />
+                  <div dangerouslySetInnerHTML={{ __html: product.description }} />
                 </Typography>
                 <Divider sx={{ mt: 3 }} />
                 <Box pt={3} pb={1} sx={{ px: { xs: 0, md: 3 } }}>
@@ -267,28 +244,21 @@ const ProductBody: FC<ProductBodyProps> = ({ product }) => {
                         pr={3}
                         sx={{
                           pt: `${theme.spacing(1)}`,
-                          pb: { xs: 1, md: 0 }
+                          pb: { xs: 1, md: 0 },
                         }}
-                        alignSelf="center"
-                      >
+                        alignSelf="center">
                         <b>{t('Option 1')}:</b>
                       </Box>
                     </Grid>
                     <Grid
                       sx={{
-                        mb: `${theme.spacing(2)}`
+                        mb: `${theme.spacing(2)}`,
                       }}
                       item
                       xs={12}
                       sm={8}
-                      md={6}
-                    >
-                      <FormControl
-                        placeholder={t('Select ...')}
-                        size="small"
-                        fullWidth
-                        variant="outlined"
-                      >
+                      md={6}>
+                      <FormControl placeholder={t('Select ...')} size="small" fullWidth variant="outlined">
                         <Select value={option1} onChange={handleChange1}>
                           <MenuItem value={10}>{t('Option')} 1</MenuItem>
                           <MenuItem value={20}>{t('Option')} 2</MenuItem>
@@ -302,28 +272,21 @@ const ProductBody: FC<ProductBodyProps> = ({ product }) => {
                         pr={3}
                         sx={{
                           pt: `${theme.spacing(1)}`,
-                          pb: { xs: 1, md: 0 }
+                          pb: { xs: 1, md: 0 },
                         }}
-                        alignSelf="center"
-                      >
+                        alignSelf="center">
                         <b>{t('Option 2')}:</b>
                       </Box>
                     </Grid>
                     <Grid
                       sx={{
-                        mb: `${theme.spacing(2)}`
+                        mb: `${theme.spacing(2)}`,
                       }}
                       item
                       xs={12}
                       sm={8}
-                      md={6}
-                    >
-                      <FormControl
-                        placeholder={t('Select ...')}
-                        size="small"
-                        fullWidth
-                        variant="outlined"
-                      >
+                      md={6}>
+                      <FormControl placeholder={t('Select ...')} size="small" fullWidth variant="outlined">
                         <Select value={option2} onChange={handleChange2}>
                           <MenuItem value={10}>{t('Option')} 1</MenuItem>
                           <MenuItem value={20}>{t('Option')} 2</MenuItem>
@@ -337,28 +300,26 @@ const ProductBody: FC<ProductBodyProps> = ({ product }) => {
                         pr={3}
                         sx={{
                           pt: `${theme.spacing(1)}`,
-                          pb: { xs: 1, md: 0 }
+                          pb: { xs: 1, md: 0 },
                         }}
-                        alignSelf="center"
-                      >
+                        alignSelf="center">
                         <b>{t('Quantity')}:</b>
                       </Box>
                     </Grid>
                     <Grid
                       sx={{
-                        mb: `${theme.spacing(2)}`
+                        mb: `${theme.spacing(2)}`,
                       }}
                       item
                       xs={12}
                       sm={5}
-                      md={3}
-                    >
+                      md={3}>
                       <FormControl fullWidth variant="outlined">
                         <TextField
                           type="number"
                           size="small"
                           InputLabelProps={{
-                            shrink: true
+                            shrink: true,
                           }}
                         />
                       </FormControl>
@@ -366,11 +327,7 @@ const ProductBody: FC<ProductBodyProps> = ({ product }) => {
                   </Grid>
                 </Box>
                 <Divider sx={{ mb: 3 }} />
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  justifyContent="space-between"
-                >
+                <Box display="flex" alignItems="center" justifyContent="space-between">
                   <Box>
                     <Typography component="div" variant="caption" gutterBottom>
                       {t('Price')}
@@ -381,17 +338,13 @@ const ProductBody: FC<ProductBodyProps> = ({ product }) => {
                       variant={product.sale_price !== 0 ? 'h4' : 'h3'}
                       sx={{
                         pr: 2,
-                        textDecorationLine:
-                          product.sale_price !== 0 ? 'line-through' : ''
-                      }}
-                    >
+                        textDecorationLine: product.sale_price !== 0 ? 'line-through' : '',
+                      }}>
                       ${numeral(product.price).format(`0,0.00`)}
                     </Typography>
                     {product.sale_price !== 0 && (
                       <Typography component="span" variant="h3">
-                        <Text color="error">
-                          ${numeral(product.sale_price).format(`0,0.00`)}
-                        </Text>
+                        <Text color="error">${numeral(product.sale_price).format(`0,0.00`)}</Text>
                       </Typography>
                     )}
                   </Box>
@@ -400,8 +353,7 @@ const ProductBody: FC<ProductBodyProps> = ({ product }) => {
                       startIcon={<AddShoppingCartTwoToneIcon />}
                       variant="contained"
                       onClick={handleCart}
-                      size="large"
-                    >
+                      size="large">
                       {t('Add to card')}
                     </Button>
                   </Box>
@@ -430,8 +382,7 @@ const ProductBody: FC<ProductBodyProps> = ({ product }) => {
               variant="scrollable"
               scrollButtons="auto"
               textColor="primary"
-              indicatorColor="primary"
-            >
+              indicatorColor="primary">
               {tabs.map((tab) => (
                 <Tab key={tab.value} label={tab.label} value={tab.value} />
               ))}
@@ -443,12 +394,12 @@ const ProductBody: FC<ProductBodyProps> = ({ product }) => {
         </Card>
       </Grid>
     </Grid>
-  );
-};
+  )
+}
 
 ProductBody.propTypes = {
   // @ts-ignore
-  product: PropTypes.object.isRequired
-};
+  product: PropTypes.object.isRequired,
+}
 
-export default ProductBody;
+export default ProductBody

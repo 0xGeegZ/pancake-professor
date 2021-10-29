@@ -11,16 +11,16 @@ import {
   ListItemText,
   List,
   Avatar,
-  useTheme
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import PhoneTwoToneIcon from '@mui/icons-material/PhoneTwoTone';
-import EmailTwoToneIcon from '@mui/icons-material/EmailTwoTone';
-import MessageTwoToneIcon from '@mui/icons-material/MessageTwoTone';
+  useTheme,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import PhoneTwoToneIcon from '@mui/icons-material/PhoneTwoTone'
+import EmailTwoToneIcon from '@mui/icons-material/EmailTwoTone'
+import MessageTwoToneIcon from '@mui/icons-material/MessageTwoTone'
 
 function Profile() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   return (
     <Card sx={{ height: '100%' }}>
@@ -30,7 +30,7 @@ function Profile() {
           mb: 1,
           mt: 5,
           width: theme.spacing(12),
-          height: theme.spacing(12)
+          height: theme.spacing(12),
         }}
         variant="rounded"
         alt="Craig Donin"
@@ -72,42 +72,29 @@ function Profile() {
         <List sx={{ px: 2 }}>
           <Divider component="li" />
           <ListItem sx={{ py: 1.5 }}>
-            <ListItemText
-              primary={t('Join Date')}
-              primaryTypographyProps={{ variant: 'subtitle2' }}
-            />
+            <ListItemText primary={t('Join Date')} primaryTypographyProps={{ variant: 'subtitle2' }} />
             <Typography variant="subtitle2" color="text.primary">
               22 January 2021
             </Typography>
           </ListItem>
           <Divider component="li" />
           <ListItem sx={{ py: 1.5 }}>
-            <ListItemText
-              primary={t('Company')}
-              primaryTypographyProps={{ variant: 'subtitle2' }}
-            />
+            <ListItemText primary={t('Company')} primaryTypographyProps={{ variant: 'subtitle2' }} />
             <Typography variant="subtitle2" color="text.primary">
               Google Inc.
             </Typography>
           </ListItem>
           <Divider component="li" />
           <ListItem sx={{ py: 1.5 }}>
-            <ListItemText
-              primary={t('Tasks')}
-              primaryTypographyProps={{ variant: 'subtitle2' }}
-            />
-            <Typography
-              variant="subtitle2"
-              color="text.primary"
-              fontWeight="bold"
-            >
+            <ListItemText primary={t('Tasks')} primaryTypographyProps={{ variant: 'subtitle2' }} />
+            <Typography variant="subtitle2" color="text.primary" fontWeight="bold">
               67 active
             </Typography>
           </ListItem>
         </List>
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default Profile;
+export default Profile

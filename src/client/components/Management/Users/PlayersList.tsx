@@ -3,7 +3,6 @@ import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 import GamepadIcon from '@mui/icons-material/Gamepad'
 import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone'
 import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
-import SidebarPlayerDrawer from './SidebarPlayerDrawer'
 import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 import {
   Drawer,
@@ -61,6 +60,7 @@ import { useCreateStrategieMutation } from 'src/client/graphql/createStrategie.g
 import type { Player } from 'src/client/models/player'
 
 import type { ReactElement } from 'react'
+import SidebarPlayerDrawer from './SidebarPlayerDrawer'
 // import type { Player, PlayerRole } from 'src/client/models/player'
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -197,12 +197,9 @@ interface PlayersListProps {
 //   role?: PlayerRole
 // }
 
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement<any, any> },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="down" ref={ref} {...props} />
-})
+const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
+  <Slide direction="down" ref={ref} {...props} />
+))
 
 // const getPlayerRoleLabel = (playerRole: PlayerRole): JSX.Element => {
 //   const map = {
@@ -225,8 +222,8 @@ const Transition = forwardRef(function Transition(
 //   return <Label color={color}>{text}</Label>
 // }
 
-const applyFilters = (players: Player[], query: string, filters: Filters): Player[] => {
-  return players.filter((player) => {
+const applyFilters = (players: Player[], query: string, filters: Filters): Player[] =>
+  players.filter((player) => {
     let matches = true
 
     if (query) {
@@ -259,11 +256,9 @@ const applyFilters = (players: Player[], query: string, filters: Filters): Playe
 
     return matches
   })
-}
 
-const applyPagination = (players: Player[], page: number, limit: number): Player[] => {
-  return players.slice(page * limit, page * limit + limit)
-}
+const applyPagination = (players: Player[], page: number, limit: number): Player[] =>
+  players.slice(page * limit, page * limit + limit)
 
 const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, hasError }) => {
   const { t }: { t: any } = useTranslation()
@@ -1039,7 +1034,7 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
                               <Grid item md={6}>
                                 <Button
                                   size="small"
-                                  disabled={true}
+                                  disabled
                                   fullWidth
                                   variant="outlined"
                                   color="secondary"
@@ -1119,7 +1114,7 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
               {t('Cancel')}
             </Button>
             <ButtonError
-              disabled={true}
+              disabled
               onClick={handleDeleteCompleted}
               size="large"
               sx={{ mx: 1, px: 3 }}

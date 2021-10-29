@@ -1,22 +1,13 @@
-import {
-  Button,
-  Card,
-  CardHeader,
-  Divider,
-  Typography,
-  Avatar,
-  useTheme,
-  Box
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import Timeline from '@mui/lab/Timeline';
-import TimelineItem from '@mui/lab/TimelineItem';
-import TimelineSeparator from '@mui/lab/TimelineSeparator';
-import TimelineConnector from '@mui/lab/TimelineConnector';
-import TimelineContent from '@mui/lab/TimelineContent';
-import TimelineDot from '@mui/lab/TimelineDot';
-import CalendarTodayTwoToneIcon from '@mui/icons-material/CalendarTodayTwoTone';
+import { Button, Card, CardHeader, Divider, Typography, Avatar, useTheme, Box } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import Timeline from '@mui/lab/Timeline'
+import TimelineItem from '@mui/lab/TimelineItem'
+import TimelineSeparator from '@mui/lab/TimelineSeparator'
+import TimelineConnector from '@mui/lab/TimelineConnector'
+import TimelineContent from '@mui/lab/TimelineContent'
+import TimelineDot from '@mui/lab/TimelineDot'
+import CalendarTodayTwoToneIcon from '@mui/icons-material/CalendarTodayTwoTone'
 
 const AvatarLabelSecondary = styled(Avatar)(
   ({ theme }) => `
@@ -25,11 +16,11 @@ const AvatarLabelSecondary = styled(Avatar)(
       width: ${theme.spacing(5.5)};
       height: ${theme.spacing(5.5)};
 `
-);
+)
 
 function UpcomingConsults() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   return (
     <Card sx={{ height: '100%' }}>
@@ -42,7 +33,7 @@ function UpcomingConsults() {
         }
       />
       <Divider />
-      <Box py={.5} px={2}>
+      <Box py={0.5} px={2}>
         <Timeline>
           <TimelineItem>
             <TimelineSeparator>
@@ -156,9 +147,8 @@ function UpcomingConsults() {
                   sx={{
                     mr: 1,
                     background: `${theme.colors.warning.main}`,
-                    color: `${theme.colors.alpha.white[100]}`
-                  }}
-                >
+                    color: `${theme.colors.alpha.white[100]}`,
+                  }}>
                   HB
                 </Avatar>
                 <Box>
@@ -175,7 +165,7 @@ function UpcomingConsults() {
         </Timeline>
       </Box>
     </Card>
-  );
+  )
 }
 
-export default UpcomingConsults;
+export default UpcomingConsults
