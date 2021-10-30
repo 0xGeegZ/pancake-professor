@@ -1,8 +1,9 @@
 import { ApolloServer } from 'apollo-server-micro'
+
+import { handler } from '../../server/api-route'
 import prisma from '../../server/db/prisma'
 import { getRequestOrigin } from '../../server/get-request-origin'
 import { schema } from '../../server/graphql/schema'
-import handler from '../../server/api-route'
 
 export const config = {
   api: {

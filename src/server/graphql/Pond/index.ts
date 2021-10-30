@@ -1,5 +1,6 @@
 // src/server/graphql/Koi/index.ts
-import { objectType, extendType, nonNull, stringArg } from 'nexus'
+import { extendType, nonNull, objectType, stringArg } from 'nexus'
+
 import prisma from '../../db/prisma'
 
 const Pond = objectType({

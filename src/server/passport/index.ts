@@ -24,7 +24,6 @@ declare global {
 }
 
 passport.serializeUser(async (u: Express.User, done) => {
-  console.log('🚀 ~ file: index.ts ~ line 26 ~ passport.serializeUser ~ u', u)
   // const address = u.address.toLowerCase()
 
   // const user = await prisma.user.upsert({

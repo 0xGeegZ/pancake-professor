@@ -1,5 +1,6 @@
 // src/server/graphql/Strategie/index.ts
-import { objectType, extendType, nonNull, stringArg, intArg, booleanArg } from 'nexus'
+import { booleanArg, extendType, intArg, nonNull, objectType, stringArg } from 'nexus'
+
 import prisma from '../../db/prisma'
 
 const Strategie = objectType({
@@ -64,7 +65,7 @@ const mutations = extendType({
       resolve: async (_, args, ctx) => {
         if (!ctx.user?.id) return null
 
-        return await prisma.strategie.create({
+        return prisma.strategie.create({
           data: {
             id: args.id,
             player: args.player,
@@ -110,7 +111,7 @@ const mutations = extendType({
 
         if (!hasAccess) return null
 
-        return await prisma.strategie.update({
+        return prisma.strategie.update({
           where: { id: args.id },
           data: {
             player: args.player,
@@ -159,8 +160,8 @@ const mutations = extendType({
 
         // return strategie
 
-        return await prisma.strategie.update({
-          where: { id: args.id },
+        return prisma.strategie.update({
+          where: { id },
           data: {
             isActive: false,
           },
@@ -203,8 +204,8 @@ const mutations = extendType({
 
         // return strategie
 
-        return await prisma.strategie.update({
-          where: { id: args.id },
+        return prisma.strategie.update({
+          where: { id },
           data: {
             isActive: false,
             isDeleted: true,

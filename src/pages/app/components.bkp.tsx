@@ -1,4 +1,3 @@
-import SoonAvailable from '@/client/components/Dashboards/Healthcare/doctor/SoonAvailable'
 import { Box, Grid } from '@mui/material'
 import Head from 'next/head'
 import React from 'react'
@@ -17,6 +16,7 @@ import WatchList from 'src/client/components/Dashboards/Crypto/WatchList'
 import ActiveSubscriptions from 'src/client/components/Dashboards/Finance/ActiveSubscriptions'
 import UpgradeAccount from 'src/client/components/Dashboards/Finance/UpgradeAccount'
 import Activity from 'src/client/components/Dashboards/Fitness/Activity'
+import SoonAvailable from 'src/client/components/Dashboards/Healthcare/doctor/SoonAvailable'
 import AppointmentsAlt from 'src/client/components/Dashboards/Healthcare/hospital/AppointmentsAlt'
 import Doctors from 'src/client/components/Dashboards/Healthcare/hospital/Doctors'
 import OverallStatus from 'src/client/components/Dashboards/Healthcare/hospital/OverallStatus'
@@ -37,6 +37,7 @@ import Footer from 'src/client/components/Footer'
 import MainLayout from 'src/client/layouts/MainLayout'
 
 import type { ReactElement } from 'react'
+
 function DashboardCrypto() {
   return (
     <>

@@ -9,7 +9,7 @@ import { useSnackbar } from 'notistack'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Link from 'src/client/components/Link'
-import logout from '@/pages/api/auth/logout'
+import logout from 'src/pages/api/auth/logout'
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `

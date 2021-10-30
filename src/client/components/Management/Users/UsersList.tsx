@@ -43,11 +43,12 @@ import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, SyntheticEvent, useState 
 import { useTranslation } from 'react-i18next';
 import Label from 'src/client/components/Label';
 
-import BulkActions from './BulkActions';
 
 import type { ReactElement } from 'react';
 
 import type { User, UserRole } from 'src/client/models/user';
+import BulkActions from './BulkActions';
+
 const DialogWrapper = styled(Dialog)(
   () => `
       .MuiDialog-paper {

@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-props-no-spreading */
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import {
   Autocomplete,
@@ -200,6 +201,7 @@ function ApplicationsProjectsBoard() {
     { value: 'marketing_campaign', label: t('Marketing Campaign') },
   ]
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value)
   }

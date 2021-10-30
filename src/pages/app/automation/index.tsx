@@ -1,11 +1,11 @@
 import { Box, Grid } from '@mui/material'
 import Head from 'next/head'
 import AutomationDetails from 'src/client/components/Dashboards/Finance/AutomationDetails'
+import SoonAvailable from 'src/client/components/Dashboards/Healthcare/doctor/SoonAvailable'
 import Footer from 'src/client/components/Footer'
 import MainLayout from 'src/client/layouts/MainLayout'
 
 import type { ReactElement } from 'react'
-import SoonAvailable from '@/client/components/Dashboards/Healthcare/doctor/SoonAvailable'
 
 function Automation() {
   return (

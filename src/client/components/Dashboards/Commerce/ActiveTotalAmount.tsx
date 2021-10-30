@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import ArrowDownwardTwoTone from '@mui/icons-material/ArrowDownwardTwoTone'
 import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone'
 import { Card, CardContent, CardHeader, IconButton, Tooltip, Typography } from '@mui/material'
@@ -9,7 +10,7 @@ const ArrowDownwardWrapper = styled(ArrowDownwardTwoTone)(
       color:  ${theme.palette.error.main};
 `
 )
-function ActiveTotalAmount({ userBulls, userBears }) {
+const ActiveTotalAmount = ({ userBulls, userBears }) => {
   const { t }: { t: any } = useTranslation()
 
   const getAmount = (users) => {

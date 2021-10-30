@@ -1,5 +1,6 @@
 // src/server/graphql/Koi/index.ts
-import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus'
+import { extendType, intArg, nonNull, objectType, stringArg } from 'nexus'
+
 import prisma from '../../db/prisma'
 
 const KoiHistory = objectType({
@@ -50,7 +51,7 @@ const mutations = extendType({
         // Only let authenticated users create history
         if (!ctx.user?.id) return null
 
-        return await prisma.koiHistory.create({
+        return prisma.koiHistory.create({
           data: {
             length: args.length as number,
             date: args.date as string,
@@ -91,7 +92,7 @@ const mutations = extendType({
 
         if (!hasAccess) return null
 
-        return await prisma.koiHistory.update({
+        return prisma.koiHistory.update({
           where: { id: args.id },
           data: {
             length: args.length as number,

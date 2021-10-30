@@ -10,5 +10,6 @@
   "semi": false,
   "trailingComma": "es5",
   "bracketSameLine": true,
-  "arrowParens": "always"
+  "arrowParens": "always",
+  "no-console": true
 }

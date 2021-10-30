@@ -1,5 +1,6 @@
 // src/server/graphql/Koi/index.ts
-import { objectType, extendType, nonNull, stringArg, intArg } from 'nexus'
+import { extendType, intArg, nonNull, objectType, stringArg } from 'nexus'
+
 import prisma from '../../db/prisma'
 
 const Koi = objectType({
@@ -68,7 +69,7 @@ const mutations = extendType({
       resolve: async (_, args, ctx) => {
         if (!ctx.user?.id) return null
 
-        return await prisma.koi.create({
+        return prisma.koi.create({
           data: {
             id: args.id,
             variety: args.variety,
@@ -118,7 +119,7 @@ const mutations = extendType({
 
         if (!hasAccess) return null
 
-        return await prisma.koi.update({
+        return prisma.koi.update({
           where: { id: args.id },
           data: {
             variety: args.variety,

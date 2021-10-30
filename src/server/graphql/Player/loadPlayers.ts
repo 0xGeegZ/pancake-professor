@@ -1,8 +1,8 @@
+import { gql, GraphQLClient } from 'graphql-request'
+
 import { finder, range } from '../../utils/utils'
 
 // import utils from '../../utils/utils';
-
-const { GraphQLClient, gql } = require('graphql-request')
 
 const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
 
@@ -28,8 +28,8 @@ const checkIfPlaying = (player, lastGame) => {
   player.recentGames = recentGames
 
   let lastLooseCountForPlayer = 0
-  for (let i = results.length - 1; i >= 0; i--) {
-    if (!results[i].isWon && lastGame.includes(results[i].epoch)) lastLooseCountForPlayer++
+  for (let i = results.length - 1; i >= 0; i -= 1) {
+    if (!results[i].isWon && lastGame.includes(results[i].epoch)) lastLooseCountForPlayer += 1
     else break
   }
   player.lastLooseCount = lastLooseCountForPlayer
@@ -107,7 +107,7 @@ const loadPlayers = async ({ currentEpoch }) => {
       if (TOTAL_BETS >= 60) {
         TOTAL_BETS -= 5
       } else {
-        WIN_RATE--
+        WIN_RATE -= 1
       }
 
       return await loadPlayers({ currentEpoch })

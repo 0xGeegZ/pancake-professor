@@ -1,9 +1,8 @@
-import passport from 'passport'
-// import passportLocal from "passport-local";
 import { Strategy as LocalStrategy } from 'passport-local'
 
 import prisma from '../db/prisma'
 
+// import passportLocal from "passport-local";
 // import { find } from "lodash";
 
 // const LocalStrategy = passportLocal.Strategy;

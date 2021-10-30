@@ -24,7 +24,9 @@ export const getProjectPaidPlan = (project: Project | null): Plan | null => {
   )
     return null
 
-  const plan = Object.keys(plans).find((plan) => plans[plan as Plan] === project.stripePriceId)
+  const plan = Object.keys(plans).find((p) => plans[p as Plan] === project.stripePriceId)
 
   return (plan as Plan) || null
 }
+
+// export default { getProjectPaidPlan }

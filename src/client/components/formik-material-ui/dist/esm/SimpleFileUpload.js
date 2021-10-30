@@ -1,10 +1,11 @@
-import * as React from 'react';
-import { getIn } from 'formik';
-import FormControl from '@mui/material/FormControl';
-import InputLabel from '@mui/material/InputLabel';
-import Input from '@mui/material/Input';
-import FormHelperText from '@mui/material/FormHelperText';
-import { __assign } from './_virtual/_tslib.js';
+import FormControl from '@mui/material/FormControl'
+import FormHelperText from '@mui/material/FormHelperText'
+import Input from '@mui/material/Input'
+import InputLabel from '@mui/material/InputLabel'
+import { getIn } from 'formik'
+import * as React from 'react'
+
+import { __assign } from './_virtual/_tslib.js'
 
 let SimpleFileUpload = function (_a) {
   var field = _a.field,
@@ -51,7 +52,7 @@ let SimpleFileUpload = function (_a) {
                 },
         },
         inputProps
-      )
+      ),
     ),
     error && React.createElement(FormHelperText, { error: true }, error)
   );

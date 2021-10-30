@@ -1,11 +1,11 @@
 import { Box, Grid } from '@mui/material'
 import Head from 'next/head'
 import AutoPlayerDetails from 'src/client/components/Dashboards/Finance/AutoPlayerDetails'
+import SoonAvailable from 'src/client/components/Dashboards/Healthcare/doctor/SoonAvailable'
 import Footer from 'src/client/components/Footer'
 import MainLayout from 'src/client/layouts/MainLayout'
 
 import type { ReactElement } from 'react'
-import SoonAvailable from '@/client/components/Dashboards/Healthcare/doctor/SoonAvailable'
 
 function AutoPlayer() {
   return (

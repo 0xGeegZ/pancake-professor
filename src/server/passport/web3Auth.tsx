@@ -1,8 +1,7 @@
+import { HDNode } from '@ethersproject/hdnode'
 import Web3Strategy from 'passport-web3'
 
 import prisma from '../db/prisma'
-
-const { HDNode } = require('@ethersproject/hdnode')
 
 const web3Atuh = new Web3Strategy(async (address, done) => {
   try {

@@ -14,7 +14,7 @@ import User from './User'
 // This fixes deployment on Netlify, otherwise you'll run into an EROFS error during building
 const shouldGenerateArtifacts = process.env.NODE_ENV === 'development' || !!process.env.GENERATE
 
-const schema = makeSchema({
+export const schema = makeSchema({
   types: [User, Player, Project, PaidPlan, Pond, Koi, KoiHistory, Strategie],
   plugins: [
     nexusPrisma({
@@ -34,4 +34,4 @@ const schema = makeSchema({
   },
 })
 
-export default schema
+// export default schema

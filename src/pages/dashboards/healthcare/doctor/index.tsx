@@ -10,11 +10,11 @@ import Consultations from 'src/client/components/Dashboards/Healthcare/doctor/Co
 import HealthcareSidebar from 'src/client/components/Dashboards/Healthcare/doctor/HealthcareSidebar'
 import PageHeader from 'src/client/components/Dashboards/Healthcare/doctor/PageHeader'
 import PrescriptionRequests from 'src/client/components/Dashboards/Healthcare/doctor/PrescriptionRequests'
+import SoonAvailable from 'src/client/components/Dashboards/Healthcare/doctor/SoonAvailable'
 import Footer from 'src/client/components/Footer'
 import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 
 import type { ReactElement } from 'react'
-import SoonAvailable from '@/client/components/Dashboards/Healthcare/doctor/SoonAvailable'
 
 const DrawerWrapper = styled(Drawer)(
   ({ theme }) => `

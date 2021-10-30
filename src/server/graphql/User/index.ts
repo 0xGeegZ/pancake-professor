@@ -56,7 +56,7 @@ const queries = extendType({
 
     t.field('getUsers', {
       // type: 'User',
-      type: list('User'), // -> [User]
+      type: list('User'),
       // args: {
       //   ids: list(stringArg()), // or list('String') -> [String]
       // },
@@ -98,7 +98,7 @@ const mutations = extendType({
           modifiedAt: new Date(),
         }
 
-        return await prisma.user.update({
+        return prisma.user.update({
           where: { id },
           data,
         })
@@ -120,9 +120,9 @@ const mutations = extendType({
         })
 
         if (!userExists) return null
-        if (ctx.user.id == args.id) return null
+        if (ctx.user.id === args.id) return null
 
-        return await prisma.user.update({
+        return prisma.user.update({
           where: { id: ctx.user?.id },
           data: {
             referrals: {

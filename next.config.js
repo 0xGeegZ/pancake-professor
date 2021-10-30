@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/no-var-requires */
 const withImages = require('next-images')
 const withPrismaPlugin = require('next-prisma-plugin')
+
 const { i18n } = require('./next-i18next.config')
 
 module.exports = withImages(
