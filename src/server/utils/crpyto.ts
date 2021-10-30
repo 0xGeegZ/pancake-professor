@@ -1,10 +1,10 @@
-const crypto = require('crypto')
+import crypto from 'crypto'
+
 // const dotenv = require('dotenv')
 // dotenv.config()
 
 const algorithm = 'aes-256-ctr'
 const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY
-console.log('🚀 ~ file: crpyto.ts ~ line 7 ~ secretKey', secretKey)
 
 const iv = crypto.randomBytes(16)
 

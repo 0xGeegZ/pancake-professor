@@ -4,11 +4,10 @@ import { ethers } from 'ethers'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import PropTypes from 'prop-types'
-import { FC, ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { FC, ReactNode, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { Erc20__factory } from 'src/client/contracts/types'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
-import useRefMounted from 'src/client/hooks/useRefMounted'
 import menuItems from 'src/client/layouts/MainLayout/Sidebar/SidebarMenu/items'
 
 import Header from './Header'
@@ -191,7 +190,6 @@ const BoxedSidebarLayout: FC<BoxedSidebarLayoutProps> = ({ children }) => {
           }
         })
     } catch (err) {
-      console.error(err)
       enqueueSnackbar(t('Unexpected error occurred'), {
         variant: 'error',
       })

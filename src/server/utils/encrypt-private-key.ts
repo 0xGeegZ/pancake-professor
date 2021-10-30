@@ -1,5 +1,5 @@
-const { encrypt, decrypt } = require('./crpyto')
-const logger = require('./logger')
+import { decrypt, encrypt } from './crpyto'
+import logger from './logger'
 
 logger.info('===================')
 const hash = encrypt('Hello World!')
@@ -9,5 +9,5 @@ logger.info(hash)
 //   content: '24a50c911ac6274283f259f3'
 // }
 const text = decrypt(hash)
-logger.info(text) // Hello World!
+logger.info(text)
 logger.info('===================')

@@ -14,6 +14,7 @@
     "jest": true
   },
   "extends": [
+    "airbnb",
     "eslint:recommended",
     "plugin:react/recommended",
     "plugin:@typescript-eslint/eslint-recommended",
@@ -25,16 +26,27 @@
     "prettier"
   ],
   "rules": {
+    /* AirBnb rules */
+    "import/extensions": [0, "never"],
+    "no-shadow": ["warn"],
+    "react/jsx-filename-extension": [0, { "extensions": [".tsx", ".jsx"] }],
+    // "import/no-unresolved": 1,
+    /* React Hooks rules */
     "react-hooks/rules-of-hooks": "error", // Checks rules of Hooks
     "react-hooks/exhaustive-deps": "error", // Checks effect dependencies
+    /* Comments rules */
+    "no-warning-comments": [1, { "terms": ["todo", "fixme"], "location": "start" }],
+    "no-inline-comments": "error",
+    /* Console rules */
     "no-console": 1, // Means warning
+    /* Typescript rules */
     "prettier/prettier": 0, // Means error
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/ban-ts-comment": "off",
     "@typescript-eslint/explicit-module-boundary-types": "off",
     // "@typescript-eslint/no-var-requires": "off",
-    // Disallow imports from src/server/ in src/pages/ except for src/pages/api
-    // (see the "overrides" section for the exception)
+    /* Disallow imports from src/server/ in src/pages/ except for src/pages/api */
+    /* (see the "overrides" section for the exception) */
     "import/no-restricted-paths": [
       "error",
       {
@@ -47,17 +59,23 @@
       }
     ]
   },
+  // "linters": {
+  //   "eslint": {
+  //     "args": ["--stdin-filename", "@"]
+  //   }
+  // },
   "settings": {
     "react": {
       "version": "detect" // React version. "detect" automatically picks the version you have installed.
     }
+    // "import/parsers": [".ts", ".tsx", ".js", ".jsx"]
   },
   "overrides": [
     {
-      "files": ["next.config.js"],
-      "rules": {
-        "@typescript-eslint/no-var-requires": "off"
-      }
+      "files": ["next.config.js"]
+      // "rules": {
+      //   "@typescript-eslint/no-var-requires": "off"
+      // }
     },
     {
       // Allow imports from src/server/ in src/pages/api

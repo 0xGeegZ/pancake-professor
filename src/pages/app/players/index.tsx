@@ -1,4 +1,3 @@
-import PlayersList from '@/client/components/Management/Users/PlayersList'
 import { Grid } from '@mui/material'
 import { ethers } from 'ethers'
 import Head from 'next/head'
@@ -7,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { PREDICTION_CONTRACT_ABI } from 'src/client/abis/pancake-prediction-abi-v3'
 import Footer from 'src/client/components/Footer'
 import PageHeader from 'src/client/components/Management/Users/PageHeader'
+import PlayersList from 'src/client/components/Management/Users/PlayersList'
 import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 import MainLayout from 'src/client/layouts/MainLayout'
@@ -14,6 +14,7 @@ import loadPlayers from 'src/client/thegraph/loadPlayers'
 
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
+
 function ManagementUsers() {
   const router = useRouter()
 
