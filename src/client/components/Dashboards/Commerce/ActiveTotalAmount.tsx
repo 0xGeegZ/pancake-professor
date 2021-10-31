@@ -1,15 +1,14 @@
 /* eslint-disable react/prop-types */
-import ArrowDownwardTwoTone from '@mui/icons-material/ArrowDownwardTwoTone'
 import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone'
 import { Card, CardContent, CardHeader, IconButton, Tooltip, Typography } from '@mui/material'
-import { styled } from '@mui/material/styles'
 import { useTranslation } from 'react-i18next'
 
-const ArrowDownwardWrapper = styled(ArrowDownwardTwoTone)(
-  ({ theme }) => `
-      color:  ${theme.palette.error.main};
-`
-)
+// const ArrowDownwardWrapper = styled(ArrowDownwardTwoTone)(
+//   ({ theme }) => `
+//       color:  ${theme.palette.error.main};
+// `
+// )
+
 const ActiveTotalAmount = ({ userBulls, userBears }) => {
   const { t }: { t: any } = useTranslation()
 

@@ -40,7 +40,7 @@ type Mutation {
   createKoi(birthDate: String, bloodline: String, breeder: String, id: String!, purchasePrice: Int, sex: String, skinType: String, variety: String!, youtube: String): Koi
   createKoiHistory(date: String, id: String!, image: String, length: Int): KoiHistory
   createProject(name: String!, slug: String): Project
-  createStrategie(amount: String!, id: String!, isActive: Boolean, isDeleted: Boolean, maxLooseAmount: Int!, minWinAmount: Int!, player: String!): Strategie
+  createStrategie(currentAmount: Int!, id: String!, isActive: Boolean, isDeleted: Boolean, isRunning: Boolean, maxLooseAmount: Int!, minWinAmount: Int!, player: String!, startedAmount: Int!): Strategie
   createStripeCheckoutBillingPortalUrl(projectId: String!): String
   createStripeCheckoutSession(plan: PaidPlan!, projectId: String!): String
   deleteKoi(id: String!): Koi
@@ -50,16 +50,12 @@ type Mutation {
   inviteToProject(email: String!, projectId: String!): Boolean
   updateKoi(birthDate: String, bloodline: String, breeder: String, id: String!, purchasePrice: Int, sex: String, skinType: String, variety: String!, youtube: String): Koi
   updateKoiHistory(date: String, id: String!, image: String, length: Int): KoiHistory
-  updateStrategie(amount: String!, id: String!, isActive: Boolean, isDeleted: Boolean, maxLooseAmount: Int!, minWinAmount: Int!, player: String!): Strategie
+  updateStrategie(currentAmount: Int!, id: String!, isActive: Boolean, isDeleted: Boolean, isRunning: Boolean, maxLooseAmount: Int!, minWinAmount: Int!, player: String!, startedAmount: Int!): Strategie
   updateUser(address: String!, email: String, id: String!, name: String): User
 }
 
 enum PaidPlan {
   pro
-}
-
-type Player {
-  id: String!
 }
 
 type Pond {
@@ -79,7 +75,6 @@ type Project {
 
 type Query {
   currentUser: User
-  getPlayers: [Player]
   getUsers: [User]
   koi(id: String!): Koi
   koiHistory(id: String!): KoiHistory
@@ -90,15 +85,17 @@ type Query {
 }
 
 type Strategie {
-  amount: String!
   createdAt: DateTime!
+  currentAmount: Int!
   id: String!
   isActive: Boolean!
   isDeleted: Boolean!
+  isRunning: Boolean!
   maxLooseAmount: Int!
   minWinAmount: Int!
   modifiedAt: DateTime!
   player: String!
+  startedAmount: Int!
   user: User!
 }
 

@@ -2,6 +2,8 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2021,
+    // project: './tsconfig.json',
+    // tsconfigRootDir: __dirname,
     ecmaFeatures: {
       // Allows for the parsing of TSX ???
       tsx: true,
@@ -25,6 +27,9 @@ module.exports = {
     'plugin:react/jsx-runtime',
     'plugin:react-hooks/recommended',
     'plugin:prettier/recommended',
+    'plugin:import/errors',
+    'plugin:import/warnings',
+    'plugin:import/typescript',
     'prettier',
   ],
   rules: {
@@ -33,8 +38,13 @@ module.exports = {
     /* AirBnb rules */
     'import/extensions': [0, 'never'],
     // 'no-shadow': ['warn'],
-    'no-shadow': ['error', { allow: ['done', 'error'] }],
+    'no-shadow': ['error', { allow: ['done', 'error', 'theme'] }],
     'react/jsx-filename-extension': [0, { extensions: ['.tsx', '.jsx'] }],
+    'no-unused-vars': 'error',
+    'no-nested-ternary': 0,
+    'react/jsx-props-no-spreading': 1,
+    'jsx-a11y/anchor-is-valid': 1,
+    '@typescript-eslint/ban-types': 1,
     // "import/no-unresolved": 1,
     // "import/no-unresolved": [2, { "caseSensitiveStrict": true }],
     // "no-restricted-imports": [

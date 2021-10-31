@@ -1,8 +1,9 @@
 mutation CreateStrategie(
   $id: String!
   $player: String!
-  $amount: String!
+  $startedAmount: Int!
   $isActive: Boolean!
+  $isRunning: Boolean!
   $isDeleted: Boolean!
   $maxLooseAmount: Int!
   $minWinAmount: Int!
@@ -11,8 +12,10 @@ mutation CreateStrategie(
     id: $id
 
     player: $player
-    amount: $amount
+    startedAmount: $startedAmount
+    currentAmount: $startedAmount
     isActive: $isActive
+    isRunning: $isRunning
     isDeleted: $isDeleted
     maxLooseAmount: $maxLooseAmount
     minWinAmount: $minWinAmount

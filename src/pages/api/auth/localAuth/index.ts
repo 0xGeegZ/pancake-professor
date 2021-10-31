@@ -1,5 +1,6 @@
 import passport from 'passport'
-import handler from '../../../../server/api-route'
+
+import { handler } from '../../../../server/api-route'
 
 export default handler()
   .use(passport.authenticate('local'))

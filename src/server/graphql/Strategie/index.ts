@@ -10,8 +10,10 @@ const Strategie = objectType({
     t.model.createdAt()
     t.model.modifiedAt()
     t.model.player()
-    t.model.amount()
+    t.model.startedAmount()
+    t.model.currentAmount()
     t.model.isActive()
+    t.model.isRunning()
     t.model.isDeleted()
     t.model.maxLooseAmount()
     t.model.minWinAmount()
@@ -56,8 +58,10 @@ const mutations = extendType({
       args: {
         id: nonNull(stringArg()),
         player: nonNull(stringArg()),
-        amount: nonNull(stringArg()),
+        startedAmount: nonNull(intArg()),
+        currentAmount: nonNull(intArg()),
         isActive: booleanArg(),
+        isRunning: booleanArg(),
         isDeleted: booleanArg(),
         maxLooseAmount: nonNull(intArg()),
         minWinAmount: nonNull(intArg()),
@@ -69,8 +73,10 @@ const mutations = extendType({
           data: {
             id: args.id,
             player: args.player,
-            amount: args.amount,
+            startedAmount: args.startedAmount,
+            currentAmount: args.currentAmount,
             isActive: args.isActive,
+            isRunning: args.isRunning,
             isDeleted: args.isDeleted,
             maxLooseAmount: args.maxLooseAmount,
             minWinAmount: args.minWinAmount,
@@ -89,8 +95,10 @@ const mutations = extendType({
       args: {
         id: nonNull(stringArg()),
         player: nonNull(stringArg()),
-        amount: nonNull(stringArg()),
+        startedAmount: nonNull(intArg()),
+        currentAmount: nonNull(intArg()),
         isActive: booleanArg(),
+        isRunning: booleanArg(),
         isDeleted: booleanArg(),
         maxLooseAmount: nonNull(intArg()),
         minWinAmount: nonNull(intArg()),
@@ -115,8 +123,10 @@ const mutations = extendType({
           where: { id: args.id },
           data: {
             player: args.player,
-            amount: args.amount,
+            startedAmount: args.startedAmount,
+            currentAmount: args.currentAmount,
             isActive: args.isActive,
+            isRunning: args.isRunning,
             isDeleted: args.isDeleted,
             maxLooseAmount: args.maxLooseAmount,
             minWinAmount: args.minWinAmount,
