@@ -2,6 +2,7 @@ import cookieSession from 'cookie-session'
 import { NextApiRequest, NextApiResponse } from 'next'
 import nc from 'next-connect'
 import { error } from 'next/dist/build/output/log'
+
 import passport from './passport'
 import { trustProxyMiddleware } from './trust-proxy-middleware'
 
@@ -22,7 +23,7 @@ const { COOKIE_SECRET } = process.env
  * export default handler().get((req, res) => { ... })
  * ```
  */
-function handler() {
+export const handler = () => {
   if (!COOKIE_SECRET) throw new Error(`Please add COOKIE_SECRET to your .env.local file!`)
 
   return (
@@ -51,4 +52,4 @@ function handler() {
   )
 }
 
-export default handler
+// export default handler

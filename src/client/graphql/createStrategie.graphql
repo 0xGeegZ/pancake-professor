@@ -1,22 +1,11 @@
-mutation CreateStrategie(
-  $id: String!
-  $player: String!
-  $amount: String!
-  $isActive: Boolean!
-  $isDeleted: Boolean!
-  $maxLooseAmount: Int!
-  $minWinAmount: Int!
-) {
+mutation CreateStrategie($player: String!, $startedAmount: Int!, $maxLooseAmount: Int, $minWinAmount: Int) {
   createStrategie(
-    id: $id
-
     player: $player
-    amount: $amount
-    isActive: $isActive
-    isDeleted: $isDeleted
+    startedAmount: $startedAmount
     maxLooseAmount: $maxLooseAmount
     minWinAmount: $minWinAmount
   ) {
     id
+    isActive
   }
 }

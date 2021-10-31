@@ -1,5 +1,6 @@
 import passport from 'passport'
-import handler from '../../../../server/api-route'
+
+import { handler } from '../../../../server/api-route'
 
 // export default handler().use(async (req, res) => {
 // // console.log("🚀 ~ file: index.ts ~ line 5 ~ handler ~ res", res)

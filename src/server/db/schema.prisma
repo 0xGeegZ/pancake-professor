@@ -7,11 +7,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-
-model Player {
-  id         String    @id @default(cuid())
-}
-
 model User {
   id         String    @id @default(cuid())
   registeredAt  DateTime  @default(now())
@@ -33,18 +28,19 @@ model User {
 }
 
 model Strategie {
-  id         String   @unique
+  id         String   @id @default(cuid())
   createdAt  DateTime @default(now())
   modifiedAt DateTime @default(now())
-
-  player       String
-  amount        String
-  maxLooseAmount        Int
-  minWinAmount        Int
+  player          String
+  startedAmount   Int
+  currentAmount   Int
+  maxLooseAmount  Int
+  minWinAmount    Int 
   isActive        Boolean @default(true)
-  isDeleted        Boolean @default(false)
-  user          User         @relation(fields: [userId], references: [id])
-  userId        String
+  isDeleted       Boolean @default(false)
+  isRunning       Boolean @default(false)
+  user            User         @relation(fields: [userId], references: [id])
+  userId          String
 }
 
 model Project {

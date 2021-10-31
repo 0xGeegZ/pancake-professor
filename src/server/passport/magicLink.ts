@@ -1,4 +1,5 @@
 import MagicLoginStrategy from 'passport-magic-login'
+
 import { getRequestOrigin } from '../get-request-origin'
 import { sendEmail } from '../send-email'
 

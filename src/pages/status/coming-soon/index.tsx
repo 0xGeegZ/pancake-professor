@@ -1,29 +1,28 @@
-import { useEffect, useState } from 'react'
-import {
-  Box,
-  Typography,
-  Container,
-  Divider,
-  OutlinedInput,
-  IconButton,
-  Tooltip,
-  FormControl,
-  InputAdornment,
-  Button,
-  FormHelperText,
-} from '@mui/material'
-import type { ReactElement } from 'react'
-import BaseLayout from 'src/client/layouts/BaseLayout'
-
-import Head from 'next/head'
-import Logo from 'src/client/components/LogoSign'
-
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
 import FacebookIcon from '@mui/icons-material/Facebook'
-import TwitterIcon from '@mui/icons-material/Twitter'
 import InstagramIcon from '@mui/icons-material/Instagram'
 import MailTwoToneIcon from '@mui/icons-material/MailTwoTone'
+import TwitterIcon from '@mui/icons-material/Twitter'
+import {
+  Box,
+  Button,
+  Container,
+  Divider,
+  FormControl,
+  FormHelperText,
+  IconButton,
+  InputAdornment,
+  OutlinedInput,
+  Tooltip,
+  Typography,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import Head from 'next/head'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Logo from 'src/client/components/LogoSign'
+import BaseLayout from 'src/client/layouts/BaseLayout'
+
+import type { ReactElement } from 'react'
 
 const MainContent = styled(Box)(
   () => `

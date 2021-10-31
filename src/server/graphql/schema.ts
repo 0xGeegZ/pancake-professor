@@ -2,12 +2,11 @@ import { makeSchema } from 'nexus'
 import { nexusPrisma } from 'nexus-plugin-prisma'
 import path from 'path'
 
-import Strategie from './Strategie'
 import Koi from './Koi'
 import KoiHistory from './KoiHistory'
-import Player from './Player'
 import Pond from './Pond'
 import Project, { PaidPlan } from './Project'
+import Strategie from './Strategie'
 import User from './User'
 
 // Only generate in development or when the yarn run generate:nexus command is run
@@ -15,7 +14,7 @@ import User from './User'
 const shouldGenerateArtifacts = process.env.NODE_ENV === 'development' || !!process.env.GENERATE
 
 export const schema = makeSchema({
-  types: [User, Player, Project, PaidPlan, Pond, Koi, KoiHistory, Strategie],
+  types: [User, Project, PaidPlan, Pond, Koi, KoiHistory, Strategie],
   plugins: [
     nexusPrisma({
       shouldGenerateArtifacts,
@@ -33,3 +32,5 @@ export const schema = makeSchema({
     schema: path.join(process.cwd(), 'src/server/graphql/schema.graphql'),
   },
 })
+
+// export default schema

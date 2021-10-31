@@ -1,8 +1,10 @@
 mutation UpdateStrategie(
   $id: String!
   $player: String!
-  $amount: String!
+  $startedAmount: Int!
+  $currentAmount: Int!
   $isActive: Boolean!
+  $isRunning: Boolean!
   $isDeleted: Boolean!
   $maxLooseAmount: Int!
   $minWinAmount: Int!
@@ -10,16 +12,20 @@ mutation UpdateStrategie(
   updateStrategie(
     id: $id
     player: $player
-    amount: $amount
+    startedAmount: $startedAmount
+    currentAmount: $currentAmount
     isActive: $isActive
+    isRunning: $isRunning
     isDeleted: $isDeleted
     maxLooseAmount: $maxLooseAmount
     minWinAmount: $minWinAmount
   ) {
     id
     player
-    amount
+    startedAmount
+    currentAmount
     isActive
+    isRunning
     isDeleted
     maxLooseAmount
     minWinAmount

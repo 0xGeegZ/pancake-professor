@@ -43,7 +43,7 @@ function UserView() {
     if (isMountedRef.current) {
       setUser(data.currentUser)
     }
-  }, [data])
+  }, [data, isMountedRef])
 
   const { t }: { t: any } = useTranslation()
 
@@ -55,6 +55,7 @@ function UserView() {
     // { value: 'security', label: t('Passwords/Security') }
   ]
 
+  // eslint-disable-next-line @typescript-eslint/ban-types
   const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
     setCurrentTab(value)
   }

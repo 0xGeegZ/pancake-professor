@@ -8,10 +8,14 @@ import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { PREDICTION_CONTRACT_ABI } from 'src/client/abis/pancake-prediction-abi-v3'
 import ActiveTotalAmount from 'src/client/components/Dashboards/Commerce/ActiveTotalAmount'
 import ActiveTotalBears from 'src/client/components/Dashboards/Commerce/ActiveTotalBears'
 import ActiveTotalBets from 'src/client/components/Dashboards/Commerce/ActiveTotalBets'
 import ActiveTotalBulls from 'src/client/components/Dashboards/Commerce/ActiveTotalBulls'
+import FollowPlayersPromotion from 'src/client/components/Dashboards/Healthcare/doctor/FollowPlayersPromotion'
+import ActiveLiveBets from 'src/client/components/Dashboards/Healthcare/hospital/ActiveLiveBets'
+import LiveActivePlayers from 'src/client/components/Dashboards/Learning/LiveActivePlayers'
 import Footer from 'src/client/components/Footer'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 import useRefMounted from 'src/client/hooks/useRefMounted'
@@ -20,11 +24,6 @@ import loadGameData from 'src/client/thegraph/loadGameData'
 
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
-import LiveActivePlayers from '@/client/components/Dashboards/Learning/LiveActivePlayers'
-import ActiveLiveBets from '@/client/components/Dashboards/Healthcare/hospital/ActiveLiveBets'
-import FollowPlayersPromotion from '@/client/components/Dashboards/Healthcare/doctor/FollowPlayersPromotion'
-
-const { PREDICTION_CONTRACT_ABI } = require('src/client/abis/pancake-prediction-abi-v3')
 
 const LinearProgressWrapper = styled(LinearProgress)(
   ({ theme }) => `
@@ -106,165 +105,167 @@ const LiveView = () => {
 
   const [{ data, fetching, error }] = useGetCurrentUserQuery()
 
-  const initialize = useCallback(async (preditionContract) => {
-    if (!preditionContract) return
-    if (epoch) return
-
-    const isPaused = await preditionContract.paused()
-    console.log('🚀 ~ file: index.tsx ~ line 114 ~ initialize ~ isPaused', isPaused)
-    setIsPaused(isPaused)
-    if (isPaused) {
-      enqueueSnackbar(t(`[LAUNCH] Contract is actually paused`), {
-        variant: 'error',
-        TransitionComponent: Zoom,
-      })
-      return
-    }
-
-    const _epoch = epoch || (await preditionContract.currentEpoch())
-    setEpoch(_epoch)
-
-    const {
-      // bullAmount,
-      // bearAmount,
-      // totalAmount,
-      // closePrice,
-      startTimestamp,
-      lockTimestamp,
-      // closeTimestamp,
-      // lockPrice,
-      // startBlock,
-      // endBlock,
-    } = await preditionContract.rounds(_epoch)
-
-    const _timeLeft = calculateTimeLeft(startTimestamp.toString())
-    setTimeLeft(_timeLeft)
-    setStartTimestamp(startTimestamp.toString())
-    // console.log('🚀 ~ file: index.tsx ~ line 125 ~ initialize ~ _timeLeft', _timeLeft)
-    const total = 5 * 60
-    const actual = total - _timeLeft
-    const generated = (actual * 100) / total
-    console.log('🚀 ~ total', 100 - generated)
-    setProgressValue(100 - generated)
-
-    enqueueSnackbar(t(`[LAUNCH] Stated to listen contract, current epoch is ${_epoch}`), {
-      variant: 'success',
-      TransitionComponent: Zoom,
-    })
-
-    try {
-      preditionContract.on('StartRound', roundStartListenner)
-      preditionContract.on('EndRound', roundEndListenner)
-      preditionContract.on('BetBull', betBullListenner)
-      preditionContract.on('BetBear', betBearListenner)
-      // enqueueSnackbar(t(`[LAUNCH] Stated to listen contract`), {
-      //   variant: 'success',
-      //   TransitionComponent: Zoom,
-      // })
-    } catch (error) {
-      console.error(error)
-      enqueueSnackbar(t(`[ERROR] Error during smart contract listening... Please refresh the page`), {
-        variant: 'error',
-        TransitionComponent: Zoom,
-      })
-      // router.push('/app')
-    }
-
-    try {
-      console.log('🚀 ~ LOADING gameData')
-      const round = await loadGameData({ epoch: _epoch })
-      if (!round) return
-
-      console.log('🚀 ~  checkEpoch ~ round', round, 'bets', round.bets.length)
-      // setRound(round)
-      round.bets.map((bet) => {
-        if (bet.position === 'Bull') {
-          userBulls.unshift({ betBull: true, address: bet.id, amount: bet.amount, epoch: _epoch })
-          setUserBulls(userBulls)
-          // setUserBulls([...userBulls])
-        } else if (bet.position === 'Bear') {
-          userBears.unshift({ betBull: false, address: bet.id, amount: bet.amount, epoch: _epoch })
-          setUserBears(userBears)
-          // setUserBears([...userBears])
+  const initialize = useCallback(
+    async (ppreditionContract) => {
+      const betBullListenner = async (sender, epoch, amount) => {
+        const player = userBulls.find((p) => p.sender === sender)
+        if (!player) {
+          userBulls.unshift({ betBull: true, address: sender, amount: ethers.utils.formatEther(amount), epoch })
+          setUserBulls([...userBulls])
+          // console.log(`[BET-BULL] for player ${sender} - ${userBulls.length}`)
+          const _timeLeft = calculateTimeLeft(startTimestamp)
+          setTimeLeft(_timeLeft)
+          const total = 5 * 60
+          const actual = total - _timeLeft
+          const generated = (actual * 100) / total
+          console.log('🚀 ~ total', 100 - generated)
+          setProgressValue(100 - generated)
         }
-      })
-      enqueueSnackbar(t(`[SYNC] Syncronising with actual round data done`), {
+      }
+
+      const betBearListenner = async (sender, epoch, amount) => {
+        const player = userBears.find((p) => p.sender === sender)
+        if (!player) {
+          userBears.unshift({ betBull: false, address: sender, amount: ethers.utils.formatEther(amount), epoch })
+          setUserBears([...userBears])
+          // console.log(`[BET-BEAR] for player ${sender} - ${userBears.length}`)
+          // const _timeLeft = calculateTimeLeft(new Date().getTime())
+          const _timeLeft = calculateTimeLeft(startTimestamp)
+          setTimeLeft(_timeLeft)
+          console.log('🚀 ~ file: index.tsx ~ line 125 ~ initialize ~ _timeLeft', _timeLeft)
+          const total = 5 * 60
+          const actual = total - _timeLeft
+          const generated = (actual * 100) / total
+          console.log('🚀 ~ total', 100 - generated)
+          setProgressValue(100 - generated)
+        }
+      }
+
+      const roundStartListenner = async (epoch) => {
+        console.log(`[ROUND] Round started for epoch ${+epoch}`)
+        enqueueSnackbar(t(`[ROUND] Round started for epoch ${+epoch}`), {
+          variant: 'success',
+          TransitionComponent: Zoom,
+        })
+        // setUserBulls([])
+        // setUserBears([])
+        // await utils.sleep(30 * 1000)
+        setEpoch(epoch)
+
+        const _startTimestamp = new Date().getTime()
+        const timeLeft = calculateTimeLeft(_startTimestamp)
+        setTimeLeft(timeLeft)
+        setStartTimestamp(_startTimestamp.toString())
+      }
+
+      const roundEndListenner = async (epoch) => {
+        console.log(`[ROUND] Round finished for epoch ${+epoch}`)
+        enqueueSnackbar(t(`[ROUND] Round finished for epoch ${+epoch}`), {
+          variant: 'success',
+          TransitionComponent: Zoom,
+        })
+
+        // await utils.sleep(10 * 1000)
+        setUserBulls([])
+        setUserBears([])
+        userBulls.length = 0
+        userBears.length = 0
+      }
+
+      if (!ppreditionContract) return
+
+      const lisPaused = await ppreditionContract.paused()
+      setIsPaused(lisPaused)
+      if (lisPaused) {
+        enqueueSnackbar(t(`[LAUNCH] Contract is actually paused`), {
+          variant: 'error',
+          TransitionComponent: Zoom,
+        })
+        return
+      }
+
+      const lepoch = await ppreditionContract.currentEpoch()
+      setEpoch(lepoch)
+
+      const {
+        // bullAmount,
+        // bearAmount,
+        // totalAmount,
+        // closePrice,
+        startTimestamp,
+        lockTimestamp,
+        // closeTimestamp,
+        // lockPrice,
+        // startBlock,
+        // endBlock,
+      } = await ppreditionContract.rounds(lepoch)
+
+      const ltimeLeft = calculateTimeLeft(startTimestamp.toString())
+      setTimeLeft(ltimeLeft)
+      setStartTimestamp(startTimestamp.toString())
+      // console.log('🚀 ~ file: index.tsx ~ line 125 ~ initialize ~ _timeLeft', _timeLeft)
+      const total = 5 * 60
+      const actual = total - ltimeLeft
+      const generated = (actual * 100) / total
+      console.log('🚀 ~ total', 100 - generated)
+      setProgressValue(100 - generated)
+
+      enqueueSnackbar(t(`[LAUNCH] Stated to listen contract, current epoch is ${lepoch}`), {
         variant: 'success',
         TransitionComponent: Zoom,
       })
-    } catch (err) {
-      console.error(err)
-      enqueueSnackbar(t(`[ERROR] Error when getting smart contract round data. Starting colleting data from now`), {
-        variant: 'error',
-        TransitionComponent: Zoom,
-      })
-    }
-  }, [])
 
-  const betBullListenner = async (sender, epoch, amount) => {
-    const player = userBulls.find((p) => p.sender === sender)
-    if (!player) {
-      userBulls.unshift({ betBull: true, address: sender, amount: ethers.utils.formatEther(amount), epoch })
-      setUserBulls([...userBulls])
-      // console.log(`[BET-BULL] for player ${sender} - ${userBulls.length}`)
-      const _timeLeft = calculateTimeLeft(startTimestamp)
-      setTimeLeft(_timeLeft)
-      const total = 5 * 60
-      const actual = total - _timeLeft
-      const generated = (actual * 100) / total
-      console.log('🚀 ~ total', 100 - generated)
-      setProgressValue(100 - generated)
-    }
-  }
+      try {
+        ppreditionContract.on('StartRound', roundStartListenner)
+        ppreditionContract.on('EndRound', roundEndListenner)
+        ppreditionContract.on('BetBull', betBullListenner)
+        ppreditionContract.on('BetBear', betBearListenner)
+        // enqueueSnackbar(t(`[LAUNCH] Stated to listen contract`), {
+        //   variant: 'success',
+        //   TransitionComponent: Zoom,
+        // })
+      } catch (error) {
+        console.error(error)
+        enqueueSnackbar(t(`[ERROR] Error during smart contract listening... Please refresh the page`), {
+          variant: 'error',
+          TransitionComponent: Zoom,
+        })
+        // router.push('/app')
+      }
 
-  const betBearListenner = async (sender, epoch, amount) => {
-    const player = userBears.find((p) => p.sender === sender)
-    if (!player) {
-      userBears.unshift({ betBull: false, address: sender, amount: ethers.utils.formatEther(amount), epoch })
-      setUserBears([...userBears])
-      // console.log(`[BET-BEAR] for player ${sender} - ${userBears.length}`)
-      // const _timeLeft = calculateTimeLeft(new Date().getTime())
-      const _timeLeft = calculateTimeLeft(startTimestamp)
-      setTimeLeft(_timeLeft)
-      console.log('🚀 ~ file: index.tsx ~ line 125 ~ initialize ~ _timeLeft', _timeLeft)
-      const total = 5 * 60
-      const actual = total - _timeLeft
-      const generated = (actual * 100) / total
-      console.log('🚀 ~ total', 100 - generated)
-      setProgressValue(100 - generated)
-    }
-  }
+      try {
+        console.log('🚀 ~ LOADING gameData')
+        const round = await loadGameData({ epoch: lepoch })
+        if (!round) return
 
-  const roundStartListenner = async (epoch) => {
-    console.log(`[ROUND] Round started for epoch ${+epoch}`)
-    enqueueSnackbar(t(`[ROUND] Round started for epoch ${+epoch}`), {
-      variant: 'success',
-      TransitionComponent: Zoom,
-    })
-    // setUserBulls([])
-    // setUserBears([])
-    // await utils.sleep(30 * 1000)
-    setEpoch(epoch)
-
-    const _startTimestamp = new Date().getTime()
-    const timeLeft = calculateTimeLeft(_startTimestamp)
-    setTimeLeft(timeLeft)
-    setStartTimestamp(_startTimestamp.toString())
-  }
-
-  const roundEndListenner = async (epoch) => {
-    console.log(`[ROUND] Round finished for epoch ${+epoch}`)
-    enqueueSnackbar(t(`[ROUND] Round finished for epoch ${+epoch}`), {
-      variant: 'success',
-      TransitionComponent: Zoom,
-    })
-
-    // await utils.sleep(10 * 1000)
-    setUserBulls([])
-    setUserBears([])
-    userBulls.length = 0
-    userBears.length = 0
-  }
+        console.log('🚀 ~  checkEpoch ~ round', round, 'bets', round.bets.length)
+        // setRound(round)
+        round.bets.map((bet) => {
+          if (bet.position === 'Bull') {
+            userBulls.unshift({ betBull: true, address: bet.id, amount: bet.amount, epoch: lepoch })
+            setUserBulls(userBulls)
+            // setUserBulls([...userBulls])
+          } else if (bet.position === 'Bear') {
+            userBears.unshift({ betBull: false, address: bet.id, amount: bet.amount, epoch: lepoch })
+            setUserBears(userBears)
+            // setUserBears([...userBears])
+          }
+          return bet
+        })
+        enqueueSnackbar(t(`[SYNC] Syncronising with actual round data done`), {
+          variant: 'success',
+          TransitionComponent: Zoom,
+        })
+      } catch (error) {
+        console.error(error)
+        enqueueSnackbar(t(`[ERROR] Error when getting smart contract round data. Starting colleting data from now`), {
+          variant: 'error',
+          TransitionComponent: Zoom,
+        })
+      }
+    },
+    [enqueueSnackbar, t, userBulls, userBears]
+  )
 
   useEffect(() => {
     if (!data) return
@@ -273,41 +274,29 @@ const LiveView = () => {
       return
     }
 
+    if (user) return
+
     if (isMountedRef.current) {
-      const provider = new ethers.providers.Web3Provider(window.ethereum)
-      setProvider(provider)
+      const lprovider = new ethers.providers.Web3Provider(window.ethereum)
+      setProvider(lprovider)
+      setUser(data.currentUser)
 
       // TODO decode from server
       // const privateKey = crpyto.decrypt(data.currentUser.private)
       const privateKey = data.currentUser.private
 
-      const signer = new ethers.Wallet(privateKey, provider)
+      const signer = new ethers.Wallet(privateKey, lprovider)
 
-      setUser(data.currentUser)
-      const preditionContract = new ethers.Contract(
+      const lpreditionContract = new ethers.Contract(
         process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS,
         PREDICTION_CONTRACT_ABI,
         signer
       )
-      setPreditionContract(preditionContract)
-      initialize(preditionContract)
+      setPreditionContract(lpreditionContract)
+
+      initialize(lpreditionContract)
     }
-  }, [data, initialize])
-
-  // const getUsers = useCallback(async () => {
-  //         if (isMountedRef.current && data) {
-  //     const preditionContract = new ethers.Contract(
-  //       process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
-  //       PREDICTION_CONTRACT_ABI,
-  //       signer
-  //     )
-  //         }
-
-  // }, [isMountedRef])
-
-  // useEffect(() => {
-  //   getUsers()
-  // }, [getUsers])
+  }, [data, user, initialize, isMountedRef, router])
 
   return (
     <>

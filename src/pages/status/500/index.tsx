@@ -43,7 +43,8 @@ function Status500() {
   const { t }: { t: any } = useTranslation()
 
   const [pending, setPending] = useState(false)
-  function handleClick() {
+
+  const handleClick = () => {
     setPending(true)
   }
 

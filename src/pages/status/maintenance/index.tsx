@@ -1,15 +1,14 @@
-import { Box, Typography, Container, Divider, IconButton, Tooltip } from '@mui/material'
-import type { ReactElement } from 'react'
+import FacebookIcon from '@mui/icons-material/Facebook'
+import InstagramIcon from '@mui/icons-material/Instagram'
+import TwitterIcon from '@mui/icons-material/Twitter'
+import { Box, Container, Divider, IconButton, Tooltip, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import Head from 'next/head'
+import { useTranslation } from 'react-i18next'
+import Logo from 'src/client/components/LogoSign'
 import BaseLayout from 'src/client/layouts/BaseLayout'
 
-import Head from 'next/head'
-import Logo from 'src/client/components/LogoSign'
-
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import FacebookIcon from '@mui/icons-material/Facebook'
-import TwitterIcon from '@mui/icons-material/Twitter'
-import InstagramIcon from '@mui/icons-material/Instagram'
+import type { ReactElement } from 'react'
 
 const MainContent = styled(Box)(
   () => `
@@ -31,7 +30,7 @@ const TopWrapper = styled(Box)(
 `
 )
 
-function StatusMaintenance() {
+const StatusMaintenance = () => {
   const { t }: { t: any } = useTranslation()
 
   return (
@@ -91,6 +90,6 @@ function StatusMaintenance() {
 
 export default StatusMaintenance
 
-StatusMaintenance.getLayout = function getLayout(page: ReactElement) {
+StatusMaintenance.getLayout = (page: ReactElement) => {
   return <BaseLayout>{page}</BaseLayout>
 }

@@ -6,11 +6,11 @@ import { useTranslation } from 'react-i18next'
 import Footer from 'src/client/components/Footer'
 import Link from 'src/client/components/Link'
 import Logo from 'src/client/components/LogoSign'
+import BlogCard from 'src/client/components/Management/Users/Single/BlogCard'
 import BaseLayout from 'src/client/layouts/BaseLayout'
 import LanguageSwitcher from 'src/client/layouts/BoxedSidebarLayout/Header/Buttons/LanguageSwitcher'
 
 import type { ReactElement } from 'react'
-import BlogCard from '@/client/components/Management/Users/Single/BlogCard'
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `

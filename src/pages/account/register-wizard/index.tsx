@@ -1,33 +1,33 @@
-import { useState, Children } from 'react'
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import CloseIcon from '@mui/icons-material/Close'
 import {
-  Typography,
-  Container,
+  Alert,
+  Avatar,
+  Box,
   Button,
   Card,
   CircularProgress,
+  Collapse,
+  Container,
   Grid,
-  Box,
+  IconButton,
+  Link,
   Step,
   StepLabel,
   Stepper,
-  Link,
-  Collapse,
-  Alert,
-  Avatar,
-  IconButton,
+  Typography,
 } from '@mui/material'
-import type { ReactElement } from 'react'
-import BaseLayout from 'src/client/layouts/BaseLayout'
-import { Field, Form, Formik, FormikConfig, FormikValues } from 'formik'
-import { CheckboxWithLabel, TextField } from 'src/client/components/formik-material-ui'
-import * as Yup from 'yup'
-import CloseIcon from '@mui/icons-material/Close'
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
-
-import Head from 'next/head'
-import { useTranslation } from 'react-i18next'
 import { styled } from '@mui/material/styles'
+import { Field, Form, Formik, FormikConfig, FormikValues } from 'formik'
+import Head from 'next/head'
+import { Children, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { CheckboxWithLabel, TextField } from 'src/client/components/formik-material-ui'
 import Logo from 'src/client/components/LogoSign'
+import BaseLayout from 'src/client/layouts/BaseLayout'
+import * as Yup from 'yup'
+
+import type { ReactElement } from 'react'
 
 const MainContent = styled(Box)(
   () => `
@@ -60,6 +60,77 @@ const AvatarSuccess = styled(Avatar)(
 )
 
 const sleep = (time: number) => new Promise((acc) => setTimeout(acc, time))
+
+export interface FormikStepProps extends Pick<FormikConfig<FormikValues>, 'children' | 'validationSchema'> {
+  label: string
+}
+
+export function FormikStep({ children }: FormikStepProps) {
+  return <>{children}</>
+}
+
+export function FormikStepper({ children, ...props }: FormikConfig<FormikValues>) {
+  const childrenArray = Children.toArray(children) as ReactElement<FormikStepProps>[]
+  const [step, setStep] = useState(0)
+  const currentChild = childrenArray[step]
+  const [completed, setCompleted] = useState(false)
+  const { t }: { t: any } = useTranslation()
+
+  function isLastStep() {
+    return step === childrenArray.length - 2
+  }
+
+  return (
+    <Formik
+      {...props}
+      validationSchema={currentChild.props.validationSchema}
+      onSubmit={async (values, helpers) => {
+        if (isLastStep()) {
+          await props.onSubmit(values, helpers)
+          setCompleted(true)
+          setStep((s) => s + 1)
+        } else {
+          setStep((s) => s + 1)
+          helpers.setTouched({})
+        }
+      }}>
+      {({ isSubmitting }) => (
+        <Form autoComplete="off">
+          <Stepper alternativeLabel activeStep={step}>
+            {childrenArray.map((child, index) => (
+              <Step key={child.props.label} completed={step > index || completed}>
+                <StepLabel>{child.props.label}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+
+          {currentChild}
+          {!completed ? (
+            <BoxActions p={4} display="flex" alignItems="center" justifyContent="space-between">
+              <Button
+                disabled={isSubmitting || step === 0}
+                variant="outlined"
+                color="primary"
+                type="button"
+                onClick={() => setStep((s) => s - 1)}>
+                {t('Previous')}
+              </Button>
+
+              <Button
+                startIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
+                disabled={isSubmitting}
+                variant="contained"
+                color="primary"
+                type="submit">
+                {isSubmitting ? t('Submitting') : isLastStep() ? t('Complete registration') : t('Next step')}
+              </Button>
+            </BoxActions>
+          ) : null}
+        </Form>
+      )}
+    </Formik>
+  )
+}
 
 function RegisterWizard() {
   const { t }: { t: any } = useTranslation()
@@ -97,7 +168,7 @@ function RegisterWizard() {
                 company_size: '',
                 company_role: '',
               }}
-              onSubmit={async (_values) => {
+              onSubmit={async () => {
                 await sleep(3000)
               }}>
               <FormikStep
@@ -262,77 +333,6 @@ function RegisterWizard() {
         </Container>
       </MainContent>
     </>
-  )
-}
-
-export interface FormikStepProps extends Pick<FormikConfig<FormikValues>, 'children' | 'validationSchema'> {
-  label: string
-}
-
-export function FormikStep({ children }: FormikStepProps) {
-  return <>{children}</>
-}
-
-export function FormikStepper({ children, ...props }: FormikConfig<FormikValues>) {
-  const childrenArray = Children.toArray(children) as ReactElement<FormikStepProps>[]
-  const [step, setStep] = useState(0)
-  const currentChild = childrenArray[step]
-  const [completed, setCompleted] = useState(false)
-  const { t }: { t: any } = useTranslation()
-
-  function isLastStep() {
-    return step === childrenArray.length - 2
-  }
-
-  return (
-    <Formik
-      {...props}
-      validationSchema={currentChild.props.validationSchema}
-      onSubmit={async (values, helpers) => {
-        if (isLastStep()) {
-          await props.onSubmit(values, helpers)
-          setCompleted(true)
-          setStep((s) => s + 1)
-        } else {
-          setStep((s) => s + 1)
-          helpers.setTouched({})
-        }
-      }}>
-      {({ isSubmitting }) => (
-        <Form autoComplete="off">
-          <Stepper alternativeLabel activeStep={step}>
-            {childrenArray.map((child, index) => (
-              <Step key={child.props.label} completed={step > index || completed}>
-                <StepLabel>{child.props.label}</StepLabel>
-              </Step>
-            ))}
-          </Stepper>
-
-          {currentChild}
-          {!completed ? (
-            <BoxActions p={4} display="flex" alignItems="center" justifyContent="space-between">
-              <Button
-                disabled={isSubmitting || step === 0}
-                variant="outlined"
-                color="primary"
-                type="button"
-                onClick={() => setStep((s) => s - 1)}>
-                {t('Previous')}
-              </Button>
-
-              <Button
-                startIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
-                disabled={isSubmitting}
-                variant="contained"
-                color="primary"
-                type="submit">
-                {isSubmitting ? t('Submitting') : isLastStep() ? t('Complete registration') : t('Next step')}
-              </Button>
-            </BoxActions>
-          ) : null}
-        </Form>
-      )}
-    </Formik>
   )
 }
 

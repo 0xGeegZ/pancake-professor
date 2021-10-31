@@ -1,11 +1,12 @@
 import { enumType, extendType, nonNull, objectType, stringArg } from 'nexus'
 import slug from 'slug'
+
 import prisma from '../../db/prisma'
 import { getProjectPaidPlan } from '../../get-project-paid-plan'
-import { plans } from '../../stripe/plans'
 import { generateInvitationToken } from '../../invitations/token'
 import { sendEmail } from '../../send-email'
 import stripe from '../../stripe'
+import { plans } from '../../stripe/plans'
 
 export const PaidPlan = enumType({
   name: `PaidPlan`,
@@ -90,7 +91,7 @@ const mutations = extendType({
       resolve: async (_, args, ctx) => {
         if (!ctx.user?.id) return null
 
-        return await prisma.project.create({
+        return prisma.project.create({
           data: {
             name: args.name,
             slug: args.slug || slug(args.name),

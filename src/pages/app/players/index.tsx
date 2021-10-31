@@ -1,4 +1,3 @@
-import PlayersList from '@/client/components/Management/Users/PlayersList'
 import { Grid } from '@mui/material'
 import { ethers } from 'ethers'
 import Head from 'next/head'
@@ -7,6 +6,7 @@ import { useCallback, useEffect, useState } from 'react'
 import { PREDICTION_CONTRACT_ABI } from 'src/client/abis/pancake-prediction-abi-v3'
 import Footer from 'src/client/components/Footer'
 import PageHeader from 'src/client/components/Management/Users/PageHeader'
+import PlayersList from 'src/client/components/Management/Users/PlayersList'
 import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 import MainLayout from 'src/client/layouts/MainLayout'
@@ -14,12 +14,12 @@ import loadPlayers from 'src/client/thegraph/loadPlayers'
 
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
+
 function ManagementUsers() {
   const router = useRouter()
 
-  const [fetching, setFetching] = useState<boolean>(true)
+  const [fetching, setFetching] = useState<boolean>(false)
   const [players, setPlayers] = useState<any[]>([])
-  const [epoch, setEpoch] = useState<string>(null)
   const [hasError, setHasError] = useState<boolean>(false)
 
   const [user, setUser] = useState<User | any>(null)
@@ -29,45 +29,41 @@ function ManagementUsers() {
   const [{ data }] = useGetCurrentUserQuery()
 
   const getPlayers = useCallback(
-    async (preditionContract) => {
-      if (epoch) return
+    async (ppreditionContract) => {
+      console.log('getPlayers')
+      if (fetching) return
+      setFetching(true)
       try {
-        // const _epoch = epoch ? epoch : await preditionContract.currentEpoch()
+        const epoch = await ppreditionContract.currentEpoch()
 
-        const epoch = await preditionContract.currentEpoch()
-        setEpoch(epoch)
-
-        const players = await loadPlayers({ epoch })
-        setPlayers(players)
+        const lplayers = await loadPlayers({ epoch })
+        setPlayers(lplayers)
         setFetching(false)
       } catch (err) {
         setHasError(true)
       }
     },
-    [epoch]
+    [fetching]
   )
 
   const refreshQuery = useCallback(
     async ({ orderBy }) => {
-      let _epoch = epoch
-      if (!_epoch) {
-        _epoch = await preditionContract.currentEpoch()
-        setEpoch(_epoch)
-      }
+      console.log('refreshQuery')
+      const epoch = await preditionContract.currentEpoch()
 
       setFetching(true)
       setPlayers([])
       players.length = 0
 
       try {
-        const _players = await loadPlayers({ epoch: _epoch, orderBy })
-        setPlayers(_players)
+        const lplayers = await loadPlayers({ epoch, orderBy })
+        setPlayers(lplayers)
         setFetching(false)
       } catch (err) {
         setHasError(true)
       }
     },
-    [epoch, players, preditionContract]
+    [players, preditionContract]
   )
 
   useEffect(() => {
@@ -76,35 +72,37 @@ function ManagementUsers() {
       router.push('/app')
       return
     }
+    if (user) return
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-    setProvider(provider)
+    const lprovider = new ethers.providers.Web3Provider(window.ethereum)
+    setProvider(lprovider)
+
+    setUser(data.currentUser)
 
     // TODO decode from server
     // const privateKey = crpyto.decrypt(data.currentUser.private)
     const privateKey = data.currentUser.private
 
-    const signer = new ethers.Wallet(privateKey, provider)
+    const signer = new ethers.Wallet(privateKey, lprovider)
 
-    setUser(data.currentUser)
-    const preditionContract = new ethers.Contract(
+    const lpreditionContract = new ethers.Contract(
       process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS,
       PREDICTION_CONTRACT_ABI,
       signer
     )
-    setPreditionContract(preditionContract)
+    setPreditionContract(lpreditionContract)
 
     try {
-      getPlayers(preditionContract)
+      getPlayers(lpreditionContract)
     } catch (err) {
       setHasError(true)
     }
-  }, [data, getPlayers, router, provider])
+  }, [data, getPlayers, router, provider, user, preditionContract])
 
   return (
     <>
       <Head>
-        <title>Users - Management</title>
+        <title>Follow Best Players</title>
       </Head>
       <PageTitleWrapper>
         <PageHeader />
@@ -112,7 +110,13 @@ function ManagementUsers() {
 
       <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
         <Grid item xs={12}>
-          <PlayersList refreshQuery={refreshQuery} players={players} fetching={fetching} hasError={hasError} />
+          <PlayersList
+            user={user}
+            refreshQuery={refreshQuery}
+            players={players}
+            fetching={fetching}
+            hasError={hasError}
+          />
         </Grid>
       </Grid>
       <Footer />

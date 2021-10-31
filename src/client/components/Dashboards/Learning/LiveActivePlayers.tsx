@@ -16,7 +16,7 @@ import {
   TableRow,
   Typography,
 } from '@mui/material'
-import { useRef, useState } from 'react'
+import PropTypes from 'prop-types'
 import { Scrollbars } from 'react-custom-scrollbars-2'
 import { useTranslation } from 'react-i18next'
 import Text from 'src/client/components/Text'
@@ -157,15 +157,9 @@ function LiveActivePlayers({ userBulls, userBears }) {
               </Grid>
             ) : (
               <>
-                {[].concat(userBulls, userBears).map((player, index) => {
-                  {
-                    /* {(liveUserBettors.length >= 6
-                  ? liveUserBettors.slice(liveUserBettors.length - 6, liveUserBettors.length - 1)
-                  : liveUserBettors
-                ).map((player) => { */
-                  }
+                {[].concat(userBulls, userBears).map((player) => {
                   return (
-                    <TableRow hover key={index}>
+                    <TableRow hover key={player.address}>
                       <TableCell>
                         <Box display="flex" alignItems="center">
                           {/* <AvatarLight sx={{ mr: 1 }}>1</AvatarLight> */}
@@ -240,6 +234,21 @@ function LiveActivePlayers({ userBulls, userBears }) {
       </Card>
     </Scrollbars>
   )
+}
+
+LiveActivePlayers.propTypes = {
+  userBulls: PropTypes.arrayOf(
+    PropTypes.shape({
+      address: PropTypes.string,
+      betBull: PropTypes.bool,
+    })
+  ).isRequired,
+  userBears: PropTypes.arrayOf(
+    PropTypes.shape({
+      address: PropTypes.string,
+      betBull: PropTypes.bool,
+    })
+  ).isRequired,
 }
 
 export default LiveActivePlayers

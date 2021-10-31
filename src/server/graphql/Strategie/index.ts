@@ -1,5 +1,6 @@
 // src/server/graphql/Strategie/index.ts
-import { objectType, extendType, nonNull, stringArg, intArg, booleanArg } from 'nexus'
+import { booleanArg, extendType, intArg, nonNull, objectType, stringArg } from 'nexus'
+
 import prisma from '../../db/prisma'
 
 const Strategie = objectType({
@@ -9,8 +10,10 @@ const Strategie = objectType({
     t.model.createdAt()
     t.model.modifiedAt()
     t.model.player()
-    t.model.amount()
+    t.model.startedAmount()
+    t.model.currentAmount()
     t.model.isActive()
+    t.model.isRunning()
     t.model.isDeleted()
     t.model.maxLooseAmount()
     t.model.minWinAmount()
@@ -53,26 +56,24 @@ const mutations = extendType({
     t.nullable.field('createStrategie', {
       type: 'Strategie',
       args: {
-        id: nonNull(stringArg()),
         player: nonNull(stringArg()),
-        amount: nonNull(stringArg()),
-        isActive: booleanArg(),
-        isDeleted: booleanArg(),
-        maxLooseAmount: nonNull(intArg()),
-        minWinAmount: nonNull(intArg()),
+        startedAmount: nonNull(intArg()),
+        maxLooseAmount: intArg(),
+        minWinAmount: intArg(),
       },
       resolve: async (_, args, ctx) => {
         if (!ctx.user?.id) return null
 
-        return await prisma.strategie.create({
+        console.log('🚀 ~ file: index.ts ~ line 73 ~ resolve: ~ args', args)
+        console.log('🚀 ~ file: index.ts ~ line 73 ~ resolve: ~ args', ctx.user?.id)
+
+        return prisma.strategie.create({
           data: {
-            id: args.id,
             player: args.player,
-            amount: args.amount,
-            isActive: args.isActive,
-            isDeleted: args.isDeleted,
-            maxLooseAmount: args.maxLooseAmount,
-            minWinAmount: args.minWinAmount,
+            startedAmount: args.startedAmount,
+            currentAmount: args.startedAmount,
+            maxLooseAmount: args.maxLooseAmount || 0,
+            minWinAmount: args.minWinAmount || 0,
             user: {
               connect: {
                 id: ctx.user.id,
@@ -88,8 +89,10 @@ const mutations = extendType({
       args: {
         id: nonNull(stringArg()),
         player: nonNull(stringArg()),
-        amount: nonNull(stringArg()),
+        startedAmount: nonNull(intArg()),
+        currentAmount: nonNull(intArg()),
         isActive: booleanArg(),
+        isRunning: booleanArg(),
         isDeleted: booleanArg(),
         maxLooseAmount: nonNull(intArg()),
         minWinAmount: nonNull(intArg()),
@@ -110,12 +113,14 @@ const mutations = extendType({
 
         if (!hasAccess) return null
 
-        return await prisma.strategie.update({
+        return prisma.strategie.update({
           where: { id: args.id },
           data: {
             player: args.player,
-            amount: args.amount,
+            startedAmount: args.startedAmount,
+            currentAmount: args.currentAmount,
             isActive: args.isActive,
+            isRunning: args.isRunning,
             isDeleted: args.isDeleted,
             maxLooseAmount: args.maxLooseAmount,
             minWinAmount: args.minWinAmount,
@@ -159,8 +164,8 @@ const mutations = extendType({
 
         // return strategie
 
-        return await prisma.strategie.update({
-          where: { id: args.id },
+        return prisma.strategie.update({
+          where: { id },
           data: {
             isActive: false,
           },
@@ -203,8 +208,8 @@ const mutations = extendType({
 
         // return strategie
 
-        return await prisma.strategie.update({
-          where: { id: args.id },
+        return prisma.strategie.update({
+          where: { id },
           data: {
             isActive: false,
             isDeleted: true,

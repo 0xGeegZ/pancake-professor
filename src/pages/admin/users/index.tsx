@@ -3,6 +3,7 @@ import Head from 'next/head'
 import { useCallback, useEffect, useState } from 'react'
 import Footer from 'src/client/components/Footer'
 import PageHeader from 'src/client/components/Management/Users/PageHeader'
+import UsersList from 'src/client/components/Management/Users/UsersList'
 import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
 import { useGetUsersQuery } from 'src/client/graphql/getUsers.generated'
 import useRefMounted from 'src/client/hooks/useRefMounted'
@@ -10,7 +11,6 @@ import MainLayout from 'src/client/layouts/MainLayout'
 
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
-import UsersList from '@/client/components/Management/Users/UsersList'
 
 function ManagementUsers() {
   const isMountedRef = useRefMounted()
