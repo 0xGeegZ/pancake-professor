@@ -148,7 +148,7 @@ const Transition = forwardRef((props: TransitionProps & { children?: ReactElemen
 /* eslint-enable */
 
 // function FollowPlayerForm({ handleCloseCreateForm, player }) {
-function FollowPlayerForm({}) {
+function FollowPlayerForm() {
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
 

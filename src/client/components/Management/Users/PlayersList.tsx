@@ -38,6 +38,7 @@ import { styled, useTheme } from '@mui/material/styles'
 import { TransitionProps } from '@mui/material/transitions'
 import clsx from 'clsx'
 import { useSnackbar } from 'notistack'
+import PropTypes from 'prop-types'
 import {
   ChangeEvent,
   FC,
@@ -52,8 +53,10 @@ import {
 } from 'react'
 import { useTranslation } from 'react-i18next'
 import FollowPlayerForm from 'src/client/components/Dashboards/Automation/FollowPlayerForm'
+import { useCreateStrategieMutation } from 'src/client/graphql/createStrategie.generated'
 
 import SidebarPlayerDrawer from './SidebarPlayerDrawer'
+
 
 /* eslint-disable react/jsx-props-no-spreading */
 import type { Player } from 'src/client/models/player'
@@ -264,7 +267,7 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
 
-  // const [, createStrategie] = useCreateStrategieMutation()
+  const [, createStrategie] = useCreateStrategieMutation()
 
   const ordersBy = [
     {
@@ -362,13 +365,13 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
     setLimit(parseInt(event.target.value))
   }
 
-  // const updateQuery = useCallback(async () => {
-  //   try {
-  //     await refreshQuery({ orderBy })
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }, [])
+  const updateQuery = useCallback(async () => {
+    try {
+      await refreshQuery({ orderBy })
+    } catch (err) {
+      console.error(err)
+    }
+  }, [])
 
   const filteredPlayers = applyFilters(players, query, filters)
   const paginatedPlayers = applyPagination(filteredPlayers, page, limit)
@@ -416,16 +419,13 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
   }
 
   const [openCreateForm, setOpenCreateForm] = useState(false)
-  const [activePlayer, setActivePlayer] = useState(null)
 
-  const handleOpenCreateForm = (pactivePlayer) => {
+  const handleOpenCreateForm = () => {
     setOpenCreateForm(true)
-    setActivePlayer(pactivePlayer)
   }
 
   const handleCloseCreateForm = () => {
     setOpenCreateForm(false)
-    setActivePlayer(null)
   }
 
   return (
@@ -647,7 +647,7 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
                           <TableCell align="center">
                             <Typography noWrap>
                               <Tooltip title={t('Copy')} arrow>
-                                <IconButton component={Link} onClick={handleOpenCreateForm(player.id)} color="primary">
+                                <IconButton component={Link} onClick={handleOpenCreateForm} color="primary">
                                   <GamepadIcon fontSize="small" />
                                 </IconButton>
                               </Tooltip>
@@ -960,11 +960,7 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
                             <Grid container spacing={3}>
                               <Grid item md={6}>
                                 {/* <Button size="small" fullWidth variant="contained"> */}
-                                <Button
-                                  size="small"
-                                  fullWidth
-                                  variant="contained"
-                                  onClick={handleOpenCreateForm(player.id)}>
+                                <Button size="small" fullWidth variant="contained" onClick={handleOpenCreateForm}>
                                   <b> {t('Copy')}</b>
                                 </Button>
                               </Grid>
@@ -981,11 +977,10 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
                               </Grid>
                             </Grid>
                           </Box>
-                          {openCreateForm && activePlayer === player.id ? (
+                          {openCreateForm ? (
                             <>
                               <Divider />
                               <FollowPlayerForm />
-                              {/* <FollowPlayerForm handleCloseCreateForm={handleCloseCreateForm} player={player} /> */}
                             </>
                           ) : (
                             <></>
@@ -1082,18 +1077,18 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
   )
 }
 
-// PlayersList.propTypes = {
-//   players: PropTypes.array,
-//   fetching: PropTypes.bool.isRequired,
-//   refreshQuery: PropTypes.func.isRequired,
-//   hasError: PropTypes.bool.isRequired,
-// }
+PlayersList.propTypes = {
+  players: PropTypes.array,
+  fetching: PropTypes.bool.isRequired,
+  refreshQuery: PropTypes.func.isRequired,
+  hasError: PropTypes.bool.isRequired,
+}
 
-// PlayersList.defaultProps = {
-//   players: [],
-//   fetching: true,
-//   refreshQuery: {},
-//   hasError: false,
-// }
+PlayersList.defaultProps = {
+  players: [],
+  fetching: true,
+  refreshQuery: {},
+  hasError: false,
+}
 
 export default PlayersList
