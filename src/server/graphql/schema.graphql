@@ -40,7 +40,7 @@ type Mutation {
   createKoi(birthDate: String, bloodline: String, breeder: String, id: String!, purchasePrice: Int, sex: String, skinType: String, variety: String!, youtube: String): Koi
   createKoiHistory(date: String, id: String!, image: String, length: Int): KoiHistory
   createProject(name: String!, slug: String): Project
-  createStrategie(currentAmount: Int!, id: String!, isActive: Boolean, isDeleted: Boolean, isRunning: Boolean, maxLooseAmount: Int!, minWinAmount: Int!, player: String!, startedAmount: Int!): Strategie
+  createStrategie(maxLooseAmount: Int, minWinAmount: Int, player: String!, startedAmount: Int!): Strategie
   createStripeCheckoutBillingPortalUrl(projectId: String!): String
   createStripeCheckoutSession(plan: PaidPlan!, projectId: String!): String
   deleteKoi(id: String!): Koi

@@ -1,7 +1,5 @@
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
-import AvTimerTwoToneIcon from '@mui/icons-material/AvTimerTwoTone'
 import CloseIcon from '@mui/icons-material/Close'
-import LoopTwoToneIcon from '@mui/icons-material/LoopTwoTone'
 import RemoveTwoToneIcon from '@mui/icons-material/RemoveTwoTone'
 import {
   Alert,
@@ -12,11 +10,9 @@ import {
   CardActionArea,
   Collapse,
   Dialog,
-  Divider,
   Grid,
   IconButton,
   Slide,
-  Stack,
   Typography,
   useTheme,
   Zoom,
@@ -24,6 +20,7 @@ import {
 import { styled } from '@mui/material/styles'
 import { TransitionProps } from '@mui/material/transitions'
 import { useSnackbar } from 'notistack'
+import PropTypes from 'prop-types'
 import { forwardRef, ReactElement, Ref, useState } from 'react'
 import { buildStyles } from 'react-circular-progressbar'
 import { useTranslation } from 'react-i18next'
@@ -147,8 +144,8 @@ const Transition = forwardRef((props: TransitionProps & { children?: ReactElemen
 ))
 /* eslint-enable */
 
-// function FollowPlayerForm({ handleCloseCreateForm, player }) {
-function FollowPlayerForm() {
+function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
+  // function FollowPlayerForm() {
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
 
@@ -181,13 +178,13 @@ function FollowPlayerForm() {
   }
 
   const sumbitCreateStrategie = async () => {
+    console.log('🚀 ~ sumbitCreateStrategie', player, 'user', user, 'gauge', gauge)
+
+    // TODO check if yser bankroll has suffisant amount
+
     const { error } = await createStrategie({
-      //   player: $player
-      // amount: $amount
-      // isActive: $isActive
-      // isDeleted: $isDeleted
-      // maxLooseAmount: $maxLooseAmount
-      // minWinAmount: $minWinAmount
+      player: player.id,
+      startedAmount: +gauge,
     })
 
     if (error) {
@@ -204,7 +201,7 @@ function FollowPlayerForm() {
     })
 
     handleCloseDialog()
-    // handleCloseCreateForm()
+    handleCloseCreateForm()
   }
 
   return (
@@ -212,7 +209,11 @@ function FollowPlayerForm() {
       <Grid container spacing={3}>
         <Grid item xs={12}>
           <Card>
-            <Box display="flex" justifyContent="space-between" p={4} mb={2} alignItems="center">
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              sx={{ pt: 4, pl: 4, pr: 4, pb: 2, mb: 2 }}
+              alignItems="center">
               <Box display="flex" alignItems="center">
                 {/* <AvatarPrimary>
                   <AcUnitTwoToneIcon fontSize="medium" />
@@ -266,7 +267,7 @@ function FollowPlayerForm() {
                 </BoxDegrees>
               </BoxButtons>
             </GaugeWrapper>
-            <Stack
+            {/* <Stack
               mt={3}
               spacing={3}
               alignItems="center"
@@ -300,16 +301,23 @@ function FollowPlayerForm() {
                   50%
                 </Typography>
               </Box>
-            </Stack>
-
-            <Grid item xs={12}>
-              <CardActionAreaWrapper>
-                {/* <Button size="small" fullWidth variant="contained"> */}
-                <Button size="small" fullWidth variant="contained" onClick={handleOpenDialog}>
-                  <b> {t('Copy')}</b>
-                </Button>
-              </CardActionAreaWrapper>
-            </Grid>
+            </Stack> */}
+            <Box px={3} py={2}>
+              <Grid container spacing={3}>
+                <Grid item xs={8}>
+                  {/* <Button size="small" fullWidth variant="contained"> */}
+                  <Button size="small" fullWidth variant="contained" onClick={handleOpenDialog}>
+                    <b> {t('Copy')}</b>
+                  </Button>
+                </Grid>
+                <Grid item xs={4}>
+                  <Button size="small" fullWidth variant="outlined" color="secondary" onClick={handleCloseCreateForm}>
+                    <b> {t('Close')}</b>
+                    <CloseIcon fontSize="inherit" />
+                  </Button>
+                </Grid>
+              </Grid>
+            </Box>
           </Card>
         </Grid>
       </Grid>
@@ -361,12 +369,18 @@ function FollowPlayerForm() {
 }
 
 FollowPlayerForm.propTypes = {
-  // player: PropTypes.arrayOf(
-  //   PropTypes.shape({
-  //     id: PropTypes.string,
-  //   })
-  // ).isRequired,
-  // handleCloseCreateForm: PropTypes.func.isRequired,
+  player: PropTypes.objectOf(
+    PropTypes.shape({
+      id: PropTypes.string,
+    })
+  ).isRequired,
+  user: PropTypes.objectOf(
+    PropTypes.shape({
+      bankroll: PropTypes.string,
+    })
+  ).isRequired,
+
+  handleCloseCreateForm: PropTypes.func.isRequired,
 }
 
 export default FollowPlayerForm

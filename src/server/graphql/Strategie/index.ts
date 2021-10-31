@@ -56,30 +56,24 @@ const mutations = extendType({
     t.nullable.field('createStrategie', {
       type: 'Strategie',
       args: {
-        id: nonNull(stringArg()),
         player: nonNull(stringArg()),
         startedAmount: nonNull(intArg()),
-        currentAmount: nonNull(intArg()),
-        isActive: booleanArg(),
-        isRunning: booleanArg(),
-        isDeleted: booleanArg(),
-        maxLooseAmount: nonNull(intArg()),
-        minWinAmount: nonNull(intArg()),
+        maxLooseAmount: intArg(),
+        minWinAmount: intArg(),
       },
       resolve: async (_, args, ctx) => {
         if (!ctx.user?.id) return null
 
+        console.log('🚀 ~ file: index.ts ~ line 73 ~ resolve: ~ args', args)
+        console.log('🚀 ~ file: index.ts ~ line 73 ~ resolve: ~ args', ctx.user?.id)
+
         return prisma.strategie.create({
           data: {
-            id: args.id,
             player: args.player,
             startedAmount: args.startedAmount,
-            currentAmount: args.currentAmount,
-            isActive: args.isActive,
-            isRunning: args.isRunning,
-            isDeleted: args.isDeleted,
-            maxLooseAmount: args.maxLooseAmount,
-            minWinAmount: args.minWinAmount,
+            currentAmount: args.startedAmount,
+            maxLooseAmount: args.maxLooseAmount || 0,
+            minWinAmount: args.minWinAmount || 0,
             user: {
               connect: {
                 id: ctx.user.id,

@@ -110,7 +110,13 @@ function ManagementUsers() {
 
       <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
         <Grid item xs={12}>
-          <PlayersList refreshQuery={refreshQuery} players={players} fetching={fetching} hasError={hasError} />
+          <PlayersList
+            user={user}
+            refreshQuery={refreshQuery}
+            players={players}
+            fetching={fetching}
+            hasError={hasError}
+          />
         </Grid>
       </Grid>
       <Footer />
