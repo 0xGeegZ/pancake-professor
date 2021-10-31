@@ -11,8 +11,10 @@ query GetCurrentUser {
     strategies {
       id
       player
-      amount
+      startedAmount
+      currentAmount
       isActive
+      isRunning
       isDeleted
       maxLooseAmount
       minWinAmount

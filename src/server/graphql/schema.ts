@@ -4,7 +4,6 @@ import path from 'path'
 
 import Koi from './Koi'
 import KoiHistory from './KoiHistory'
-import Player from './Player'
 import Pond from './Pond'
 import Project, { PaidPlan } from './Project'
 import Strategie from './Strategie'
@@ -15,7 +14,7 @@ import User from './User'
 const shouldGenerateArtifacts = process.env.NODE_ENV === 'development' || !!process.env.GENERATE
 
 export const schema = makeSchema({
-  types: [User, Player, Project, PaidPlan, Pond, Koi, KoiHistory, Strategie],
+  types: [User, Project, PaidPlan, Pond, Koi, KoiHistory, Strategie],
   plugins: [
     nexusPrisma({
       shouldGenerateArtifacts,

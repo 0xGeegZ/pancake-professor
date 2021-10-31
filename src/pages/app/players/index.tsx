@@ -20,7 +20,6 @@ function ManagementUsers() {
 
   const [fetching, setFetching] = useState<boolean>(false)
   const [players, setPlayers] = useState<any[]>([])
-  const [epoch, setEpoch] = useState<string>(null)
   const [hasError, setHasError] = useState<boolean>(false)
 
   const [user, setUser] = useState<User | any>(null)
@@ -31,13 +30,13 @@ function ManagementUsers() {
 
   const getPlayers = useCallback(
     async (ppreditionContract) => {
+      console.log('getPlayers')
       if (fetching) return
       setFetching(true)
       try {
-        const lepoch = await ppreditionContract.currentEpoch()
-        setEpoch(lepoch)
+        const epoch = await ppreditionContract.currentEpoch()
 
-        const lplayers = await loadPlayers({ epoch: lepoch })
+        const lplayers = await loadPlayers({ epoch })
         setPlayers(lplayers)
         setFetching(false)
       } catch (err) {
@@ -49,15 +48,15 @@ function ManagementUsers() {
 
   const refreshQuery = useCallback(
     async ({ orderBy }) => {
-      const lepoch = await preditionContract.currentEpoch()
-      setEpoch(lepoch)
+      console.log('refreshQuery')
+      const epoch = await preditionContract.currentEpoch()
 
       setFetching(true)
       setPlayers([])
       players.length = 0
 
       try {
-        const lplayers = await loadPlayers({ epoch: lepoch, orderBy })
+        const lplayers = await loadPlayers({ epoch, orderBy })
         setPlayers(lplayers)
         setFetching(false)
       } catch (err) {
@@ -103,7 +102,7 @@ function ManagementUsers() {
   return (
     <>
       <Head>
-        <title>Users - Management</title>
+        <title>Follow Best Players</title>
       </Head>
       <PageTitleWrapper>
         <PageHeader />
@@ -111,7 +110,13 @@ function ManagementUsers() {
 
       <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
         <Grid item xs={12}>
-          <PlayersList refreshQuery={refreshQuery} players={players} fetching={fetching} hasError={hasError} />
+          <PlayersList
+            user={user}
+            refreshQuery={refreshQuery}
+            players={players}
+            fetching={fetching}
+            hasError={hasError}
+          />
         </Grid>
       </Grid>
       <Footer />

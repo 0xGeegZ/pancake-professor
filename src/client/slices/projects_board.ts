@@ -1,3 +1,4 @@
+/* eslint-disable no-param-reassign */
 import { createSlice } from '@reduxjs/toolkit'
 import _ from 'lodash'
 import axios from 'src/client/utils/axios'

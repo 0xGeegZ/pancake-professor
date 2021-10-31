@@ -3,26 +3,23 @@ import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 import GamepadIcon from '@mui/icons-material/Gamepad'
 import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone'
 import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
-import WarningAmberIcon from '@mui/icons-material/WarningAmber'
 import {
-  Drawer,
   Avatar,
   Box,
   Button,
   Card,
-  Alert,
-  Slide,
-  Dialog,
-  Collapse,
   CardHeader,
   CircularProgress,
+  Dialog,
   Divider,
+  Drawer,
   Grid,
   IconButton,
   LinearProgress,
   Link,
   Menu,
   MenuItem,
+  Slide,
   Table,
   TableBody,
   TableCell,
@@ -55,12 +52,15 @@ import {
   useState,
 } from 'react'
 import { useTranslation } from 'react-i18next'
+import FollowPlayerForm from 'src/client/components/Dashboards/Automation/FollowPlayerForm'
 import { useCreateStrategieMutation } from 'src/client/graphql/createStrategie.generated'
 
+import SidebarPlayerDrawer from './SidebarPlayerDrawer'
+
+/* eslint-disable react/jsx-props-no-spreading */
 import type { Player } from 'src/client/models/player'
 
 import type { ReactElement } from 'react'
-import SidebarPlayerDrawer from './SidebarPlayerDrawer'
 // import type { Player, PlayerRole } from 'src/client/models/player'
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -197,6 +197,8 @@ interface PlayersListProps {
 //   role?: PlayerRole
 // }
 
+// eslint-disable-next-line react/display-name
+// eslint-disable-next-line react/require-default-props
 const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
   <Slide direction="down" ref={ref} {...props} />
 ))
@@ -260,7 +262,7 @@ const applyFilters = (players: Player[], query: string, filters: Filters): Playe
 const applyPagination = (players: Player[], page: number, limit: number): Player[] =>
   players.slice(page * limit, page * limit + limit)
 
-const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, hasError }) => {
+const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetching, hasError }) => {
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
 
@@ -415,31 +417,17 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
     setMobileOpen(!mobileOpen)
   }
 
-  const [openAlert, setOpenAlert] = useState(true)
+  const [openCreateForm, setOpenCreateForm] = useState(false)
+  const [activePlayer, setActivePlayer] = useState('')
 
-  const [openDialog, setOpenDialog] = useState(false)
-
-  const handleOpenDialog = () => {
-    setOpenDialog(true)
+  // const handleOpenCreateForm = (pactivePlayer) => {
+  const handleOpenCreateForm = (pactivePlayer: string) => () => {
+    setOpenCreateForm(true)
+    setActivePlayer(pactivePlayer)
   }
 
-  const handleCloseDialog = () => {
-    setOpenDialog(false)
-  }
-
-  const sumbitCreateStrategie = async () => {
-    const { error } = await createStrategie({
-      //   player: $player
-      // amount: $amount
-      // isActive: $isActive
-      // isDeleted: $isDeleted
-      // maxLooseAmount: $maxLooseAmount
-      // minWinAmount: $minWinAmount
-    })
-
-    if (error) throw new Error(error.message)
-
-    handleCloseDialog()
+  const handleCloseCreateForm = () => {
+    setOpenCreateForm(false)
   }
 
   return (
@@ -661,7 +649,7 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
                           <TableCell align="center">
                             <Typography noWrap>
                               <Tooltip title={t('Copy')} arrow>
-                                <IconButton component={Link} onClick={handleOpenDialog} color="primary">
+                                <IconButton component={Link} onClick={handleOpenCreateForm(player.id)} color="primary">
                                   <GamepadIcon fontSize="small" />
                                 </IconButton>
                               </Tooltip>
@@ -797,253 +785,217 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
                           'Mui-selected': isPlayerSelected,
                         })}>
                         <Box sx={{ position: 'relative', zIndex: '2' }}>
-                          {/* <Box px={2} pt={2} display="flex" alignItems="flex-start" justifyContent="space-between">
-                            {getPlayerRoleLabel(player.role)}
-                            <IconButton color="primary" sx={{ p: 0.5 }}>
-                              <MoreVertTwoToneIcon />
-                            </IconButton>
-                          </Box> */}
-                          {/* <Box p={2} display="flex" alignItems="flex-start"> */}
-                          {/* <Avatar sx={{ width: 50, height: 50, mr: 2 }} src="/static/images/avatars/1.jpg" /> */}
-                          {/* <AccountCircleIcon sx={{ width: 50, height: 50, mr: 2 }} /> */}
-                          <Box>
-                            <Box sx={{ p: 4 }}>
-                              <Typography variant="h3">
-                                <Link
-                                  underline="hover"
-                                  href={`https://bscscan.com/address/${player.id}`}
-                                  target="_blank">
-                                  {player.id.substring(0, 10)}
-                                </Link>
-                              </Typography>
-                              <Typography variant="subtitle2" gutterBottom>
-                                {t('Net BNB won')} : {parseFloat(player.netBNB).toFixed(2)} BNB
-                              </Typography>
-                            </Box>
-                            {player.recentGames ? (
-                              <>
-                                <Divider />
-                                <Box sx={{ pr: 2, pl: 2, pt: 1, pb: 1 }}>
-                                  <Grid spacing={2} container>
-                                    <Grid item xs={12} sm={4}>
-                                      <Typography variant="caption" sx={{ pb: 1 }} component="div">
-                                        {t('WinRate')}(%)
-                                      </Typography>
-                                      <Box>
-                                        <Typography
-                                          color="text.primary"
-                                          variant="h2"
-                                          sx={{ pr: 0.5, display: 'inline-flex' }}>
-                                          {parseInt(player.winRate)}
-                                        </Typography>
-                                        <Typography
-                                          color="text.secondary"
-                                          variant="h4"
-                                          sx={{ pr: 2, display: 'inline-flex' }}>
-                                          /100
-                                        </Typography>
-                                        <LinearProgressWrapper
-                                          value={parseInt(player.winRate)}
-                                          // color="primary"
-                                          color={
-                                            (parseInt(player.winRate) * 100) / 100 >= 60
-                                              ? 'success'
-                                              : (parseInt(player.winRate) * 100) / 100 >= 55
-                                              ? 'warning'
-                                              : 'error'
-                                          }
-                                          variant="determinate"
-                                        />
-                                      </Box>
-                                    </Grid>
-                                    <Grid item xs={12} sm={4}>
-                                      <Typography variant="caption" sx={{ pb: 1.5 }} component="div">
-                                        {t('Total Bets')}
-                                      </Typography>
-                                      <Box display="flex" alignItems="center">
-                                        {/* <AvatarPrimary> */}
-                                        {/* <WorkTwoToneIcon /> */}
-                                        <DotLegend
-                                          style={{
-                                            background:
-                                              +player.totalBets > 250
-                                                ? theme.colors.success.main
-                                                : +player.totalBets > 100
-                                                ? theme.colors.warning.main
-                                                : theme.colors.error.main,
-                                          }}
-                                        />
-                                        {/* </AvatarPrimary> */}
-                                        <Typography variant="h3" sx={{ pl: 1 }} component="div">
-                                          {player.totalBets}
-                                        </Typography>
-                                      </Box>
-                                    </Grid>
-                                    <Grid item xs={12} sm={4}>
-                                      <Typography variant="caption" sx={{ pb: 1 }} component="div">
-                                        {t('Last 24h')}(%)
-                                      </Typography>
-                                      <Box>
-                                        <Typography
-                                          color="text.primary"
-                                          variant="h2"
-                                          sx={{ pr: 0.5, display: 'inline-flex' }}>
-                                          {parseInt((player.recentGames * 100) / 288)}
-                                        </Typography>
-                                        <Typography
-                                          color="text.secondary"
-                                          variant="h4"
-                                          sx={{ pr: 2, display: 'inline-flex' }}>
-                                          /100
-                                        </Typography>
-                                        <LinearProgressWrapper
-                                          value={(player.recentGames * 100) / 288}
-                                          // color="primary"
-                                          color={
-                                            (player.recentGames * 100) / 288 >= 30
-                                              ? 'success'
-                                              : (player.recentGames * 100) / 288 >= 20
-                                              ? 'warning'
-                                              : 'error'
-                                          }
-                                          variant="determinate"
-                                        />
-                                      </Box>
-                                    </Grid>
-                                  </Grid>
-                                </Box>
-                                {/* <Box sx={{ pr: 2, pl: 2, pt: 1, pb: 1 }}>
-                                  <Grid spacing={2} container>
-                                    <Grid item xs={12}>
-      
-                                      <Box>
-                                        <Typography variant="subtitle2">
-                                          {t('Played games last 24h')} : {player.recentGames}/288 (
-                                          {parseFloat((player.recentGames * 100) / 288).toFixed(2)}%)
-                                        </Typography>
-                                      </Box>
-                                    </Grid>
-                                  </Grid>
-                                </Box> */}
-                              </>
-                            ) : (
-                              <>
-                                <Divider />
-                                <Box sx={{ p: 2 }}>
-                                  <Grid spacing={2} container>
-                                    <Grid item xs={12} sm={7}>
-                                      <Typography variant="caption" sx={{ pb: 1 }} component="div">
-                                        {t('WinRate')}(%)
-                                      </Typography>
-                                      <Box>
-                                        <Typography
-                                          color="text.primary"
-                                          variant="h2"
-                                          sx={{ pr: 0.5, display: 'inline-flex' }}>
-                                          {parseInt(player.winRate)}
-                                        </Typography>
-                                        <Typography
-                                          color="text.secondary"
-                                          variant="h4"
-                                          sx={{ pr: 2, display: 'inline-flex' }}>
-                                          /100
-                                        </Typography>
-                                        <LinearProgressWrapper
-                                          value={parseInt(player.winRate)}
-                                          // color="primary"
-                                          color={
-                                            (parseInt(player.winRate) * 100) / 100 >= 60
-                                              ? 'success'
-                                              : (parseInt(player.winRate) * 100) / 100 >= 55
-                                              ? 'warning'
-                                              : 'error'
-                                          }
-                                          variant="determinate"
-                                        />
-                                      </Box>
-                                    </Grid>
-                                    <Grid item xs={12} sm={5}>
-                                      <Typography variant="caption" sx={{ pb: 1.5 }} component="div">
-                                        {t('Total Bets')}
-                                      </Typography>
-                                      <Box display="flex" alignItems="center">
-                                        {/* <AvatarPrimary> */}
-                                        {/* <WorkTwoToneIcon /> */}
-                                        <DotLegend
-                                          style={{
-                                            background:
-                                              +player.totalBets >= 250
-                                                ? theme.colors.success.main
-                                                : +player.totalBets >= 100
-                                                ? theme.colors.warning.main
-                                                : theme.colors.error.main,
-                                          }}
-                                        />
-                                        {/* </AvatarPrimary> */}
-                                        <Typography variant="h3" sx={{ pl: 1 }} component="div">
-                                          {player.totalBets}
-                                        </Typography>
-                                      </Box>
-                                    </Grid>
-                                  </Grid>
-                                </Box>
-                              </>
-                            )}
-                          </Box>
-
-                          {/* <Divider />
-                            <Box sx={{ pr: 2, pl: 2, pt: 1, pb: 1 }}>
-                              <Grid spacing={2} container>
-                                <Grid item xs={12} sm={7}>
-                                  <Typography variant="caption" component="div">
-                                    {t('Address')}
+                          {openCreateForm && activePlayer === player.id ? (
+                            <>
+                              <Divider />
+                              <FollowPlayerForm
+                                handleCloseCreateForm={handleCloseCreateForm}
+                                player={player}
+                                user={user}
+                              />
+                            </>
+                          ) : (
+                            <>
+                              <Box>
+                                <Box sx={{ p: 4 }}>
+                                  <Typography variant="h3">
+                                    <Link
+                                      underline="hover"
+                                      href={`https://bscscan.com/address/${player.id}`}
+                                      target="_blank">
+                                      {player.id.substring(0, 10)}
+                                    </Link>
                                   </Typography>
-                                  <Box>
-                                    <Typography variant="subtitle2" gutterBottom>
-                                      <Link
-                                        underline="hover"
-                                        href={`https://bscscan.com/address/${player.id}`}
-                                        target="_blank">
-                                        {player.id.substring(0, 10)}
-                                      </Link>
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                                <Grid item xs={12} sm={5}>
-                                  <Typography variant="caption" component="div">
-                                    {t('Net BNB won')}
+                                  <Typography variant="subtitle2" gutterBottom>
+                                    {t('Net BNB won')} : {parseFloat(player.netBNB).toFixed(2)} BNB
                                   </Typography>
-                                  <Box>
-                                    <Typography variant="subtitle2" gutterBottom>
-                                      {parseFloat(player.netBNB).toFixed(2)} BNB
-                                    </Typography>
-                                  </Box>
-                                </Grid>
-                              </Grid>
-                            </Box> */}
+                                </Box>
+                                {player.recentGames ? (
+                                  <>
+                                    <Divider />
+                                    <Box sx={{ pr: 2, pl: 2, pt: 1, pb: 1 }}>
+                                      <Grid spacing={2} container>
+                                        <Grid item xs={12} sm={4}>
+                                          <Typography variant="caption" sx={{ pb: 1 }} component="div">
+                                            {t('WinRate')}(%)
+                                          </Typography>
+                                          <Box>
+                                            <Typography
+                                              color="text.primary"
+                                              variant="h2"
+                                              sx={{ pr: 0.5, display: 'inline-flex' }}>
+                                              {parseInt(player.winRate)}
+                                            </Typography>
+                                            <Typography
+                                              color="text.secondary"
+                                              variant="h4"
+                                              sx={{ pr: 2, display: 'inline-flex' }}>
+                                              /100
+                                            </Typography>
+                                            <LinearProgressWrapper
+                                              value={parseInt(player.winRate)}
+                                              // color="primary"
+                                              color={
+                                                (parseInt(player.winRate) * 100) / 100 >= 60
+                                                  ? 'success'
+                                                  : (parseInt(player.winRate) * 100) / 100 >= 55
+                                                  ? 'warning'
+                                                  : 'error'
+                                              }
+                                              variant="determinate"
+                                            />
+                                          </Box>
+                                        </Grid>
+                                        <Grid item xs={12} sm={4}>
+                                          <Typography variant="caption" sx={{ pb: 1.5 }} component="div">
+                                            {t('Total Bets')}
+                                          </Typography>
+                                          <Box display="flex" alignItems="center">
+                                            {/* <AvatarPrimary> */}
+                                            {/* <WorkTwoToneIcon /> */}
+                                            <DotLegend
+                                              style={{
+                                                background:
+                                                  +player.totalBets > 250
+                                                    ? theme.colors.success.main
+                                                    : +player.totalBets > 100
+                                                    ? theme.colors.warning.main
+                                                    : theme.colors.error.main,
+                                              }}
+                                            />
+                                            {/* </AvatarPrimary> */}
+                                            <Typography variant="h3" sx={{ pl: 1 }} component="div">
+                                              {player.totalBets}
+                                            </Typography>
+                                          </Box>
+                                        </Grid>
+                                        <Grid item xs={12} sm={4}>
+                                          <Typography variant="caption" sx={{ pb: 1 }} component="div">
+                                            {t('Last 24h')}(%)
+                                          </Typography>
+                                          <Box>
+                                            <Typography
+                                              color="text.primary"
+                                              variant="h2"
+                                              sx={{ pr: 0.5, display: 'inline-flex' }}>
+                                              {parseInt((player.recentGames * 100) / 288)}
+                                            </Typography>
+                                            <Typography
+                                              color="text.secondary"
+                                              variant="h4"
+                                              sx={{ pr: 2, display: 'inline-flex' }}>
+                                              /100
+                                            </Typography>
+                                            <LinearProgressWrapper
+                                              value={(player.recentGames * 100) / 288}
+                                              // color="primary"
+                                              color={
+                                                (player.recentGames * 100) / 288 >= 30
+                                                  ? 'success'
+                                                  : (player.recentGames * 100) / 288 >= 20
+                                                  ? 'warning'
+                                                  : 'error'
+                                              }
+                                              variant="determinate"
+                                            />
+                                          </Box>
+                                        </Grid>
+                                      </Grid>
+                                    </Box>
+                                  </>
+                                ) : (
+                                  <>
+                                    <Divider />
+                                    <Box sx={{ p: 2 }}>
+                                      <Grid spacing={2} container>
+                                        <Grid item xs={12} sm={7}>
+                                          <Typography variant="caption" sx={{ pb: 1 }} component="div">
+                                            {t('WinRate')}(%)
+                                          </Typography>
+                                          <Box>
+                                            <Typography
+                                              color="text.primary"
+                                              variant="h2"
+                                              sx={{ pr: 0.5, display: 'inline-flex' }}>
+                                              {parseInt(player.winRate)}
+                                            </Typography>
+                                            <Typography
+                                              color="text.secondary"
+                                              variant="h4"
+                                              sx={{ pr: 2, display: 'inline-flex' }}>
+                                              /100
+                                            </Typography>
+                                            <LinearProgressWrapper
+                                              value={parseInt(player.winRate)}
+                                              // color="primary"
+                                              color={
+                                                (parseInt(player.winRate) * 100) / 100 >= 60
+                                                  ? 'success'
+                                                  : (parseInt(player.winRate) * 100) / 100 >= 55
+                                                  ? 'warning'
+                                                  : 'error'
+                                              }
+                                              variant="determinate"
+                                            />
+                                          </Box>
+                                        </Grid>
+                                        <Grid item xs={12} sm={5}>
+                                          <Typography variant="caption" sx={{ pb: 1.5 }} component="div">
+                                            {t('Total Bets')}
+                                          </Typography>
+                                          <Box display="flex" alignItems="center">
+                                            {/* <AvatarPrimary> */}
+                                            {/* <WorkTwoToneIcon /> */}
+                                            <DotLegend
+                                              style={{
+                                                background:
+                                                  +player.totalBets >= 250
+                                                    ? theme.colors.success.main
+                                                    : +player.totalBets >= 100
+                                                    ? theme.colors.warning.main
+                                                    : theme.colors.error.main,
+                                              }}
+                                            />
+                                            {/* </AvatarPrimary> */}
+                                            <Typography variant="h3" sx={{ pl: 1 }} component="div">
+                                              {player.totalBets}
+                                            </Typography>
+                                          </Box>
+                                        </Grid>
+                                      </Grid>
+                                    </Box>
+                                  </>
+                                )}
+                              </Box>
 
-                          <Divider />
-                          <Box px={3} py={2}>
-                            <Grid container spacing={3}>
-                              <Grid item md={6}>
-                                {/* <Button size="small" fullWidth variant="contained"> */}
-                                <Button size="small" fullWidth variant="contained" onClick={handleOpenDialog}>
-                                  <b> {t('Copy')}</b>
-                                </Button>
-                              </Grid>
-                              <Grid item md={6}>
-                                <Button
-                                  size="small"
-                                  disabled
-                                  fullWidth
-                                  variant="outlined"
-                                  color="secondary"
-                                  onClick={handleDrawerToggle}>
-                                  {t('View details')}
-                                </Button>
-                              </Grid>
-                            </Grid>
-                          </Box>
+                              <Divider />
+                              <Box px={3} py={2}>
+                                <Grid container spacing={3}>
+                                  <Grid item md={6}>
+                                    {/* <Button size="small" fullWidth variant="contained"> */}
+                                    <Button
+                                      size="small"
+                                      fullWidth
+                                      variant="contained"
+                                      onClick={handleOpenCreateForm(player.id)}>
+                                      <b> {t('Copy')}</b>
+                                    </Button>
+                                  </Grid>
+                                  <Grid item md={6}>
+                                    <Button
+                                      size="small"
+                                      disabled
+                                      fullWidth
+                                      variant="outlined"
+                                      color="secondary"
+                                      onClick={handleDrawerToggle}>
+                                      {t('View details')}
+                                    </Button>
+                                  </Grid>
+                                </Grid>
+                              </Box>
+                            </>
+                          )}
                         </Box>
                       </CardWrapper>
                     </Grid>
@@ -1122,49 +1074,6 @@ const PlayersList: FC<PlayersListProps> = ({ refreshQuery, players, fetching, ha
               {t('Delete')}
             </ButtonError>
           </Box>
-        </Box>
-      </DialogWrapper>
-      <DialogWrapper
-        open={openDialog}
-        maxWidth="sm"
-        fullWidth
-        TransitionComponent={Transition}
-        keepMounted
-        onClose={handleCloseDialog}>
-        <Box sx={{ px: 4, pb: 4, pt: 4 }}>
-          <Collapse in={openAlert}>
-            <Alert
-              action={
-                <IconButton
-                  aria-label="close"
-                  color="inherit"
-                  size="small"
-                  onClick={() => {
-                    setOpenAlert(false)
-                  }}>
-                  <CloseIcon fontSize="inherit" />
-                </IconButton>
-              }
-              severity="warning">
-              {t('This product is in beta, use it at your own risk.')}
-            </Alert>
-          </Collapse>
-
-          <Typography align="center" sx={{ py: 4, pt: 5, pb: 5, pl: 10, pr: 10 }} variant="h3">
-            {t('Are you sur to copy this player ? ')}
-          </Typography>
-          <Typography align="center" sx={{ py: 4, pt: 0, pb: 0, pr: 5, pl: 5 }} variant="body1">
-            {t('We are listenning the adress directly from mempool to be as precise as possible.')}
-          </Typography>
-          <Typography align="center" sx={{ py: 4, pt: 0, pb: 5, pr: 5, pl: 5 }} variant="body1">
-            {t(
-              'Most of the time, you will play on the same block, but sometime, it could play on the next block and could be beatted for you but works for player.'
-            )}
-          </Typography>
-
-          <Button fullWidth size="large" variant="contained" onClick={sumbitCreateStrategie}>
-            {t('Copy player')}
-          </Button>
         </Box>
       </DialogWrapper>
       <Drawer
