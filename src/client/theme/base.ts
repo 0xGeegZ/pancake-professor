@@ -1,19 +1,16 @@
+import { Theme } from '@mui/material'
 import React from 'react'
 
-import { Theme } from '@mui/material'
-import { PureLightTheme } from './schemes/PureLightTheme'
-import { LightBloomTheme } from './schemes/LightBloomTheme'
-import { GreyGooseTheme } from './schemes/GreyGooseTheme'
-import { NebulaFighterTheme } from './schemes/NebulaFighterTheme'
 import { DarkSpacesTheme } from './schemes/DarkSpacesTheme'
-import { PurpleFlowTheme } from './schemes/PurpleFlowTheme'
 import { GreenFieldsTheme } from './schemes/GreenFieldsTheme'
-
-export function themeCreator(theme: string): Theme {
-  return themeMap[theme]
-}
+import { GreyGooseTheme } from './schemes/GreyGooseTheme'
+import { LightBloomTheme } from './schemes/LightBloomTheme'
+import { NebulaFighterTheme } from './schemes/NebulaFighterTheme'
+import { PureLightTheme } from './schemes/PureLightTheme'
+import { PurpleFlowTheme } from './schemes/PurpleFlowTheme'
 
 declare module '@mui/material/styles' {
+  // eslint-disable-next-line no-shadow
   interface Theme {
     colors: {
       gradients: {
@@ -248,4 +245,8 @@ const themeMap: { [key: string]: Theme } = {
   NebulaFighterTheme,
   DarkSpacesTheme,
   GreenFieldsTheme,
+}
+
+export function themeCreator(theme: string): Theme {
+  return themeMap[theme]
 }

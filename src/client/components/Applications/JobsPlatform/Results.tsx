@@ -40,7 +40,7 @@ const Results: FC<ResultsProps> = ({ jobs }) => {
   }
 
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(parseInt(event.target.value))
+    setLimit(+event.target.value)
   }
 
   const paginatedJobs = applyPagination(jobs, page, limit)

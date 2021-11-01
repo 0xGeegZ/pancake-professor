@@ -2,7 +2,7 @@ import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
 import { Box, Button, CircularProgress, Grid, Hidden, IconButton, Tooltip } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { FC, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import Link from 'src/client/components/Link'
 import Logo from 'src/client/components/Logo'
@@ -11,7 +11,8 @@ import { SidebarContext } from 'src/client/contexts/SidebarContext'
 import LanguageSwitcher from './Buttons/LanguageSwitcher'
 import HeaderUserbox from './Userbox'
 
-const HeaderWrapper: FC = styled(Box)(
+const HeaderWrapper = styled(Box)(
+  // const HeaderWrapper: FC = styled(Box)(
   ({ theme }) => `
         margin-top: ${theme.spacing(3)};
         color: ${theme.header.textColor};
@@ -22,7 +23,8 @@ const HeaderWrapper: FC = styled(Box)(
 `
 )
 
-const Header = ({ connect, logout, user, balance, fetching, error }) => {
+// const Header = ({ connect, logout, user, balance, fetching, error }) => {
+const Header = ({ connect, logout, user, balance, fetching }) => {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext)
   const { t }: { t: any } = useTranslation()
 
@@ -50,7 +52,6 @@ const Header = ({ connect, logout, user, balance, fetching, error }) => {
         {fetching ? (
           <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
             <Grid item>
-              {/* TODO UPDATE PROGRESS COLOR TO WHITE */}
               <CircularProgress color="secondary" size="1rem" />
             </Grid>
           </Grid>

@@ -1,8 +1,9 @@
+/* eslint-disable */
 /// <reference types="react" />
-import { FieldProps } from 'formik';
-import { FormControlProps } from '@mui/material/FormControl';
-import { InputLabelProps } from '@mui/material/InputLabel';
-import { InputProps } from '@mui/material/Input';
+import { FormControlProps } from '@mui/material/FormControl'
+import { InputProps } from '@mui/material/Input'
+import { InputLabelProps } from '@mui/material/InputLabel'
+import { FieldProps } from 'formik'
 
 export interface SimpleFileUploadProps extends FieldProps {
   label: string;
@@ -22,3 +23,4 @@ export declare const SimpleFileUpload: ({
   InputLabelProps: inputLabelProps,
   FormControlProps: formControlProps,
 }: SimpleFileUploadProps) => JSX.Element;
+/* eslint-enable */

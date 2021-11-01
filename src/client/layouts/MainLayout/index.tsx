@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import { Box } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { ethers } from 'ethers'
@@ -13,9 +14,10 @@ import menuItems from 'src/client/layouts/MainLayout/Sidebar/SidebarMenu/items'
 import Header from './Header'
 import Sidebar from './Sidebar'
 
+
 // import ThemeSettings from 'src/client/components/ThemeSettings';
 
-interface BoxedSidebarLayoutProps {
+interface MainLayoutProps {
   children?: ReactNode
 }
 
@@ -44,40 +46,50 @@ const MainContent = styled(Box)(
 `
 )
 
-const BoxedSidebarLayout: FC<BoxedSidebarLayoutProps> = ({ children }) => {
+const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const { t }: { t: any } = useTranslation()
 
   // const isMountedRef = useRefMounted()
 
-  const [{ data, fetching, error }] = useGetCurrentUserQuery()
+  // const [{ data, fetching, error }] = useGetCurrentUserQuery()
+  const [{ data, fetching }] = useGetCurrentUserQuery()
 
   const router = useRouter()
   const [user, setUser] = useState<any>('')
   const [balance, setBalance] = useState<string>('')
   const [allMenuItems, setAllMenuItems] = useState<any>()
 
-  const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
+  // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const checkBalance = useCallback(async (address) => {
+  const checkBalance = useCallback(async (puser) => {
+    const luser = puser
     if (!window.ethereum?.request) return
 
     const browserProvider = new ethers.providers.Web3Provider(window.ethereum)
 
     if (!browserProvider) return
 
-    setProvider(browserProvider)
+    // setProvider(browserProvider)
 
     const TOKEN_ADDR = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
     const token = Erc20__factory.connect(TOKEN_ADDR, browserProvider.getSigner())
 
-    const rawBalance = await token.balanceOf(address)
+    const rawBalance = await token.balanceOf(luser.address)
     const decimals = await token.decimals()
 
-    const balance = ethers.utils.formatUnits(rawBalance, decimals)
-    setBalance(balance)
-    window.localStorage.setItem('balance', balance)
+    const lbalance = ethers.utils.formatUnits(rawBalance, decimals)
+    setBalance(lbalance)
+    luser.balance = lbalance
+
+    // const generatedRawBalance = await token.balanceOf(luser.generated)
+    // const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance, decimals)
+    // luser.generatedBalance = lgeneratedBalance
+
+    setUser(luser)
+
+    // window.localStorage.setItem('balance', lbalance)
   }, [])
 
   useEffect(() => {
@@ -92,18 +104,19 @@ const BoxedSidebarLayout: FC<BoxedSidebarLayoutProps> = ({ children }) => {
         ? process.env.NEXT_PUBLIC_ADMIN_ADDRESS.includes(data?.currentUser?.address)
         : false
 
-      const user = {
+      const luser = {
         ...data.currentUser,
         isAdmin: isFinded,
       }
-      setUser(user)
+      setUser(luser)
 
-      if (!localStorage.getItem('user')) {
-        window.localStorage.setItem('user', JSON.stringify(user))
-      }
+      // if (!localStorage.getItem('user')) {
+      //   window.localStorage.setItem('user', JSON.stringify(luser))
+      // }
 
-      if (window.localStorage.getItem('balance')) setBalance(window.localStorage.getItem('balance'))
-      else checkBalance(data.currentUser.address)
+      // if (window.localStorage.getItem('balance')) setBalance(window.localStorage.getItem('balance'))
+      // else
+      checkBalance(data.currentUser)
     }
 
     // let filtereds: Array<menuItems> = []
@@ -132,7 +145,7 @@ const BoxedSidebarLayout: FC<BoxedSidebarLayoutProps> = ({ children }) => {
     const accounts = await window.ethereum.request({
       method: 'eth_requestAccounts',
     })
-    setProvider(provider)
+    // setProvider(provider)
 
     window.localStorage.setItem('address', accounts[0])
 
@@ -199,10 +212,12 @@ const BoxedSidebarLayout: FC<BoxedSidebarLayoutProps> = ({ children }) => {
   return (
     <>
       {/* TODO FIX HEADER ON SCROLL */}
-      <Sidebar fetching={fetching} error={error} allMenuItems={allMenuItems} />
+      {/* <Sidebar fetching={fetching} error={error} allMenuItems={allMenuItems} /> */}
+      <Sidebar fetching={fetching} allMenuItems={allMenuItems} />
       <MainWrapper>
         <MainContent>
-          <Header connect={connect} logout={logout} user={user} balance={balance} fetching={fetching} error={error} />
+          {/* <Header connect={connect} logout={logout} user={user} balance={balance} fetching={fetching} error={error} /> */}
+          <Header connect={connect} logout={logout} user={user} balance={balance} fetching={fetching} />
           {children}
           {/* <ThemeSettings /> */}
         </MainContent>
@@ -211,8 +226,12 @@ const BoxedSidebarLayout: FC<BoxedSidebarLayoutProps> = ({ children }) => {
   )
 }
 
-BoxedSidebarLayout.propTypes = {
+MainLayout.defaultProps = {
   children: PropTypes.node,
 }
 
-export default BoxedSidebarLayout
+MainLayout.propTypes = {
+  children: PropTypes.node,
+}
+
+export default MainLayout

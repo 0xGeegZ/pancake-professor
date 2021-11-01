@@ -1,8 +1,11 @@
-/// <reference types="react" />
-import { FormControlLabelProps as MuiFormControlLabelProps } from '@mui/material/FormControlLabel';
-import { FieldProps } from 'formik';
-import { CheckboxProps } from './Checkbox';
+/* eslint-disable */
+import { FormControlLabelProps as MuiFormControlLabelProps } from '@mui/material/FormControlLabel'
+import { FieldProps } from 'formik'
 
+import { CheckboxProps } from './Checkbox'
+
+
+/// <reference types="react" />
 export interface CheckboxWithLabelProps extends FieldProps, CheckboxProps {
   Label: Omit<
     MuiFormControlLabelProps,
@@ -16,3 +19,4 @@ export declare function CheckboxWithLabel({
 export declare namespace CheckboxWithLabel {
   var displayName: string;
 }
+/* eslint-enable */

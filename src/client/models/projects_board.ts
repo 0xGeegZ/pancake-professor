@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 export interface Task {
   id: string
   attachments: number | null

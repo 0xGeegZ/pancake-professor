@@ -4,7 +4,6 @@ import { ethers } from 'ethers'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
-import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Footer from 'src/client/components/Footer'
 import Link from 'src/client/components/Link'
@@ -34,14 +33,15 @@ const OverviewWrapper = styled(Box)(
 `
 )
 
-const Overview: FC = () => {
+const Overview = () => {
+  // const Overview: FC = () => {
   const router = useRouter()
-  const [account, setAccount] = useState<string>('')
+  // const [account, setAccount] = useState<string>('')
   const { enqueueSnackbar } = useSnackbar()
 
   const { t }: { t: any } = useTranslation()
 
-  const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
+  // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
   const connect = async (evt) => {
     evt.preventDefault()
@@ -56,8 +56,8 @@ const Overview: FC = () => {
     const accounts = await window.ethereum.request({
       method: 'eth_requestAccounts',
     })
-    setProvider(provider)
-    setAccount(accounts[0])
+    // setProvider(provider)
+    // setAccount(accounts[0])
 
     enqueueSnackbar(t('Wallet succesfully connected!'), {
       variant: 'success',

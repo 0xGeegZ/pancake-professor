@@ -37,28 +37,24 @@ module.exports = {
     'no-debugger': process.env.NODE_ENV === 'production' ? 2 : 0,
     /* AirBnb rules */
     'import/extensions': [0, 'never'],
-    // 'no-shadow': ['warn'],
-    'no-shadow': ['error', { allow: ['done', 'error', 'theme'] }],
+    'no-shadow': ['error', { allow: ['done', 'error', 'theme', 'value'] }],
     'react/jsx-filename-extension': [0, { extensions: ['.tsx', '.jsx'] }],
-    'no-unused-vars': 'error',
+    'no-unused-vars': 0,
     'no-nested-ternary': 0,
     'react/jsx-props-no-spreading': 1,
     'jsx-a11y/anchor-is-valid': 1,
     '@typescript-eslint/ban-types': 1,
-    // "import/no-unresolved": 1,
-    // "import/no-unresolved": [2, { "caseSensitiveStrict": true }],
-    // "no-restricted-imports": [
-    //   "error",
-    //   {
-    //     "patterns": ["src/*"]
-    //   }
-    // ],
-    // "no-restricted-imports": [
-    //   "error",
-    //   {
-    //     "patterns": [".*"]
-    //   }
-    // ],
+    /* START TMP : Need to be set to 0 before going to production */
+    'react/require-default-props': 1,
+    'react/prop-types': 1,
+    'react/no-unused-prop-types': 1,
+    'react/forbid-prop-types': 1,
+    '@typescript-eslint/no-empty-function': 1,
+    'react/default-props-match-prop-types': 1,
+    'react/display-name': 1,
+    'react/jsx-key': 1,
+    'react/no-array-index-key': 1,
+    /* END TMP : Need to be set to 0 before going to production */
     /* React Hooks rules */
     // Checks rules of Hooks
     'react-hooks/rules-of-hooks': 'error',
@@ -67,19 +63,6 @@ module.exports = {
     /* Functions rules */
     'consistent-return': 0,
     'import/prefer-default-export': 0,
-
-    // ["error", { "treatUndefinedAsUnspecified": false }],
-    // "func-style": ["error", "declaration", { "allowArrowFunctions": true }],
-    // "func-style": ["error", "expression"],
-    // "prefer-arrow-callback": ["error", { "allowUnboundThis": false }],
-    // "prefer-arrow/prefer-arrow-functions": [
-    //   "warn",
-    //   {
-    //     "disallowPrototype": true,
-    //     "singleReturnOnly": false,
-    //     "classPropertiesAllowed": false
-    //   }
-    // ],
     /* Comments rules */
     'no-warning-comments': [1, { terms: ['todo', 'fixme', 'to do', 'fix me'], location: 'start' }],
     'no-inline-comments': 'error',
@@ -107,11 +90,6 @@ module.exports = {
       },
     ],
   },
-  // "linters": {
-  //   "eslint": {
-  //     "args": ["--stdin-filename", "@"]
-  //   }
-  // },
   settings: {
     react: {
       // React version. "detect" automatically picks the version you have installed.
@@ -123,13 +101,6 @@ module.exports = {
         paths: ['./'],
       },
     },
-    // "import/resolver": {
-    //   "webpack": {
-    //     "config": "webpack.config.js"
-    //   }
-    // }
-    // "import/parsers": [".ts", ".tsx", ".js", ".jsx"]
-    // "import/parsers": [".ts", ".tsx", ".js", ".jsx"]
   },
   overrides: [
     {
@@ -156,4 +127,5 @@ module.exports = {
       },
     },
   ],
+  ignorePatterns: ['src/client/components/formik-material-ui/*'],
 }

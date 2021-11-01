@@ -16,6 +16,7 @@ import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
 import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 
 import type { ReactElement } from 'react'
+
 function DashboardTasks() {
   const { t }: { t: any } = useTranslation()
 

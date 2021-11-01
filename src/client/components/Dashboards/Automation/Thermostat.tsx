@@ -1,34 +1,32 @@
-import { useState } from 'react'
-
-import {
-  Box,
-  Typography,
-  Card,
-  IconButton,
-  Divider,
-  Stack,
-  useTheme,
-  CardActionArea,
-  Grid,
-  Tooltip,
-  Avatar,
-} from '@mui/material'
-import clsx from 'clsx'
-
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import AcUnitTwoToneIcon from '@mui/icons-material/AcUnitTwoTone'
 import { useSwitch, UseSwitchProps } from '@mui/core/SwitchUnstyled'
+import AcUnitTwoToneIcon from '@mui/icons-material/AcUnitTwoTone'
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import AirTwoToneIcon from '@mui/icons-material/AirTwoTone'
 import AvTimerTwoToneIcon from '@mui/icons-material/AvTimerTwoTone'
-import LoopTwoToneIcon from '@mui/icons-material/LoopTwoTone'
-import Gauge from 'src/client/components/Gauge'
-import { buildStyles } from 'react-circular-progressbar'
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
-import RemoveTwoToneIcon from '@mui/icons-material/RemoveTwoTone'
-import ErrorOutlineTwoToneIcon from '@mui/icons-material/ErrorOutlineTwoTone'
-import TvTwoToneIcon from '@mui/icons-material/TvTwoTone'
 import BlenderTwoToneIcon from '@mui/icons-material/BlenderTwoTone'
+import ErrorOutlineTwoToneIcon from '@mui/icons-material/ErrorOutlineTwoTone'
+import LoopTwoToneIcon from '@mui/icons-material/LoopTwoTone'
+import RemoveTwoToneIcon from '@mui/icons-material/RemoveTwoTone'
+import TvTwoToneIcon from '@mui/icons-material/TvTwoTone'
+import {
+  Avatar,
+  Box,
+  Card,
+  CardActionArea,
+  Divider,
+  Grid,
+  IconButton,
+  Stack,
+  Tooltip,
+  Typography,
+  useTheme,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import clsx from 'clsx'
+import { useState } from 'react'
+import { buildStyles } from 'react-circular-progressbar'
+import { useTranslation } from 'react-i18next'
+import Gauge from 'src/client/components/Gauge'
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -227,12 +225,12 @@ function Thermostat() {
 
   const handleGaugeIncrease = (e: { preventDefault: () => void }) => {
     e.preventDefault()
-    setGauge((gauge) => gauge + 2)
+    setGauge((g) => g + 2)
   }
 
   const handleGaugeDecrease = (e: { preventDefault: () => void }) => {
     e.preventDefault()
-    setGauge((gauge) => gauge - 2)
+    setGauge((g) => g - 2)
   }
 
   return (

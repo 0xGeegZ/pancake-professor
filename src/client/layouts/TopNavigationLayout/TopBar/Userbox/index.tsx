@@ -114,8 +114,8 @@ function Userbox() {
   const handleLogout = async (): Promise<void> => {
     try {
       handleClose()
-      await logout()
-      navigate('/')
+      // await logout()
+      // navigate('/')
     } catch (err) {
       console.error(err)
     }

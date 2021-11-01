@@ -1,3 +1,4 @@
+/* eslint-disable import/no-cycle */
 import cookieSession from 'cookie-session'
 import { NextApiRequest, NextApiResponse } from 'next'
 import nc from 'next-connect'

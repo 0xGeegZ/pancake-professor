@@ -3,11 +3,9 @@ import CloseIcon from '@mui/icons-material/Close'
 import RemoveTwoToneIcon from '@mui/icons-material/RemoveTwoTone'
 import {
   Alert,
-  Avatar,
   Box,
   Button,
   Card,
-  CardActionArea,
   Collapse,
   Dialog,
   Grid,
@@ -31,35 +29,6 @@ const DialogWrapper = styled(Dialog)(
   () => `
       .MuiDialog-paper {
         overflow: visible;
-      }
-`
-)
-
-const AvatarWrapper = styled(Avatar)(
-  ({ theme }) => `
-    background: ${theme.colors.alpha.black[10]};
-    color: ${theme.colors.alpha.black[100]};
-    padding: ${theme.spacing(2, 5)};
-    border-radius: ${theme.general.borderRadiusXl};
-`
-)
-
-const CardActionAreaWrapper = styled(CardActionArea)(
-  ({ theme }) => `
-      padding: ${theme.spacing(3)};
-
-      .MuiTouchRipple-root {
-        opacity: .3;
-      }
-
-      .MuiCardActionArea-focusHighlight {
-        background: ${theme.colors.primary.lighter};
-      }
-
-      &:hover {
-        .MuiCardActionArea-focusHighlight {
-          opacity: 0.05;
-        }
       }
 `
 )
@@ -119,25 +88,6 @@ const IconButtonIncrement = styled(IconButton)(
 `
 )
 
-// function MUISwitch(props: UseSwitchProps) {
-//   const { getInputProps, checked, disabled, focusVisible } = useSwitch(props)
-
-//   const stateClasses = {
-//     checked,
-//     disabled,
-//     focusVisible,
-//   }
-
-//   return (
-//     <SwitchRoot className={clsx(stateClasses)}>
-//       <SwitchTrack>
-//         <SwitchThumb className={clsx(stateClasses)} />
-//       </SwitchTrack>
-//       <SwitchInput {...getInputProps()} aria-label="Demo switch" />
-//     </SwitchRoot>
-//   )
-// }
-
 /* eslint-disable */
 const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
   <Slide direction="down" ref={ref} {...props} />
@@ -161,11 +111,14 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
 
   const handleGaugeIncrease = (e: { preventDefault: () => void }) => {
     e.preventDefault()
+    if (gauge === 100) return
     setGauge((g) => g + 2)
   }
 
   const handleGaugeDecrease = (e: { preventDefault: () => void }) => {
     e.preventDefault()
+    if (gauge === 0) return
+
     setGauge((g) => g - 2)
   }
 
@@ -188,7 +141,7 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
     })
 
     if (error) {
-      enqueueSnackbar(t('TUnexpected error during strategie creation'), {
+      enqueueSnackbar(t('Unexpected error during strategie creation'), {
         variant: 'error',
         TransitionComponent: Zoom,
       })
@@ -215,9 +168,6 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
               sx={{ pt: 4, pl: 4, pr: 4, pb: 2, mb: 2 }}
               alignItems="center">
               <Box display="flex" alignItems="center">
-                {/* <AvatarPrimary>
-                  <AcUnitTwoToneIcon fontSize="medium" />
-                </AvatarPrimary> */}
                 <Box pl={1}>
                   <Typography gutterBottom variant="h4">
                     {t('Bankroll')}
@@ -227,7 +177,6 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
                   </Typography>
                 </Box>
               </Box>
-              {/* <MUISwitch defaultChecked /> */}
             </Box>
             <GaugeWrapper display="flex" justifyContent="center" flexDirection="column">
               <Gauge
@@ -236,7 +185,8 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
                 value={gauge}
                 strokeWidth={10}
                 text=""
-                color="primary"
+                // color="primary"
+                color={gauge >= 70 ? 'error' : gauge >= 50 ? 'warning' : gauge <= 10 ? 'warning' : 'primary'}
                 size="xxlarge">
                 <Box sx={{ mt: '-30px', textAlign: 'center' }}>
                   <Typography
@@ -369,17 +319,10 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
 }
 
 FollowPlayerForm.propTypes = {
-  player: PropTypes.objectOf(
-    PropTypes.shape({
-      id: PropTypes.string,
-    })
-  ).isRequired,
-  user: PropTypes.objectOf(
-    PropTypes.shape({
-      bankroll: PropTypes.string,
-    })
-  ).isRequired,
-
+  player: PropTypes.shape({}).isRequired,
+  // player: PropTypes.objectOf(PropTypes.shape({})).isRequired,
+  // user: PropTypes.objectOf(PropTypes.shape({})).isRequired,
+  user: PropTypes.shape({}).isRequired,
   handleCloseCreateForm: PropTypes.func.isRequired,
 }
 

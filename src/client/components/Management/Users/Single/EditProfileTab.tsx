@@ -1,3 +1,4 @@
+/* eslint-disable camelcase */
 import 'moment-timezone'
 
 import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
@@ -26,7 +27,8 @@ import { styled } from '@mui/material/styles'
 import { ethers } from 'ethers'
 import { Formik } from 'formik'
 import { useSnackbar } from 'notistack'
-import { FC, ReactNode, useCallback, useContext, useEffect, useRef, useState } from 'react'
+import PropTypes from 'prop-types'
+import { useCallback, useContext, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Moment from 'react-moment'
 import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance'
@@ -200,49 +202,59 @@ const CheckSelected = styled(Box)(
 function EditProfileTab({ user, isAdmin }) {
   const { t }: { t: any } = useTranslation()
   const { enqueueSnackbar } = useSnackbar()
-  const [balance, setBalance] = useState<string>('')
+  // const [balance, setBalance] = useState<string>('')
 
-  const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
+  // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
   const setThemeName = useContext(ThemeContext)
+  // const [user, setUser] = useState<any>(user)
 
   const [open, setOpen] = useState(false)
   const [, updateUser] = useUpdateUserMutation()
+  const [theme, setTheme] = useState('PureLightTheme')
 
-  const checkBalance = useCallback(async (address) => {
+  const checkBalance = useCallback(async (puser) => {
+    const luser = puser
     if (!window.ethereum?.request) return
 
     const browserProvider = new ethers.providers.Web3Provider(window.ethereum)
 
     if (!browserProvider) return
 
-    setProvider(browserProvider)
+    // setProvider(browserProvider)
 
     const TOKEN_ADDR = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
     const token = Erc20__factory.connect(TOKEN_ADDR, browserProvider.getSigner())
 
-    const rawBalance = await token.balanceOf(address)
+    const rawBalance = await token.balanceOf(luser.address)
     const decimals = await token.decimals()
 
-    const balance = ethers.utils.formatUnits(rawBalance, decimals)
-    setBalance(balance)
-    window.localStorage.setItem('balance', balance)
+    const lbalance = ethers.utils.formatUnits(rawBalance, decimals)
+    // setBalance(lbalance)
+
+    luser.balance = lbalance
+
+    // const generatedRawBalance = await token.balanceOf(luser.generated)
+    // const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance, decimals)
+    // luser.generatedBalance = lgeneratedBalance
+
+    // setUser(luser)
+    // window.localStorage.setItem('balance', lbalance)
   }, [])
 
   useEffect(() => {
-    if (window.localStorage.getItem('balance')) setBalance(window.localStorage.getItem('balance'))
-    else checkBalance(user.address)
+    // if (window.localStorage.getItem('balance')) setBalance(window.localStorage.getItem('balance'))
+    // else
+    checkBalance(user)
 
     const curThemeName = window.localStorage.getItem('appTheme') || 'PureLightTheme'
     setTheme(curThemeName)
-  }, [checkBalance])
+  }, [checkBalance, user])
 
   // useEffect(() => {
   //   const curThemeName = window.localStorage.getItem('appTheme') || 'PureLightTheme'
   //   setTheme(curThemeName)
   // }, [])
-
-  const [theme, setTheme] = useState('PureLightTheme')
 
   const changeTheme = (theme): void => {
     setTheme(theme)
@@ -271,11 +283,12 @@ function EditProfileTab({ user, isAdmin }) {
   }
 
   const onSubmit = async (_values, { resetForm, setErrors, setStatus, setSubmitting }) => {
+    const luser = user
     try {
-      user.email = _values.email
-      user.name = _values.name
+      luser.email = _values.email
+      luser.name = _values.name
 
-      const { error } = await updateUser({ ...user })
+      const { error } = await updateUser({ ...luser })
 
       if (error) throw new Error(error.message)
 
@@ -306,7 +319,7 @@ function EditProfileTab({ user, isAdmin }) {
     <>
       <Grid container spacing={3}>
         <Grid item lg={4} xs={12}>
-          <AccountBalance balance={balance} />
+          <AccountBalance user={user} />
         </Grid>
         <Grid item lg={8} xs={12}>
           <Card sx={{ pb: 5 }}>
@@ -431,7 +444,6 @@ function EditProfileTab({ user, isAdmin }) {
                     <Text color="black">
                       <b>
                         <Moment format="YYYY/MM/DD - hh:mm:ss">{user.registeredAt}</Moment>
-
                         {/* {user.registeredAt.toLocaleDateString()} */}
                       </b>
                     </Text>
@@ -785,6 +797,20 @@ function EditProfileTab({ user, isAdmin }) {
     //   )}
     // </>
   )
+}
+
+EditProfileTab.propTypes = {
+  user: PropTypes.shape({
+    email: PropTypes.string,
+    name: PropTypes.string,
+    address: PropTypes.string,
+    generated: PropTypes.string,
+    registeredAt: PropTypes.string,
+    loginAt: PropTypes.string,
+    // loginAt: PropTypes.instanceOf(Date),
+    // registeredAt: PropTypes.instanceOf(Date),
+  }).isRequired,
+  isAdmin: PropTypes.bool.isRequired,
 }
 
 export default EditProfileTab

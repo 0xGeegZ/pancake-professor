@@ -1,6 +1,7 @@
+/* eslint-disable */
 /// <reference types="react" />
-import { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField';
-import { FieldProps } from 'formik';
+import { TextFieldProps as MuiTextFieldProps } from '@mui/material/TextField'
+import { FieldProps } from 'formik'
 
 export interface TextFieldProps
   extends FieldProps,
@@ -20,3 +21,4 @@ export declare function TextField({
 export declare namespace TextField {
   var displayName: string;
 }
+/* eslint-enable */

@@ -1,42 +1,41 @@
-import { useState } from 'react'
-import * as Yup from 'yup'
-import { Formik } from 'formik'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import wait from 'src/client/utils/wait'
-import numeral from 'numeral'
-
-import {
-  Grid,
-  Dialog,
-  DialogTitle,
-  Chip,
-  DialogContent,
-  Box,
-  Zoom,
-  Typography,
-  TextField,
-  CircularProgress,
-  Avatar,
-  Autocomplete,
-  Button,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  TableContainer,
-  Tooltip,
-  IconButton,
-  lighten,
-  useTheme,
-  useMediaQuery,
-  TableFooter,
-} from '@mui/material'
-import DatePicker from '@mui/lab/DatePicker'
-import { useSnackbar } from 'notistack'
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import DatePicker from '@mui/lab/DatePicker'
+import {
+  Autocomplete,
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  CircularProgress,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
+  IconButton,
+  lighten,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TextField,
+  Tooltip,
+  Typography,
+  useMediaQuery,
+  useTheme,
+  Zoom,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { Formik } from 'formik'
+import { useSnackbar } from 'notistack'
+import numeral from 'numeral'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import wait from 'src/client/utils/wait'
+import * as Yup from 'yup'
 
 const IconButtonError = styled(IconButton)(
   ({ theme }) => `
@@ -227,6 +226,7 @@ function PageHeader() {
                           placeholder={t('Select invoice recipient...')}
                         />
                       )}
+                      // eslint-disable-next-line no-shadow
                       renderTags={(members, getTagProps) =>
                         members.map((ev, index: number) => (
                           <Chip label={ev.name} {...getTagProps({ index })} avatar={<Avatar src={ev.avatar} />} />

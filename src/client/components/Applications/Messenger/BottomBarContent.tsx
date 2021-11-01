@@ -1,9 +1,8 @@
-import { Card, Avatar, Tooltip, IconButton, Box, Button, Hidden, TextField, Divider } from '@mui/material'
-
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
 import AttachFileTwoToneIcon from '@mui/icons-material/AttachFileTwoTone'
 import SendTwoToneIcon from '@mui/icons-material/SendTwoTone'
+import { Avatar, Box, Button, Card, Divider, Hidden, IconButton, TextField, Tooltip } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const DividerWrapper = styled(Divider)(
   ({ theme }) => `
@@ -35,6 +34,7 @@ function BottomBarContent() {
       </Tooltip>
       <Input accept="image/*" id="messenger-upload-file" type="file" />
       <Tooltip arrow placement="top" title={t('Attach a file')}>
+        {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
         <label htmlFor="messenger-upload-file">
           <IconButton color="primary" component="span">
             <AttachFileTwoToneIcon />

@@ -61,7 +61,8 @@ const queries = extendType({
       //   ids: list(stringArg()), // or list('String') -> [String]
       // },
       // resolve: (_, { id }, ctx) => {
-      resolve: (_, args, ctx) =>
+      // resolve: (_, args, ctx) =>
+      resolve: () =>
         // resolve: (_, __, ctx) => {
         // resolve() {
         // if (!ctx.user?.id) return null

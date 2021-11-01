@@ -1,16 +1,16 @@
 import TrendingUp from '@mui/icons-material/TrendingUp'
 import { Avatar, Box, Button, Card, Grid, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
-import AccountBalanceChart from './AccountBalanceChart'
+// const AccountBalanceChartWrapper = styled(AccountBalanceChart)(
+//   () => `
+//       width: 100%;
+//       height: 100%;
+// `
+// )
 
-const AccountBalanceChartWrapper = styled(AccountBalanceChart)(
-  () => `
-      width: 100%;
-      height: 100%;
-`
-)
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.success.main};
@@ -21,18 +21,18 @@ const AvatarSuccess = styled(Avatar)(
 `
 )
 
-function AccountBalance({ balance }) {
+function AccountBalance({ user }) {
   const { t }: { t: any } = useTranslation()
 
-  const cryptoBalance = {
-    datasets: [
-      {
-        data: [20, 10, 40, 30],
-        backgroundColor: ['#ff9900', '#1c81c2', '#333', '#5c6ac0'],
-      },
-    ],
-    labels: [t('Bitcoin'), t('Ripple'), t('Cardano'), t('Ethereum')],
-  }
+  // const cryptoBalance = {
+  //   datasets: [
+  //     {
+  //       data: [20, 10, 40, 30],
+  //       backgroundColor: ['#ff9900', '#1c81c2', '#333', '#5c6ac0'],
+  //     },
+  //   ],
+  //   labels: [t('Bitcoin'), t('Ripple'), t('Cardano'), t('Ethereum')],
+  // }
 
   return (
     <Card>
@@ -47,7 +47,7 @@ function AccountBalance({ balance }) {
                 $ -
               </Typography>
               <Typography variant="h4" fontWeight="normal" color="text.secondary">
-                {balance} BTC
+                {user.balance} BNB
               </Typography>
               <Box display="flex" sx={{ py: 2 }} alignItems="center">
                 <AvatarSuccess sx={{ mr: 1 }} variant="rounded">
@@ -226,6 +226,16 @@ function AccountBalance({ balance }) {
       </Grid>
     </Card>
   )
+}
+
+AccountBalance.propTypes = {
+  user: PropTypes.shape({
+    balance: PropTypes.number,
+  }),
+}
+
+AccountBalance.defaultProps = {
+  user: { balance: 0 },
 }
 
 export default AccountBalance

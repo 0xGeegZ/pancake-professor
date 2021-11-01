@@ -167,7 +167,8 @@ const mutations = extendType({
         return prisma.strategie.update({
           where: { id },
           data: {
-            isActive: false,
+            // isActive: false,
+            isActive: !hasAccess.isActive,
           },
         })
       },

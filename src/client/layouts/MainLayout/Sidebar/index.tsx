@@ -1,11 +1,11 @@
-import { Box, Drawer, Hidden } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useContext } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars-2';
-import Logo from 'src/client/components/Logo';
-import { SidebarContext } from 'src/client/contexts/SidebarContext';
+import { Box, Drawer, Hidden } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useContext } from 'react'
+import { Scrollbars } from 'react-custom-scrollbars-2'
+import Logo from 'src/client/components/Logo'
+import { SidebarContext } from 'src/client/contexts/SidebarContext'
 
-import SidebarMenu from './SidebarMenu';
+import SidebarMenu from './SidebarMenu'
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
@@ -23,7 +23,7 @@ const SidebarWrapper = styled(Box)(
         border-radius: ${theme.general.borderRadius};
     }
 `
-);
+)
 
 const TopSection = styled(Box)(
   ({ theme }) => `
@@ -33,11 +33,12 @@ const TopSection = styled(Box)(
         margin: 0 ${theme.spacing(2)};
         border-bottom: ${theme.sidebar.dividerBg} solid 1px;
 `
-);
+)
 
-function Sidebar({ fetching, error, allMenuItems }) {
-  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
-  const closeSidebar = () => toggleSidebar();
+function Sidebar({ fetching, allMenuItems }) {
+  // function Sidebar({ fetching, error, allMenuItems }) {
+  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext)
+  const closeSidebar = () => toggleSidebar()
 
   return (
     <>
@@ -49,7 +50,8 @@ function Sidebar({ fetching, error, allMenuItems }) {
           <Box sx={{ height: 'calc(100% - 80px)' }}>
             <Scrollbars universal autoHide>
               <Box pt={1}>
-                <SidebarMenu fetching={fetching} error={error} allMenuItems={allMenuItems} />
+                {/* <SidebarMenu fetching={fetching} error={error} allMenuItems={allMenuItems} /> */}
+                <SidebarMenu fetching={fetching} allMenuItems={allMenuItems} />
               </Box>
             </Scrollbars>
           </Box>
@@ -62,13 +64,14 @@ function Sidebar({ fetching, error, allMenuItems }) {
               <TopSection>
                 <Logo />
               </TopSection>
-              <SidebarMenu fetching={fetching} error={error} allMenuItems={allMenuItems} />
+              {/* <SidebarMenu fetching={fetching} error={error} allMenuItems={allMenuItems} /> */}
+              <SidebarMenu fetching={fetching} allMenuItems={allMenuItems} />
             </Scrollbars>
           </SidebarWrapper>
         </Drawer>
       </Hidden>
     </>
-  );
+  )
 }
 
-export default Sidebar;
+export default Sidebar

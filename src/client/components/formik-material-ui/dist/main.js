@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 Object.defineProperty(exports, '__esModule', { value: true });
 
 const React = require('react');
@@ -392,3 +394,4 @@ exports.fieldToSelect = fieldToSelect;
 exports.fieldToSwitch = fieldToSwitch;
 exports.fieldToTextField = fieldToTextField;
 // # sourceMappingURL=main.js.map
+/* eslint-enable */

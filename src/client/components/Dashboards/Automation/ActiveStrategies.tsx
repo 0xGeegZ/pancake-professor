@@ -1,6 +1,8 @@
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
+import { useSnackbar } from 'notistack'
+
 import {
   Avatar,
   Box,
@@ -11,15 +13,19 @@ import {
   Grid,
   IconButton,
   Link,
+  CircularProgress,
   Menu,
   MenuItem,
   Switch,
   Tooltip,
   Typography,
+  Zoom,
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { useRef, useState } from 'react'
+import PropTypes from 'prop-types'
+import { useRef, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDesactivateStrategieMutation } from 'src/client/graphql/desactivateStrategie.generated'
 
 const CardAddAction = styled(Card)(
   ({ theme }) => `
@@ -132,9 +138,11 @@ const IconWrapper = styled(Box)(
 `
 )
 
-function ActiveStrategies() {
+function ActiveStrategies({ strategies: pstrategies }) {
   const { t }: { t: any } = useTranslation()
-  // const { user } = useAuth();
+
+  const [, desactivateStrategie] = useDesactivateStrategieMutation()
+  const { enqueueSnackbar } = useSnackbar()
 
   const locations = [
     {
@@ -156,8 +164,40 @@ function ActiveStrategies() {
   ]
 
   const [location, setLocation] = useState<string>(locations[0].text)
+  const [strategies, setStrategies] = useState<any[]>(pstrategies)
+
   const actionRef = useRef<any>(null)
   const [openLocation, setOpenMenuLocation] = useState<boolean>(false)
+
+  const handleChange = (strategie) => async () => {
+    const { error } = await desactivateStrategie({ id: strategie.id })
+
+    if (error) {
+      enqueueSnackbar(t(`Unexpected error during strategie ${strategie.isActive ? 'activation' : 'desactivation'}.`), {
+        variant: 'error',
+        TransitionComponent: Zoom,
+      })
+      return
+    }
+
+    const updateds = strategies.map((s) => {
+      const updated = s
+      if (updated.id === strategie.id) updated.isActive = !updated.isActive
+
+      return updated
+    })
+    setStrategies(updateds)
+    enqueueSnackbar(t(`Stratégie successfully ${strategie.isActive ? 'activated' : 'desactivated'}.`), {
+      variant: 'success',
+      TransitionComponent: Zoom,
+    })
+  }
+
+  useEffect(() => {
+    if (!strategies) return
+
+    setStrategies(pstrategies)
+  }, [pstrategies, strategies])
 
   return (
     <Box>
@@ -196,56 +236,70 @@ function ActiveStrategies() {
         </Button>
       </Box>
       <Grid container spacing={3}>
-        <Grid item xs={12} xl={3} md={4} sm={6}>
-          <CardActiveStrategies>
-            <CardActionArea>
-              <Switch edge="end" color="primary" />
-              <Typography fontWeight="bold" variant="caption" color="primary">
-                {t('innactive')}
-              </Typography>
-              <IconWrapper>
-                <AccountCircleIcon fontSize="large" />
-              </IconWrapper>
-              <Typography variant="h4" noWrap>
-                {t('Address')}
-              </Typography>
-            </CardActionArea>
-          </CardActiveStrategies>
-        </Grid>
-        <Grid item xs={12} xl={3} md={4} sm={6}>
-          <CardActiveStrategies className="Mui-active">
-            <CardActionArea>
-              <Switch edge="end" defaultChecked color="primary" />
-              <Typography fontWeight="bold" variant="caption" color="primary">
-                {t('active')}
-              </Typography>
-              <IconWrapper>
-                <AccountCircleIcon fontSize="large" />
-              </IconWrapper>
-              <Typography variant="h4" noWrap>
-                {t('Address')}
-              </Typography>
-            </CardActionArea>
-          </CardActiveStrategies>
-        </Grid>
-        <Grid item xs={12} xl={3} md={4} sm={6}>
-          <Link href="/app/players" variant="body2" underline="hover">
-            <Tooltip placement="right" arrow title={t('Add new strategie')}>
-              <CardAddAction>
-                <CardActionArea sx={{ px: 1 }}>
-                  <CardContent>
-                    <AvatarAddWrapper>
-                      <AddTwoToneIcon fontSize="large" />
-                    </AvatarAddWrapper>
-                  </CardContent>
-                </CardActionArea>
-              </CardAddAction>
-            </Tooltip>
-          </Link>
-        </Grid>
+        {strategies?.length ? (
+          <>
+            {strategies.map((strategie) => (
+              <Grid item xs={12} xl={3} md={4} sm={6} key={strategie.id}>
+                <CardActiveStrategies className={strategie.isActive ? 'Mui-active' : ''}>
+                  <CardActionArea>
+                    <Switch
+                      edge="end"
+                      // defaultChecked={strategie?.isActive ? strategie.isActive : false}
+                      checked={strategie.isActive}
+                      color="primary"
+                      onChange={handleChange(strategie)}
+                    />
+                    <Typography fontWeight="bold" variant="caption" color="primary">
+                      {strategie.isActive ? t('Active') : t('Innactive')}
+                    </Typography>
+                    <IconWrapper>
+                      <AccountCircleIcon fontSize="large" />
+                    </IconWrapper>
+                    <Typography variant="h4" noWrap>
+                      {t('Player')}:{' '}
+                      <Link variant="h5" href={`https://bscscan.com/address/${strategie.player}`} target="_blank">
+                        {strategie.player.substring(2, 12)}
+                      </Link>
+                    </Typography>
+                  </CardActionArea>
+                </CardActiveStrategies>
+              </Grid>
+            ))}
+            <Grid item xs={12} xl={3} md={4} sm={6}>
+              <Link href="/app/players" variant="body2" underline="hover">
+                <Tooltip placement="right" arrow title={t('Add new strategie')}>
+                  <CardAddAction>
+                    <CardActionArea sx={{ px: 1 }}>
+                      <CardContent>
+                        <AvatarAddWrapper>
+                          <AddTwoToneIcon fontSize="large" />
+                        </AvatarAddWrapper>
+                      </CardContent>
+                    </CardActionArea>
+                  </CardAddAction>
+                </Tooltip>
+              </Link>
+            </Grid>
+          </>
+        ) : (
+          <Grid sx={{ py: 11 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
+            <Grid item>
+              <CircularProgress color="secondary" size="1rem" />
+            </Grid>
+          </Grid>
+        )}
       </Grid>
     </Box>
   )
+}
+
+ActiveStrategies.propTypes = {
+  strategies: PropTypes.arrayOf(PropTypes.shape({})),
+  // handleActive: PropTypes.func.isRequired,
+}
+
+ActiveStrategies.defaultProps = {
+  strategies: [],
 }
 
 export default ActiveStrategies

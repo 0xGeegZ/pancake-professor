@@ -5,7 +5,7 @@ import { styled } from '@mui/material/styles'
 import { ethers } from 'ethers'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
-import { FC, useContext, useEffect, useRef, useState } from 'react'
+import { useContext } from 'react'
 import { useTranslation } from 'react-i18next'
 import Link from 'src/client/components/Link'
 import Logo from 'src/client/components/Logo'
@@ -16,7 +16,8 @@ import LanguageSwitcher from './Buttons/LanguageSwitcher'
 import HeaderNotifications from './Buttons/Notifications'
 import HeaderUserbox from './Userbox'
 
-const HeaderWrapper: FC = styled(Box)(
+const HeaderWrapper = styled(Box)(
+  // const HeaderWrapper: FC = styled(Box)(
   ({ theme }) => `
         margin-top: ${theme.spacing(3)};
         color: ${theme.header.textColor};
@@ -31,35 +32,34 @@ const Header = () => {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext)
   const { t }: { t: any } = useTranslation()
 
-  const [{ data, fetching, error }] = useGetCurrentUserQuery()
+  const [{ data, fetching }] = useGetCurrentUserQuery()
   const router = useRouter()
-  const [address, setAddress] = useState<string>('')
-  const [email, setEmail] = useState<string>('')
-  const [name, setName] = useState<string>('')
-  const [user, setUser] = useState<string>('')
-  const [account, setAccount] = useState<string>('')
+  // const [address, setAddress] = useState<string>('')
+  // const [email, setEmail] = useState<string>('')
+  // const [name, setName] = useState<string>('')
+  // const [user, setUser] = useState<string>('')
+  // const [account, setAccount] = useState<string>('')
+  // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
   const { enqueueSnackbar } = useSnackbar()
 
   const currentUser = data?.currentUser
 
   // Once we load the current user, default the name input to their name
-  useEffect(() => {
-    if (currentUser?.address) setAddress(currentUser.address)
-    if (currentUser?.name) setName(currentUser.name)
-    if (currentUser?.email) setEmail(currentUser.email)
-  }, [currentUser])
+  // useEffect(() => {
+  //   if (currentUser?.address) setAddress(currentUser.address)
+  //   if (currentUser?.name) setName(currentUser.name)
+  //   if (currentUser?.email) setEmail(currentUser.email)
+  // }, [currentUser])
 
-  useEffect(() => {
-    if (data?.currentUser) {
-      // setUser(data.currentUser)
-      if (currentUser?.address) setAddress(data?.currentUser.address)
-      if (currentUser?.name) setName(data?.currentUser.name)
-      if (currentUser?.email) setEmail(data?.currentUser.email)
-    }
-  }, [data])
-
-  const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
+  // useEffect(() => {
+  //   if (data?.currentUser) {
+  //     // setUser(data.currentUser)
+  //     if (currentUser?.address) setAddress(data?.currentUser.address)
+  //     if (currentUser?.name) setName(data?.currentUser.name)
+  //     if (currentUser?.email) setEmail(data?.currentUser.email)
+  //   }
+  // }, [data])
 
   const connect = async (evt) => {
     evt.preventDefault()
@@ -70,15 +70,15 @@ const Header = () => {
       return
     }
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
+    const lprovider = new ethers.providers.Web3Provider(window.ethereum)
     const accounts = await window.ethereum.request({
       method: 'eth_requestAccounts',
     })
-    setProvider(provider)
-    setAccount(accounts[0])
+    // setProvider(lprovider)
+    // setAccount(accounts[0])
 
     const msg = 'Pancake Professor Application Sign Up'
-    const signer = provider.getSigner()
+    const signer = lprovider.getSigner()
     const signed = await signer.signMessage(msg)
 
     fetch(`/api/auth/web3Auth`, {

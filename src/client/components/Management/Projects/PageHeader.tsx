@@ -1,40 +1,40 @@
-import { useState } from 'react'
-import * as Yup from 'yup'
-import { Formik } from 'formik'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import wait from 'src/client/utils/wait'
-import dynamic from 'next/dynamic'
 import 'react-quill/dist/quill.snow.css'
 
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
+import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone'
+import DatePicker from '@mui/lab/DatePicker'
 import {
-  Grid,
+  Alert,
+  Autocomplete,
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  CircularProgress,
   Dialog,
+  DialogContent,
   DialogTitle,
   Divider,
-  Alert,
-  Chip,
-  DialogContent,
-  Box,
-  Zoom,
-  ListItem,
+  Grid,
   List,
+  ListItem,
   ListItemText,
-  Typography,
   TextField,
-  CircularProgress,
-  Avatar,
-  Autocomplete,
-  Button,
+  Typography,
   useTheme,
+  Zoom,
 } from '@mui/material'
-import DatePicker from '@mui/lab/DatePicker'
-import { useDropzone } from 'react-dropzone'
+import { styled } from '@mui/material/styles'
+import { Formik } from 'formik'
+import dynamic from 'next/dynamic'
 import { useSnackbar } from 'notistack'
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
-import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone'
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import { useState } from 'react'
+import { useDropzone } from 'react-dropzone'
+import { useTranslation } from 'react-i18next'
+import wait from 'src/client/utils/wait'
+import * as Yup from 'yup'
 
 const ReactQuill = dynamic(() => import('react-quill'), { ssr: false })
 
@@ -391,6 +391,7 @@ function PageHeader() {
                           placeholder={t('Select project members...')}
                         />
                       )}
+                      // eslint-disable-next-line no-shadow
                       renderTags={(members, getTagProps) =>
                         members.map((ev, index: number) => (
                           <Chip label={ev.name} {...getTagProps({ index })} avatar={<Avatar src={ev.avatar} />} />

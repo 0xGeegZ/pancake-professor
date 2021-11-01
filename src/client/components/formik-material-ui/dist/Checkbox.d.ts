@@ -1,7 +1,9 @@
-/// <reference types="react" />
-import { CheckboxProps as MuiCheckboxProps } from '@mui/material/Checkbox';
-import { FieldProps } from 'formik';
+/* eslint-disable */
+import { CheckboxProps as MuiCheckboxProps } from '@mui/material/Checkbox'
+import { FieldProps } from 'formik'
 
+
+/// <reference types="react" />
 export interface CheckboxProps
   extends FieldProps,
     Omit<
@@ -28,3 +30,5 @@ export declare function Checkbox(props: CheckboxProps): JSX.Element;
 export declare namespace Checkbox {
   var displayName: string;
 }
+
+/* eslint-enable */

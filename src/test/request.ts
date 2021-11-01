@@ -1,5 +1,6 @@
-import { graphql as executeGraphQL, Source } from 'graphql'
 import { oneLine } from 'common-tags'
+import { graphql as executeGraphQL, Source } from 'graphql'
+
 import { schema } from '../server/graphql/schema'
 
 interface Options {

@@ -1,6 +1,7 @@
+/* eslint-disable */
 /// <reference types="react" />
-import { SelectProps as MuiSelectProps } from '@mui/material/Select';
-import { FieldProps } from 'formik';
+import { SelectProps as MuiSelectProps } from '@mui/material/Select'
+import { FieldProps } from 'formik'
 
 export interface SelectProps
   extends FieldProps,
@@ -16,3 +17,4 @@ export declare function Select(props: SelectProps): JSX.Element;
 export declare namespace Select {
   var displayName: string;
 }
+/* eslint-enable */

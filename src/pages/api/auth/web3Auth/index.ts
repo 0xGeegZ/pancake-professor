@@ -16,6 +16,7 @@ import { handler } from '../../../../server/api-route'
 // });
 export default handler()
   .use(passport.authenticate('web3'))
+  // @ts-ignore
   .use((req, res) => {
     res.status(200).json({ success: true })
   })

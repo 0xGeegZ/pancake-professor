@@ -1,48 +1,48 @@
-import { useState, Ref, forwardRef } from 'react'
-import type { FC, ChangeEvent, ReactElement } from 'react'
-
-import PropTypes from 'prop-types'
-import numeral from 'numeral'
-
+import CloseIcon from '@mui/icons-material/Close'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone'
+import LocalFireDepartmentTwoToneIcon from '@mui/icons-material/LocalFireDepartmentTwoTone'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
 import {
   Avatar,
   Box,
+  Button,
   Card,
   Checkbox,
-  Slide,
+  Dialog,
   Divider,
-  Tooltip,
   IconButton,
-  Link,
   InputAdornment,
+  Link,
+  Slide,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TablePagination,
-  TableContainer,
   TableRow,
   TextField,
-  Button,
+  Tooltip,
   Typography,
-  Dialog,
   useMediaQuery,
   useTheme,
   Zoom,
 } from '@mui/material'
-import { TransitionProps } from '@mui/material/transitions'
-import CloseIcon from '@mui/icons-material/Close'
-import type { Product } from 'src/client/models/product'
-import { useTranslation } from 'react-i18next'
 import { styled } from '@mui/material/styles'
-import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone'
-import Label from 'src/client/components/Label'
-import BulkActions from 'src/client/components/BulkActions'
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import { TransitionProps } from '@mui/material/transitions'
 import { useSnackbar } from 'notistack'
+import numeral from 'numeral'
+import PropTypes from 'prop-types'
+import { forwardRef, Ref, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import BulkActions from 'src/client/components/BulkActions'
+import Label from 'src/client/components/Label'
 import Text from 'src/client/components/Text'
-import LocalFireDepartmentTwoToneIcon from '@mui/icons-material/LocalFireDepartmentTwoTone'
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+
+import type { FC, ChangeEvent, ReactElement } from 'react'
+
+import type { Product } from 'src/client/models/product'
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -87,9 +87,11 @@ interface ResultsProps {
   products: Product[]
 }
 
+/* eslint-disable */
 const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
   <Slide direction="down" ref={ref} {...props} />
 ))
+/* eslint-enable */
 
 const applyFilters = (products: Product[], query: string): Product[] =>
   products.filter((product) => {
@@ -148,7 +150,7 @@ const Results: FC<ResultsProps> = ({ products }) => {
   }
 
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(parseInt(event.target.value))
+    setLimit(+event.target.value)
   }
 
   const filteredProducts = applyFilters(products, query)

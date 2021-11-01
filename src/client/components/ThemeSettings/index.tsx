@@ -176,11 +176,13 @@ const CheckSelected = styled(Box)(
   `
 )
 
-const ThemeSettings: FC = (_props) => {
+// const ThemeSettings: FC = (_props) => {
+const ThemeSettings: FC = () => {
   const { t }: { t: any } = useTranslation()
 
   const ref = useRef<any>(null)
   const [isOpen, setOpen] = useState<boolean>(false)
+  const [theme, setTheme] = useState('PureLightTheme')
 
   const handleOpen = (): void => {
     setOpen(true)
@@ -197,21 +199,19 @@ const ThemeSettings: FC = (_props) => {
     setTheme(curThemeName)
   }, [])
 
-  const [theme, setTheme] = useState('PureLightTheme')
-
   const changeTheme = (theme): void => {
     setTheme(theme)
     setThemeName(theme)
   }
 
-  const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
-  const open = Boolean(anchorEl)
-  const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget)
-  }
-  const closeMenu = () => {
-    setAnchorEl(null)
-  }
+  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  // const open = Boolean(anchorEl)
+  // const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   setAnchorEl(event.currentTarget)
+  // }
+  // const closeMenu = () => {
+  //   setAnchorEl(null)
+  // }
   return (
     <>
       <ThemeSettingsButton>

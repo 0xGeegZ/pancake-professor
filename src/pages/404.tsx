@@ -1,4 +1,4 @@
-import { Box, Button, Card, Container, OutlinedInput, Typography } from '@mui/material'
+import { Box, Button, Card, Container, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
 import { useTranslation } from 'react-i18next'
@@ -26,17 +26,17 @@ const TopWrapper = styled(Box)(
 `
 )
 
-const OutlinedInputWrapper = styled(OutlinedInput)(
-  ({ theme }) => `
-    background-color: ${theme.colors.alpha.white[100]};
-`
-)
+// const OutlinedInputWrapper = styled(OutlinedInput)(
+//   ({ theme }) => `
+//     background-color: ${theme.colors.alpha.white[100]};
+// `
+// )
 
-const ButtonSearch = styled(Button)(
-  ({ theme }) => `
-    margin-right: -${theme.spacing(1)};
-`
-)
+// const ButtonSearch = styled(Button)(
+//   ({ theme }) => `
+//     margin-right: -${theme.spacing(1)};
+// `
+// )
 
 function Status404() {
   const { t }: { t: any } = useTranslation()

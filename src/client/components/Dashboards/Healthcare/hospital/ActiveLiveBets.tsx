@@ -3,7 +3,7 @@ import 'moment-timezone'
 import { Box, Card, CardContent, CardHeader, CircularProgress, Divider, Grid, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import moment from 'moment'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import ActiveLiveBetsChart from './ActiveLiveBetsChart'
@@ -29,16 +29,16 @@ const DotError = styled('span')(
 `
 )
 
-const DotPrimary = styled('span')(
-  ({ theme }) => `
-    border-radius: 22px;
-    background: ${theme.colors.primary.main};
-    width: ${theme.spacing(1.5)};
-    height: ${theme.spacing(1.5)};
-    display: inline-block;
-    margin-right: ${theme.spacing(0.5)};
-`
-)
+// const DotPrimary = styled('span')(
+//   ({ theme }) => `
+//     border-radius: 22px;
+//     background: ${theme.colors.primary.main};
+//     width: ${theme.spacing(1.5)};
+//     height: ${theme.spacing(1.5)};
+//     display: inline-block;
+//     margin-right: ${theme.spacing(0.5)};
+// `
+// )
 
 const ActiveLiveBetsChartWrapper = styled(ActiveLiveBetsChart)(
   () => `
@@ -46,44 +46,46 @@ const ActiveLiveBetsChartWrapper = styled(ActiveLiveBetsChart)(
 `
 )
 
-function ActiveLiveBets({ timeLeft, epoch, userBulls, userBears }) {
+// function ActiveLiveBets({ timeLeft, epoch, userBulls, userBears }) {
+function ActiveLiveBets({ epoch, userBulls, userBears }) {
   const { t }: { t: any } = useTranslation()
-  const actionRef1 = useRef<any>(null)
+  // const actionRef1 = useRef<any>(null)
 
-  const periods = [
-    {
-      value: 'today',
-      text: t('Today'),
-    },
-    {
-      value: 'yesterday',
-      text: t('Yesterday'),
-    },
-    {
-      value: 'last_month',
-      text: t('Last month'),
-    },
-    {
-      value: 'last_year',
-      text: t('Last year'),
-    },
-  ]
+  // const periods = [
+  //   {
+  //     value: 'today',
+  //     text: t('Today'),
+  //   },
+  //   {
+  //     value: 'yesterday',
+  //     text: t('Yesterday'),
+  //   },
+  //   {
+  //     value: 'last_month',
+  //     text: t('Last month'),
+  //   },
+  //   {
+  //     value: 'last_year',
+  //     text: t('Last year'),
+  //   },
+  // ]
 
-  const [period, setPeriod] = useState<string>(periods[2].text)
+  const DEFAULT_STATUS = useMemo(() => {
+    return {
+      isDataLoaded: true,
+      // isDataLoaded: false,
+      data: {
+        bulls: [],
+        bears: [],
+        // current: [1401, 565, 1105, 696, 1469, 1250, 1341, 1231, 505, 783, 998, 738],
+        // previous: [1103, 626, 924, 560, 1130, 1081, 971, 1156, 522, 975, 1054, 1421],
+      },
+      labels: [],
+    }
+  }, [])
+  // const [period, setPeriod] = useState<string>(periods[2].text)
 
-  const DEFAULT_STATUS = {
-    isDataLoaded: true,
-    // isDataLoaded: false,
-    data: {
-      bulls: [],
-      bears: [],
-      // current: [1401, 565, 1105, 696, 1469, 1250, 1341, 1231, 505, 783, 998, 738],
-      // previous: [1103, 626, 924, 560, 1130, 1081, 971, 1156, 522, 975, 1054, 1421],
-    },
-    labels: [],
-  }
-
-  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false)
+  // const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false)
   const [lastTotal, setLastTotal] = useState<number>(0)
   const [status, setStatus] = useState<any>(DEFAULT_STATUS)
   // status = DEFAULT_STATUS
@@ -118,7 +120,7 @@ function ActiveLiveBets({ timeLeft, epoch, userBulls, userBears }) {
 
     setStatus(status)
     setLastTotal(userBulls.length + userBears.length)
-  }, [userBulls, userBears])
+  }, [userBulls, userBears, status, lastTotal, DEFAULT_STATUS])
 
   return (
     <Card sx={{ height: '100%' }}>

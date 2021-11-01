@@ -1,4 +1,4 @@
-import handler from '../../../server/api-route'
+import { handler } from '../../../server/api-route'
 import prisma from '../../../server/db/prisma'
 import { decodeInvitationToken } from '../../../server/invitations/token'
 

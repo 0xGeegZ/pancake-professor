@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material'
 import Head from 'next/head'
-import { useCallback, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import Footer from 'src/client/components/Footer'
 import PageHeader from 'src/client/components/Management/Users/PageHeader'
 import UsersList from 'src/client/components/Management/Users/UsersList'
@@ -10,13 +10,13 @@ import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
 
 import type { ReactElement } from 'react'
-import type { User } from 'src/client/models/user'
+// import type { User } from 'src/client/models/user'
 
 function ManagementUsers() {
   const isMountedRef = useRefMounted()
   // const [users, setUsers] = useState<User[]>([])
   const [users, setUsers] = useState<any[]>([])
-  const [{ data, fetching, error }] = useGetUsersQuery()
+  const [{ data, fetching }] = useGetUsersQuery()
 
   // const getUsers = useCallback(async () => {
   //   try {

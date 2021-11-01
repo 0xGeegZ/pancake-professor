@@ -1,6 +1,5 @@
 import { Box, Grid } from '@mui/material'
 import Head from 'next/head'
-import React from 'react'
 import TeamFolders from 'src/client/components/Applications/FileManager/TeamFolders'
 import Devices from 'src/client/components/Dashboards/Automation/Devices'
 import PowerConsumption from 'src/client/components/Dashboards/Automation/PowerConsumption'
@@ -50,7 +49,7 @@ function DashboardCrypto() {
       <Box sx={{ mt: 3 }}>
         <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
           {/* <Grid item xs={12}>
-            <AccountBalance />
+                      <AccountBalance user={{}} />
           </Grid> */}
           <Grid item lg={8} xs={12}>
             <OverallStatus />

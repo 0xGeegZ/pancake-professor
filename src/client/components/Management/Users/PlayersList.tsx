@@ -27,7 +27,6 @@ import {
   TableHead,
   TablePagination,
   TableRow,
-  Tabs,
   ToggleButton,
   ToggleButtonGroup,
   Tooltip,
@@ -36,31 +35,16 @@ import {
 } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 import { TransitionProps } from '@mui/material/transitions'
-import clsx from 'clsx'
 import { useSnackbar } from 'notistack'
-import PropTypes from 'prop-types'
-import {
-  ChangeEvent,
-  FC,
-  forwardRef,
-  MouseEvent,
-  Ref,
-  SyntheticEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from 'react'
+import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import FollowPlayerForm from 'src/client/components/Dashboards/Automation/FollowPlayerForm'
-import { useCreateStrategieMutation } from 'src/client/graphql/createStrategie.generated'
 
 import SidebarPlayerDrawer from './SidebarPlayerDrawer'
 
-/* eslint-disable react/jsx-props-no-spreading */
-import type { Player } from 'src/client/models/player'
-
 import type { ReactElement } from 'react'
+
+import type { Player } from 'src/client/models/player'
 // import type { Player, PlayerRole } from 'src/client/models/player'
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -80,24 +64,24 @@ const DotLegend = styled('span')(
 `
 )
 
-const AvatarPrimary = styled(Avatar)(
-  ({ theme }) => `
-      background-color: ${theme.colors.primary.lighter};
-      color: ${theme.colors.primary.main};
-      width: ${theme.spacing(5)};
-      height: ${theme.spacing(5)};
-`
-)
+// const AvatarPrimary = styled(Avatar)(
+//   ({ theme }) => `
+//       background-color: ${theme.colors.primary.lighter};
+//       color: ${theme.colors.primary.main};
+//       width: ${theme.spacing(5)};
+//       height: ${theme.spacing(5)};
+// `
+// )
 
-const AvatarWarning = styled(Avatar)(
-  ({ theme }) => `
-      background-color: ${theme.colors.warning.main};
-      color:  ${theme.palette.primary.contrastText};
-      width: ${theme.spacing(8)};
-      height: ${theme.spacing(8)};
-      box-shadow: ${theme.colors.shadows.warning};
-`
-)
+// const AvatarWarning = styled(Avatar)(
+//   ({ theme }) => `
+//       background-color: ${theme.colors.warning.main};
+//       color:  ${theme.palette.primary.contrastText};
+//       width: ${theme.spacing(8)};
+//       height: ${theme.spacing(8)};
+//       box-shadow: ${theme.colors.shadows.warning};
+// `
+// )
 
 const AvatarError = styled(Avatar)(
   ({ theme }) => `
@@ -112,12 +96,12 @@ const AvatarError = styled(Avatar)(
 `
 )
 
-const AvatarWrapper = styled(Avatar)(
-  ({ theme }) => `
-    width: ${theme.spacing(8)};
-    height: ${theme.spacing(8)};
-`
-)
+// const AvatarWrapper = styled(Avatar)(
+//   ({ theme }) => `
+//     width: ${theme.spacing(8)};
+//     height: ${theme.spacing(8)};
+// `
+// )
 
 const CardWrapper = styled(Card)(
   ({ theme }) => `
@@ -154,20 +138,20 @@ const ButtonError = styled(Button)(
     `
 )
 
-const TabsWrapper = styled(Tabs)(
-  ({ theme }) => `
+// const TabsWrapper = styled(Tabs)(
+//   ({ theme }) => `
 
-    @media (max-width: ${theme.breakpoints.values.md}px) {
-      .MuiTabs-scrollableX {
-        overflow-x: auto !important;
-      }
+//     @media (max-width: ${theme.breakpoints.values.md}px) {
+//       .MuiTabs-scrollableX {
+//         overflow-x: auto !important;
+//       }
 
-      .MuiTabs-indicator {
-          box-shadow: none;
-      }
-    }
-    `
-)
+//       .MuiTabs-indicator {
+//           box-shadow: none;
+//       }
+//     }
+//     `
+// )
 
 const LinearProgressWrapper = styled(LinearProgress)(
   ({ theme }) => `
@@ -187,6 +171,13 @@ const LinearProgressWrapper = styled(LinearProgress)(
 )
 
 interface PlayersListProps {
+  user: {
+    strategies: [
+      {
+        player: string
+      }
+    ]
+  }
   players: Player[]
   fetching: boolean
   refreshQuery: any
@@ -197,11 +188,11 @@ interface PlayersListProps {
 //   role?: PlayerRole
 // }
 
-// eslint-disable-next-line react/display-name
-// eslint-disable-next-line react/require-default-props
+/* eslint-disable */
 const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
   <Slide direction="down" ref={ref} {...props} />
 ))
+/* eslint-enable */
 
 // const getPlayerRoleLabel = (playerRole: PlayerRole): JSX.Element => {
 //   const map = {
@@ -224,40 +215,40 @@ const Transition = forwardRef((props: TransitionProps & { children?: ReactElemen
 //   return <Label color={color}>{text}</Label>
 // }
 
-const applyFilters = (players: Player[], query: string, filters: Filters): Player[] =>
-  players.filter((player) => {
-    let matches = true
+// const applyFilters = (players: Player[], query: string, filters: Filters): Player[] =>
+//   players.filter((player) => {
+//     let matches = true
 
-    if (query) {
-      const properties = ['email', 'name', 'address', 'generated']
-      // const properties = ['email', 'name', 'playername']
-      let containsQuery = false
+//     if (query) {
+//       const properties = ['email', 'name', 'address', 'generated']
+//       // const properties = ['email', 'name', 'playername']
+//       let containsQuery = false
 
-      properties.forEach((property) => {
-        if (player[property].toLowerCase().includes(query.toLowerCase())) {
-          containsQuery = true
-        }
-      })
+//       properties.forEach((property) => {
+//         if (player[property].toLowerCase().includes(query.toLowerCase())) {
+//           containsQuery = true
+//         }
+//       })
 
-      // if (filters.role && player.role !== filters.role) {
-      //   matches = false
-      // }
+//       // if (filters.role && player.role !== filters.role) {
+//       //   matches = false
+//       // }
 
-      if (!containsQuery) {
-        matches = false
-      }
-    }
+//       if (!containsQuery) {
+//         matches = false
+//       }
+//     }
 
-    Object.keys(filters).forEach((key) => {
-      const value = filters[key]
+//     Object.keys(filters).forEach((key) => {
+//       const value = filters[key]
 
-      if (value && player[key] !== value) {
-        matches = false
-      }
-    })
+//       if (value && player[key] !== value) {
+//         matches = false
+//       }
+//     })
 
-    return matches
-  })
+//     return matches
+//   })
 
 const applyPagination = (players: Player[], page: number, limit: number): Player[] =>
   players.slice(page * limit, page * limit + limit)
@@ -266,7 +257,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
 
-  const [, createStrategie] = useCreateStrategieMutation()
+  // const [, createStrategie] = useCreateStrategieMutation()
 
   const ordersBy = [
     {
@@ -295,88 +286,88 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
   const [openOrderBy, setOpenMenuOrderBy] = useState<boolean>(false)
   const [orderBy, setOrderBy] = useState<string>(ordersBy[1].text)
 
-  const [selectedItems, setSelectedPlayers] = useState<string[]>([])
+  // const [selectedItems, setSelectedPlayers] = useState<string[]>([])
   const { enqueueSnackbar } = useSnackbar()
 
-  const tabs = [
-    {
-      value: 'all',
-      label: t('All players'),
-    },
-    // {
-    //   value: 'customer',
-    //   label: t('Customers'),
-    // },
-    // {
-    //   value: 'admin',
-    //   label: t('Administrators'),
-    // },
-    // {
-    //   value: 'subscriber',
-    //   label: t('Waiting List'),
-    // },
-  ]
+  // const tabs = [
+  //   {
+  //     value: 'all',
+  //     label: t('All players'),
+  //   },
+  //   // {
+  //   //   value: 'customer',
+  //   //   label: t('Customers'),
+  //   // },
+  //   // {
+  //   //   value: 'admin',
+  //   //   label: t('Administrators'),
+  //   // },
+  //   // {
+  //   //   value: 'subscriber',
+  //   //   label: t('Waiting List'),
+  //   // },
+  // ]
 
   const [page, setPage] = useState<number>(0)
   const [limit, setLimit] = useState<number>(10)
-  const [query, setQuery] = useState<string>('')
-  const [filters, setFilters] = useState<Filters>({
-    role: null,
-  })
+  // const [query, setQuery] = useState<string>('')
+  // const [filters, setFilters] = useState<Filters>({
+  //   role: null,
+  // })
 
-  const handleTabsChange = (_event: SyntheticEvent, tabsValue: unknown) => {
-    let value = null
+  // const handleTabsChange = (_event: SyntheticEvent, tabsValue: unknown) => {
+  //   let value = null
 
-    if (tabsValue !== 'all') {
-      value = tabsValue
-    }
+  //   if (tabsValue !== 'all') {
+  //     value = tabsValue
+  //   }
 
-    setFilters((prevFilters) => ({
-      ...prevFilters,
-      role: value,
-    }))
+  //   setFilters((prevFilters) => ({
+  //     ...prevFilters,
+  //     role: value,
+  //   }))
 
-    setSelectedPlayers([])
-  }
+  //   setSelectedPlayers([])
+  // }
 
-  const handleQueryChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    event.persist()
-    setQuery(event.target.value)
-  }
+  // const handleQueryChange = (event: ChangeEvent<HTMLInputElement>): void => {
+  //   event.persist()
+  //   setQuery(event.target.value)
+  // }
 
-  const handleSelectAllPlayers = (event: ChangeEvent<HTMLInputElement>): void => {
-    setSelectedPlayers(event.target.checked ? players.map((player) => player.id) : [])
-  }
+  // const handleSelectAllPlayers = (event: ChangeEvent<HTMLInputElement>): void => {
+  //   setSelectedPlayers(event.target.checked ? players.map((player) => player.id) : [])
+  // }
 
-  const handleSelectOnePlayer = (_event: ChangeEvent<HTMLInputElement>, playerId: string): void => {
-    if (!selectedItems.includes(playerId)) {
-      setSelectedPlayers((prevSelected) => [...prevSelected, playerId])
-    } else {
-      setSelectedPlayers((prevSelected) => prevSelected.filter((id) => id !== playerId))
-    }
-  }
+  // const handleSelectOnePlayer = (_event: ChangeEvent<HTMLInputElement>, playerId: string): void => {
+  //   if (!selectedItems.includes(playerId)) {
+  //     setSelectedPlayers((prevSelected) => [...prevSelected, playerId])
+  //   } else {
+  //     setSelectedPlayers((prevSelected) => prevSelected.filter((id) => id !== playerId))
+  //   }
+  // }
 
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage)
   }
 
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(parseInt(event.target.value))
+    setLimit(+event.target.value)
   }
 
-  const updateQuery = useCallback(async () => {
-    try {
-      await refreshQuery({ orderBy })
-    } catch (err) {
-      console.error(err)
-    }
-  }, [])
+  // const updateQuery = useCallback(async () => {
+  //   try {
+  //     await refreshQuery({ orderBy })
+  //   } catch (err) {
+  //     console.error(err)
+  //   }
+  // }, [])
 
-  const filteredPlayers = applyFilters(players, query, filters)
-  const paginatedPlayers = applyPagination(filteredPlayers, page, limit)
-  const selectedBulkActions = selectedItems.length > 0
-  const selectedSomePlayers = selectedItems.length > 0 && selectedItems.length < players.length
-  const selectedAllPlayers = selectedItems.length === players.length
+  // const filteredPlayers = applyFilters(players, query, filters)
+  const paginatedPlayers = applyPagination(players, page, limit)
+  // const selectedBulkActions = selectedItems.length > 0
+  // const selectedSomePlayers = selectedItems.length > 0 && selectedItems.length < players.length
+  // const selectedAllPlayers = selectedItems.length === players.length
 
   // useEffect(() => {
   //   console.log('🚀 ~ Player list effect')
@@ -390,9 +381,9 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
 
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
 
-  const handleConfirmDelete = () => {
-    setOpenConfirmDelete(true)
-  }
+  // const handleConfirmDelete = () => {
+  //   setOpenConfirmDelete(true)
+  // }
 
   const closeConfirmDelete = () => {
     setOpenConfirmDelete(false)
@@ -567,9 +558,9 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                   </TableHead>
                   <TableBody>
                     {paginatedPlayers.map((player) => {
-                      const isPlayerSelected = selectedItems.includes(player.id)
+                      // const isPlayerSelected = selectedItems.includes(player.id)
                       return (
-                        <TableRow hover key={player.id} selected={isPlayerSelected}>
+                        <TableRow hover key={player.id}>
                           {player.recentGames ? (
                             <>
                               <TableCell>
@@ -577,15 +568,15 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                   <DotLegend
                                     style={{
                                       background:
-                                        parseInt((player.recentGames * 100) / 288) >= 30
+                                        (+player.recentGames * 100) / 288 >= 30
                                           ? theme.colors.success.main
-                                          : parseInt((player.recentGames * 100) / 288) >= 20
+                                          : (+player.recentGames * 100) / 288 >= 20
                                           ? theme.colors.warning.main
                                           : theme.colors.error.main,
                                     }}
                                   />
                                   <Box>
-                                    {player.recentGames}/288 ({parseInt((player.recentGames * 100) / 288)} %)
+                                    {player.recentGames}/288 ({(+player.recentGames * 100) / 288} %)
                                   </Box>
                                 </Box>
                               </TableCell>
@@ -609,9 +600,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                               ) : (
                                 <></>
                               )}
-                              <Box>
-                                {parseFloat(player.winRate).toFixed(2)}%{/* </Link> */}
-                              </Box>
+                              <Box>{parseFloat(player.winRate).toFixed(2)}%</Box>
                             </Box>
                           </TableCell>
                           <TableCell>
@@ -664,7 +653,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
               <Box p={2}>
                 <TablePagination
                   component="div"
-                  count={filteredPlayers.length}
+                  count={players.length}
                   onPageChange={handlePageChange}
                   onRowsPerPageChange={handleLimitChange}
                   page={page}
@@ -776,15 +765,16 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
             <>
               <Grid container spacing={3}>
                 {paginatedPlayers.map((player) => {
-                  const isPlayerSelected = selectedItems.includes(player.id)
+                  // const isPlayerSelected = selectedItems.includes(player.id)
 
                   return (
                     <Grid item xs={12} sm={6} md={4} key={player.id}>
-                      <CardWrapper
-                        className={clsx({
-                          'Mui-selected': isPlayerSelected,
-                        })}>
-                        <Box sx={{ position: 'relative', zIndex: '2' }}>
+                      <CardWrapper>
+                        <Box
+                          sx={{
+                            position: 'relative',
+                            zIndex: '2',
+                          }}>
                           {openCreateForm && activePlayer === player.id ? (
                             <>
                               <Divider />
@@ -824,7 +814,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                               color="text.primary"
                                               variant="h2"
                                               sx={{ pr: 0.5, display: 'inline-flex' }}>
-                                              {parseInt(player.winRate)}
+                                              {parseInt(player.winRate.toString(), 10)}
                                             </Typography>
                                             <Typography
                                               color="text.secondary"
@@ -833,12 +823,12 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                               /100
                                             </Typography>
                                             <LinearProgressWrapper
-                                              value={parseInt(player.winRate)}
+                                              value={+player.winRate}
                                               // color="primary"
                                               color={
-                                                (parseInt(player.winRate) * 100) / 100 >= 60
+                                                (+player.winRate * 100) / 100 >= 60
                                                   ? 'success'
-                                                  : (parseInt(player.winRate) * 100) / 100 >= 55
+                                                  : (+player.winRate * 100) / 100 >= 55
                                                   ? 'warning'
                                                   : 'error'
                                               }
@@ -878,7 +868,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                               color="text.primary"
                                               variant="h2"
                                               sx={{ pr: 0.5, display: 'inline-flex' }}>
-                                              {parseInt((player.recentGames * 100) / 288)}
+                                              {(+player.recentGames * 100) / 288}
                                             </Typography>
                                             <Typography
                                               color="text.secondary"
@@ -917,7 +907,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                               color="text.primary"
                                               variant="h2"
                                               sx={{ pr: 0.5, display: 'inline-flex' }}>
-                                              {parseInt(player.winRate)}
+                                              {parseInt(player.winRate.toString(), 10)}
                                             </Typography>
                                             <Typography
                                               color="text.secondary"
@@ -926,12 +916,12 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                               /100
                                             </Typography>
                                             <LinearProgressWrapper
-                                              value={parseInt(player.winRate)}
+                                              value={+player.winRate}
                                               // color="primary"
                                               color={
-                                                (parseInt(player.winRate) * 100) / 100 >= 60
+                                                (+player.winRate * 100) / 100 >= 60
                                                   ? 'success'
-                                                  : (parseInt(player.winRate) * 100) / 100 >= 55
+                                                  : (+player.winRate * 100) / 100 >= 55
                                                   ? 'warning'
                                                   : 'error'
                                               }
@@ -976,6 +966,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                     <Button
                                       size="small"
                                       fullWidth
+                                      disabled={!!user?.strategies.find((s) => s.player === player.id)}
                                       variant="contained"
                                       onClick={handleOpenCreateForm(player.id)}>
                                       <b> {t('Copy')}</b>
@@ -1014,11 +1005,11 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                   <Typography component="span" variant="subtitle1">
                     {t('Showing')}
                   </Typography>{' '}
-                  <b>{limit}</b> {t('of')} <b>{filteredPlayers.length}</b> <b>{t('players')}</b>
+                  <b>{limit}</b> {t('of')} <b>{players.length}</b> <b>{t('players')}</b>
                 </Box>
                 <TablePagination
                   component="div"
-                  count={filteredPlayers.length}
+                  count={players.length}
                   onPageChange={handlePageChange}
                   onRowsPerPageChange={handleLimitChange}
                   page={page}
@@ -1088,18 +1079,29 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
   )
 }
 
-PlayersList.propTypes = {
-  players: PropTypes.array,
-  fetching: PropTypes.bool.isRequired,
-  refreshQuery: PropTypes.func.isRequired,
-  hasError: PropTypes.bool.isRequired,
-}
+// PlayersList.defaultProps = {
+//   user: {
+//     strategies: {},
+//   },
+//   players: [],
+//   fetching: true,
+//   refreshQuery: {},
+//   hasError: false,
+// }
 
-PlayersList.defaultProps = {
-  players: [],
-  fetching: true,
-  refreshQuery: {},
-  hasError: false,
-}
+// PlayersList.propTypes = {
+//   // eslint-disable-next-line react/forbid-prop-types
+//   players: PropTypes.array.isRequired,
+//   user: PropTypes.shape({
+//     strategies: PropTypes.arrayOf(
+//       PropTypes.shape({
+//         player: PropTypes.string.isRequired,
+//       })
+//     ).isRequired,
+//   }).isRequired,
+//   fetching: PropTypes.bool.isRequired,
+//   refreshQuery: PropTypes.func.isRequired,
+//   hasError: PropTypes.bool.isRequired,
+// }
 
 export default PlayersList

@@ -34,7 +34,7 @@ function __rest(s, e) {
       t[p] = s[p];
   if (s != null && typeof Object.getOwnPropertySymbols === 'function')
     // eslint-disable-next-line
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
       if (
         e.indexOf(p[i]) < 0 &&
         Object.prototype.propertyIsEnumerable.call(s, p[i])

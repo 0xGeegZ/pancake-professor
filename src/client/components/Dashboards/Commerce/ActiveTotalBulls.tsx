@@ -18,19 +18,19 @@ const ArrowDownwardWrapper = styled(ArrowDownwardTwoTone)(
 `
 )
 
-const CardWrapperSuccess = styled(Card)(
-  ({ theme }) => `
-      border-color: ${theme.palette.success.main};
-      border: 1 px solid ${theme.colors.success.main};
-`
-)
+// const CardWrapperSuccess = styled(Card)(
+//   ({ theme }) => `
+//       border-color: ${theme.palette.success.main};
+//       border: 1 px solid ${theme.colors.success.main};
+// `
+// )
 
-const CardWrapperError = styled(Card)(
-  ({ theme }) => `
-      border-color: ${theme.colors.success.main};
-      border: 1 px solid ${theme.colors.success.main};
-`
-)
+// const CardWrapperError = styled(Card)(
+//   ({ theme }) => `
+//       border-color: ${theme.colors.success.main};
+//       border: 1 px solid ${theme.colors.success.main};
+// `
+// )
 
 function ActiveTotalBulls({ userBulls, userBears }) {
   const { t }: { t: any } = useTranslation()

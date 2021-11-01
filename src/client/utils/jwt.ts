@@ -4,6 +4,7 @@ export const JWT_EXPIRES_IN = 3600 * 24 * 2
 
 export const sign = (payload: Record<string, any>, privateKey: string, header: Record<string, any>) => {
   const now = new Date()
+  // eslint-disable-next-line no-param-reassign
   header.expiresIn = new Date(now.getTime() + header.expiresIn)
   const encodedHeader = btoa(JSON.stringify(header))
   const encodedPayload = btoa(JSON.stringify(payload))

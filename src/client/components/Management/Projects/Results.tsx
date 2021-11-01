@@ -1,58 +1,60 @@
-import { FC, ChangeEvent, MouseEvent, useState, Ref, forwardRef } from 'react'
-import type { ReactElement } from 'react'
-import PropTypes from 'prop-types'
+import CloseIcon from '@mui/icons-material/Close'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone'
+import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
 import {
-  Avatar,
   Autocomplete,
+  Avatar,
+  AvatarGroup,
   Box,
+  Button,
   Card,
+  CardMedia,
   Checkbox,
-  Grid,
-  Slide,
+  Dialog,
   Divider,
-  Tooltip,
+  FormControl,
+  Grid,
   IconButton,
   InputAdornment,
-  MenuItem,
+  InputLabel,
+  lighten,
+  LinearProgress,
   Link,
-  AvatarGroup,
+  MenuItem,
+  Select,
+  Slide,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TablePagination,
-  TableContainer,
   TableRow,
+  TextField,
   ToggleButton,
   ToggleButtonGroup,
-  LinearProgress,
-  TextField,
-  Button,
+  Tooltip,
   Typography,
-  Dialog,
-  FormControl,
-  Select,
-  InputLabel,
   Zoom,
-  CardMedia,
-  lighten,
 } from '@mui/material'
-import { TransitionProps } from '@mui/material/transitions'
-import CloseIcon from '@mui/icons-material/Close'
-import type { Project, ProjectStatus } from 'src/client/models/project'
-import { useTranslation } from 'react-i18next'
-import clsx from 'clsx'
 import { styled } from '@mui/material/styles'
-import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone'
+import { TransitionProps } from '@mui/material/transitions'
+import clsx from 'clsx'
+import { format, formatDistance } from 'date-fns'
+import { useSnackbar } from 'notistack'
+import PropTypes from 'prop-types'
+import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Label from 'src/client/components/Label'
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone';
-import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import { useSnackbar } from 'notistack';
-import { formatDistance, format } from 'date-fns';
-import Text from 'src/client/components/Text';
-import BulkActions from './BulkActions';
+import Text from 'src/client/components/Text'
+
+
+import type { ReactElement } from 'react'
+import type { Project, ProjectStatus } from 'src/client/models/project'
+import BulkActions from './BulkActions'
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -130,12 +132,11 @@ interface Filters {
   status?: ProjectStatus
 }
 
-const Transition = forwardRef((
-  props: TransitionProps & { children?: ReactElement<any, any> },
-  ref: Ref<unknown>
-) => {
+/* eslint-disable */
+const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => {
   return <Slide direction="down" ref={ref} {...props} />
 })
+/* eslint-enable */
 
 const getProjectStatusLabel = (projectStatus: ProjectStatus): JSX.Element => {
   const map = {
@@ -158,40 +159,42 @@ const getProjectStatusLabel = (projectStatus: ProjectStatus): JSX.Element => {
   return <Label color={color}>{text}</Label>
 }
 
-const applyFilters = (projects: Project[], query: string, filters: Filters): Project[] => projects.filter((project) => {
-    let matches = true;
+const applyFilters = (projects: Project[], query: string, filters: Filters): Project[] =>
+  projects.filter((project) => {
+    let matches = true
 
     if (query) {
-      const properties = ['name'];
-      let containsQuery = false;
+      const properties = ['name']
+      let containsQuery = false
 
       properties.forEach((property) => {
         if (project[property].toLowerCase().includes(query.toLowerCase())) {
-          containsQuery = true;
+          containsQuery = true
         }
-      });
+      })
 
       if (filters.status && project.status !== filters.status) {
-        matches = false;
+        matches = false
       }
 
       if (!containsQuery) {
-        matches = false;
+        matches = false
       }
     }
 
     Object.keys(filters).forEach((key) => {
-      const value = filters[key];
+      const value = filters[key]
 
       if (value && project[key] !== value) {
-        matches = false;
+        matches = false
       }
-    });
+    })
 
-    return matches;
-  });
+    return matches
+  })
 
-const applyPagination = (projects: Project[], page: number, limit: number): Project[] => projects.slice(page * limit, page * limit + limit);
+const applyPagination = (projects: Project[], page: number, limit: number): Project[] =>
+  projects.slice(page * limit, page * limit + limit)
 
 const Results: FC<ResultsProps> = ({ projects }) => {
   const [selectedItems, setSelectedProjects] = useState<string[]>([])
@@ -266,7 +269,7 @@ const Results: FC<ResultsProps> = ({ projects }) => {
   }
 
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(parseInt(event.target.value))
+    setLimit(+event.target.value)
   }
 
   const filteredProjects = applyFilters(projects, query, filters)
@@ -451,13 +454,13 @@ const Results: FC<ResultsProps> = ({ projects }) => {
                           </TableCell>
                           <TableCell>
                             {project.tags.map((value) => (
-                                <span key={value}>
-                                  <Link href="#" underline="hover">{value}</Link>,{' '}
-                                </span>
-                              ))}
-                                </span>
-                              )
-                            })}
+                              <span key={value}>
+                                <Link href="#" underline="hover">
+                                  {value}
+                                </Link>
+                                ,{' '}
+                              </span>
+                            ))}
                           </TableCell>
                           <TableCell>
                             <Typography noWrap variant="subtitle1" color="text.primary">
@@ -588,10 +591,13 @@ const Results: FC<ResultsProps> = ({ projects }) => {
                                 <b>{t('Tags')}:</b>{' '}
                               </Typography>
                               {project.tags.map((value) => (
-                                  <span key={value}>
-                                    <Link href="#" underline="hover">{value}</Link>,{' '}
-                                  </span>
-                                ))}
+                                <span key={value}>
+                                  <Link href="#" underline="hover">
+                                    {value}
+                                  </Link>
+                                  ,{' '}
+                                </span>
+                              ))}
                             </Box>
                             <Checkbox
                               checked={isProjectSelected}

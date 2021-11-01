@@ -1,34 +1,20 @@
-import { useState } from 'react'
-
-import {
-  Box,
-  Typography,
-  Card,
-  Grid,
-  Button,
-  Avatar,
-  ButtonGroup,
-  IconButton,
-  Stack,
-  Slider,
-  useTheme,
-} from '@mui/material'
-
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import OpacityTwoToneIcon from '@mui/icons-material/OpacityTwoTone'
-import DeviceThermostatTwoToneIcon from '@mui/icons-material/DeviceThermostatTwoTone'
-import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone'
 import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone'
-import TrendingDown from '@mui/icons-material/TrendingDown'
-import TrendingUp from '@mui/icons-material/TrendingUp'
-import Text from 'src/client/components/Text'
-import PauseRounded from '@mui/icons-material/PauseRounded'
-import PlayArrowRounded from '@mui/icons-material/PlayArrowRounded'
+import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone'
+import DeviceThermostatTwoToneIcon from '@mui/icons-material/DeviceThermostatTwoTone'
 import FastForwardRounded from '@mui/icons-material/FastForwardRounded'
 import FastRewindRounded from '@mui/icons-material/FastRewindRounded'
-import VolumeUpRounded from '@mui/icons-material/VolumeUpRounded'
+import OpacityTwoToneIcon from '@mui/icons-material/OpacityTwoTone'
+import PauseRounded from '@mui/icons-material/PauseRounded'
+import PlayArrowRounded from '@mui/icons-material/PlayArrowRounded'
+import TrendingDown from '@mui/icons-material/TrendingDown'
+import TrendingUp from '@mui/icons-material/TrendingUp'
 import VolumeDownRounded from '@mui/icons-material/VolumeDownRounded'
+import VolumeUpRounded from '@mui/icons-material/VolumeUpRounded'
+import { Avatar, Box, Button, ButtonGroup, Card, Grid, IconButton, Slider, Stack, Typography, useTheme } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Text from 'src/client/components/Text'
 
 const WallPaper = styled(Card)(({ theme }) => ({
   position: 'relative',
@@ -94,7 +80,8 @@ const CardWrapper = styled(Card)(
 function Sensors() {
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
-  const duration = 200 // seconds
+  // seconds
+  const duration = 200
   const [position, setPosition] = useState(32)
   const [paused, setPaused] = useState(false)
   function formatDuration(value: number) {

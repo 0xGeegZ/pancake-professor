@@ -17,20 +17,20 @@ import { useRef } from 'react'
 import { Provider as ReduxProvider } from 'react-redux'
 import { SidebarProvider } from 'src/client/contexts/SidebarContext'
 import createEmotionCache from 'src/client/createEmotionCache'
+import { client } from 'src/client/graphql/client'
 import useScrollTop from 'src/client/hooks/useScrollTop'
 import store from 'src/client/store'
 import ThemeProvider from 'src/client/theme/ThemeProvider'
 import { Provider as GraphQLProvider } from 'urql'
 
-
 import type { ReactElement, ReactNode } from 'react'
 import type { NextPage } from 'next'
 import type { AppProps } from 'next/app'
-import { client } from '../client/graphql/client'
 
 const clientSideEmotionCache = createEmotionCache()
 
 type NextPageWithLayout = NextPage & {
+  // eslint-disable-next-line no-unused-vars
   getLayout?: (page: ReactElement) => ReactNode
 }
 

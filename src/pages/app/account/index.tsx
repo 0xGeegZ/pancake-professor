@@ -1,12 +1,9 @@
 import 'moment-timezone'
 
-import { Box, CircularProgress, Grid, Tabs } from '@mui/material'
-import { styled } from '@mui/material/styles'
+import { Box, CircularProgress, Grid } from '@mui/material'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { useSnackbar } from 'notistack'
-import { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
+import { useEffect, useState } from 'react'
 import Footer from 'src/client/components/Footer'
 import EditProfileTab from 'src/client/components/Management/Users/Single/EditProfileTab'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
@@ -16,22 +13,23 @@ import MainLayout from 'src/client/layouts/MainLayout'
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
 
-const TabsWrapper = styled(Tabs)(
-  () => `
-    .MuiTabs-scrollableX {
-      overflow-x: auto !important;
-    }
-`
-)
+// const TabsWrapper = styled(Tabs)(
+//   () => `
+//     .MuiTabs-scrollableX {
+//       overflow-x: auto !important;
+//     }
+// `
+// )
 
 function UserView() {
   const isMountedRef = useRefMounted()
   const [user, setUser] = useState<User | any>(null)
   const router = useRouter()
-  const { userId } = router.query
-  const { enqueueSnackbar } = useSnackbar()
+  // const { userId } = router.query
+  // const { enqueueSnackbar } = useSnackbar()
 
-  const [{ data, fetching, error }] = useGetCurrentUserQuery()
+  // const [{ data, fetching, error }] = useGetCurrentUserQuery()
+  const [{ data, fetching }] = useGetCurrentUserQuery()
 
   useEffect(() => {
     if (!data) return
@@ -43,22 +41,22 @@ function UserView() {
     if (isMountedRef.current) {
       setUser(data.currentUser)
     }
-  }, [data, isMountedRef])
+  }, [data, isMountedRef, router])
 
-  const { t }: { t: any } = useTranslation()
+  // const { t }: { t: any } = useTranslation()
 
-  const [currentTab, setCurrentTab] = useState<string>('edit_profile')
+  // const [currentTab, setCurrentTab] = useState<string>('edit_profile')
 
-  const tabs = [
-    { value: 'edit_profile', label: t('Edit Profile') },
-    // { value: 'notifications', label: t('Notifications') },
-    // { value: 'security', label: t('Passwords/Security') }
-  ]
+  // const tabs = [
+  //   { value: 'edit_profile', label: t('Edit Profile') },
+  //   // { value: 'notifications', label: t('Notifications') },
+  //   // { value: 'security', label: t('Passwords/Security') }
+  // ]
 
   // eslint-disable-next-line @typescript-eslint/ban-types
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
-    setCurrentTab(value)
-  }
+  // const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
+  //   setCurrentTab(value)
+  // }
 
   // const getUser = useCallback(async () => {
   //   try {
@@ -107,8 +105,9 @@ function UserView() {
           </Grid> */}
           <Grid item xs={12}>
             {/* {currentTab === 'activity' && <ActivityTab />} */}
-            {currentTab === 'edit_profile' &&
-              (fetching || !user ? (
+            {
+              // currentTab === 'edit_profile' &&
+              fetching || !user ? (
                 <Grid
                   sx={{ py: 10 }}
                   container
@@ -122,7 +121,8 @@ function UserView() {
                 </Grid>
               ) : (
                 <EditProfileTab user={user} isAdmin={false} />
-              ))}
+              )
+            }
             {/* {currentTab === 'notifications' && <NotificationsTab />}
             {currentTab === 'security' && <SecurityTab />} */}
           </Grid>

@@ -91,7 +91,7 @@ function SidebarTopSection() {
   const handleLogout = async (): Promise<void> => {
     try {
       handleClose()
-      await logout()
+      // await logout()
       router.push('/')
     } catch (err) {
       console.error(err)

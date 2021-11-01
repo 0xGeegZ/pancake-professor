@@ -1,4 +1,5 @@
-import { SeedData } from './index'
+/* eslint-disable import/no-cycle */
+import { SeedData } from '.'
 
 export const testData: SeedData = {
   users: [

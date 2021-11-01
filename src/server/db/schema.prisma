@@ -15,7 +15,7 @@ model User {
   modifiedAt DateTime  @default(now())
   email      String?   @unique
   address    String    @unique
-  generated    String    @unique
+  generated  String    @unique
   private    String    @unique
   projects   Project[]
   name       String?

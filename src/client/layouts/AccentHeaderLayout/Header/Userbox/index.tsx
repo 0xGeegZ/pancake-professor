@@ -1,13 +1,12 @@
-import { useRef, useState } from 'react'
-import { useRouter } from 'next/router'
-
-import { Avatar, Box, Button, Divider, List, ListItem, ListItemText, Popover, Hidden, Typography } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone'
-import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone'
 import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone'
+import { Avatar, Box, Button, Divider, Hidden, List, ListItem, ListItemText, Popover, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useRouter } from 'next/router'
+import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Link from 'src/client/components/Link'
 
 const UserBoxButton = styled(Button)(
@@ -69,7 +68,7 @@ const HeaderUserbox = () => {
   const handleLogout = async (): Promise<void> => {
     try {
       handleClose()
-      await logout()
+      // await logout()
       router.push('/')
     } catch (err) {
       console.error(err)

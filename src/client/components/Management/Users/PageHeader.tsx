@@ -1,92 +1,90 @@
-import { Box, Grid, Typography, Zoom } from '@mui/material'
-import { styled } from '@mui/material/styles'
-import { useSnackbar } from 'notistack'
-import { useState } from 'react'
+import { Grid, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
-const Input = styled('input')({
-  display: 'none',
-})
+// import { useState } from 'react'
+// const Input = styled('input')({
+//   display: 'none',
+// })
 
-const AvatarWrapper = styled(Box)(
-  ({ theme }) => `
+// const AvatarWrapper = styled(Box)(
+//   ({ theme }) => `
 
-    position: relative;
+//     position: relative;
 
-    .MuiAvatar-root {
-      width: ${theme.spacing(16)};
-      height: ${theme.spacing(16)};
-    }
-`
-)
+//     .MuiAvatar-root {
+//       width: ${theme.spacing(16)};
+//       height: ${theme.spacing(16)};
+//     }
+// `
+// )
 
-const ButtonUploadWrapper = styled(Box)(
-  ({ theme }) => `
-    position: absolute;
-    width: ${theme.spacing(6)};
-    height: ${theme.spacing(6)};
-    bottom: -${theme.spacing(2)};
-    right: -${theme.spacing(2)};
+// const ButtonUploadWrapper = styled(Box)(
+//   ({ theme }) => `
+//     position: absolute;
+//     width: ${theme.spacing(6)};
+//     height: ${theme.spacing(6)};
+//     bottom: -${theme.spacing(2)};
+//     right: -${theme.spacing(2)};
 
-    .MuiIconButton-root {
-      border-radius: 100%;
-      background: ${theme.colors.primary.main};
-      color: ${theme.palette.primary.contrastText};
-      box-shadow: ${theme.colors.shadows.primary};
-      width: ${theme.spacing(6)};
-      height: ${theme.spacing(6)};
-      padding: 0;
-  
-      &:hover {
-        background: ${theme.colors.primary.dark};
-      }
-    }
-`
-)
+//     .MuiIconButton-root {
+//       border-radius: 100%;
+//       background: ${theme.colors.primary.main};
+//       color: ${theme.palette.primary.contrastText};
+//       box-shadow: ${theme.colors.shadows.primary};
+//       width: ${theme.spacing(6)};
+//       height: ${theme.spacing(6)};
+//       padding: 0;
 
-const roles = [
-  { label: 'Administrator', value: 'admin' },
-  { label: 'Subscriber', value: 'subscriber' },
-  { label: 'Customer', value: 'customer' },
-]
+//       &:hover {
+//         background: ${theme.colors.primary.dark};
+//       }
+//     }
+// `
+// )
+
+// const roles = [
+//   { label: 'Administrator', value: 'admin' },
+//   { label: 'Subscriber', value: 'subscriber' },
+//   { label: 'Customer', value: 'customer' },
+// ]
 
 function PageHeader() {
   const { t }: { t: any } = useTranslation()
-  const [open, setOpen] = useState(false)
-  const { enqueueSnackbar } = useSnackbar()
+  // const [open, setOpen] = useState(false)
+  // const { enqueueSnackbar } = useSnackbar()
   // const { user } = useAuth();
 
-  const [publicProfile, setPublicProfile] = useState({
-    public: true,
-  })
+  // const [publicProfile, setPublicProfile] = useState({
+  //   public: true,
+  // })
 
-  const handlePublicProfile = (event) => {
-    setPublicProfile({
-      ...publicProfile,
-      [event.target.name]: event.target.checked,
-    })
-  }
+  // const handlePublicProfile = (event) => {
+  //   setPublicProfile({
+  //     ...publicProfile,
+  //     [event.target.name]: event.target.checked,
+  //   })
+  // }
 
-  const handleCreateUserOpen = () => {
-    setOpen(true)
-  }
+  // const handleCreateUserOpen = () => {
+  //   setOpen(true)
+  // }
 
-  const handleCreateUserClose = () => {
-    setOpen(false)
-  }
+  // const handleCreateUserClose = () => {
+  //   setOpen(false)
+  // }
 
-  const handleCreateUserSuccess = () => {
-    enqueueSnackbar(t('The user account was created successfully'), {
-      variant: 'success',
-      anchorOrigin: {
-        vertical: 'top',
-        horizontal: 'right',
-      },
-      TransitionComponent: Zoom,
-    })
+  // const handleCreateUserSuccess = () => {
+  //   enqueueSnackbar(t('The user account was created successfully'), {
+  //     variant: 'success',
+  //     anchorOrigin: {
+  //       vertical: 'top',
+  //       horizontal: 'right',
+  //     },
+  //     TransitionComponent: Zoom,
+  //   })
 
-    setOpen(false)
-  }
+  //   setOpen(false)
+  // }
 
   return (
     <>

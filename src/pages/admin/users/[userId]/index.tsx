@@ -1,63 +1,57 @@
-import { Box, Grid, Tabs } from '@mui/material'
-import { styled } from '@mui/material/styles'
+import { Box, Grid } from '@mui/material'
 import Head from 'next/head'
-import { useRouter } from 'next/router'
-import { ChangeEvent, useCallback, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import Footer from 'src/client/components/Footer'
 import EditProfileTab from 'src/client/components/Management/Users/Single/EditProfileTab'
-import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
-import axios from 'src/client/utils/axios'
 
 import type { ReactElement } from 'react'
-import type { User } from 'src/client/models/user'
+// import type { User } from 'src/client/models/user'
 
-const TabsWrapper = styled(Tabs)(
-  () => `
-    .MuiTabs-scrollableX {
-      overflow-x: auto !important;
-    }
-`
-)
+// const TabsWrapper = styled(Tabs)(
+//   () => `
+//     .MuiTabs-scrollableX {
+//       overflow-x: auto !important;
+//     }
+// `
+// )
 
 function UserView() {
-  const isMountedRef = useRefMounted()
-  const [user, setUser] = useState<User | null>(null)
-  const router = useRouter()
-  const { userId } = router.query
-  const { t }: { t: any } = useTranslation()
+  // const isMountedRef = useRefMounted()
+  // const [user, setUser] = useState<User | null>(null)
+  // const router = useRouter()
+  // const { userId } = router.query
+  // const { t }: { t: any } = useTranslation()
 
-  const [currentTab, setCurrentTab] = useState<string>('edit_profile')
+  // const [currentTab, setCurrentTab] = useState<string>('edit_profile')
 
-  const tabs = [
-    { value: 'edit_profile', label: t('Edit Profile') },
-    // { value: 'notifications', label: t('Notifications') },
-    // { value: 'security', label: t('Passwords/Security') }
-  ]
+  // const tabs = [
+  //   { value: 'edit_profile', label: t('Edit Profile') },
+  //   // { value: 'notifications', label: t('Notifications') },
+  //   // { value: 'security', label: t('Passwords/Security') }
+  // ]
 
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
-    setCurrentTab(value)
-  }
+  // const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
+  //   setCurrentTab(value)
+  // }
 
-  const getUser = useCallback(async () => {
-    try {
-      const response = await axios.get<{ user: User }>('/api/user', {
-        params: {
-          userId,
-        },
-      })
-      if (isMountedRef.current) {
-        setUser(response.data.user)
-      }
-    } catch (err) {
-      console.error(err)
-    }
-  }, [userId, isMountedRef])
+  // const getUser = useCallback(async () => {
+  //   try {
+  //     const response = await axios.get<{ user: User }>('/api/user', {
+  //       params: {
+  //         userId,
+  //       },
+  //     })
+  //     if (isMountedRef.current) {
+  //       setUser(response.data.user)
+  //     }
+  //   } catch (err) {
+  //     console.error(err)
+  //   }
+  // }, [userId, isMountedRef])
 
-  useEffect(() => {
-    getUser()
-  }, [getUser])
+  // useEffect(() => {
+  //   getUser()
+  // }, [getUser])
 
   // if (!user) {
   //   return null;
@@ -86,8 +80,9 @@ function UserView() {
             </TabsWrapper>
           </Grid> */}
           <Grid item xs={12}>
+            <EditProfileTab isAdmin />
             {/* {currentTab === 'activity' && <ActivityTab />} */}
-            {currentTab === 'edit_profile' && <EditProfileTab isAdmin />}
+            {/* {currentTab === 'edit_profile' && <EditProfileTab isAdmin />} */}
             {/* {currentTab === 'notifications' && <NotificationsTab />}
             {currentTab === 'security' && <SecurityTab />} */}
           </Grid>

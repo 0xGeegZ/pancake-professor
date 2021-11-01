@@ -11,6 +11,7 @@ import Label from 'src/client/components/Label'
 import { updateList } from 'src/client/slices/projects_board'
 import { useDispatch, useSelector } from 'src/client/store'
 
+
 import type { RootState } from 'src/client/store'
 import type { List as ListType } from 'src/client/models/projects_board'
 import Task from './Task'
@@ -152,6 +153,7 @@ const Results: FC<ResultsProps> = ({ listId }) => {
           <Box sx={{ minHeight: 260 }} ref={provided.innerRef}>
             {list.taskIds.map((taskId, index) => (
               <Draggable draggableId={taskId} index={index} key={taskId}>
+                {/* eslint-disable-next-line no-shadow */}
                 {(provided, snapshot) => (
                   <Task
                     taskId={taskId}

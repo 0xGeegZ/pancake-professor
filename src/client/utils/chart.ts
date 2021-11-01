@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 // @ts-ignore-start
 import { Chart } from 'react-chartjs-2'
 

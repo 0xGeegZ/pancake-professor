@@ -356,8 +356,8 @@ function ApplicationsProjectsBoard() {
                       placeholder={t('Select assignees...')}
                     />
                   )}
-                  renderTags={(assignees, getTagProps) =>
-                    assignees.map((ev, index: number) => (
+                  renderTags={(passignees, getTagProps) =>
+                    passignees.map((ev, index: number) => (
                       <Chip
                         key={ev.name}
                         label={ev.name}

@@ -1,3 +1,4 @@
+/* eslint-disable no-shadow */
 import { enumType, extendType, nonNull, objectType, stringArg } from 'nexus'
 import slug from 'slug'
 

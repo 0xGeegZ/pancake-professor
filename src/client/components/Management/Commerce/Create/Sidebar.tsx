@@ -1,31 +1,29 @@
-import { ChangeEvent, useState } from 'react'
-
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
+import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone'
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
 import {
-  ListItemText,
+  Alert,
   Avatar,
   Box,
-  Typography,
-  Checkbox,
-  FormControlLabel,
   Button,
-  Switch,
+  Card,
+  CardHeader,
+  Checkbox,
   Chip,
   Divider,
+  FormControlLabel,
   Grid,
-  ListItem,
   List,
-  CardHeader,
-  Alert,
-  Card,
+  ListItem,
+  ListItemText,
+  Switch,
+  Typography,
 } from '@mui/material'
-import { useDropzone } from 'react-dropzone'
-
-import { useTranslation } from 'react-i18next'
-import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone'
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
 import { styled, useTheme } from '@mui/material/styles'
+import { ChangeEvent, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
+import { useTranslation } from 'react-i18next'
 
 const DotLegend = styled('span')(
   ({ theme }) => `
@@ -126,7 +124,7 @@ function Sidebar() {
   ])
 
   const handleDelete = (productTagToDelete: ProductTags) => () => {
-    setProductTags((productTags) => productTags.filter((productTag) => productTag.key !== productTagToDelete.key))
+    setProductTags((pproductTags) => pproductTags.filter((productTag) => productTag.key !== productTagToDelete.key))
   }
 
   const children = (

@@ -1,6 +1,7 @@
+/* eslint-disable */
 /// <reference types="react" />
-import { SwitchProps as MuiSwitchProps } from '@mui/material/Switch';
-import { FieldProps } from 'formik';
+import { SwitchProps as MuiSwitchProps } from '@mui/material/Switch'
+import { FieldProps } from 'formik'
 
 export interface SwitchProps
   extends FieldProps,
@@ -22,3 +23,4 @@ export declare function Switch(props: SwitchProps): JSX.Element;
 export declare namespace Switch {
   var displayName: string;
 }
+/* eslint-enable */

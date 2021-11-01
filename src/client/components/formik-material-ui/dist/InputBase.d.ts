@@ -1,7 +1,9 @@
-/// <reference types="react" />
-import { InputBaseProps as MuiInputBaseProps } from '@mui/material/InputBase';
-import { FieldProps } from 'formik';
+/* eslint-disable */
+import { InputBaseProps as MuiInputBaseProps } from '@mui/material/InputBase'
+import { FieldProps } from 'formik'
 
+
+/// <reference types="react" />
 export interface InputBaseProps
   extends FieldProps,
     Omit<MuiInputBaseProps, 'name' | 'value' | 'error'> {}
@@ -16,3 +18,4 @@ export declare function InputBase(props: InputBaseProps): JSX.Element;
 export declare namespace InputBase {
   var displayName: string;
 }
+/* eslint-enable */

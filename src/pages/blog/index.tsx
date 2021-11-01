@@ -1,7 +1,6 @@
 import { Box, Button, Container, Grid } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
-import { FC, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Footer from 'src/client/components/Footer'
 import Link from 'src/client/components/Link'
@@ -30,7 +29,7 @@ const BlogWrapper = styled(Box)(
 `
 )
 
-const Blog: FC = () => {
+const Blog = () => {
   const { t }: { t: any } = useTranslation()
 
   return (

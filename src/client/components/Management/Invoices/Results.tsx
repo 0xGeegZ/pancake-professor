@@ -1,49 +1,49 @@
-import { useState, Ref, forwardRef } from 'react'
-
-import type { FC, ChangeEvent, ReactElement } from 'react'
-import PropTypes from 'prop-types'
-import Link from 'src/client/components/Link'
-import numeral from 'numeral'
-
+import CloseIcon from '@mui/icons-material/Close'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
 import {
   Avatar,
   Box,
+  Button,
   Card,
   Checkbox,
-  Grid,
-  Slide,
+  Dialog,
   Divider,
-  Tooltip,
+  FormControl,
+  Grid,
   IconButton,
+  InputAdornment,
+  InputLabel,
   MenuItem,
+  Select,
+  Slide,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TablePagination,
-  TableContainer,
   TableRow,
   TextField,
-  Button,
+  Tooltip,
   Typography,
-  Dialog,
-  FormControl,
-  Select,
-  InputLabel,
   Zoom,
-  InputAdornment,
 } from '@mui/material'
-import { TransitionProps } from '@mui/material/transitions'
-import CloseIcon from '@mui/icons-material/Close'
-import type { Invoice, InvoiceStatus } from 'src/client/models/invoice'
-import { useTranslation } from 'react-i18next'
 import { styled } from '@mui/material/styles'
-import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone'
-import Label from 'src/client/components/Label'
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
-import { useSnackbar } from 'notistack'
+import { TransitionProps } from '@mui/material/transitions'
 import { format, formatDistance } from 'date-fns'
+import { useSnackbar } from 'notistack'
+import numeral from 'numeral'
+import PropTypes from 'prop-types'
+import { forwardRef, Ref, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Label from 'src/client/components/Label'
+import Link from 'src/client/components/Link'
+
+
+import type { FC, ChangeEvent, ReactElement } from 'react'
+import type { Invoice, InvoiceStatus } from 'src/client/models/invoice'
 import BulkActions from './BulkActions'
 
 const DialogWrapper = styled(Dialog)(
@@ -86,9 +86,11 @@ interface Filters {
   status?: InvoiceStatus
 }
 
+/* eslint-disable */
 const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
   <Slide direction="down" ref={ref} {...props} />
 ))
+/* eslint-enable */
 
 const getInvoiceStatusLabel = (invoiceStatus: InvoiceStatus): JSX.Element => {
   const map = {
@@ -226,7 +228,7 @@ const Results: FC<ResultsProps> = ({ invoices }) => {
   }
 
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(parseInt(event.target.value))
+    setLimit(+event.target.value)
   }
 
   const filteredInvoices = applyFilters(invoices, query, filters)

@@ -1,38 +1,40 @@
-import { forwardRef, Ref, useState, ChangeEvent } from 'react'
-import type { ReactElement } from 'react'
-
+import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
+import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
 import {
   Avatar,
-  Link,
   Box,
   Button,
+  Dialog,
+  DialogContent,
+  DialogTitle,
   Divider,
+  Hidden,
   IconButton,
   InputAdornment,
   lighten,
+  Link,
   List,
   ListItem,
   ListItemAvatar,
+  Slide,
   TextField,
   Theme,
   Tooltip,
   Typography,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  Slide,
-  Hidden,
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { TransitionProps } from '@mui/material/transitions'
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
-import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone'
+import { ChangeEvent, forwardRef, Ref, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
 
+import type { ReactElement } from 'react'
+
+/* eslint-disable */
 const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
   <Slide direction="down" ref={ref} {...props} />
 ))
+/* eslint-enable */
 
 const DialogWrapper = styled(Dialog)(
   () => `

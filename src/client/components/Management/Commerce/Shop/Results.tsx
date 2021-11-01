@@ -1,34 +1,35 @@
-import { FC, useState, ChangeEvent, MouseEvent } from 'react'
-import type { Product } from 'src/client/models/product'
-import PropTypes from 'prop-types'
-import Link from 'src/client/components/Link'
+import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
+import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
 import {
-  Grid,
-  Typography,
-  Card,
+  Avatar,
   Box,
-  TextField,
+  Button,
+  Card,
+  Divider,
+  Grid,
+  Hidden,
   IconButton,
   InputAdornment,
-  Avatar,
-  Button,
-  ToggleButton,
-  ToggleButtonGroup,
   Rating,
   Slide,
-  Divider,
-  Hidden,
   TablePagination,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
 } from '@mui/material'
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
-import { useTranslation } from 'react-i18next'
 import { styled } from '@mui/material/styles'
-import numeral from 'numeral'
-import Text from 'src/client/components/Text'
 import { useSnackbar } from 'notistack'
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
-import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone'
-import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
+import numeral from 'numeral'
+import PropTypes from 'prop-types'
+import { ChangeEvent, FC, MouseEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
+import Text from 'src/client/components/Text'
+
+import type { Product } from 'src/client/models/product'
 
 interface ResultsProps {
   products: Product[]
@@ -88,7 +89,7 @@ const Results: FC<ResultsProps> = ({ products }) => {
   }
 
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(parseInt(event.target.value))
+    setLimit(+event.target.value)
   }
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>): void => {

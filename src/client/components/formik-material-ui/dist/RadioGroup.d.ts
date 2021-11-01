@@ -1,6 +1,7 @@
+/* eslint-disable */
 /// <reference types="react" />
-import { RadioGroupProps as MuiRadioGroupProps } from '@mui/material/RadioGroup';
-import { FieldProps } from 'formik';
+import { RadioGroupProps as MuiRadioGroupProps } from '@mui/material/RadioGroup'
+import { FieldProps } from 'formik'
 
 export interface RadioGroupProps
   extends FieldProps,
@@ -15,3 +16,4 @@ export declare function RadioGroup(props: RadioGroupProps): JSX.Element;
 export declare namespace RadioGroup {
   var displayName: string;
 }
+/* eslint-enable */

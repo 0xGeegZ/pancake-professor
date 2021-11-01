@@ -1,6 +1,8 @@
+/* eslint-disable no-use-before-define */
 import { Box, List } from '@mui/material'
-import { useRouter } from 'next/router'
 import { styled } from '@mui/material/styles'
+import { useRouter } from 'next/router'
+
 import SidebarMenuItem from './item'
 import menuItems, { MenuItem } from './items'
 
@@ -83,11 +85,11 @@ const SubMenuWrapper = styled(Box)(
 
 const renderSidebarMenuItems = ({ items, path }: { items: MenuItem[]; path: string }): JSX.Element => (
   <SubMenuWrapper>
-    <List component="div">{items.reduce((ev, item) => reduceChildRoutes({ ev, item, path }), [])}</List>
+    <List component="div">{items.reduce((ev, item) => ReduceChildRoutes({ ev, item, path }), [])}</List>
   </SubMenuWrapper>
 )
 
-const reduceChildRoutes = ({
+const ReduceChildRoutes = ({
   ev,
   path,
   item,

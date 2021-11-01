@@ -178,11 +178,13 @@ const CheckSelected = styled(Box)(
   `
 )
 
-const ThemeSettings: FC = (_props) => {
+// const ThemeSettings: FC = (_props) => {
+const ThemeSettings: FC = () => {
   const { t }: { t: any } = useTranslation()
 
   const ref = useRef<any>(null)
   const [isOpen, setOpen] = useState<boolean>(false)
+  const [theme, setTheme] = useState('PureLightTheme')
 
   const handleOpen = (): void => {
     setOpen(true)
@@ -198,8 +200,6 @@ const ThemeSettings: FC = (_props) => {
     const curThemeName = window.localStorage.getItem('appTheme') || 'PureLightTheme'
     setTheme(curThemeName)
   }, [])
-
-  const [theme, setTheme] = useState('PureLightTheme')
 
   const changeTheme = (theme): void => {
     setTheme(theme)

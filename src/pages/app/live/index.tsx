@@ -6,7 +6,7 @@ import { ethers } from 'ethers'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
-import { ChangeEvent, useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PREDICTION_CONTRACT_ABI } from 'src/client/abis/pancake-prediction-abi-v3'
 import ActiveTotalAmount from 'src/client/components/Dashboards/Commerce/ActiveTotalAmount'
@@ -91,76 +91,87 @@ const LiveView = () => {
 
   const [userBulls, setUserBulls] = useState<any>([])
   const [userBears, setUserBears] = useState<any>([])
-  const [preditionContract, setPreditionContract] = useState<any>(null)
+  // const [preditionContract, setPreditionContract] = useState<any>(null)
   // const [timeLeft, setTimeLeft] = useState(calculateTimeLeft(new Date().getTime() - 60))
   // const [timeLeft, setTimeLeft] = useState<any>(calculateTimeLeft(new Date().getTime()))
-  const [timeLeft, setTimeLeft] = useState<any>(null)
+  // const [timeLeft, setTimeLeft] = useState<any>(null)
   const [startTimestamp, setStartTimestamp] = useState<any>(null)
 
-  const [timerComponents, setTimerComponents] = useState<any>(null)
+  // const [timerComponents, setTimerComponents] = useState<any>(null)
   const [progressValue, setProgressValue] = useState<any>(100)
 
   const router = useRouter()
-  const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
+  // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
-  const [{ data, fetching, error }] = useGetCurrentUserQuery()
+  // const [{ data, fetching, error }] = useGetCurrentUserQuery()
+  const [{ data }] = useGetCurrentUserQuery()
 
   const initialize = useCallback(
     async (ppreditionContract) => {
-      const betBullListenner = async (sender, epoch, amount) => {
+      const betBullListenner = async (sender, currentEpoch, amount) => {
         const player = userBulls.find((p) => p.sender === sender)
         if (!player) {
-          userBulls.unshift({ betBull: true, address: sender, amount: ethers.utils.formatEther(amount), epoch })
+          userBulls.unshift({
+            betBull: true,
+            address: sender,
+            amount: ethers.utils.formatEther(amount),
+            epoch: currentEpoch,
+          })
           setUserBulls([...userBulls])
           // console.log(`[BET-BULL] for player ${sender} - ${userBulls.length}`)
-          const _timeLeft = calculateTimeLeft(startTimestamp)
-          setTimeLeft(_timeLeft)
+          const ltimeLeft = calculateTimeLeft(startTimestamp)
+          // setTimeLeft(ltimeLeft)
           const total = 5 * 60
-          const actual = total - _timeLeft
+          const actual = total - ltimeLeft
           const generated = (actual * 100) / total
           console.log('🚀 ~ total', 100 - generated)
           setProgressValue(100 - generated)
         }
       }
 
-      const betBearListenner = async (sender, epoch, amount) => {
+      const betBearListenner = async (sender, currentEpoch, amount) => {
         const player = userBears.find((p) => p.sender === sender)
         if (!player) {
-          userBears.unshift({ betBull: false, address: sender, amount: ethers.utils.formatEther(amount), epoch })
+          userBears.unshift({
+            betBull: false,
+            address: sender,
+            amount: ethers.utils.formatEther(amount),
+            epoch: currentEpoch,
+          })
           setUserBears([...userBears])
           // console.log(`[BET-BEAR] for player ${sender} - ${userBears.length}`)
           // const _timeLeft = calculateTimeLeft(new Date().getTime())
-          const _timeLeft = calculateTimeLeft(startTimestamp)
-          setTimeLeft(_timeLeft)
-          console.log('🚀 ~ file: index.tsx ~ line 125 ~ initialize ~ _timeLeft', _timeLeft)
+          const ltimeLeft = calculateTimeLeft(startTimestamp)
+          // setTimeLeft(ltimeLeft)
+          console.log('🚀 ~ file: index.tsx ~ line 125 ~ initialize ~ _timeLeft', ltimeLeft)
           const total = 5 * 60
-          const actual = total - _timeLeft
+          const actual = total - ltimeLeft
           const generated = (actual * 100) / total
           console.log('🚀 ~ total', 100 - generated)
           setProgressValue(100 - generated)
         }
       }
 
-      const roundStartListenner = async (epoch) => {
-        console.log(`[ROUND] Round started for epoch ${+epoch}`)
-        enqueueSnackbar(t(`[ROUND] Round started for epoch ${+epoch}`), {
+      const roundStartListenner = async (currentEpoch) => {
+        console.log(`[ROUND] Round started for epoch ${+currentEpoch}`)
+        enqueueSnackbar(t(`[ROUND] Round started for epoch ${+currentEpoch}`), {
           variant: 'success',
           TransitionComponent: Zoom,
         })
         // setUserBulls([])
         // setUserBears([])
         // await utils.sleep(30 * 1000)
-        setEpoch(epoch)
+        setEpoch(currentEpoch)
 
-        const _startTimestamp = new Date().getTime()
-        const timeLeft = calculateTimeLeft(_startTimestamp)
-        setTimeLeft(timeLeft)
-        setStartTimestamp(_startTimestamp.toString())
+        const lstartTimestamp = new Date().getTime()
+        // const ltimeLeft = calculateTimeLeft(lstartTimestamp)
+        // setTimeLeft(ltimeLeft)
+        setStartTimestamp(lstartTimestamp.toString())
       }
 
-      const roundEndListenner = async (epoch) => {
-        console.log(`[ROUND] Round finished for epoch ${+epoch}`)
-        enqueueSnackbar(t(`[ROUND] Round finished for epoch ${+epoch}`), {
+      const roundEndListenner = async (currentEpoch) => {
+        console.log(`[ROUND] Round finished for epoch ${+currentEpoch}`)
+        enqueueSnackbar(t(`[ROUND] Round finished for epoch ${+currentEpoch}`), {
           variant: 'success',
           TransitionComponent: Zoom,
         })
@@ -187,22 +198,11 @@ const LiveView = () => {
       const lepoch = await ppreditionContract.currentEpoch()
       setEpoch(lepoch)
 
-      const {
-        // bullAmount,
-        // bearAmount,
-        // totalAmount,
-        // closePrice,
-        startTimestamp,
-        lockTimestamp,
-        // closeTimestamp,
-        // lockPrice,
-        // startBlock,
-        // endBlock,
-      } = await ppreditionContract.rounds(lepoch)
+      const { startTimestamp: start } = await ppreditionContract.rounds(lepoch)
 
-      const ltimeLeft = calculateTimeLeft(startTimestamp.toString())
-      setTimeLeft(ltimeLeft)
-      setStartTimestamp(startTimestamp.toString())
+      const ltimeLeft = calculateTimeLeft(start.toString())
+      // setTimeLeft(ltimeLeft)
+      setStartTimestamp(start.toString())
       // console.log('🚀 ~ file: index.tsx ~ line 125 ~ initialize ~ _timeLeft', _timeLeft)
       const total = 5 * 60
       const actual = total - ltimeLeft
@@ -264,7 +264,7 @@ const LiveView = () => {
         })
       }
     },
-    [enqueueSnackbar, t, userBulls, userBears]
+    [enqueueSnackbar, t, userBulls, userBears, startTimestamp]
   )
 
   useEffect(() => {
@@ -278,7 +278,7 @@ const LiveView = () => {
 
     if (isMountedRef.current) {
       const lprovider = new ethers.providers.Web3Provider(window.ethereum)
-      setProvider(lprovider)
+      // setProvider(lprovider)
       setUser(data.currentUser)
 
       // TODO decode from server
@@ -292,7 +292,7 @@ const LiveView = () => {
         PREDICTION_CONTRACT_ABI,
         signer
       )
-      setPreditionContract(lpreditionContract)
+      // setPreditionContract(lpreditionContract)
 
       initialize(lpreditionContract)
     }
@@ -313,7 +313,8 @@ const LiveView = () => {
       <Box sx={{ mt: 3 }}>
         <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
           <Grid item lg={8} xs={12}>
-            <ActiveLiveBets timeLeft={timeLeft} epoch={epoch} userBulls={userBulls} userBears={userBears} />
+            {/* <ActiveLiveBets timeLeft={timeLeft} epoch={epoch} userBulls={userBulls} userBears={userBears} /> */}
+            <ActiveLiveBets epoch={epoch} userBulls={userBulls} userBears={userBears} />
           </Grid>
           <Grid item lg={4} xs={12}>
             {/* <LiveActivePlayers liveUserBettors={[].concat(userBulls, userBears)} /> */}

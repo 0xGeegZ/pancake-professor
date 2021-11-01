@@ -173,7 +173,7 @@ const ActiveLiveBetsChart: FC<ActiveLiveBetsChartProps> = ({ data: dataProp, lab
     setData(data)
     setLastTotal(dataProp.bulls.length + dataProp.bears.length)
     // }, [dataProp, labels, DEFAULT_DATA])
-  }, [dataProp, labels])
+  }, [dataProp, labels, data, lastTotal])
 
   return (
     <div {...rest}>

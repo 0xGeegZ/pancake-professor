@@ -1,14 +1,14 @@
-import { FC } from 'react'
-import PropTypes from 'prop-types'
-import type { User } from 'src/client/models/user'
-import { Box, Typography, Card, Tooltip, Avatar, CardMedia, Button, IconButton } from '@mui/material'
-import { styled } from '@mui/material/styles'
-import { useTranslation } from 'react-i18next'
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone'
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
-import { useRouter } from 'next/router'
-import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone'
 import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone'
+import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone'
+import { Box, Button, Card, IconButton, Tooltip, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useRouter } from 'next/router'
+import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import type { User } from 'src/client/models/user'
 
 const Input = styled('input')({
   display: 'none',
@@ -102,7 +102,7 @@ const ProfileCover: FC<ProfileCoverProps> = ({ user }) => {
         </Box>
       </Box>
       <CardCover>
-        <CardMedia image={user.coverImg} />
+        {/* <CardMedia image={user.coverImg} /> */}
         <CardCoverAction>
           <Input accept="image/*" id="change-cover" multiple type="file" />
           <label htmlFor="change-cover">
@@ -113,9 +113,10 @@ const ProfileCover: FC<ProfileCoverProps> = ({ user }) => {
         </CardCoverAction>
       </CardCover>
       <AvatarWrapper>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        {/* <Avatar variant="rounded" alt={user.name} src={user.avatar} /> */}
         <ButtonUploadWrapper>
           <Input accept="image/*" id="icon-button-file" name="icon-button-file" type="file" />
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label htmlFor="icon-button-file">
             <IconButton component="span" color="primary">
               <UploadTwoToneIcon />
@@ -127,9 +128,10 @@ const ProfileCover: FC<ProfileCoverProps> = ({ user }) => {
         <Typography gutterBottom variant="h4">
           {user.name}
         </Typography>
-        <Typography variant="subtitle2">{user.description}</Typography>
+        <Typography variant="subtitle2">user.description</Typography>
         <Typography sx={{ py: 2 }} variant="subtitle2" color="text.primary">
-          {user.jobtitle} | {user.location} | {user.followers} {t('followers')}
+          {/* {user.jobtitle} | {user.location} | {user.followers}  */}
+          {t('followers')}
         </Typography>
         <Box display={{ xs: 'block', md: 'flex' }} alignItems="center" justifyContent="space-between">
           <Box>
@@ -145,7 +147,7 @@ const ProfileCover: FC<ProfileCoverProps> = ({ user }) => {
           </Box>
           <Button sx={{ mt: { xs: 2, md: 0 } }} size="small" variant="text" endIcon={<ArrowForwardTwoToneIcon />}>
             {t('See all')}
-            {` ${user.followers} `}
+            {/* {` ${user.followers} `} */}
             {t('connections')}
           </Button>
         </Box>
@@ -154,9 +156,8 @@ const ProfileCover: FC<ProfileCoverProps> = ({ user }) => {
   )
 }
 
-ProfileCover.propTypes = {
-  // @ts-ignore
-  user: PropTypes.object.isRequired,
-}
+// ProfileCover.propTypes = {
+//   user: PropTypes.shape({}).isRequired,
+// }
 
 export default ProfileCover

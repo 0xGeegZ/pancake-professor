@@ -10,18 +10,18 @@ module.exports = withImages(
     images: {
       domains: ['res.cloudinary.com', 'img.youtube.com'],
     },
-    typescript: {
-      // !! WARN !!
-      // Dangerously allow production builds to successfully complete even if
-      // your project has type errors.
-      // !! WARN !!
-      ignoreBuildErrors: true,
-    },
-    eslint: {
-      // Warning: This allows production builds to successfully complete even if
-      // your project has ESLint errors.
-      ignoreDuringBuilds: true,
-    },
+    // typescript: {
+    //   // !! WARN !!
+    //   // Dangerously allow production builds to successfully complete even if
+    //   // your project has type errors.
+    //   // !! WARN !!
+    //   ignoreBuildErrors: true,
+    // },
+    // eslint: {
+    //   // Warning: This allows production builds to successfully complete even if
+    //   // your project has ESLint errors.
+    //   ignoreDuringBuilds: true,
+    // },
     // Necessary for next-on-netlify to work correctly
     target: process.env.NETLIFY ? 'experimental-serverless-trace' : undefined,
     webpackDevMiddleware: (pconfig) => {

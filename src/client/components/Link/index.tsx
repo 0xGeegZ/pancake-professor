@@ -1,9 +1,9 @@
-import * as React from 'react'
-import clsx from 'clsx'
-import { useRouter } from 'next/router'
-import NextLink, { LinkProps as NextLinkProps } from 'next/link'
 import MuiLink, { LinkProps as MuiLinkProps } from '@mui/material/Link'
 import { styled } from '@mui/material/styles'
+import clsx from 'clsx'
+import NextLink, { LinkProps as NextLinkProps } from 'next/link'
+import { useRouter } from 'next/router'
+import * as React from 'react'
 
 // Add support for the sx prop for consistency with the other branches.
 const Anchor = styled('a')({})
@@ -45,15 +45,7 @@ export type LinkProps = {
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/#with-link
 const Link = React.forwardRef<HTMLAnchorElement, LinkProps>((props, ref) => {
-  const {
-    activeClassName = 'active',
-    as: linkAs,
-    className: classNameProps,
-    href,
-    noLinkStyle,
-    role, // Link don't have roles.
-    ...other
-  } = props
+  const { activeClassName = 'active', as: linkAs, className: classNameProps, href, noLinkStyle, role, ...other } = props
 
   const router = useRouter()
   const pathname = typeof href === 'string' ? href : href.pathname

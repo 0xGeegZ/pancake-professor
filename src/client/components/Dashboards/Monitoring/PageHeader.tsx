@@ -1,13 +1,13 @@
-import { useState } from 'react'
-import { Typography, Grid } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 import LoadingButton from '@mui/lab/LoadingButton'
+import { Grid, Typography } from '@mui/material'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 function PageHeader() {
   const { t }: { t: any } = useTranslation()
 
   const [pending, setPending] = useState(false)
-  function handleClick() {
+  const handleClick = () => {
     setPending(true)
   }
 

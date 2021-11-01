@@ -1,7 +1,9 @@
-import { ListSubheader, Box, alpha, darken, lighten, List } from '@mui/material'
-import { useRouter } from 'next/router'
+/* eslint-disable no-use-before-define */
+import { alpha, Box, darken, lighten, List, ListSubheader } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { useRouter } from 'next/router'
 import { useTranslation } from 'react-i18next'
+
 import SidebarMenuItem from './item'
 import menuItems, { MenuItem } from './items'
 
@@ -161,11 +163,11 @@ const SubMenuWrapper = styled(Box)(
 
 const renderSidebarMenuItems = ({ items, path }: { items: MenuItem[]; path: string }): JSX.Element => (
   <SubMenuWrapper>
-    <List component="div">{items.reduce((ev, item) => reduceChildRoutes({ ev, item, path }), [])}</List>
+    <List component="div">{items.reduce((ev, item) => ReduceChildRoutes({ ev, item, path }), [])}</List>
   </SubMenuWrapper>
 )
 
-const reduceChildRoutes = ({
+const ReduceChildRoutes = ({
   ev,
   path,
   item,

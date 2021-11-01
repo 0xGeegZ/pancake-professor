@@ -1,4 +1,6 @@
+/* eslint-disable import/no-cycle */
 import { Prisma } from '@prisma/client'
+
 import prisma from '../../server/db/prisma'
 import { testData } from './data'
 

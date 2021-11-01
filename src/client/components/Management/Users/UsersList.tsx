@@ -1,9 +1,9 @@
-import CloseIcon from '@mui/icons-material/Close';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone';
-import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone';
+import CloseIcon from '@mui/icons-material/Close'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone'
+import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
 import {
   Avatar,
   Box,
@@ -33,21 +33,20 @@ import {
   Tooltip,
   Typography,
   Zoom,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { TransitionProps } from '@mui/material/transitions';
-import clsx from 'clsx';
-import { useSnackbar } from 'notistack';
-import PropTypes from 'prop-types';
-import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, SyntheticEvent, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Label from 'src/client/components/Label';
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { TransitionProps } from '@mui/material/transitions'
+import clsx from 'clsx'
+import { useSnackbar } from 'notistack'
+import PropTypes from 'prop-types'
+import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, SyntheticEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 
-import type { ReactElement } from 'react';
+import type { ReactElement } from 'react'
 
-import type { User, UserRole } from 'src/client/models/user';
-import BulkActions from './BulkActions';
+import type { User, UserRole } from 'src/client/models/user'
+import BulkActions from './BulkActions'
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -55,7 +54,7 @@ const DialogWrapper = styled(Dialog)(
         overflow: visible;
       }
 `
-);
+)
 
 const AvatarError = styled(Avatar)(
   ({ theme }) => `
@@ -68,7 +67,7 @@ const AvatarError = styled(Avatar)(
         font-size: ${theme.typography.pxToRem(45)};
       }
 `
-);
+)
 
 const CardWrapper = styled(Card)(
   ({ theme }) => `
@@ -92,7 +91,7 @@ const CardWrapper = styled(Card)(
       box-shadow: 0 0 0 3px ${theme.colors.primary.main};
     }
   `
-);
+)
 
 const ButtonError = styled(Button)(
   ({ theme }) => `
@@ -103,7 +102,7 @@ const ButtonError = styled(Button)(
         background: ${theme.colors.error.dark};
      }
     `
-);
+)
 
 const TabsWrapper = styled(Tabs)(
   ({ theme }) => `
@@ -118,86 +117,86 @@ const TabsWrapper = styled(Tabs)(
       }
     }
     `
-);
+)
 
 interface ResultsProps {
-  users: User[];
-  fetching: boolean;
+  users: User[]
+  fetching: boolean
 }
 
 interface Filters {
-  role?: UserRole;
+  role?: UserRole
 }
 
-const Transition = forwardRef(
-  (props: TransitionProps & { children?: ReactElement<any, unknown> }, ref: Ref<unknown>) => (
-    <Slide direction="down" ref={ref} {...props} />
-  )
-);
+/* eslint-disable */
+const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
+  <Slide direction="down" ref={ref} {...props} />
+))
+/* eslint-enable */
 
-const getUserRoleLabel = (userRole: UserRole): JSX.Element => {
-  const map = {
-    admin: {
-      text: 'Administrator',
-      color: 'error',
-    },
-    customer: {
-      text: 'Customer',
-      color: 'info',
-    },
-    subscriber: {
-      text: 'Waiting List',
-      color: 'warning',
-    },
-  };
+// const getUserRoleLabel = (userRole: UserRole): JSX.Element => {
+//   const map = {
+//     admin: {
+//       text: 'Administrator',
+//       color: 'error',
+//     },
+//     customer: {
+//       text: 'Customer',
+//       color: 'info',
+//     },
+//     subscriber: {
+//       text: 'Waiting List',
+//       color: 'warning',
+//     },
+//   }
 
-  const { text, color }: any = map[userRole];
+//   const { text, color }: any = map[userRole]
 
-  return <Label color={color}>{text}</Label>;
-};
+//   return <Label color={color}>{text}</Label>
+// }
 
 const applyFilters = (users: User[], query: string, filters: Filters): User[] =>
   users.filter((user) => {
-    let matches = true;
+    let matches = true
 
     if (query) {
-      const properties = ['email', 'name', 'address', 'generated'];
+      const properties = ['email', 'name', 'address', 'generated']
       // const properties = ['email', 'name', 'username']
-      let containsQuery = false;
+      let containsQuery = false
 
       properties.forEach((property) => {
         if (user[property].toLowerCase().includes(query.toLowerCase())) {
-          containsQuery = true;
+          containsQuery = true
         }
-      });
+      })
 
       // if (filters.role && user.role !== filters.role) {
       //   matches = false
       // }
 
       if (!containsQuery) {
-        matches = false;
+        matches = false
       }
     }
 
     Object.keys(filters).forEach((key) => {
-      const value = filters[key];
+      const value = filters[key]
 
       if (value && user[key] !== value) {
-        matches = false;
+        matches = false
       }
-    });
+    })
 
-    return matches;
-  });
+    return matches
+  })
 
 const applyPagination = (users: User[], page: number, limit: number): User[] =>
-  users.slice(page * limit, page * limit + limit);
+  users.slice(page * limit, page * limit + limit)
 
 const Results: FC<ResultsProps> = ({ users, fetching }) => {
-  const [selectedItems, setSelectedUsers] = useState<string[]>([]);
-  const { t }: { t: any } = useTranslation();
-  const { enqueueSnackbar } = useSnackbar();
+  const [selectedItems, setSelectedUsers] = useState<string[]>([])
+  const { t }: { t: any } = useTranslation()
+  const { enqueueSnackbar } = useSnackbar()
 
   const tabs = [
     {
@@ -216,78 +215,78 @@ const Results: FC<ResultsProps> = ({ users, fetching }) => {
     //   value: 'subscriber',
     //   label: t('Waiting List'),
     // },
-  ];
+  ]
 
-  const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(10);
-  const [query, setQuery] = useState<string>('');
+  const [page, setPage] = useState<number>(0)
+  const [limit, setLimit] = useState<number>(10)
+  const [query, setQuery] = useState<string>('')
   const [filters, setFilters] = useState<Filters>({
     role: null,
-  });
+  })
   const handleTabsChange = (_event: SyntheticEvent, tabsValue: unknown) => {
-    let value = null;
+    let value = null
 
     if (tabsValue !== 'all') {
-      value = tabsValue;
+      value = tabsValue
     }
 
     setFilters((prevFilters) => ({
       ...prevFilters,
       role: value,
-    }));
+    }))
 
-    setSelectedUsers([]);
-  };
+    setSelectedUsers([])
+  }
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    event.persist();
-    setQuery(event.target.value);
-  };
+    event.persist()
+    setQuery(event.target.value)
+  }
 
   const handleSelectAllUsers = (event: ChangeEvent<HTMLInputElement>): void => {
-    setSelectedUsers(event.target.checked ? users.map((user) => user.id) : []);
-  };
+    setSelectedUsers(event.target.checked ? users.map((user) => user.id) : [])
+  }
 
   const handleSelectOneUser = (_event: ChangeEvent<HTMLInputElement>, userId: string): void => {
     if (!selectedItems.includes(userId)) {
-      setSelectedUsers((prevSelected) => [...prevSelected, userId]);
+      setSelectedUsers((prevSelected) => [...prevSelected, userId])
     } else {
-      setSelectedUsers((prevSelected) => prevSelected.filter((id) => id !== userId));
+      setSelectedUsers((prevSelected) => prevSelected.filter((id) => id !== userId))
     }
-  };
+  }
 
   const handlePageChange = (_event: any, newPage: number): void => {
-    setPage(newPage);
-  };
+    setPage(newPage)
+  }
 
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(parseInt(event.target.value));
-  };
+    setLimit(+event.target.value)
+  }
 
-  const filteredUsers = applyFilters(users, query, filters);
-  const paginatedUsers = applyPagination(filteredUsers, page, limit);
-  const selectedBulkActions = selectedItems.length > 0;
-  const selectedSomeUsers = selectedItems.length > 0 && selectedItems.length < users.length;
-  const selectedAllUsers = selectedItems.length === users.length;
+  const filteredUsers = applyFilters(users, query, filters)
+  const paginatedUsers = applyPagination(filteredUsers, page, limit)
+  const selectedBulkActions = selectedItems.length > 0
+  const selectedSomeUsers = selectedItems.length > 0 && selectedItems.length < users.length
+  const selectedAllUsers = selectedItems.length === users.length
 
-  const [toggleView, setToggleView] = useState<string | null>('table_view');
+  const [toggleView, setToggleView] = useState<string | null>('table_view')
 
   const handleViewOrientation = (_event: MouseEvent<HTMLElement>, newValue: string | null) => {
-    setToggleView(newValue);
-  };
+    setToggleView(newValue)
+  }
 
-  const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
 
   const handleConfirmDelete = () => {
-    setOpenConfirmDelete(true);
-  };
+    setOpenConfirmDelete(true)
+  }
 
   const closeConfirmDelete = () => {
-    setOpenConfirmDelete(false);
-  };
+    setOpenConfirmDelete(false)
+  }
 
   const handleDeleteCompleted = () => {
-    setOpenConfirmDelete(false);
+    setOpenConfirmDelete(false)
 
     enqueueSnackbar(t('The user account has been removed'), {
       variant: 'success',
@@ -296,8 +295,8 @@ const Results: FC<ResultsProps> = ({ users, fetching }) => {
         horizontal: 'right',
       },
       TransitionComponent: Zoom,
-    });
-  };
+    })
+  }
 
   return (
     <>
@@ -402,7 +401,7 @@ const Results: FC<ResultsProps> = ({ users, fetching }) => {
                   </TableHead>
                   <TableBody>
                     {paginatedUsers.map((user) => {
-                      const isUserSelected = selectedItems.includes(user.id);
+                      const isUserSelected = selectedItems.includes(user.id)
                       return (
                         <TableRow hover key={user.id} selected={isUserSelected}>
                           <TableCell padding="checkbox">
@@ -473,7 +472,7 @@ const Results: FC<ResultsProps> = ({ users, fetching }) => {
                             </Typography>
                           </TableCell>
                         </TableRow>
-                      );
+                      )
                     })}
                   </TableBody>
                 </Table>
@@ -560,7 +559,7 @@ const Results: FC<ResultsProps> = ({ users, fetching }) => {
             <>
               <Grid container spacing={3}>
                 {paginatedUsers.map((user) => {
-                  const isUserSelected = selectedItems.includes(user.id);
+                  const isUserSelected = selectedItems.includes(user.id)
 
                   return (
                     <Grid item xs={12} sm={6} md={4} key={user.id}>
@@ -631,7 +630,7 @@ const Results: FC<ResultsProps> = ({ users, fetching }) => {
                         </Box>
                       </CardWrapper>
                     </Grid>
-                  );
+                  )
                 })}
               </Grid>
               <Card
@@ -709,17 +708,18 @@ const Results: FC<ResultsProps> = ({ users, fetching }) => {
         </Box>
       </DialogWrapper>
     </>
-  );
-};
+  )
+}
 
 Results.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
   users: PropTypes.array,
   fetching: PropTypes.bool.isRequired,
-};
+}
 
 Results.defaultProps = {
   users: [],
-  fetching: true,
-};
+  // fetching: true,
+}
 
-export default Results;
+export default Results

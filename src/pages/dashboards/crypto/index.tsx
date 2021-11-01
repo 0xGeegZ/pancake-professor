@@ -24,7 +24,7 @@ function DashboardCrypto() {
 
       <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
         <Grid item xs={12}>
-          <AccountBalance />
+          <AccountBalance user={{}} />
         </Grid>
         <Grid item lg={8} xs={12}>
           <Wallets />
