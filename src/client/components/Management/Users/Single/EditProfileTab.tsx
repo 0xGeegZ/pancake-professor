@@ -217,28 +217,23 @@ function EditProfileTab({ user, isAdmin }) {
     const luser = puser
     if (!window.ethereum?.request) return
 
-    const browserProvider = new ethers.providers.Web3Provider(window.ethereum)
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
 
-    if (!browserProvider) return
+    if (!provider) return
 
     // setProvider(browserProvider)
+    const rawBalance = await provider.getBalance(luser.address)
 
-    const TOKEN_ADDR = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
-    const token = Erc20__factory.connect(TOKEN_ADDR, browserProvider.getSigner())
-
-    const rawBalance = await token.balanceOf(luser.address)
-    const decimals = await token.decimals()
-
-    const lbalance = ethers.utils.formatUnits(rawBalance, decimals)
+    const lbalance = ethers.utils.formatUnits(rawBalance)
+    luser.balance = lbalance
     // setBalance(lbalance)
 
-    luser.balance = lbalance
-
-    // const generatedRawBalance = await token.balanceOf(luser.generated)
-    // const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance, decimals)
+    // const generatedRawBalance = await provider.getBalance(luser.generated)
+    // const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance)
     // luser.generatedBalance = lgeneratedBalance
 
     // setUser(luser)
+
     // window.localStorage.setItem('balance', lbalance)
   }, [])
 

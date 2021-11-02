@@ -46,11 +46,11 @@ type Mutation {
   deleteKoi(id: String!): Koi
   deleteKoiHistory(id: String!): KoiHistory
   deleteStrategie(id: String!): Strategie
-  desactivateStrategie(id: String!): Strategie
   inviteToProject(email: String!, projectId: String!): Boolean
+  toogleActivateStrategie(id: String!): Strategie
   updateKoi(birthDate: String, bloodline: String, breeder: String, id: String!, purchasePrice: Int, sex: String, skinType: String, variety: String!, youtube: String): Koi
   updateKoiHistory(date: String, id: String!, image: String, length: Int): KoiHistory
-  updateStrategie(currentAmount: Int!, id: String!, isActive: Boolean, isDeleted: Boolean, isRunning: Boolean, maxLooseAmount: Int!, minWinAmount: Int!, player: String!, startedAmount: Int!): Strategie
+  updateStrategie(currentAmount: Int!, id: String!, isActive: Boolean, isDeleted: Boolean, isRunning: Boolean, maxLooseAmount: Int!, minWinAmount: Int!, player: String!, playsCount: Int!, roundsCount: Int!, startedAmount: Int!): Strategie
   updateUser(address: String!, email: String, id: String!, name: String): User
 }
 
@@ -95,6 +95,8 @@ type Strategie {
   minWinAmount: Int!
   modifiedAt: DateTime!
   player: String!
+  playsCount: Int!
+  roundsCount: Int!
   startedAmount: Int!
   user: User!
 }

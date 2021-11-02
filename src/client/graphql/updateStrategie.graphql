@@ -3,6 +3,8 @@ mutation UpdateStrategie(
   $player: String!
   $startedAmount: Int!
   $currentAmount: Int!
+  $roundsCount: Int!
+  $playsCount: Int!
   $isActive: Boolean!
   $isRunning: Boolean!
   $isDeleted: Boolean!
@@ -14,6 +16,8 @@ mutation UpdateStrategie(
     player: $player
     startedAmount: $startedAmount
     currentAmount: $currentAmount
+    roundsCount: $roundsCount
+    playsCount: $playsCount
     isActive: $isActive
     isRunning: $isRunning
     isDeleted: $isDeleted
@@ -24,6 +28,8 @@ mutation UpdateStrategie(
     player
     startedAmount
     currentAmount
+    roundsCount
+    playsCount
     isActive
     isRunning
     isDeleted

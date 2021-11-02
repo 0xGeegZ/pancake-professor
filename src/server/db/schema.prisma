@@ -36,6 +36,8 @@ model Strategie {
   currentAmount   Int
   maxLooseAmount  Int
   minWinAmount    Int 
+  roundsCount          Int @default(0) 
+  playsCount           Int @default(0)
   isActive        Boolean @default(true)
   isDeleted       Boolean @default(false)
   isRunning       Boolean @default(false)

@@ -7,13 +7,12 @@ import { useSnackbar } from 'notistack'
 import PropTypes from 'prop-types'
 import { FC, ReactNode, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { Erc20__factory } from 'src/client/contracts/types'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 import menuItems from 'src/client/layouts/MainLayout/Sidebar/SidebarMenu/items'
 
 import Header from './Header'
 import Sidebar from './Sidebar'
-
+import Banner from './Banner'
 
 // import ThemeSettings from 'src/client/components/ThemeSettings';
 
@@ -55,8 +54,9 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const [{ data, fetching }] = useGetCurrentUserQuery()
 
   const router = useRouter()
+  const [networkId, setNetworkId] = useState<any>(0)
   const [user, setUser] = useState<any>('')
-  const [balance, setBalance] = useState<string>('')
+  // const [balance, setBalance] = useState<string>('')
   const [allMenuItems, setAllMenuItems] = useState<any>()
 
   // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
@@ -67,24 +67,23 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     const luser = puser
     if (!window.ethereum?.request) return
 
-    const browserProvider = new ethers.providers.Web3Provider(window.ethereum)
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
 
-    if (!browserProvider) return
+    if (!provider) return
 
     // setProvider(browserProvider)
+    const { chainId } = await provider.getNetwork()
+    setNetworkId(chainId)
 
-    const TOKEN_ADDR = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
-    const token = Erc20__factory.connect(TOKEN_ADDR, browserProvider.getSigner())
+    const rawBalance = await provider.getBalance(luser.address)
 
-    const rawBalance = await token.balanceOf(luser.address)
-    const decimals = await token.decimals()
-
-    const lbalance = ethers.utils.formatUnits(rawBalance, decimals)
-    setBalance(lbalance)
+    const lbalance = ethers.utils.formatUnits(rawBalance)
+    console.log('🚀 ~ file: index.tsx ~ line 81 ~ checkBalance ~ lbalance', lbalance)
     luser.balance = lbalance
+    // setBalance(lbalance)
 
-    // const generatedRawBalance = await token.balanceOf(luser.generated)
-    // const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance, decimals)
+    // const generatedRawBalance = await provider.getBalance(luser.generated)
+    // const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance)
     // luser.generatedBalance = lgeneratedBalance
 
     setUser(luser)
@@ -213,11 +212,13 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     <>
       {/* TODO FIX HEADER ON SCROLL */}
       {/* <Sidebar fetching={fetching} error={error} allMenuItems={allMenuItems} /> */}
+      <Banner networkId={networkId} />
+
       <Sidebar fetching={fetching} allMenuItems={allMenuItems} />
       <MainWrapper>
         <MainContent>
           {/* <Header connect={connect} logout={logout} user={user} balance={balance} fetching={fetching} error={error} /> */}
-          <Header connect={connect} logout={logout} user={user} balance={balance} fetching={fetching} />
+          <Header connect={connect} logout={logout} user={user} fetching={fetching} />
           {children}
           {/* <ThemeSettings /> */}
         </MainContent>

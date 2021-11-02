@@ -24,7 +24,7 @@ const HeaderWrapper = styled(Box)(
 )
 
 // const Header = ({ connect, logout, user, balance, fetching, error }) => {
-const Header = ({ connect, logout, user, balance, fetching }) => {
+const Header = ({ connect, logout, user, fetching }) => {
   const { sidebarToggle, toggleSidebar } = useContext(SidebarContext)
   const { t }: { t: any } = useTranslation()
 
@@ -57,7 +57,7 @@ const Header = ({ connect, logout, user, balance, fetching }) => {
           </Grid>
         ) : user ? (
           <>
-            <HeaderUserbox logout={logout} address={user?.address} balance={balance} />
+            <HeaderUserbox logout={logout} address={user?.address} balance={user.balance} />
             <Hidden lgUp>
               <Tooltip arrow title="Toggle Menu">
                 <IconButton color="primary" onClick={toggleSidebar}>

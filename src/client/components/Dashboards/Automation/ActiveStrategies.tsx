@@ -1,7 +1,12 @@
+import 'moment-timezone'
+
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
 import { useSnackbar } from 'notistack'
+import { useTheme, styled } from '@mui/material/styles'
+import Moment from 'react-moment'
+import moment from 'moment'
 
 import {
   Avatar,
@@ -19,13 +24,13 @@ import {
   Switch,
   Tooltip,
   Typography,
+  LinearProgress,
   Zoom,
 } from '@mui/material'
-import { styled } from '@mui/material/styles'
 import PropTypes from 'prop-types'
 import { useRef, useState, useEffect } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useDesactivateStrategieMutation } from 'src/client/graphql/desactivateStrategie.generated'
+import { useToogleActivateStrategieMutation } from 'src/client/graphql/toogleActivateStrategie.generated'
 
 const CardAddAction = styled(Card)(
   ({ theme }) => `
@@ -138,10 +143,37 @@ const IconWrapper = styled(Box)(
 `
 )
 
+const LinearProgressWrapper = styled(LinearProgress)(
+  ({ theme }) => `
+        flex-grow: 1;
+        height: 8px;
+        width: 80%;
+        margin-top: ${theme.spacing(0.5)}; 
+        
+        &.MuiLinearProgress-root {
+          background-color: ${theme.colors.alpha.black[10]};
+        }
+        
+        .MuiLinearProgress-bar {
+          border-radius: ${theme.general.borderRadiusXl};
+        }
+`
+)
+
+const DotLegend = styled('span')(
+  ({ theme }) => `
+    border-radius: 22px;
+    width: ${theme.spacing(1.5)};
+    height: ${theme.spacing(1.5)};
+    display: inline-block;
+    margin-right: ${theme.spacing(0.5)};
+`
+)
 function ActiveStrategies({ strategies: pstrategies }) {
   const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
-  const [, desactivateStrategie] = useDesactivateStrategieMutation()
+  const [, toogleActivateStrategie] = useToogleActivateStrategieMutation()
   const { enqueueSnackbar } = useSnackbar()
 
   const locations = [
@@ -158,8 +190,8 @@ function ActiveStrategies({ strategies: pstrategies }) {
       text: t('Innactive strategies'),
     },
     {
-      value: 'stopped',
-      text: t('Stopped strategie'),
+      value: 'deleted',
+      text: t('Deleted strategie'),
     },
   ]
 
@@ -170,7 +202,7 @@ function ActiveStrategies({ strategies: pstrategies }) {
   const [openLocation, setOpenMenuLocation] = useState<boolean>(false)
 
   const handleChange = (strategie) => async () => {
-    const { error } = await desactivateStrategie({ id: strategie.id })
+    const { error } = await toogleActivateStrategie({ id: strategie.id })
 
     if (error) {
       enqueueSnackbar(t(`Unexpected error during strategie ${strategie.isActive ? 'activation' : 'desactivation'}.`), {
@@ -194,10 +226,31 @@ function ActiveStrategies({ strategies: pstrategies }) {
   }
 
   useEffect(() => {
-    if (!strategies) return
+    if (!strategies) {
+      setStrategies(null)
+      return
+    }
 
     setStrategies(pstrategies)
   }, [pstrategies, strategies])
+
+  const getStrategieDuraction = (strategie) => {
+    const duration = moment.duration(moment().diff(moment(strategie.createdAt)))
+
+    // Get Days
+    const days = Math.floor(duration.asDays())
+    const daysFormatted = days ? `${days}d ` : ''
+
+    // Get Hours
+    const hours = duration.hours()
+    const hoursFormatted = `${hours}h `
+
+    // Get Minutes
+    // const minutes = duration.minutes()
+    // const minutesFormatted = `${minutes}m`
+
+    return [daysFormatted, hoursFormatted].join('')
+  }
 
   return (
     <Box>
@@ -252,42 +305,93 @@ function ActiveStrategies({ strategies: pstrategies }) {
                     <Typography fontWeight="bold" variant="caption" color="primary">
                       {strategie.isActive ? t('Active') : t('Innactive')}
                     </Typography>
-                    <IconWrapper>
-                      <AccountCircleIcon fontSize="large" />
-                    </IconWrapper>
-                    <Typography variant="h4" noWrap>
-                      {t('Player')}:{' '}
-                      <Link variant="h5" href={`https://bscscan.com/address/${strategie.player}`} target="_blank">
-                        {strategie.player.substring(2, 12)}
-                      </Link>
-                    </Typography>
+                    <Box sx={{ p: 1 }}>
+                      <Grid spacing={2} container>
+                        <Grid item xs={12} sm={3} alignItems="left">
+                          <IconWrapper>
+                            <AccountCircleIcon fontSize="large" />
+                          </IconWrapper>
+                        </Grid>
+                        <Grid item xs={12} sm={9}>
+                          <Typography variant="h4" noWrap sx={{ pt: 3 }}>
+                            {t('Player')}:{' '}
+                            <Link variant="h5" href={`https://bscscan.com/address/${strategie.player}`} target="_blank">
+                              {strategie.player.substring(0, 20)}
+                            </Link>
+                          </Typography>
+                        </Grid>
+                      </Grid>
+                    </Box>
+
+                    <Box sx={{ p: 1 }}>
+                      <Grid spacing={2} container>
+                        <Grid item xs={12} sm={8}>
+                          <Typography variant="caption" sx={{ pb: 1 }} component="div">
+                            {t('Rounds played')}(%)
+                          </Typography>
+                          <Box>
+                            <Typography color="text.primary" variant="h2" sx={{ pr: 0.5, display: 'inline-flex' }}>
+                              {strategie.playsCount}
+                            </Typography>
+                            <Typography color="text.secondary" variant="h4" sx={{ pr: 2, display: 'inline-flex' }}>
+                              / {strategie.roundsCount}
+                            </Typography>
+                            <LinearProgressWrapper
+                              value={+strategie.winRate}
+                              // color="primary"
+                              color={
+                                (+strategie.playsCount * 100) / strategie.roundsCount >= 30
+                                  ? 'success'
+                                  : (+strategie.playsCount * 100) / strategie.roundsCount >= 20
+                                  ? 'warning'
+                                  : 'error'
+                              }
+                              variant="determinate"
+                            />
+                          </Box>
+                        </Grid>
+                        <Grid item xs={12} sm={4}>
+                          <Typography variant="caption" sx={{ pb: 1.5 }} component="div">
+                            {t('Running since')}
+                          </Typography>
+                          <Box display="flex" alignItems="center">
+                            <Typography variant="h5" component="div">
+                              {getStrategieDuraction(strategie)}
+                            </Typography>
+                          </Box>
+                        </Grid>
+                      </Grid>
+                    </Box>
                   </CardActionArea>
                 </CardActiveStrategies>
               </Grid>
             ))}
-            <Grid item xs={12} xl={3} md={4} sm={6}>
-              <Link href="/app/players" variant="body2" underline="hover">
-                <Tooltip placement="right" arrow title={t('Add new strategie')}>
-                  <CardAddAction>
-                    <CardActionArea sx={{ px: 1 }}>
-                      <CardContent>
-                        <AvatarAddWrapper>
-                          <AddTwoToneIcon fontSize="large" />
-                        </AvatarAddWrapper>
-                      </CardContent>
-                    </CardActionArea>
-                  </CardAddAction>
-                </Tooltip>
-              </Link>
-            </Grid>
           </>
-        ) : (
+        ) : strategies === null ? (
           <Grid sx={{ py: 11 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
             <Grid item>
               <CircularProgress color="secondary" size="1rem" />
             </Grid>
           </Grid>
+        ) : (
+          <></>
         )}
+
+        <Grid item xs={12} xl={3} md={4} sm={6}>
+          <Link href="/app/players" variant="body2" underline="hover">
+            <Tooltip placement="right" arrow title={t('Add new strategie')}>
+              <CardAddAction>
+                <CardActionArea sx={{ px: 1 }}>
+                  <CardContent>
+                    <AvatarAddWrapper>
+                      <AddTwoToneIcon fontSize="large" />
+                    </AvatarAddWrapper>
+                  </CardContent>
+                </CardActionArea>
+              </CardAddAction>
+            </Tooltip>
+          </Link>
+        </Grid>
       </Grid>
     </Box>
   )

@@ -13,11 +13,14 @@ query GetCurrentUser {
       player
       startedAmount
       currentAmount
+      roundsCount
+      playsCount
       isActive
       isRunning
       isDeleted
       maxLooseAmount
       minWinAmount
+      createdAt
     }
   }
 }

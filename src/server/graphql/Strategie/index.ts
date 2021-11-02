@@ -12,6 +12,8 @@ const Strategie = objectType({
     t.model.player()
     t.model.startedAmount()
     t.model.currentAmount()
+    t.model.roundsCount()
+    t.model.playsCount()
     t.model.isActive()
     t.model.isRunning()
     t.model.isDeleted()
@@ -64,9 +66,6 @@ const mutations = extendType({
       resolve: async (_, args, ctx) => {
         if (!ctx.user?.id) return null
 
-        console.log('🚀 ~ file: index.ts ~ line 73 ~ resolve: ~ args', args)
-        console.log('🚀 ~ file: index.ts ~ line 73 ~ resolve: ~ args', ctx.user?.id)
-
         return prisma.strategie.create({
           data: {
             player: args.player,
@@ -91,6 +90,8 @@ const mutations = extendType({
         player: nonNull(stringArg()),
         startedAmount: nonNull(intArg()),
         currentAmount: nonNull(intArg()),
+        roundsCount: nonNull(intArg()),
+        playsCount: nonNull(intArg()),
         isActive: booleanArg(),
         isRunning: booleanArg(),
         isDeleted: booleanArg(),
@@ -119,6 +120,8 @@ const mutations = extendType({
             player: args.player,
             startedAmount: args.startedAmount,
             currentAmount: args.currentAmount,
+            roundsCount: args.roundsCount,
+            playsCount: args.playsCount,
             isActive: args.isActive,
             isRunning: args.isRunning,
             isDeleted: args.isDeleted,
@@ -129,7 +132,7 @@ const mutations = extendType({
       },
     })
 
-    t.nullable.field('desactivateStrategie', {
+    t.nullable.field('toogleActivateStrategie', {
       type: 'Strategie',
       args: {
         id: nonNull(stringArg()),

@@ -1,5 +1,0 @@
-mutation DesactivateStrategie($id: String!) {
-  desactivateStrategie(id: $id) {
-    id
-  }
-}

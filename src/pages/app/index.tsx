@@ -15,9 +15,9 @@ import MainLayout from 'src/client/layouts/MainLayout'
 // import ActiveStrategiesCount from 'src/client/components/Dashboards/Commerce/ActiveStrategiesCount'
 // import ActiveUsers from 'src/client/components/Dashboards/Commerce/ActiveUsers'
 // import CountUsers from 'src/client/components/Dashboards/Commerce/CountUsers'
-// import MonthlyComparison from 'src/client/components/Dashboards/Commerce/MonthlyComparison'
+import ActiveStrategiesOverview from 'src/client/components/Dashboards/Commerce/ActiveStrategiesOverview'
 // import TotalWon from 'src/client/components/Dashboards/Commerce/TotalWon'
-// import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance'
+import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance'
 // import BalanceHistory from 'src/client/components/Dashboards/Healthcare/hospital/BalanceHistory'
 import type { ReactElement } from 'react'
 
@@ -39,24 +39,22 @@ function DashboardCrypto() {
   const checkBalance = useCallback(async (puser) => {
     if (!window.ethereum?.request) return
 
-    const browserProvider = new ethers.providers.Web3Provider(window.ethereum)
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
 
-    if (!browserProvider) return
+    if (!provider) return
 
     const luser = puser
 
-    const TOKEN_ADDR = '0xbb4CdB9CBd36B01bD1cBaEBF2De08d9173bc095c'
-    const token = Erc20__factory.connect(TOKEN_ADDR, browserProvider.getSigner())
+    const rawBalance = await provider.getBalance(luser.address)
 
-    const rawBalance = await token.balanceOf(luser.address)
-    const decimals = await token.decimals()
-
-    const lbalance = ethers.utils.formatUnits(rawBalance, decimals)
+    const lbalance = ethers.utils.formatUnits(rawBalance)
     luser.balance = lbalance
+    // setBalance(lbalance)
 
-    // const generatedRawBalance = await token.balanceOf(luser.generated)
-    // const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance, decimals)
+    // const generatedRawBalance = await provider.getBalance(luser.generated)
+    // const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance)
     // luser.generatedBalance = lgeneratedBalance
+    luser.generatedBalance = 0
 
     setUser(luser)
   }, [])
@@ -126,17 +124,18 @@ function DashboardCrypto() {
               </Grid>
             </Grid>
           </Grid>
-
+*/}
           <Grid item lg={4} xs={12}>
-            <AccountBalance user={{}} />
+            <AccountBalance user={user} />
           </Grid>
-          <Grid item lg={8} xs={12}>
+          {/* <Grid item lg={8} xs={12}>
             <BalanceHistory />
-          </Grid>
-          <Grid item md={6} lg={7} xs={12}>
-            <MonthlyComparison />
           </Grid> */}
-          <Grid item xs={12} lg={12}>
+
+          <Grid item md={6} lg={8} xs={12}>
+            <ActiveStrategiesOverview strategies={user.strategies} />
+          </Grid>
+          <Grid item xs={12}>
             <ActiveStrategies strategies={user.strategies} />
           </Grid>
         </Grid>
