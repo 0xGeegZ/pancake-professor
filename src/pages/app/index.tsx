@@ -6,8 +6,9 @@ import { useSnackbar } from 'notistack'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ActiveStrategies from 'src/client/components/Dashboards/Automation/ActiveStrategies'
+import ActiveStrategiesOverview from 'src/client/components/Dashboards/Commerce/ActiveStrategiesOverview'
+import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance'
 import Footer from 'src/client/components/Footer'
-import { Erc20__factory } from 'src/client/contracts/types'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 import MainLayout from 'src/client/layouts/MainLayout'
 
@@ -15,9 +16,7 @@ import MainLayout from 'src/client/layouts/MainLayout'
 // import ActiveStrategiesCount from 'src/client/components/Dashboards/Commerce/ActiveStrategiesCount'
 // import ActiveUsers from 'src/client/components/Dashboards/Commerce/ActiveUsers'
 // import CountUsers from 'src/client/components/Dashboards/Commerce/CountUsers'
-import ActiveStrategiesOverview from 'src/client/components/Dashboards/Commerce/ActiveStrategiesOverview'
 // import TotalWon from 'src/client/components/Dashboards/Commerce/TotalWon'
-import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance'
 // import BalanceHistory from 'src/client/components/Dashboards/Healthcare/hospital/BalanceHistory'
 import type { ReactElement } from 'react'
 
@@ -51,10 +50,9 @@ function DashboardCrypto() {
     luser.balance = lbalance
     // setBalance(lbalance)
 
-    // const generatedRawBalance = await provider.getBalance(luser.generated)
-    // const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance)
-    // luser.generatedBalance = lgeneratedBalance
-    luser.generatedBalance = 0
+    const generatedRawBalance = await provider.getBalance(luser.generated)
+    const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance)
+    luser.generatedBalance = lgeneratedBalance
 
     setUser(luser)
   }, [])

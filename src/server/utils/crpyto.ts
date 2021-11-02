@@ -1,35 +1,30 @@
 import crypto from 'crypto'
 
-// const dotenv = require('dotenv')
-// dotenv.config()
-
-const algorithm = 'aes-256-ctr'
-const secretKey = process.env.NEXT_PUBLIC_SECRET_KEY
-
-const iv = crypto.randomBytes(16)
+// Must be 256 bits (32 characters)
+const ENCRYPTION_KEY = process.env.NEXT_PUBLIC_SECRET_KEY
+// For AES, this is always 16
+const IV_LENGTH = 16
 
 const encrypt = (text) => {
-  const cipher = crypto.createCipheriv(algorithm, secretKey, iv)
+  const iv = crypto.randomBytes(IV_LENGTH)
+  const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY), iv)
+  let encrypted = cipher.update(text)
 
-  const encrypted = Buffer.concat([cipher.update(text), cipher.final()])
+  encrypted = Buffer.concat([encrypted, cipher.final()])
 
-  return {
-    iv: iv.toString('hex'),
-    content: encrypted.toString('hex'),
-  }
+  return `${iv.toString('hex')}:${encrypted.toString('hex')}`
 }
 
 const decrypt = (hash) => {
-  const decipher = crypto.createDecipheriv(algorithm, secretKey, Buffer.from(hash.iv, 'hex'))
+  const textParts = hash.split(':')
+  const iv = Buffer.from(textParts.shift(), 'hex')
+  const encryptedText = Buffer.from(textParts.join(':'), 'hex')
+  const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(ENCRYPTION_KEY), iv)
+  let decrypted = decipher.update(encryptedText)
 
-  const decrpyted = Buffer.concat([decipher.update(Buffer.from(hash.content, 'hex')), decipher.final()])
+  decrypted = Buffer.concat([decrypted, decipher.final()])
 
-  return decrpyted.toString()
+  return decrypted.toString()
 }
 
-export default { encrypt, decrypt }
-
-// module.exports = {
-//   encrypt,
-//   decrypt
-// }
+export { encrypt, decrypt }

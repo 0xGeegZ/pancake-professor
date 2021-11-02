@@ -155,7 +155,6 @@ const ActiveLiveBetsChart: FC<ActiveLiveBetsChartProps> = ({ data: dataProp, lab
   const [lastTotal, setLastTotal] = useState<number>(0)
 
   useEffect(() => {
-    console.log('🚀 ~ file: ActiveLiveBetsChart.tsx ~ line 165 ~ labels', labels)
     // if (!dataProp) return
 
     // if (!data) setData(DEFAULT_DATA)
@@ -167,8 +166,6 @@ const ActiveLiveBetsChart: FC<ActiveLiveBetsChartProps> = ({ data: dataProp, lab
     data.datasets[0].data = dataProp.bulls
     data.datasets[1].data = dataProp.bears
     data.labels = labels
-
-    console.log('🚀 ~ file: ActiveLiveBetsChart.tsx ~ line 140 ~ useEffect ~ data', data)
 
     setData(data)
     setLastTotal(dataProp.bulls.length + dataProp.bears.length)

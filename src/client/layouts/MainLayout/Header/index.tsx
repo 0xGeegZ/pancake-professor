@@ -57,7 +57,8 @@ const Header = ({ connect, logout, user, fetching }) => {
           </Grid>
         ) : user ? (
           <>
-            <HeaderUserbox logout={logout} address={user?.address} balance={user.balance} />
+            {/* <HeaderUserbox logout={logout} address={user?.address} balance={user.balance} /> */}
+            <HeaderUserbox logout={logout} address={user?.generated} balance={user.generatedBalance} />
             <Hidden lgUp>
               <Tooltip arrow title="Toggle Menu">
                 <IconButton color="primary" onClick={toggleSidebar}>

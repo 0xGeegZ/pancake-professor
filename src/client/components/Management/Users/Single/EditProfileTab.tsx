@@ -34,7 +34,6 @@ import Moment from 'react-moment'
 import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance'
 import Label from 'src/client/components/Label'
 import Text from 'src/client/components/Text'
-import { Erc20__factory } from 'src/client/contracts/types'
 import { useUpdateUserMutation } from 'src/client/graphql/updateUser.generated'
 import { ThemeContext } from 'src/client/theme/ThemeProvider'
 import * as Yup from 'yup'
@@ -199,7 +198,7 @@ const CheckSelected = styled(Box)(
   `
 )
 
-function EditProfileTab({ user, isAdmin }) {
+function EditProfileTab({ user: puser, isAdmin }) {
   const { t }: { t: any } = useTranslation()
   const { enqueueSnackbar } = useSnackbar()
   // const [balance, setBalance] = useState<string>('')
@@ -207,32 +206,27 @@ function EditProfileTab({ user, isAdmin }) {
   // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
   const setThemeName = useContext(ThemeContext)
-  // const [user, setUser] = useState<any>(user)
+  const [user, setUser] = useState<any>(puser)
 
   const [open, setOpen] = useState(false)
   const [, updateUser] = useUpdateUserMutation()
   const [theme, setTheme] = useState('PureLightTheme')
 
-  const checkBalance = useCallback(async (puser) => {
-    const luser = puser
+  const checkBalance = useCallback(async (ppuser) => {
     if (!window.ethereum?.request) return
 
     const provider = new ethers.providers.Web3Provider(window.ethereum)
 
     if (!provider) return
 
-    // setProvider(browserProvider)
-    const rawBalance = await provider.getBalance(luser.address)
+    const rawBalance = await provider.getBalance(ppuser.address)
 
     const lbalance = ethers.utils.formatUnits(rawBalance)
-    luser.balance = lbalance
-    // setBalance(lbalance)
 
-    // const generatedRawBalance = await provider.getBalance(luser.generated)
-    // const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance)
-    // luser.generatedBalance = lgeneratedBalance
+    const generatedRawBalance = await provider.getBalance(ppuser.generated)
+    const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance)
 
-    // setUser(luser)
+    setUser({ ...ppuser, generatedBalance: lgeneratedBalance, balance: lbalance })
 
     // window.localStorage.setItem('balance', lbalance)
   }, [])
@@ -240,11 +234,11 @@ function EditProfileTab({ user, isAdmin }) {
   useEffect(() => {
     // if (window.localStorage.getItem('balance')) setBalance(window.localStorage.getItem('balance'))
     // else
-    checkBalance(user)
+    checkBalance(puser)
 
     const curThemeName = window.localStorage.getItem('appTheme') || 'PureLightTheme'
     setTheme(curThemeName)
-  }, [checkBalance, user])
+  }, [checkBalance, puser])
 
   // useEffect(() => {
   //   const curThemeName = window.localStorage.getItem('appTheme') || 'PureLightTheme'
@@ -317,7 +311,7 @@ function EditProfileTab({ user, isAdmin }) {
           <AccountBalance user={user} />
         </Grid>
         <Grid item lg={8} xs={12}>
-          <Card sx={{ pb: 5 }}>
+          <Card>
             <Box p={3} display="flex" alignItems="center" justifyContent="space-between">
               <Box>
                 <Typography variant="h4" gutterBottom>
@@ -330,12 +324,12 @@ function EditProfileTab({ user, isAdmin }) {
             <CardContent sx={{ p: 4 }}>
               <Typography variant="subtitle2">
                 <Grid container spacing={0}>
-                  <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
-                    <Box pr={3} pb={2}>
+                  <Grid item xs={12} sm={5} md={4} textAlign={{ sm: 'right' }}>
+                    <Box pr={1} pb={2}>
                       {t('Main address')}:
                     </Box>
                   </Grid>
-                  <Grid item xs={12} sm={8} md={9}>
+                  <Grid item xs={12} sm={7} md={8}>
                     <Text color="black">
                       <Link
                         href={`https://bscscan.com/address/${user.address}`}
@@ -349,12 +343,12 @@ function EditProfileTab({ user, isAdmin }) {
                       <Label color="success">{t('Primary')}</Label>
                     </Box>
                   </Grid>
-                  <Grid item xs={12} sm={4} md={3} textAlign={{ sm: 'right' }}>
-                    <Box pr={3} pb={2}>
+                  <Grid item xs={12} sm={5} md={4} textAlign={{ sm: 'right' }}>
+                    <Box pr={1} pb={1}>
                       {t('Generated address')}:
                     </Box>
                   </Grid>
-                  <Grid item xs={12} sm={8} md={9}>
+                  <Grid item xs={12} sm={7} md={8}>
                     <Text color="black">
                       <Link
                         href={`https://bscscan.com/address/${user.generated}`}
@@ -364,6 +358,9 @@ function EditProfileTab({ user, isAdmin }) {
                         <b>{user.generated}</b>
                       </Link>
                     </Text>
+                    {/* <Box pl={1} component="span">
+                      <Label color="info">{t('Secondary')}</Label>
+                    </Box> */}
                   </Grid>
                 </Grid>
               </Typography>

@@ -11,6 +11,7 @@ import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 import MainLayout from 'src/client/layouts/MainLayout'
 import loadPlayers from 'src/client/thegraph/loadPlayers'
+import { decrypt } from 'src/server/utils/crpyto'
 
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
@@ -30,11 +31,17 @@ function ManagementUsers() {
 
   const getPlayers = useCallback(
     async (ppreditionContract) => {
-      console.log('getPlayers')
       if (fetching) return
+
+      console.log('getPlayers')
+
       setFetching(true)
       try {
+        const lisPaused = await ppreditionContract.paused()
+        console.log('🚀 ~ file: index.tsx ~ line 39 ~ lisPaused', lisPaused)
+
         const epoch = await ppreditionContract.currentEpoch()
+        console.log('🚀 ~ file: index.tsx ~ line 39 ~ epoch', epoch)
 
         const lplayers = await loadPlayers({ epoch })
         setPlayers(lplayers)
@@ -79,11 +86,12 @@ function ManagementUsers() {
 
     setUser(data.currentUser)
 
-    // TODO decode from server
-    // const privateKey = crpyto.decrypt(data.currentUser.private)
-    const privateKey = data.currentUser.private
+    const privateKey = decrypt(data.currentUser.private)
 
     const signer = new ethers.Wallet(privateKey, lprovider)
+    // const signer = lprovider.getSigner()
+
+    console.log('🚀 ~ file: index.tsx ~ line 92 ~ useEffect ~ signer', signer)
 
     const lpreditionContract = new ethers.Contract(
       process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS,

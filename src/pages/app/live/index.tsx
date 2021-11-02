@@ -21,6 +21,7 @@ import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.genera
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
 import loadGameData from 'src/client/thegraph/loadGameData'
+import { decrypt } from 'src/server/utils/crpyto'
 
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
@@ -281,11 +282,10 @@ const LiveView = () => {
       // setProvider(lprovider)
       setUser(data.currentUser)
 
-      // TODO decode from server
-      // const privateKey = crpyto.decrypt(data.currentUser.private)
-      const privateKey = data.currentUser.private
+      const privateKey = decrypt(data.currentUser.private)
 
       const signer = new ethers.Wallet(privateKey, lprovider)
+      // const signer = lprovider.getSigner()
 
       const lpreditionContract = new ethers.Contract(
         process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS,

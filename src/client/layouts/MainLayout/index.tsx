@@ -10,9 +10,9 @@ import { useTranslation } from 'react-i18next'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 import menuItems from 'src/client/layouts/MainLayout/Sidebar/SidebarMenu/items'
 
+import Banner from './Banner'
 import Header from './Header'
 import Sidebar from './Sidebar'
-import Banner from './Banner'
 
 // import ThemeSettings from 'src/client/components/ThemeSettings';
 
@@ -78,13 +78,12 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     const rawBalance = await provider.getBalance(luser.address)
 
     const lbalance = ethers.utils.formatUnits(rawBalance)
-    console.log('🚀 ~ file: index.tsx ~ line 81 ~ checkBalance ~ lbalance', lbalance)
     luser.balance = lbalance
     // setBalance(lbalance)
 
-    // const generatedRawBalance = await provider.getBalance(luser.generated)
-    // const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance)
-    // luser.generatedBalance = lgeneratedBalance
+    const generatedRawBalance = await provider.getBalance(luser.generated)
+    const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance)
+    luser.generatedBalance = lgeneratedBalance
 
     setUser(luser)
 
@@ -146,7 +145,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     })
     // setProvider(provider)
 
-    window.localStorage.setItem('address', accounts[0])
+    // window.localStorage.setItem('address', accounts[0])
 
     const msg = 'Pancake Professor Application Sign Up'
     const signer = provider.getSigner()

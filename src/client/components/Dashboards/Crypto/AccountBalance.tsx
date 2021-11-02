@@ -1,10 +1,12 @@
-import { Box, Button, Card, Grid, Divider, Typography, Tooltip, IconButton } from '@mui/material'
+import InfoIcon from '@mui/icons-material/Info'
+import { Box, Button, Card, Divider, Grid, IconButton, Tooltip, Typography } from '@mui/material'
+import { ethers } from 'ethers'
 import PropTypes from 'prop-types'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import AddFundsForm from 'src/client/components/Dashboards/Automation/AddFundsForm'
-import { useState, useEffect } from 'react'
-import { ethers } from 'ethers'
-import InfoIcon from '@mui/icons-material/Info'
+import RemoveFundsForm from 'src/client/components/Dashboards/Automation/RemoveFundsForm'
+
 // const AccountBalanceChartWrapper = styled(AccountBalanceChart)(
 //   () => `
 //       width: 100%;
@@ -25,15 +27,24 @@ import InfoIcon from '@mui/icons-material/Info'
 function AccountBalance({ user }) {
   const { t }: { t: any } = useTranslation()
 
-  const [openForm, setOpenForm] = useState(false)
+  const [openAddForm, setOpenAddForm] = useState(false)
+  const [openRemoveForm, setOpenRemoveForm] = useState(false)
   const [provider, setProvider] = useState<any>('')
 
-  const handleOpenForm = () => {
-    setOpenForm(true)
+  const handleOpenAddForm = () => {
+    setOpenAddForm(true)
   }
 
-  const handleCloseForm = () => {
-    setOpenForm(false)
+  const handleCloseAddForm = () => {
+    setOpenAddForm(false)
+  }
+
+  const handleOpenRemoveForm = () => {
+    setOpenRemoveForm(true)
+  }
+
+  const handleCloseRemoveForm = () => {
+    setOpenRemoveForm(false)
   }
 
   useEffect(() => {
@@ -50,10 +61,15 @@ function AccountBalance({ user }) {
     <Card>
       <Grid spacing={0} container>
         <Grid item xs={12}>
-          {openForm ? (
+          {openAddForm ? (
             <>
               <Divider />
-              <AddFundsForm handleCloseForm={handleCloseForm} user={user} />
+              <AddFundsForm handleCloseForm={handleCloseAddForm} user={user} />
+            </>
+          ) : openRemoveForm ? (
+            <>
+              <Divider />
+              <RemoveFundsForm handleCloseForm={handleCloseRemoveForm} user={user} />
             </>
           ) : (
             <>
@@ -70,8 +86,8 @@ function AccountBalance({ user }) {
                     </Grid>
                     <Grid item>
                       <Tooltip placement="right-end" title={t('Amount for main address')} arrow>
-                        <IconButton color="primary" size="small">
-                          <InfoIcon />
+                        <IconButton color="secondary" size="small">
+                          <InfoIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
                     </Grid>
@@ -79,13 +95,13 @@ function AccountBalance({ user }) {
                   <Grid container display="flex" alignItems="center">
                     <Grid item>
                       <Typography variant="h4" fontWeight="normal" color="text.secondary">
-                        - BNB
+                        {parseFloat(user?.generatedBalance || 0).toFixed(4)} BNB
                       </Typography>
                     </Grid>
                     <Grid item>
                       <Tooltip placement="right-end" title={t('Amount from secondary address')} arrow>
-                        <IconButton color="primary" size="small">
-                          <InfoIcon />
+                        <IconButton color="secondary" size="small">
+                          <InfoIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
                     </Grid>
@@ -103,7 +119,7 @@ function AccountBalance({ user }) {
                         </Button>
                       </Tooltip>
                     ) : (
-                      <Button disabled={!provider || !user} fullWidth variant="contained" onClick={handleOpenForm}>
+                      <Button disabled={!provider || !user} fullWidth variant="contained" onClick={handleOpenAddForm}>
                         {t('Add funds')}
                       </Button>
                     )}
@@ -119,7 +135,7 @@ function AccountBalance({ user }) {
                         </Button>
                       </Tooltip>
                     ) : (
-                      <Button disabled={!provider || !user} fullWidth variant="outlined">
+                      <Button disabled={!provider || !user} fullWidth variant="outlined" onClick={handleOpenRemoveForm}>
                         {t('Remove funds')}
                       </Button>
                     )}

@@ -1,5 +1,6 @@
-import { HDNode } from '@ethersproject/hdnode'
+import { Wallet } from 'ethers'
 import Web3Strategy from 'passport-web3'
+import { encrypt } from 'src/server/utils/crpyto'
 
 import prisma from '../db/prisma'
 
@@ -13,25 +14,17 @@ const web3Atuh = new Web3Strategy(async (address, done) => {
 
     let user
     if (!finded) {
-      const mnemonic = process.env.MNEMONIC
-
-      const masterNode = HDNode.fromMnemonic(mnemonic)
-
-      const standardEthereum = masterNode.derivePath("m/44'/60'/0'/0/0")
-
-      console.log(standardEthereum.publicKey)
-      console.log(standardEthereum.privateKey)
-
-      // const generated = standardEthereum.publicKey
-      // const privateKey = standardEthereum.privateKey
+      const wallet = Wallet.createRandom()
+      // console.log('address:', wallet.address)
+      // console.log('mnemonic:', wallet.mnemonic.phrase)
+      // console.log('privateKey:', wallet.privateKey)
+      // console.log('privateKey:', encrypt(wallet.privateKey))
 
       user = await prisma.user.create({
         data: {
           address,
-          generated: standardEthereum.publicKey,
-          private: standardEthereum.privateKey,
-          // generated: generated.toString(),
-          // private: privateKey.toString(),
+          generated: wallet.address.toLowerCase(),
+          private: encrypt(wallet.privateKey),
         },
       })
     } else {

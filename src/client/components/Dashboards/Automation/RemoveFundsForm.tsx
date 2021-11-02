@@ -23,6 +23,7 @@ import { useSnackbar } from 'notistack'
 import PropTypes from 'prop-types'
 import { forwardRef, ReactElement, Ref, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { decrypt } from 'src/server/utils/crpyto'
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -102,12 +103,12 @@ const Transition = forwardRef((props: TransitionProps & { children?: ReactElemen
 ))
 /* eslint-enable */
 
-function AddFundsForm({ user, handleCloseForm }) {
+function RemoveFundsForm({ user, handleCloseForm }) {
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
 
   const [gauge, setGauge] = useState(20)
-  const [bnbValue, setBnbValue] = useState(parseFloat((user.balance * 20) / 100).toFixed(4))
+  const [bnbValue, setBnbValue] = useState(parseFloat((user.generatedBalance * 20) / 100).toFixed(4))
 
   const [openDialog, setOpenDialog] = useState(false)
 
@@ -121,7 +122,7 @@ function AddFundsForm({ user, handleCloseForm }) {
 
     const updated = gauge + 2
     setGauge(updated)
-    setBnbValue(parseFloat((user.balance * updated) / 100).toFixed(4))
+    setBnbValue(parseFloat((user.generatedBalance * updated) / 100).toFixed(4))
   }
 
   const handleGaugeDecrease = (e: { preventDefault: () => void }) => {
@@ -130,7 +131,7 @@ function AddFundsForm({ user, handleCloseForm }) {
 
     const updated = gauge - 2
     setGauge(updated)
-    setBnbValue(parseFloat((user.balance * updated) / 100).toFixed(4))
+    setBnbValue(parseFloat((user.generatedBalance * updated) / 100).toFixed(4))
   }
 
   const handleOpenDialog = () => {
@@ -150,14 +151,18 @@ function AddFundsForm({ user, handleCloseForm }) {
 
     if (+bnbValue === 0) return
 
-    const signer = provider.getSigner()
+    const privateKey = decrypt(user.private)
+
+    const wallet = new ethers.Wallet(privateKey)
+
+    const signer = wallet.connect(provider)
 
     const gasPrice = await provider.getGasPrice()
 
     const tx = {
-      to: user.generated,
+      to: user.address,
       value: ethers.utils.parseEther(bnbValue),
-      nonce: provider.getTransactionCount(user.address, 'latest'),
+      nonce: provider.getTransactionCount(user.generated, 'latest'),
       gasPrice,
     }
 
@@ -188,10 +193,10 @@ function AddFundsForm({ user, handleCloseForm }) {
               <Box display="flex" alignItems="center">
                 <Box pl={1}>
                   <Typography gutterBottom variant="h4">
-                    {t('Add Funds')}
+                    {t('Remove Funds')}
                   </Typography>
                   <Typography variant="h6" color="text.secondary" fontWeight="normal">
-                    {t('Add funds from your main address')}
+                    {t('Remove funds from your secondary address')}
                   </Typography>
                 </Box>
               </Box>
@@ -222,9 +227,9 @@ function AddFundsForm({ user, handleCloseForm }) {
                     disabled={+bnbValue === 0}
                     fullWidth
                     variant="contained"
-                    // color="success"
+                    color="error"
                     onClick={handleOpenDialog}>
-                    <b> {t('Add funds')}</b>
+                    <b> {t('Remove funds')}</b>
                   </Button>
                 </Grid>
                 <Grid item xs={4}>
@@ -276,8 +281,8 @@ function AddFundsForm({ user, handleCloseForm }) {
             )}
           </Typography>
 
-          <Button fullWidth size="large" variant="contained" onClick={sumbitAddFunds}>
-            {t('Add funds')}
+          <Button fullWidth size="large" variant="contained" color="error" onClick={sumbitAddFunds}>
+            {t('Remove funds')}
           </Button>
         </Box>
       </DialogWrapper>
@@ -285,9 +290,9 @@ function AddFundsForm({ user, handleCloseForm }) {
   )
 }
 
-AddFundsForm.propTypes = {
+RemoveFundsForm.propTypes = {
   user: PropTypes.shape({}).isRequired,
   handleCloseForm: PropTypes.func.isRequired,
 }
 
-export default AddFundsForm
+export default RemoveFundsForm
