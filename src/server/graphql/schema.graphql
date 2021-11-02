@@ -4,65 +4,21 @@
 
 scalar DateTime
 
-type Koi {
-  birthDate: String
-  bloodline: String
-  breeder: String
-  id: String!
-  modifiedAt: DateTime!
-  purchasePrice: Int
-  sex: String
-  skinType: String
-  updates(after: KoiHistoryWhereUniqueInput, before: KoiHistoryWhereUniqueInput, first: Int, last: Int): [KoiHistory!]!
-  user: User!
-  variety: String!
-  youtube: String
-}
-
-type KoiHistory {
-  date: DateTime!
-  id: String!
-  image: String!
-  koiId: String!
-  length: Int!
-}
-
-input KoiHistoryWhereUniqueInput {
-  id: String
-}
-
-input KoiWhereUniqueInput {
-  id: String
-}
-
 type Mutation {
   createFriend(id: String!): User
-  createKoi(birthDate: String, bloodline: String, breeder: String, id: String!, purchasePrice: Int, sex: String, skinType: String, variety: String!, youtube: String): Koi
-  createKoiHistory(date: String, id: String!, image: String, length: Int): KoiHistory
   createProject(name: String!, slug: String): Project
   createStrategie(maxLooseAmount: Int, minWinAmount: Int, player: String!, startedAmount: Int!): Strategie
   createStripeCheckoutBillingPortalUrl(projectId: String!): String
   createStripeCheckoutSession(plan: PaidPlan!, projectId: String!): String
-  deleteKoi(id: String!): Koi
-  deleteKoiHistory(id: String!): KoiHistory
   deleteStrategie(id: String!): Strategie
   inviteToProject(email: String!, projectId: String!): Boolean
   toogleActivateStrategie(id: String!): Strategie
-  updateKoi(birthDate: String, bloodline: String, breeder: String, id: String!, purchasePrice: Int, sex: String, skinType: String, variety: String!, youtube: String): Koi
-  updateKoiHistory(date: String, id: String!, image: String, length: Int): KoiHistory
   updateStrategie(currentAmount: Int!, id: String!, isActive: Boolean, isDeleted: Boolean, isRunning: Boolean, maxLooseAmount: Int!, minWinAmount: Int!, player: String!, playsCount: Int!, roundsCount: Int!, startedAmount: Int!): Strategie
   updateUser(address: String!, email: String, id: String!, name: String): User
 }
 
 enum PaidPlan {
   pro
-}
-
-type Pond {
-  id: String!
-  modifiedAt: DateTime!
-  name: String!
-  size: Int!
 }
 
 type Project {
@@ -76,9 +32,6 @@ type Project {
 type Query {
   currentUser: User
   getUsers: [User]
-  koi(id: String!): Koi
-  koiHistory(id: String!): KoiHistory
-  pond(id: String!): Pond
   project(id: String, slug: String): Project
   strategie(id: String!): Strategie
   user(id: String!): User
@@ -111,7 +64,6 @@ type User {
   email: String
   generated: String!
   id: String!
-  kois(after: KoiWhereUniqueInput, before: KoiWhereUniqueInput, first: Int, last: Int): [Koi!]!
   loginAt: DateTime!
   modifiedAt: DateTime!
   name: String

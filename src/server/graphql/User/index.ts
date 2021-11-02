@@ -8,7 +8,6 @@ const User = objectType({
   definition(t) {
     t.model.id()
     t.model.name()
-    t.model.kois()
     t.model.strategies()
     t.model.email()
     t.model.address()
