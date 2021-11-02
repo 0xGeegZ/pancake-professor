@@ -1,5 +1,0 @@
-mutation DeleteKoiHistory($id: String!) {
-  deleteKoiHistory(id: $id) {
-    id
-  }
-}
