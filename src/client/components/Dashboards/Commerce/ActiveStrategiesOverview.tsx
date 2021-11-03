@@ -1,10 +1,12 @@
-import { Card, CardContent, CardHeader, Divider, Box, Grid, Typography } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import Label from 'src/client/components/Label'
-import ArrowUpwardTwoTone from '@mui/icons-material/ArrowUpwardTwoTone'
+import 'moment-timezone'
+
 import ArrowDownwardTwoTone from '@mui/icons-material/ArrowDownwardTwoTone'
+import ArrowUpwardTwoTone from '@mui/icons-material/ArrowUpwardTwoTone'
+import { Box, Card, CardContent, CardHeader, Divider, Grid, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import moment from 'moment'
 import PropTypes from 'prop-types'
+import { useTranslation } from 'react-i18next'
 
 const ArrowUpwardWrapper = styled(ArrowUpwardTwoTone)(
   ({ theme }) => `
@@ -21,10 +23,38 @@ const ArrowDownwardWrapper = styled(ArrowDownwardTwoTone)(
 function ActiveStrategiesOverview({ strategies }) {
   const { t }: { t: any } = useTranslation()
 
-  const data = {
-    visitors: '65.485',
-    conversion: '15.65%',
-    revenue: '$8,486',
+  const getBankrollFromStrategies = (strategies) => {
+    if (!strategies.length) return 0
+
+    return strategies
+      .map((s) => +s.currentAmount)
+      .reduce((acc, num) => acc + num, 0)
+      .toFixed(4)
+  }
+
+  const getActiveSinceFromStrategies = (strategies) => {
+    if (!strategies.length) return 0
+
+    let dates = strategies.map((s) => +s.createdAt).sort((a, b) => a.getTime() - b.getTime())
+    console.log('🚀 ~ file: ActiveStrategiesOverview.tsx ~ line 36 ~ getActiveSinceFromStrategies ~ dates', dates)
+
+    const lastDate = dates[0]
+
+    const duration = moment.duration(moment().diff(moment(lastDate)))
+
+    // Get Days
+    const days = Math.floor(duration.asDays())
+    const daysFormatted = days ? `${days}d ` : ''
+
+    // Get Hours
+    const hours = duration.hours()
+    const hoursFormatted = `${hours}h `
+
+    // Get Minutes
+    // const minutes = duration.minutes()
+    // const minutesFormatted = `${minutes}m`
+
+    return [daysFormatted, hoursFormatted].join('')
   }
 
   return (
@@ -73,7 +103,7 @@ function ActiveStrategiesOverview({ strategies }) {
                 {t('Bankroll')}
               </Typography>
               <Typography variant="h3" gutterBottom>
-                {strategies.length}
+                {getBankrollFromStrategies(strategies)}
               </Typography>
               {/* <Box
                 sx={{
@@ -92,7 +122,7 @@ function ActiveStrategiesOverview({ strategies }) {
                 {t('Active since')}
               </Typography>
               <Typography variant="h3" gutterBottom>
-                {strategies.length} days
+                {getActiveSinceFromStrategies(strategies)}
               </Typography>
               {/* <Box
                 sx={{
