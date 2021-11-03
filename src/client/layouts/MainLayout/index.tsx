@@ -57,7 +57,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const [networkId, setNetworkId] = useState<any>(0)
   const [user, setUser] = useState<any>('')
   // const [balance, setBalance] = useState<string>('')
-  const [allMenuItems, setAllMenuItems] = useState<any>()
+  const [allMenuItems, setAllMenuItems] = useState<any>(null)
 
   // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
@@ -120,12 +120,12 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     // let filtereds: Array<menuItems> = []
     // let filtereds: MenuItem[] = []
 
-    let filtereds = []
-    if (isFinded) {
-      filtereds = menuItems
-    } else {
-      filtereds = menuItems.filter((mi) => mi.heading !== 'Admin')
-    }
+    const filtereds = isFinded ? menuItems : menuItems.filter((mi) => mi.heading !== 'Admin')
+    // if (isFinded) {
+    //   filtereds = menuItems
+    // } else {
+    //   filtereds = menuItems.filter((mi) => mi.heading !== 'Admin')
+    // }
 
     setAllMenuItems(filtereds)
   }, [data, checkBalance])

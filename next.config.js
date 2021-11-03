@@ -22,9 +22,10 @@ module.exports = withImages(
       // next v12 feature
       formats: ['image/avif', 'image/webp'],
     },
-    // next v12 feature
+    // next v12 feature (need react 18 alpha)
     experimental: {
       concurrentFeatures: true,
+      // serverComponents: true,
     },
     // typescript: {
     //   // !! WARN !!

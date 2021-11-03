@@ -1,5 +1,6 @@
 /* eslint-disable camelcase */
 import { Box, Grid } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import { ethers } from 'ethers'
 import Head from 'next/head'
 import { useSnackbar } from 'notistack'
@@ -20,7 +21,12 @@ import MainLayout from 'src/client/layouts/MainLayout'
 // import BalanceHistory from 'src/client/components/Dashboards/Healthcare/hospital/BalanceHistory'
 import type { ReactElement } from 'react'
 
-function DashboardCrypto() {
+const MainContentWrapper = styled(Box)(
+  ({ theme }) => `
+    min-height: calc(100% - ${theme.spacing(20)});
+`
+)
+function Dashboard() {
   const { t }: { t: any } = useTranslation()
 
   // const isMountedRef = useRefMounted()
@@ -101,7 +107,7 @@ function DashboardCrypto() {
       <Head>
         <title>Dashboard</title>
       </Head>
-      <Box sx={{ mt: 3 }}>
+      <MainContentWrapper sx={{ mt: 3 }}>
         <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
           {/* <Grid item xs={12}>
             <TotalLockedValue />
@@ -137,14 +143,14 @@ function DashboardCrypto() {
             <ActiveStrategies strategies={user?.strategies} />
           </Grid>
         </Grid>
-      </Box>
+      </MainContentWrapper>
       <Footer />
     </>
   )
 }
 
-export default DashboardCrypto
+export default Dashboard
 
-DashboardCrypto.getLayout = function getLayout(page: ReactElement) {
+Dashboard.getLayout = function getLayout(page: ReactElement) {
   return <MainLayout>{page}</MainLayout>
 }

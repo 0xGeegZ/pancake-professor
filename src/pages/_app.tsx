@@ -3,9 +3,10 @@ import 'src/client/mocks'
 import 'src/client/utils/chart'
 
 import { CacheProvider, EmotionCache } from '@emotion/react'
+import CloseIcon from '@mui/icons-material/Close'
 import AdapterDateFns from '@mui/lab/AdapterDateFns'
 import LocalizationProvider from '@mui/lab/LocalizationProvider'
-import { Button } from '@mui/material'
+import { IconButton } from '@mui/material'
 import CssBaseline from '@mui/material/CssBaseline'
 import { appWithTranslation } from 'next-i18next'
 import { PageTransition } from 'next-page-transitions'
@@ -71,11 +72,14 @@ function MyApp(props: MyAppProps) {
                   }}
                   ref={notistackRef}
                   action={(key) => (
-                    <Button
+                    <IconButton
+                      size="small"
                       onClick={() => notistackRef.current.closeSnackbar(key)}
-                      style={{ color: '#fff', fontSize: '20px' }}>
-                      ✖
-                    </Button>
+                      sx={{
+                        color: '#fff',
+                      }}>
+                      <CloseIcon fontSize="small" />
+                    </IconButton>
                   )}>
                   <CssBaseline />
                   <PageTransition

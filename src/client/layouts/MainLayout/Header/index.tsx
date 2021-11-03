@@ -49,6 +49,13 @@ const Header = ({ connect, logout, user, fetching }) => {
             <LanguageSwitcher />
           </Hidden>
         </Box>
+        <Hidden lgUp>
+          <Tooltip arrow title="Toggle Menu">
+            <IconButton color="primary" onClick={toggleSidebar}>
+              {!sidebarToggle ? <MenuTwoToneIcon /> : <CloseTwoToneIcon />}
+            </IconButton>
+          </Tooltip>
+        </Hidden>
         {fetching ? (
           <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
             <Grid item>
@@ -59,13 +66,6 @@ const Header = ({ connect, logout, user, fetching }) => {
           <>
             {/* <HeaderUserbox logout={logout} address={user?.address} balance={user.balance} /> */}
             <HeaderUserbox logout={logout} address={user?.generated} balance={user.generatedBalance} />
-            <Hidden lgUp>
-              <Tooltip arrow title="Toggle Menu">
-                <IconButton color="primary" onClick={toggleSidebar}>
-                  {!sidebarToggle ? <MenuTwoToneIcon /> : <CloseTwoToneIcon />}
-                </IconButton>
-              </Tooltip>
-            </Hidden>
           </>
         ) : (
           <>

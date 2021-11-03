@@ -212,7 +212,7 @@ const ReduceChildRoutes = ({
 }
 
 // function SidebarMenu({ fetching, error, allMenuItems }) {
-function SidebarMenu({ fetching, allMenuItems }) {
+const SidebarMenu = ({ fetching, allMenuItems }) => {
   const router = useRouter()
   const { t }: { t: any } = useTranslation()
   return (

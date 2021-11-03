@@ -1,4 +1,5 @@
-import { Grid, Zoom } from '@mui/material'
+import { Box, Grid, Zoom } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import { ethers } from 'ethers'
 import nc from 'next-connect'
 import Head from 'next/head'
@@ -20,8 +21,16 @@ import { decrypt } from 'src/server/utils/crpyto'
 // import passport from 'src/server//passport'
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
+console.log('🚀 ~ OUTSIDE -  process.env.JSON_RPC_PROVIDER', process.env.JSON_RPC_PROVIDER)
 
+const MainContentWrapper = styled(Box)(
+  ({ theme }) => `
+    min-height: calc(100% - ${theme.spacing(20)});
+`
+)
 function ManagementUsers() {
+  console.log('🚀 ~ COMPONENT -  process.env.JSON_RPC_PROVIDER', process.env.JSON_RPC_PROVIDER)
+
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
   const { t }: { t: any } = useTranslation()
@@ -123,21 +132,24 @@ function ManagementUsers() {
       <Head>
         <title>Follow Best Players</title>
       </Head>
-      <PageTitleWrapper>
-        <PageHeader />
-      </PageTitleWrapper>
+      <MainContentWrapper>
+        <PageTitleWrapper>
+          <PageHeader />
+        </PageTitleWrapper>
 
-      <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
-        <Grid item xs={12}>
-          <PlayersList
-            user={user}
-            refreshQuery={refreshQuery}
-            players={players}
-            fetching={fetching}
-            hasError={hasError}
-          />
+        <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
+          <Grid item xs={12}>
+            <PlayersList
+              user={user}
+              refreshQuery={refreshQuery}
+              players={players}
+              fetching={fetching}
+              hasError={hasError}
+            />
+          </Grid>
         </Grid>
-      </Grid>
+      </MainContentWrapper>
+
       <Footer />
     </>
   )
@@ -167,7 +179,7 @@ export const getServerSideProps = async ({ req, res }) => {
     // handle the error
   }
   console.log('🚀 ~ req', req.user)
-
+  console.log('🚀 ~ PROPS -  process.env.JSON_RPC_PROVIDER', process.env.JSON_RPC_PROVIDER)
   // await handler.apply(req, res)
   // await middleware.apply(req, res)
 

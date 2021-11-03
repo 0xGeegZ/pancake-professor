@@ -17,7 +17,7 @@ const SidebarWrapper = styled(Box)(
     
     @media (min-width: ${theme.breakpoints.values.lg}px) {
         position: fixed;
-        height: calc(100% - ${theme.spacing(6)});
+        height: calc(100% - ${theme.spacing(8)});
         margin: ${theme.spacing(3)};
         z-index: 10;
         border-radius: ${theme.general.borderRadius};
