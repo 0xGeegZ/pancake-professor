@@ -24,7 +24,7 @@ const MainContentWrapper = styled(Box)(
     min-height: calc(100% - ${theme.spacing(20)});
 `
 )
-function ManagementUsers({ isPaused, epoch }) {
+const PlayersView = ({ isPaused, epoch }) => {
   const { enqueueSnackbar } = useSnackbar()
   const { t }: { t: any } = useTranslation()
 
@@ -126,11 +126,11 @@ function ManagementUsers({ isPaused, epoch }) {
   )
 }
 
-ManagementUsers.getLayout = function getLayout(page: ReactElement) {
+PlayersView.getLayout = function getLayout(page: ReactElement) {
   return <MainLayout>{page}</MainLayout>
 }
 
-export default ManagementUsers
+export default PlayersView
 
 export const getServerSideProps = async ({ req, res }) => {
   await handler().run(req, res)
@@ -153,17 +153,3 @@ export const getServerSideProps = async ({ req, res }) => {
     props: { isPaused, epoch: epoch.toString() },
   }
 }
-
-// export const getStaticProps = async () => {
-//   const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
-//   // eslint-disable-next-line react-hooks/rules-of-hooks
-//   // const [{ data }] = await useGetCurrentUserQuery()
-//   // console.log('🚀 ~ file: index.tsx ~ line 144 ~ getStaticProps ~ data', data)
-//   return {
-//     props: {
-//       // hostname: process.env.HOSTNAME,
-//       // port: process.env.PORT,
-//       // host: process.env.HOST,
-//     },
-//   }
-// }
