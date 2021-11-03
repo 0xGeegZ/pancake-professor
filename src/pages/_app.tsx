@@ -10,7 +10,7 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { appWithTranslation } from 'next-i18next'
 import { PageTransition } from 'next-page-transitions'
 import Head from 'next/head'
-import Router from 'next/router'
+import { Router, useRouter } from 'next/router'
 import { SnackbarProvider } from 'notistack'
 import nProgress from 'nprogress'
 import { useRef } from 'react'
@@ -41,6 +41,7 @@ interface MyAppProps extends AppProps {
 
 function MyApp(props: MyAppProps) {
   const notistackRef = useRef<any>(null)
+  const router = useRouter()
 
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
   const getLayout = Component.getLayout ?? ((page) => page)
@@ -85,7 +86,7 @@ function MyApp(props: MyAppProps) {
                       exit: 500,
                     }}
                     loadingClassNames="loading-indicator">
-                    {getLayout(<Component {...pageProps} />)}
+                    {getLayout(<Component {...pageProps} key={router.route} />)}
                   </PageTransition>
                 </SnackbarProvider>
               </LocalizationProvider>

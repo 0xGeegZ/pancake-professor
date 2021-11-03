@@ -6,7 +6,7 @@ const loadGameData = async ({ epoch }) => {
   try {
     const query = gql`
       query getCurrentRound($epoch: String!) {
-        rounds(first: 1, where: { epoch: $epoch }) {
+        rounds(where: { epoch: $epoch }) {
           epoch
           position
           failed
@@ -32,6 +32,7 @@ const loadGameData = async ({ epoch }) => {
       epoch: epoch.toString(),
     }
     const data = await graphQLClient.request(query, variables)
+    console.log('🚀 ~ file: loadGameData.ts ~ line 35 ~ loadGameData ~ data', data)
 
     const {
       rounds: [round],

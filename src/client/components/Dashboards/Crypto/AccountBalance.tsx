@@ -118,6 +118,12 @@ function AccountBalance({ user }) {
                           {t('Add funds')}
                         </Button>
                       </Tooltip>
+                    ) : Object.keys(user || {}).length === 0 ? (
+                      <Tooltip placement="top" title={t('You need to be connected to add funds')} arrow>
+                        <Button fullWidth variant="outlined" color="warning">
+                          {t('Add funds')}
+                        </Button>
+                      </Tooltip>
                     ) : (
                       <Button disabled={!provider || !user} fullWidth variant="contained" onClick={handleOpenAddForm}>
                         {t('Add funds')}
@@ -130,6 +136,12 @@ function AccountBalance({ user }) {
                         placement="top"
                         title={t('Need to have positive balance in secondary address to remoove funds')}
                         arrow>
+                        <Button fullWidth variant="outlined" color="warning">
+                          {t('Remove funds')}
+                        </Button>
+                      </Tooltip>
+                    ) : Object.keys(user || {}).length === 0 ? (
+                      <Tooltip placement="top" title={t('You need to be connected to remove funds')} arrow>
                         <Button fullWidth variant="outlined" color="warning">
                           {t('Remove funds')}
                         </Button>

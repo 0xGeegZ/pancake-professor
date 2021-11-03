@@ -3,6 +3,7 @@ import 'moment-timezone'
 import { Box, Card, CardContent, CardHeader, CircularProgress, Divider, Grid, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import moment from 'moment'
+import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -49,6 +50,8 @@ const ActiveLiveBetsChartWrapper = styled(ActiveLiveBetsChart)(
 // function ActiveLiveBets({ timeLeft, epoch, userBulls, userBears }) {
 function ActiveLiveBets({ epoch, userBulls, userBears }) {
   const { t }: { t: any } = useTranslation()
+  const router = useRouter()
+
   // const actionRef1 = useRef<any>(null)
 
   // const periods = [
@@ -92,13 +95,20 @@ function ActiveLiveBets({ epoch, userBulls, userBears }) {
   // const labels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
 
   useEffect(() => {
+    console.log('ActiveLiveBets > useEffect')
+
     // console.log('userBulls', userBulls.length, 'userBears', userBears.length, 'lastTotal', lastTotal)
 
     // if (!status) setStatus(DEFAULT_STATUS)
     if (userBulls.length + userBears.length === lastTotal) return
     if (userBulls.length === userBears.length && userBears.length === 0 && userBulls.length === 0) {
+      console.log('ActiveLiveBets > DEFAULT_STATUS')
+
+      status.data = {}
+      status.isDataLoaded = false
       setStatus(DEFAULT_STATUS)
       setLastTotal(0)
+      // router.replace(router.asPath)
       return
     }
 

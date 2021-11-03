@@ -1,8 +1,12 @@
-import { Grid } from '@mui/material'
+import { Grid, Zoom } from '@mui/material'
 import { ethers } from 'ethers'
+import nc from 'next-connect'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
+import passport from 'passport'
 import { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import { PREDICTION_CONTRACT_ABI } from 'src/client/abis/pancake-prediction-abi-v3'
 import Footer from 'src/client/components/Footer'
 import PageHeader from 'src/client/components/Management/Users/PageHeader'
@@ -13,11 +17,14 @@ import MainLayout from 'src/client/layouts/MainLayout'
 import loadPlayers from 'src/client/thegraph/loadPlayers'
 import { decrypt } from 'src/server/utils/crpyto'
 
+// import passport from 'src/server//passport'
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
 
 function ManagementUsers() {
   const router = useRouter()
+  const { enqueueSnackbar } = useSnackbar()
+  const { t }: { t: any } = useTranslation()
 
   const [fetching, setFetching] = useState<boolean>(false)
   const [players, setPlayers] = useState<any[]>([])
@@ -76,7 +83,11 @@ function ManagementUsers() {
   useEffect(() => {
     if (!data) return
     if (!data?.currentUser) {
-      router.push('/app')
+      enqueueSnackbar(t(`You need to be connected to have data fecthing for this view.`), {
+        variant: 'warning',
+        TransitionComponent: Zoom,
+      })
+      // router.push('/app')
       return
     }
     if (user) return
@@ -132,8 +143,53 @@ function ManagementUsers() {
   )
 }
 
-export default ManagementUsers
-
 ManagementUsers.getLayout = function getLayout(page: ReactElement) {
   return <MainLayout>{page}</MainLayout>
 }
+
+export default ManagementUsers
+
+export const getServerSideProps = async ({ req, res }) => {
+  // // const handler = nc().use(passport.initialize())
+  // try {
+  //   // await handler.run(req, res)
+  //   await handler.apply(req, res)
+  // } catch (e) {
+  //   console.log('🚀 ~ file: index.tsx ~ line 148 ~ getServerSideProps ~ e', e)
+  //   // handle the error
+  // }
+  // console.log('🚀 ~ req', req.isAuthenticated())
+
+  const handler = nc().use(passport.initialize())
+  try {
+    await handler.apply(req, res)
+  } catch (e) {
+    // handle the error
+  }
+  console.log('🚀 ~ req', req.user)
+
+  // await handler.apply(req, res)
+  // await middleware.apply(req, res)
+
+  // console.log('🚀 ~ file: index.tsx ~ line 142 ~ getServerSideProps ~ req', req.isAuthenticated())
+
+  // eslint-disable-next-line react-hooks/rules-of-hooks
+  // const [{ data }] = await useGetCurrentUserQuery()
+  return {
+    props: {},
+  }
+}
+
+// export const getStaticProps = async () => {
+//   const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
+//   // eslint-disable-next-line react-hooks/rules-of-hooks
+//   // const [{ data }] = await useGetCurrentUserQuery()
+//   // console.log('🚀 ~ file: index.tsx ~ line 144 ~ getStaticProps ~ data', data)
+//   return {
+//     props: {
+//       // hostname: process.env.HOSTNAME,
+//       // port: process.env.PORT,
+//       // host: process.env.HOST,
+//     },
+//   }
+// }

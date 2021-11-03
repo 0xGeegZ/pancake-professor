@@ -6,6 +6,14 @@ const { i18n } = require('./next-i18next.config')
 
 module.exports = withImages(
   withPrismaPlugin({
+    webpack(pconfig, { dev }) {
+      console.log('🚀 ~ file: next.config.js ~ line 10 ~ webpack ~ dev', dev)
+      const config = pconfig
+      if (dev) {
+        config.devtool = 'cheap-module-source-map'
+      }
+      return config
+    },
     i18n,
     images: {
       domains: ['res.cloudinary.com', 'img.youtube.com'],

@@ -29,7 +29,7 @@ function DashboardCrypto() {
   const [{ data, fetching }] = useGetCurrentUserQuery()
 
   // const router = useRouter()
-  const [user, setUser] = useState<any>('')
+  const [user, setUser] = useState<any>(null)
 
   // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
@@ -131,10 +131,10 @@ function DashboardCrypto() {
           </Grid> */}
 
           <Grid item md={6} lg={8} xs={12}>
-            <ActiveStrategiesOverview strategies={user.strategies} />
+            <ActiveStrategiesOverview strategies={user?.strategies} />
           </Grid>
           <Grid item xs={12}>
-            <ActiveStrategies strategies={user.strategies} />
+            <ActiveStrategies strategies={user?.strategies} />
           </Grid>
         </Grid>
       </Box>

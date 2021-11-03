@@ -54,33 +54,6 @@ const LinearProgressWrapper = styled(LinearProgress)(
 `
 )
 
-const calculateTimeLeft = (timestamp) => {
-  // if (!timestamp) return
-  // if (!timestamp) timestamp = new Date().getTime()
-
-  // let difference = +new Date(timestamp) - +new Date()
-  // let difference = +new Date().getTime() - timestamp
-  const difference = Math.floor(new Date().getTime() / 1000) - timestamp
-  console.log('🚀 ~ difference', difference)
-
-  return difference > 0 ? difference : 0
-
-  // console.log('🚀 ~ minutes', Math.floor((difference / 60) % 60))
-  // console.log('🚀 ~ seconds', Math.floor(difference % 60))
-  // let timeLeft = {}
-
-  // if (difference > 0) {
-  //   timeLeft = {
-  //     // days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-  //     // hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-  //     minutes: Math.floor((difference / 60) % 60),
-  //     seconds: Math.floor(difference % 60),
-  //   }
-  // }
-
-  // return timeLeft
-}
-
 const LiveView = () => {
   const { enqueueSnackbar } = useSnackbar()
   const { t }: { t: any } = useTranslation()
@@ -125,7 +98,7 @@ const LiveView = () => {
           const total = 5 * 60
           const actual = total - ltimeLeft
           const generated = (actual * 100) / total
-          console.log('🚀 ~ total', 100 - generated)
+          // console.log('🚀 ~ total', 100 - generated)
           setProgressValue(100 - generated)
         }
       }
@@ -144,11 +117,11 @@ const LiveView = () => {
           // const _timeLeft = calculateTimeLeft(new Date().getTime())
           const ltimeLeft = calculateTimeLeft(startTimestamp)
           // setTimeLeft(ltimeLeft)
-          console.log('🚀 ~ file: index.tsx ~ line 125 ~ initialize ~ _timeLeft', ltimeLeft)
+          // console.log('🚀 ~ file: index.tsx ~ line 125 ~ initialize ~ _timeLeft', ltimeLeft)
           const total = 5 * 60
           const actual = total - ltimeLeft
           const generated = (actual * 100) / total
-          console.log('🚀 ~ total', 100 - generated)
+          // console.log('🚀 ~ total', 100 - generated)
           setProgressValue(100 - generated)
         }
       }
@@ -208,7 +181,7 @@ const LiveView = () => {
       const total = 5 * 60
       const actual = total - ltimeLeft
       const generated = (actual * 100) / total
-      console.log('🚀 ~ total', 100 - generated)
+      // console.log('🚀 ~ total', 100 - generated)
       setProgressValue(100 - generated)
 
       enqueueSnackbar(t(`[LAUNCH] Stated to listen contract, current epoch is ${lepoch}`), {
@@ -235,13 +208,14 @@ const LiveView = () => {
       }
 
       try {
-        console.log('🚀 ~ LOADING gameData')
+        console.log('🚀 ~ LOADING gameData', lepoch.toString())
         const round = await loadGameData({ epoch: lepoch })
-        if (!round) return
+
+        // if (!round) return
 
         console.log('🚀 ~  checkEpoch ~ round', round, 'bets', round.bets.length)
         // setRound(round)
-        round.bets.map((bet) => {
+        round?.bets.map((bet) => {
           if (bet.position === 'Bull') {
             userBulls.unshift({ betBull: true, address: bet.id, amount: bet.amount, epoch: lepoch })
             setUserBulls(userBulls)
@@ -271,7 +245,11 @@ const LiveView = () => {
   useEffect(() => {
     if (!data) return
     if (!data.currentUser) {
-      router.push('/app')
+      enqueueSnackbar(t(`You need to be connected to have data fecthing for this view.`), {
+        variant: 'warning',
+        TransitionComponent: Zoom,
+      })
+      // router.push('/app')
       return
     }
 
@@ -298,12 +276,39 @@ const LiveView = () => {
     }
   }, [data, user, initialize, isMountedRef, router])
 
+  const calculateTimeLeft = (timestamp) => {
+    // if (!timestamp) return
+    // if (!timestamp) timestamp = new Date().getTime()
+
+    // let difference = +new Date(timestamp) - +new Date()
+    // let difference = +new Date().getTime() - timestamp
+    const difference = Math.floor(new Date().getTime() / 1000) - timestamp
+    // console.log('🚀 ~ difference', difference)
+
+    return difference > 0 ? difference : 0
+
+    // console.log('🚀 ~ minutes', Math.floor((difference / 60) % 60))
+    // console.log('🚀 ~ seconds', Math.floor(difference % 60))
+    // let timeLeft = {}
+
+    // if (difference > 0) {
+    //   timeLeft = {
+    //     // days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+    //     // hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+    //     minutes: Math.floor((difference / 60) % 60),
+    //     seconds: Math.floor(difference % 60),
+    //   }
+    // }
+
+    // return timeLeft
+  }
+
   return (
     <>
       <Head>
         <title>Play live</title>
       </Head>
-      {!isPaused ? (
+      {!isPaused && epoch ? (
         <Box sx={{ mt: 1 }}>
           <LinearProgressWrapper variant="buffer" value={progressValue} valueBuffer={80} />
         </Box>

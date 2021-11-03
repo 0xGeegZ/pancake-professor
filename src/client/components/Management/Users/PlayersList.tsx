@@ -576,7 +576,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                     }}
                                   />
                                   <Box>
-                                    {player.recentGames}/288 ({(+player.recentGames * 100) / 288} %)
+                                    {player.recentGames}/288 ({parseInt((+player.recentGames * 100) / 288)} %)
                                   </Box>
                                 </Box>
                               </TableCell>
@@ -868,7 +868,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                               color="text.primary"
                                               variant="h2"
                                               sx={{ pr: 0.5, display: 'inline-flex' }}>
-                                              {(+player.recentGames * 100) / 288}
+                                              {parseInt((+player.recentGames * 100) / 288)}
                                             </Typography>
                                             <Typography
                                               color="text.secondary"

@@ -194,6 +194,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
               variant: 'success',
             })
             setUser(null)
+            router.replace(router.asPath)
           } else {
             enqueueSnackbar(t('Unexpected error occurred'), {
               variant: 'error',
