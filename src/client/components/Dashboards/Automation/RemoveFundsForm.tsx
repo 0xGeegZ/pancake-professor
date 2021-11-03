@@ -151,6 +151,7 @@ function RemoveFundsForm({ user, handleCloseForm }) {
 
     if (+bnbValue === 0) return
 
+    //TODO make this on server side to hide private key
     const privateKey = decrypt(user.private)
 
     const wallet = new ethers.Wallet(privateKey)

@@ -2,6 +2,7 @@ import { Box, Grid, Zoom } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { ethers } from 'ethers'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -13,9 +14,8 @@ import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 import MainLayout from 'src/client/layouts/MainLayout'
 import loadPlayers from 'src/client/thegraph/loadPlayers'
-import { handler } from 'src/server/api-route'
-import { decrypt } from 'src/server/utils/crpyto'
 
+// import passport from 'src/server//passport'
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
 
@@ -24,7 +24,9 @@ const MainContentWrapper = styled(Box)(
     min-height: calc(100% - ${theme.spacing(20)});
 `
 )
-const PlayersView = ({ isPaused, epoch }) => {
+// function ManagementUsers({ isPaused, epoch }) {
+function ManagementUsers() {
+  const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
   const { t }: { t: any } = useTranslation()
 
@@ -33,27 +35,44 @@ const PlayersView = ({ isPaused, epoch }) => {
   const [hasError, setHasError] = useState<boolean>(false)
 
   const [user, setUser] = useState<User | any>(null)
+  const [preditionContract, setPreditionContract] = useState<any>(null)
+  const [provider, setProvider] = useState<ethers.providers.Web3Provider>(null)
 
-  const [{ data, error }] = useGetCurrentUserQuery()
+  const [{ data }] = useGetCurrentUserQuery()
 
-  const getPlayers = useCallback(async () => {
-    if (fetching) return
+  const getPlayers = useCallback(
+    async (ppreditionContract) => {
+      if (fetching) return
 
-    console.log('getPlayers', epoch)
+      console.log('getPlayers')
 
-    setFetching(true)
-    try {
-      const lplayers = await loadPlayers({ epoch })
-      setPlayers(lplayers)
-      setFetching(false)
-    } catch (err) {
-      setHasError(true)
-    }
-  }, [fetching, epoch])
+      setFetching(true)
+      try {
+        const lisPaused = await ppreditionContract.paused()
+        if (lisPaused) {
+          enqueueSnackbar(t(`Contract is paused.`), {
+            variant: 'warning',
+            TransitionComponent: Zoom,
+          })
+          return
+        }
+        const epoch = await ppreditionContract.currentEpoch()
+
+        const lplayers = await loadPlayers({ epoch })
+        setPlayers(lplayers)
+        setFetching(false)
+      } catch (err) {
+        setHasError(true)
+      }
+    },
+    [fetching]
+  )
 
   const refreshQuery = useCallback(
     async ({ orderBy }) => {
       console.log('refreshQuery')
+      const epoch = await preditionContract.currentEpoch()
+
       setFetching(true)
       setPlayers([])
       players.length = 0
@@ -66,11 +85,10 @@ const PlayersView = ({ isPaused, epoch }) => {
         setHasError(true)
       }
     },
-    [players, epoch]
+    [players, preditionContract]
   )
 
   useEffect(() => {
-    if (error) setHasError(true)
     if (!data) return
     if (!data?.currentUser) {
       enqueueSnackbar(t(`You need to be connected to have data fecthing for this view.`), {
@@ -81,22 +99,27 @@ const PlayersView = ({ isPaused, epoch }) => {
     }
     if (user) return
 
-    if (isPaused) {
-      enqueueSnackbar(t(`Contract is paused.`), {
-        variant: 'warning',
-        TransitionComponent: Zoom,
-      })
-      return
-    }
+    const lprovider = new ethers.providers.Web3Provider(window.ethereum)
+    setProvider(lprovider)
 
     setUser(data.currentUser)
 
+    const signer = lprovider.getSigner()
+
+    const lpreditionContract = new ethers.Contract(
+      process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+      PREDICTION_CONTRACT_ABI,
+      signer
+    )
+
+    setPreditionContract(lpreditionContract)
+
     try {
-      getPlayers()
+      getPlayers(lpreditionContract)
     } catch (err) {
       setHasError(true)
     }
-  }, [data, getPlayers, user, error])
+  }, [data, getPlayers, router, provider, user, preditionContract])
 
   return (
     <>
@@ -126,30 +149,30 @@ const PlayersView = ({ isPaused, epoch }) => {
   )
 }
 
-PlayersView.getLayout = function getLayout(page: ReactElement) {
+ManagementUsers.getLayout = function getLayout(page: ReactElement) {
   return <MainLayout>{page}</MainLayout>
 }
 
-export default PlayersView
+export default ManagementUsers
 
-export const getServerSideProps = async ({ req, res }) => {
-  await handler().run(req, res)
+// export const getServerSideProps = async ({ req, res }) => {
+//   await handler().run(req, res)
 
-  const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
-  const privateKey = decrypt(req.user.private)
+//   const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
+//   const privateKey = decrypt(req.user.private)
 
-  const signer = new ethers.Wallet(privateKey, provider)
+//   const signer = new ethers.Wallet(privateKey, provider)
 
-  const preditionContract = new ethers.Contract(
-    process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
-    PREDICTION_CONTRACT_ABI,
-    signer
-  )
+//   const preditionContract = new ethers.Contract(
+//     process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+//     PREDICTION_CONTRACT_ABI,
+//     signer
+//   )
 
-  const isPaused = await preditionContract.paused()
+//   const isPaused = await preditionContract.paused()
 
-  const epoch = await preditionContract.currentEpoch()
-  return {
-    props: { isPaused, epoch: epoch.toString() },
-  }
-}
+//   const epoch = await preditionContract.currentEpoch()
+//   return {
+//     props: { isPaused, epoch: epoch.toString() },
+//   }
+// }
