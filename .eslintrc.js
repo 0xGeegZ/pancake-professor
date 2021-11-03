@@ -9,7 +9,7 @@ module.exports = {
       tsx: true,
     },
   },
-  plugins: ['@typescript-eslint', 'import', 'react-hooks', 'prefer-arrow', 'prettier'],
+  plugins: ['@typescript-eslint', 'import', 'react-hooks', 'prefer-arrow', 'import', 'jsx-a11y', 'prettier'],
   env: {
     browser: true,
     es6: true,
@@ -31,6 +31,9 @@ module.exports = {
     'plugin:import/warnings',
     'plugin:import/typescript',
     'prettier',
+    'next',
+    'next/core-web-vitals',
+    'plugin:@next/next/recommended',
   ],
   rules: {
     // allow debugger during development

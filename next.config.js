@@ -6,17 +6,25 @@ const { i18n } = require('./next-i18next.config')
 
 module.exports = withImages(
   withPrismaPlugin({
+    // TMP test to speed up dev
     webpack(pconfig, { dev }) {
-      console.log('🚀 ~ file: next.config.js ~ line 10 ~ webpack ~ dev', dev)
       const config = pconfig
       if (dev) {
         config.devtool = 'cheap-module-source-map'
       }
       return config
     },
+    // next v12 feature
+    swcMinify: true,
     i18n,
     images: {
       domains: ['res.cloudinary.com', 'img.youtube.com'],
+      // next v12 feature
+      formats: ['image/avif', 'image/webp'],
+    },
+    // next v12 feature
+    experimental: {
+      concurrentFeatures: true,
     },
     // typescript: {
     //   // !! WARN !!
