@@ -155,6 +155,7 @@ ManagementUsers.getLayout = function getLayout(page: ReactElement) {
 
 export default ManagementUsers
 
+//TODO use it to load epoch from default address
 // export const getServerSideProps = async ({ req, res }) => {
 //   await handler().run(req, res)
 
