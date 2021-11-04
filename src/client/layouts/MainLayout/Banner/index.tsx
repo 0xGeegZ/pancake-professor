@@ -15,7 +15,6 @@ const BannerWrapper = styled(Box)(
 
 const Banner = ({ networkId }) => {
   const { t }: { t: any } = useTranslation()
-
   return (
     <BannerWrapper display="flex" alignItems="center">
       <Box display="flex" alignItems="center" justifyContent="space-between">

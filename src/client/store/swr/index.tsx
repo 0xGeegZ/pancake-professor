@@ -1,14 +1,20 @@
 // https://dev.to/saisandeepvaddi/simple-way-to-manage-state-in-react-with-context-kig
 // https://blog.logrocket.com/end-to-end-type-safety-nextjs-prisma-graphql/
-import { createContext, ReactNode, useContext, useMemo } from 'react'
+import { ethers } from 'ethers'
+import { createContext, FC, ReactNode, useCallback, useContext, useState } from 'react'
 import { everything } from 'src/client/graphql/generated/genql'
 import { client } from 'src/client/utils/genqlClient'
-import useSWR from 'swr'
+import useSWR, { SWRConfig } from 'swr'
+
+// import useSWR from 'swr'
+
+// import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 
 type GlobalStateContext = {
   user: any
-  mutateUser: () => void
+  mutate: any
   error: null
+  fetching: boolean
 }
 
 export const GlobalStateContext = createContext<GlobalStateContext>({} as GlobalStateContext)
@@ -17,7 +23,23 @@ type Props = {
   children: ReactNode
 }
 
-export function GlobalStateProvider({ children }: Props) {
+// function localStorageProvider() {
+//   // When initializing, we restore the data from `localStorage` into a map.
+//   const map = new Map(JSON.parse(localStorage.getItem('app-cache') || '[]'))
+
+//   // Before unloading the app, we write back all the data into `localStorage`.
+//   window.addEventListener('beforeunload', () => {
+//     const appCache = JSON.stringify(Array.from(map.entries()))
+//     localStorage.setItem('app-cache', appCache)
+//   })
+
+//   // We still use the map for write & read for performance.
+//   return map
+// }
+
+export const GlobalStateProvider: FC = ({ children }: Props) => {
+  const [value, setValue] = useState<any>({ fetching: true })
+
   const fetcher = () =>
     client.query({
       currentUser: {
@@ -34,16 +56,52 @@ export function GlobalStateProvider({ children }: Props) {
       },
     })
 
-  const {
-    // data: { currentUser: user },
-    data,
-    error,
-    mutate: mutateUser,
-  } = useSWR('currentUser', fetcher)
+  const { data, error, mutate } = useSWR('currentUser', fetcher)
 
-  const value = useMemo(() => ({ user: data?.currentUser, error, mutateUser }), [data, error, mutateUser])
+  const checkBalance = useCallback(
+    async (user) => {
+      const luser = user
+      if (!window.ethereum?.request) return
 
-  return <GlobalStateContext.Provider value={value}> {children} </GlobalStateContext.Provider>
+      const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+      if (!provider) return
+
+      const { chainId } = await provider.getNetwork()
+      luser.networkId = chainId
+
+      const rawBalance = await provider.getBalance(luser.address)
+
+      const lbalance = ethers.utils.formatUnits(rawBalance)
+      luser.balance = lbalance
+
+      const generatedRawBalance = await provider.getBalance(luser.generated)
+      const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance)
+      luser.generatedBalance = lgeneratedBalance
+
+      setValue({ user, error, mutate, fetching: !error && !user })
+    },
+    [error, mutate]
+  )
+
+  const currentUser = data?.currentUser ? data?.currentUser : null
+
+  if (currentUser) {
+    const isFinded = process.env.NEXT_PUBLIC_ADMIN_ADDRESS
+      ? process.env.NEXT_PUBLIC_ADMIN_ADDRESS.includes(currentUser?.address)
+      : false
+
+    const updated = { ...currentUser, isAdmin: isFinded }
+    checkBalance(updated)
+  }
+  // const value = useMemo(() => ({ user, error, mutate, fetching: !error && !user }), [user, error, mutate])
+  // console.log('🚀 ~ file: index.tsx ~ line 101 ~ value', value)
+
+  return (
+    <SWRConfig value={{ provider: () => new Map() }}>
+      <GlobalStateContext.Provider value={value}> {children} </GlobalStateContext.Provider>
+    </SWRConfig>
+  )
 }
 
 export function useGlobalStore() {

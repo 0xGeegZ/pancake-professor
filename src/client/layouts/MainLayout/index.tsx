@@ -5,9 +5,9 @@ import { ethers } from 'ethers'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import PropTypes from 'prop-types'
-import { FC, ReactNode, useCallback, useEffect, useState } from 'react'
+import { FC, ReactNode, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
+import useRefMounted from 'src/client/hooks/useRefMounted'
 import menuItems from 'src/client/layouts/MainLayout/Sidebar/SidebarMenu/items'
 import { useGlobalStore } from 'src/client/store/swr'
 
@@ -48,90 +48,31 @@ const MainContent = styled(Box)(
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const { t }: { t: any } = useTranslation()
-  const { user: toto } = useGlobalStore()
-  console.log('🚀 ~ file: index.tsx ~ line 52 ~ toto', toto)
+  const { user: data, fetching } = useGlobalStore()
 
-  // const isMountedRef = useRefMounted()
+  const isMountedRef = useRefMounted()
 
   // const [{ data, fetching, error }] = useGetCurrentUserQuery()
-  const [{ data, fetching }] = useGetCurrentUserQuery()
+  // const [{ data, fetching }] = useGetCurrentUserQuery()
 
   const router = useRouter()
-  const [networkId, setNetworkId] = useState<any>(0)
-  const [user, setUser] = useState<any>('')
-  // const [balance, setBalance] = useState<string>('')
+  const [user, setUser] = useState<any>()
   const [allMenuItems, setAllMenuItems] = useState<any>(null)
-
-  // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const checkBalance = useCallback(async (puser) => {
-    const luser = puser
-    if (!window.ethereum?.request) return
-
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
-
-    if (!provider) return
-
-    // setProvider(browserProvider)
-    const { chainId } = await provider.getNetwork()
-    setNetworkId(chainId)
-
-    const rawBalance = await provider.getBalance(luser.address)
-
-    const lbalance = ethers.utils.formatUnits(rawBalance)
-    luser.balance = lbalance
-    // setBalance(lbalance)
-
-    const generatedRawBalance = await provider.getBalance(luser.generated)
-    const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance)
-    luser.generatedBalance = lgeneratedBalance
-
-    setUser(luser)
-
-    // window.localStorage.setItem('balance', lbalance)
-  }, [])
-
   useEffect(() => {
-    // if (!isMountedRef.current) {
-    //   return
-    // }
+    if (!data) return
+    if (user) return
 
-    let isFinded = false
+    if (isMountedRef.current) {
+      console.log('updating data', data)
 
-    if (data && data.currentUser) {
-      isFinded = process.env.NEXT_PUBLIC_ADMIN_ADDRESS
-        ? process.env.NEXT_PUBLIC_ADMIN_ADDRESS.includes(data?.currentUser?.address)
-        : false
-
-      const luser = {
-        ...data.currentUser,
-        isAdmin: isFinded,
-      }
-      setUser(luser)
-
-      // if (!localStorage.getItem('user')) {
-      //   window.localStorage.setItem('user', JSON.stringify(luser))
-      // }
-
-      // if (window.localStorage.getItem('balance')) setBalance(window.localStorage.getItem('balance'))
-      // else
-      checkBalance(data.currentUser)
+      setUser(data)
+      const filtereds = data.isAdmin ? menuItems : menuItems.filter((mi) => mi.heading !== 'Admin')
+      setAllMenuItems(filtereds)
     }
-
-    // let filtereds: Array<menuItems> = []
-    // let filtereds: MenuItem[] = []
-
-    const filtereds = isFinded ? menuItems : menuItems.filter((mi) => mi.heading !== 'Admin')
-    // if (isFinded) {
-    //   filtereds = menuItems
-    // } else {
-    //   filtereds = menuItems.filter((mi) => mi.heading !== 'Admin')
-    // }
-
-    setAllMenuItems(filtereds)
-  }, [data, checkBalance])
+  }, [data, user, isMountedRef])
 
   const connect = async (evt) => {
     evt.preventDefault()
@@ -215,8 +156,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
     <>
       {/* FIX HEADER ON SCROLL */}
       {/* <Sidebar fetching={fetching} error={error} allMenuItems={allMenuItems} /> */}
-      <Banner networkId={networkId} />
-
+      {process.env.NODE_ENV === 'development' && <Banner networkId={user?.networkId} />}
       <Sidebar fetching={fetching} allMenuItems={allMenuItems} />
       <MainWrapper>
         <MainContent>

@@ -38,14 +38,20 @@ import {
 } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 import { TransitionProps } from '@mui/material/transitions'
+import { ethers } from 'ethers'
 import moment from 'moment'
 import { useSnackbar } from 'notistack'
-import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, useRef, useState } from 'react'
+import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Moment from 'react-moment'
+import { PREDICTION_CONTRACT_ABI } from 'src/client/abis/pancake-prediction-abi-v3'
 import FollowPlayerForm from 'src/client/components/Dashboards/Automation/FollowPlayerForm'
+import { useGlobalStore } from 'src/client/store/swr'
+import loadPlayers from 'src/client/thegraph/loadPlayers'
 
 import SidebarPlayerDrawer from './SidebarPlayerDrawer'
+
+import type { User } from 'src/client/models/user'
 
 import type { ReactElement } from 'react'
 
@@ -259,9 +265,108 @@ const applyPagination = (players: Player[], page: number, limit: number): Player
   players.slice(page * limit, page * limit + limit)
 
 // const PlayersList: FC = ({ user, refreshQuery, players, fetching, hasError }) => {
-const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetching, hasError }) => {
+// const PlayersList: FC<PlayersListProps> = ({ user: tmp, refreshQuery, players, fetching, hasError }) => {
+const PlayersList: FC<PlayersListProps> = () => {
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
+
+  const { enqueueSnackbar } = useSnackbar()
+
+  const [fetching, setFetching] = useState<boolean>(false)
+  const [players, setPlayers] = useState<any[]>([])
+  const [hasError, setHasError] = useState<boolean>(false)
+
+  // const [user, setUser] = useState<User | any>(null)
+  const [preditionContract, setPreditionContract] = useState<any>(null)
+  const [provider, setProvider] = useState<ethers.providers.Web3Provider>(null)
+
+  const { user, mutate, fetching: userFetching } = useGlobalStore()
+
+  // const [{ data }] = useGetCurrentUserQuery()
+
+  const getPlayers = useCallback(
+    async (ppreditionContract) => {
+      if (fetching) return
+
+      console.log('getPlayers')
+
+      setFetching(true)
+      try {
+        const lisPaused = await ppreditionContract.paused()
+        if (lisPaused) {
+          enqueueSnackbar(t(`Contract is paused.`), {
+            variant: 'warning',
+            TransitionComponent: Zoom,
+          })
+          return
+        }
+        const epoch = await ppreditionContract.currentEpoch()
+
+        const lplayers = await loadPlayers({ epoch })
+        setPlayers(lplayers)
+        setFetching(false)
+      } catch (err) {
+        setHasError(true)
+      }
+    },
+    [fetching, enqueueSnackbar, t]
+  )
+
+  const refreshQuery = useCallback(
+    async ({ orderBy }) => {
+      console.log('refreshQuery')
+      const epoch = await preditionContract.currentEpoch()
+
+      setFetching(true)
+      setPlayers([])
+      players.length = 0
+
+      try {
+        const lplayers = await loadPlayers({ epoch, orderBy })
+        setPlayers(lplayers)
+        setFetching(false)
+      } catch (err) {
+        setHasError(true)
+      }
+    },
+    [players, preditionContract]
+  )
+
+  useEffect(() => {
+    if (!user && !userFetching) {
+      // return
+      // if (!data?.currentUser) {
+      enqueueSnackbar(t(`You need to be connected to have data fecthing for this view.`), {
+        variant: 'warning',
+        TransitionComponent: Zoom,
+      })
+      return
+    }
+    // if (user) return
+    if (provider) return
+
+    const lprovider = new ethers.providers.Web3Provider(window.ethereum)
+    setProvider(lprovider)
+
+    // setUser(data)
+
+    const signer = lprovider.getSigner()
+
+    const lpreditionContract = new ethers.Contract(
+      process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+      PREDICTION_CONTRACT_ABI,
+      signer
+    )
+
+    setPreditionContract(lpreditionContract)
+
+    try {
+      getPlayers(lpreditionContract)
+    } catch (err) {
+      setHasError(true)
+    }
+  }, [getPlayers, provider, user, preditionContract, enqueueSnackbar, t, userFetching])
+
   // const router = useRouter()
 
   // const [, createStrategie] = useCreateStrategieMutation()
@@ -294,7 +399,6 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
   const [orderBy, setOrderBy] = useState<string>(ordersBy[1].text)
 
   // const [selectedItems, setSelectedPlayers] = useState<string[]>([])
-  const { enqueueSnackbar } = useSnackbar()
 
   // const tabs = [
   //   {
@@ -426,6 +530,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
 
   const handleCloseCreateForm = () => {
     setOpenCreateForm(false)
+    mutate('currentUser')
   }
 
   return (
@@ -583,7 +688,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                     }}
                                   />
                                   <Box>
-                                    {player.recentGames}/288 ({(+player.recentGames * 100) / 288} %)
+                                    {player.recentGames}/288 ({parseInt(`${(+player.recentGames * 100) / 288}`, 10)} %)
                                   </Box>
                                 </Box>
                               </TableCell>
@@ -882,7 +987,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                               color="text.primary"
                                               variant="h2"
                                               sx={{ pr: 0.5, display: 'inline-flex' }}>
-                                              {(+player.recentGames * 100) / 288}
+                                              {parseInt(`${(+player.recentGames * 100) / 288}`, 10)}
                                             </Typography>
                                             <Typography
                                               color="text.secondary"

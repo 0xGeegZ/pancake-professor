@@ -18,7 +18,6 @@ import {
 import { styled } from '@mui/material/styles'
 import { TransitionProps } from '@mui/material/transitions'
 import { useSnackbar } from 'notistack'
-import PropTypes from 'prop-types'
 import { forwardRef, ReactElement, Ref, useState } from 'react'
 import { buildStyles } from 'react-circular-progressbar'
 import { useTranslation } from 'react-i18next'
@@ -135,10 +134,11 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
 
     // TODO check if yser bankroll has suffisant amount
 
-    const { error } = await createStrategie({
+    const { data, error } = await createStrategie({
       player: player.id,
       startedAmount: +gauge,
     })
+    console.log('🚀 ~ file: FollowPlayerForm.tsx ~ line 143 ~ sumbitCreateStrategie ~ data', data)
 
     if (error) {
       enqueueSnackbar(t('Unexpected error during strategie creation'), {
@@ -316,14 +316,6 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
       </DialogWrapper>
     </>
   )
-}
-
-FollowPlayerForm.propTypes = {
-  player: PropTypes.shape({}).isRequired,
-  // player: PropTypes.objectOf(PropTypes.shape({})).isRequired,
-  // user: PropTypes.objectOf(PropTypes.shape({})).isRequired,
-  user: PropTypes.shape({}).isRequired,
-  handleCloseCreateForm: PropTypes.func.isRequired,
 }
 
 export default FollowPlayerForm

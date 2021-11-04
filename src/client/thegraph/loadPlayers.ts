@@ -52,7 +52,7 @@ const loadPlayers = async ({ epoch, orderBy = 'winRate' }) => {
     const orderByFilter = orderBy === 'default' ? 'winRate' : orderBy
     const LIMIT_HISTORY_LENGTH = 12 * 24
 
-    const first = orderBy === 'default' ? 1000 : 100
+    const first = orderBy === 'default' ? 500 : 100
     const firstBets = orderBy === 'default' ? 300 : 1
     const query = gql`
       query getUsers($totalBets: String!, $winRate: String!, $orderBy: String!, $first: Int!, $firstBets: Int!) {

@@ -9,13 +9,12 @@ import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { useTranslation } from 'react-i18next'
 import Label from 'src/client/components/Label'
 import { updateList } from 'src/client/slices/projects_board'
-import { useDispatch, useSelector } from 'src/client/store'
+import { useDispatch, useSelector } from 'src/client/store/redux'
 
-
-import type { RootState } from 'src/client/store'
-import type { List as ListType } from 'src/client/models/projects_board'
 import Task from './Task'
 
+import type { List as ListType } from 'src/client/models/projects_board'
+import type { RootState } from 'scr/client/store/redux'
 const ListColumnWrapper = styled(Card)(
   ({ theme }) => `
       width: 340px;
