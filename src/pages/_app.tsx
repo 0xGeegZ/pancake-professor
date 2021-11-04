@@ -14,15 +14,17 @@ import Head from 'next/head'
 import { Router, useRouter } from 'next/router'
 import { SnackbarProvider } from 'notistack'
 import nProgress from 'nprogress'
-import { useRef } from 'react'
-import { Provider as ReduxProvider } from 'react-redux'
+import { FC, useRef } from 'react'
 import { SidebarProvider } from 'src/client/contexts/SidebarContext'
 import createEmotionCache from 'src/client/createEmotionCache'
 import { client } from 'src/client/graphql/client'
 import useScrollTop from 'src/client/hooks/useScrollTop'
-import store from 'src/client/store'
+import { GlobalStateProvider } from 'src/client/store/swr'
 import ThemeProvider from 'src/client/theme/ThemeProvider'
 import { Provider as GraphQLProvider } from 'urql'
+
+// import { Provider as ReduxProvider } from 'react-redux'
+// import store from 'src/client/store/redux'
 
 import type { ReactElement, ReactNode } from 'react'
 import type { NextPage } from 'next'
@@ -36,11 +38,12 @@ type NextPageWithLayout = NextPage & {
 }
 
 interface MyAppProps extends AppProps {
+  // eslint-disable-next-line react/require-default-props
   emotionCache?: EmotionCache
   Component: NextPageWithLayout
 }
 
-function MyApp(props: MyAppProps) {
+const MyApp: FC<MyAppProps> = (props: MyAppProps) => {
   const notistackRef = useRef<any>(null)
   const router = useRouter()
 
@@ -60,7 +63,8 @@ function MyApp(props: MyAppProps) {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       </Head>
       <GraphQLProvider value={client}>
-        <ReduxProvider store={store}>
+        {/* <ReduxProvider store={store}> */}
+        <GlobalStateProvider>
           <SidebarProvider>
             <ThemeProvider>
               <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -96,7 +100,8 @@ function MyApp(props: MyAppProps) {
               </LocalizationProvider>
             </ThemeProvider>
           </SidebarProvider>
-        </ReduxProvider>
+        </GlobalStateProvider>
+        {/* </ReduxProvider> */}
       </GraphQLProvider>
       <style jsx global>{`
         .page-transition-enter {
@@ -128,5 +133,9 @@ function MyApp(props: MyAppProps) {
     </CacheProvider>
   )
 }
+
+// MyApp.defaultProps = {
+//   emotionCache: {},
+// }
 
 export default appWithTranslation(MyApp)

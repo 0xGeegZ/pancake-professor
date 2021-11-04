@@ -3,7 +3,6 @@ import 'moment-timezone'
 import { Box, Card, CardContent, CardHeader, CircularProgress, Divider, Grid, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import moment from 'moment'
-import { useRouter } from 'next/router'
 import { useEffect, useMemo, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
@@ -50,7 +49,7 @@ const ActiveLiveBetsChartWrapper = styled(ActiveLiveBetsChart)(
 // function ActiveLiveBets({ timeLeft, epoch, userBulls, userBears }) {
 function ActiveLiveBets({ epoch, userBulls, userBears }) {
   const { t }: { t: any } = useTranslation()
-  const router = useRouter()
+  // const router = useRouter()
 
   // const actionRef1 = useRef<any>(null)
 
@@ -104,7 +103,9 @@ function ActiveLiveBets({ epoch, userBulls, userBears }) {
     if (userBulls.length === userBears.length && userBears.length === 0 && userBulls.length === 0) {
       console.log('ActiveLiveBets > DEFAULT_STATUS')
 
-      status.data = {}
+      // status.data = {}
+      status.data.bulls = []
+      status.data.bears = []
       status.isDataLoaded = false
       setStatus(DEFAULT_STATUS)
       setLastTotal(0)
@@ -117,14 +118,14 @@ function ActiveLiveBets({ epoch, userBulls, userBears }) {
     status.isDataLoaded = true
     const formatted = `${moment(new Date()).hours()}:${moment(new Date()).minutes()}:${moment(new Date()).seconds()}`
 
-    if (status.labels[status.labels.length - 1] === formatted) {
-      status.data.bulls[status.data.bulls.length - 1] = userBulls.length
-      status.data.bears[status.data.bears.length - 1] = userBears.length
-    } else {
-      status.data.bulls.push(userBulls.length)
-      status.data.bears.push(userBears.length)
-      status.labels.push(formatted)
-    }
+    // if (status.labels[status.labels.length - 1] === formatted) {
+    //   status.data.bulls[status.data.bulls.length - 1] = userBulls.length
+    //   status.data.bears[status.data.bears.length - 1] = userBears.length
+    // } else {
+    status.data.bulls.push(userBulls.length)
+    status.data.bears.push(userBears.length)
+    status.labels.push(formatted)
+    // }
 
     // status.labels.push(status.labels.length)
 

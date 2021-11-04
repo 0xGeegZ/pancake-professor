@@ -70,6 +70,7 @@ const loadPlayers = async ({ epoch, orderBy = 'winRate' }) => {
           netBNB
           bets(first: $firstBets, orderBy: createdAt, orderDirection: desc) {
             position
+            createdAt
             round {
               epoch
               position

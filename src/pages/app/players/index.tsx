@@ -65,7 +65,7 @@ function ManagementUsers() {
         setHasError(true)
       }
     },
-    [fetching]
+    [fetching, enqueueSnackbar, t]
   )
 
   const refreshQuery = useCallback(
@@ -119,7 +119,7 @@ function ManagementUsers() {
     } catch (err) {
       setHasError(true)
     }
-  }, [data, getPlayers, router, provider, user, preditionContract])
+  }, [data, getPlayers, router, provider, user, preditionContract, enqueueSnackbar, t])
 
   return (
     <>
@@ -155,9 +155,18 @@ ManagementUsers.getLayout = function getLayout(page: ReactElement) {
 
 export default ManagementUsers
 
-//TODO use it to load epoch from default address
+// This value is considered fresh for ten seconds (s-maxage=10).
+// If a request is repeated within the next 10 seconds, the previously
+// cached value will still be fresh. If the request is repeated before 59 seconds,
+// the cached value will be stale but still render (stale-while-revalidate=59).
+//
+// In the background, a revalidation request will be made to populate the cache
+// with a fresh value. If you refresh the page, you will see the new value.
+
+//  use it to load epoch from default address
 // export const getServerSideProps = async ({ req, res }) => {
 //   await handler().run(req, res)
+// res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=59')
 
 //   const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
 //   const privateKey = decrypt(req.user.private)

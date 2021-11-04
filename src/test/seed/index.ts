@@ -7,8 +7,11 @@ import { testData } from './data'
 export interface SeedData {
   users: Array<{
     id: string
-    email: string
+    email?: string
     name?: string
+    address: string
+    generated: string
+    private: string
   }>
   projects?: Array<{
     id: string

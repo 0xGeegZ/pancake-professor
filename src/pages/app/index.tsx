@@ -3,9 +3,7 @@ import { Box, Grid } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { ethers } from 'ethers'
 import Head from 'next/head'
-import { useSnackbar } from 'notistack'
 import { useCallback, useEffect, useState } from 'react'
-import { useTranslation } from 'react-i18next'
 import ActiveStrategies from 'src/client/components/Dashboards/Automation/ActiveStrategies'
 import ActiveStrategiesOverview from 'src/client/components/Dashboards/Commerce/ActiveStrategiesOverview'
 import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance'
@@ -27,19 +25,19 @@ const MainContentWrapper = styled(Box)(
 `
 )
 function Dashboard() {
-  const { t }: { t: any } = useTranslation()
+  // const { t }: { t: any } = useTranslation()
 
   // const isMountedRef = useRefMounted()
 
   // const [{ data, fetching, error }] = useGetCurrentUserQuery()
-  const [{ data, fetching }] = useGetCurrentUserQuery()
+  const [{ data }] = useGetCurrentUserQuery()
 
   // const router = useRouter()
   const [user, setUser] = useState<any>(null)
 
   // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
-  const { enqueueSnackbar } = useSnackbar()
+  // const { enqueueSnackbar } = useSnackbar()
 
   const checkBalance = useCallback(async (puser) => {
     if (!window.ethereum?.request) return
@@ -128,7 +126,7 @@ function Dashboard() {
               </Grid>
             </Grid>
           </Grid>
-*/}
+          */}
           <Grid item lg={4} xs={12}>
             <AccountBalance user={user} />
           </Grid>

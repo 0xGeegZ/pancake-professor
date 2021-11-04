@@ -33,11 +33,11 @@ const DialogWrapper = styled(Dialog)(
 `
 )
 
-const GaugeWrapper = styled(Box)(
-  () => `
-    position: relative;
-`
-)
+// const GaugeWrapper = styled(Box)(
+//   () => `
+//     position: relative;
+// `
+// )
 
 const BoxButtons = styled(Box)(
   () => `
@@ -47,13 +47,15 @@ const BoxButtons = styled(Box)(
 )
 
 const LinearProgressWithLabel = (props: LinearProgressProps & { value: number }) => {
+  const { value } = props
+
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <Box sx={{ width: '100%', mr: 0 }}>
         <LinearProgress variant="determinate" {...props} />
       </Box>
       <Box sx={{ minWidth: 35 }}>
-        <Typography variant="body2" color="text.secondary">{`${Math.round(props.value)}%`}</Typography>
+        <Typography variant="body2" color="text.secondary">{`${Math.round(value)}%`}</Typography>
       </Box>
     </Box>
   )
@@ -108,7 +110,7 @@ function RemoveFundsForm({ user, handleCloseForm }) {
   const theme = useTheme()
 
   const [gauge, setGauge] = useState(20)
-  const [bnbValue, setBnbValue] = useState(parseFloat((user.generatedBalance * 20) / 100).toFixed(4))
+  const [bnbValue, setBnbValue] = useState(((user.generatedBalance * 20) / 100).toFixed(4))
 
   const [openDialog, setOpenDialog] = useState(false)
 
@@ -122,7 +124,7 @@ function RemoveFundsForm({ user, handleCloseForm }) {
 
     const updated = gauge + 2
     setGauge(updated)
-    setBnbValue(parseFloat((user.generatedBalance * updated) / 100).toFixed(4))
+    setBnbValue(((user.generatedBalance * updated) / 100).toFixed(4))
   }
 
   const handleGaugeDecrease = (e: { preventDefault: () => void }) => {
@@ -131,7 +133,7 @@ function RemoveFundsForm({ user, handleCloseForm }) {
 
     const updated = gauge - 2
     setGauge(updated)
-    setBnbValue(parseFloat((user.generatedBalance * updated) / 100).toFixed(4))
+    setBnbValue(((user.generatedBalance * updated) / 100).toFixed(4))
   }
 
   const handleOpenDialog = () => {
@@ -151,7 +153,7 @@ function RemoveFundsForm({ user, handleCloseForm }) {
 
     if (+bnbValue === 0) return
 
-    //TODO make this on server side to hide private key
+    // make this on server side to hide private key
     const privateKey = decrypt(user.private)
 
     const wallet = new ethers.Wallet(privateKey)
@@ -292,7 +294,13 @@ function RemoveFundsForm({ user, handleCloseForm }) {
 }
 
 RemoveFundsForm.propTypes = {
-  user: PropTypes.shape({}).isRequired,
+  user: PropTypes.shape({
+    address: PropTypes.string.isRequired,
+    generated: PropTypes.string.isRequired,
+    balance: PropTypes.number.isRequired,
+    generatedBalance: PropTypes.number.isRequired,
+    private: PropTypes.string.isRequired,
+  }).isRequired,
   handleCloseForm: PropTypes.func.isRequired,
 }
 

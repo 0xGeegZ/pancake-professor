@@ -1,0 +1,78 @@
+scalar DateTime
+
+type Mutation {
+  createFriend(id: String!): User
+  createProject(name: String!, slug: String): Project
+  createStrategie(maxLooseAmount: Int, minWinAmount: Int, player: String!, startedAmount: Int!): Strategie
+  createStripeCheckoutBillingPortalUrl(projectId: String!): String
+  createStripeCheckoutSession(plan: PaidPlan!, projectId: String!): String
+  deleteStrategie(id: String!): Strategie
+  inviteToProject(email: String!, projectId: String!): Boolean
+  toogleActivateStrategie(id: String!): Strategie
+  updateStrategie(currentAmount: Int!, id: String!, isActive: Boolean, isDeleted: Boolean, isRunning: Boolean, maxLooseAmount: Int!, minWinAmount: Int!, player: String!, playsCount: Int!, roundsCount: Int!, startedAmount: Int!): Strategie
+  updateUser(address: String!, email: String, id: String!, name: String): User
+}
+
+enum PaidPlan {
+  pro
+}
+
+type Project {
+  id: String!
+  name: String!
+  paidPlan: PaidPlan
+  slug: String!
+  users(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
+}
+
+type Query {
+  currentUser: User
+  getUsers: [User]
+  project(id: String, slug: String): Project
+  strategie(id: String!): Strategie
+  user(id: String!): User
+}
+
+type Strategie {
+  createdAt: DateTime!
+  currentAmount: Int!
+  id: String!
+  isActive: Boolean!
+  isDeleted: Boolean!
+  isRunning: Boolean!
+  maxLooseAmount: Int!
+  minWinAmount: Int!
+  modifiedAt: DateTime!
+  player: String!
+  playsCount: Int!
+  roundsCount: Int!
+  startedAmount: Int!
+  user: User!
+}
+
+input StrategieWhereUniqueInput {
+  id: String
+}
+
+type User {
+  address: String!
+  createdAt: DateTime!
+  email: String
+  generated: String!
+  id: String!
+  loginAt: DateTime!
+  modifiedAt: DateTime!
+  name: String
+  private: String!
+  referrals(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
+  registeredAt: DateTime!
+  strategies(after: StrategieWhereUniqueInput, before: StrategieWhereUniqueInput, first: Int, last: Int): [Strategie!]!
+}
+
+input UserWhereUniqueInput {
+  address: String
+  email: String
+  generated: String
+  id: String
+  private: String
+}

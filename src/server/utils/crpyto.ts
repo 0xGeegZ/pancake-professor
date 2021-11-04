@@ -1,7 +1,7 @@
 import crypto from 'crypto'
 
 // Must be 256 bits (32 characters)
-const ENCRYPTION_KEY = process.env.NEXT_PUBLIC_SECRET_KEY
+const ENCRYPTION_KEY = process.env.NEXT_PUBLIC_ADDRESS_SECRET_KEY
 // For AES, this is always 16
 const IV_LENGTH = 16
 

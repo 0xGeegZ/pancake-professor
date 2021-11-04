@@ -84,7 +84,8 @@ const ButtonWrapper = styled(Button)(
 `
 )
 
-const Task: FC<TaskProps> = forwardRef(({ taskId, dragging, index, list, ...rest }, ref) => {
+const Task: FC<TaskProps> = forwardRef(({ taskId, dragging, ...rest }, ref) => {
+  // const Task: FC<TaskProps> = forwardRef(({ taskId, dragging, index, list, ...rest }, ref) => {
   const task = useSelector((state) => taskSelector(state, taskId))
   const { t }: { t: any } = useTranslation()
 
@@ -194,6 +195,8 @@ const Task: FC<TaskProps> = forwardRef(({ taskId, dragging, index, list, ...rest
     </>
   )
 })
+
+Task.displayName = 'Task'
 
 Task.propTypes = {
   taskId: PropTypes.string.isRequired,

@@ -1,3 +1,6 @@
+/* eslint-disable import/order */
+import 'moment-timezone'
+
 import CloseIcon from '@mui/icons-material/Close'
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 import GamepadIcon from '@mui/icons-material/Gamepad'
@@ -35,9 +38,11 @@ import {
 } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 import { TransitionProps } from '@mui/material/transitions'
+import moment from 'moment'
 import { useSnackbar } from 'notistack'
 import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import Moment from 'react-moment'
 import FollowPlayerForm from 'src/client/components/Dashboards/Automation/FollowPlayerForm'
 
 import SidebarPlayerDrawer from './SidebarPlayerDrawer'
@@ -253,6 +258,7 @@ const Transition = forwardRef((props: TransitionProps & { children?: ReactElemen
 const applyPagination = (players: Player[], page: number, limit: number): Player[] =>
   players.slice(page * limit, page * limit + limit)
 
+// const PlayersList: FC = ({ user, refreshQuery, players, fetching, hasError }) => {
 const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetching, hasError }) => {
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
@@ -577,7 +583,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                     }}
                                   />
                                   <Box>
-                                    {player.recentGames}/288 ({parseInt((+player.recentGames * 100) / 288)} %)
+                                    {player.recentGames}/288 ({(+player.recentGames * 100) / 288} %)
                                   </Box>
                                 </Box>
                               </TableCell>
@@ -800,6 +806,13 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                   <Typography variant="subtitle2" gutterBottom>
                                     {t('Net BNB won')} : {parseFloat(player.netBNB).toFixed(2)} BNB
                                   </Typography>
+                                  {player?.bets.length && (
+                                    <Typography sx={{ fontSize: `${theme.typography.pxToRem(10)}` }} variant="h6">
+                                      {t('Last Play')}
+                                      {' : '}
+                                      <Moment local>{moment(+player.bets[0].createdAt * 1000)}</Moment>
+                                    </Typography>
+                                  )}
                                 </Box>
                                 {player.recentGames ? (
                                   <>
@@ -869,7 +882,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                               color="text.primary"
                                               variant="h2"
                                               sx={{ pr: 0.5, display: 'inline-flex' }}>
-                                              {parseInt((+player.recentGames * 100) / 288)}
+                                              {(+player.recentGames * 100) / 288}
                                             </Typography>
                                             <Typography
                                               color="text.secondary"
@@ -1091,8 +1104,15 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
 // }
 
 // PlayersList.propTypes = {
-//   // eslint-disable-next-line react/forbid-prop-types
-//   players: PropTypes.array.isRequired,
+//   players: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       bets: PropTypes.arrayOf(
+//         PropTypes.shape({
+//           createdAt: PropTypes.string.isRequired,
+//         })
+//       ),
+//     })
+//   ).isRequired,
 //   user: PropTypes.shape({
 //     strategies: PropTypes.arrayOf(
 //       PropTypes.shape({

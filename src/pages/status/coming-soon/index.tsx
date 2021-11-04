@@ -17,6 +17,7 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
+import Image from 'next/image'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Logo from 'src/client/components/LogoSign'
@@ -128,7 +129,8 @@ function StatusComingSoon() {
                   {t("We're working on implementing the last features before our launch!")}
                 </Typography>
               </Container>
-              <img alt="Coming Soon" height={200} src="/static/images/status/coming-soon.svg" />
+              {/* <img alt="Coming Soon" height={200} src="/static/images/status/coming-soon.svg" /> */}
+              <Image alt="Coming Soon" height={200} width={350} src="/static/images/status/coming-soon.svg" />
             </Box>
 
             <Box display="flex" justifyContent="center">

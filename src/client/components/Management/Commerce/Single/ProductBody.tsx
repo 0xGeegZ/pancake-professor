@@ -1,42 +1,42 @@
-import { FC, useState, ChangeEvent } from 'react'
-import PropTypes from 'prop-types'
-import type { Product } from 'src/client/models/product'
-import numeral from 'numeral'
-import Text from 'src/client/components/Text'
-import { useSnackbar } from 'notistack'
-
-import {
-  Typography,
-  Box,
-  Grid,
-  Divider,
-  IconButton,
-  Button,
-  Card,
-  Rating,
-  FormControl,
-  Hidden,
-  TextField,
-  Tabs,
-  Tab,
-  Select,
-  Slide,
-  MenuItem,
-  useTheme,
-} from '@mui/material'
-import AddShoppingCartTwoToneIcon from '@mui/icons-material/AddShoppingCartTwoTone'
-import { styled } from '@mui/material/styles'
-import { useTranslation } from 'react-i18next'
-import SwiperCore, { Navigation, Thumbs } from 'swiper/core'
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
-import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/swiper.min.css'
 import 'swiper/components/navigation/navigation.min.css'
 import 'swiper/components/pagination/pagination.min.css'
+import 'swiper/swiper.min.css'
 
-import ReviewsTab from './ReviewsTab'
+import AddShoppingCartTwoToneIcon from '@mui/icons-material/AddShoppingCartTwoTone'
+import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
+import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
+import {
+  Box,
+  Button,
+  Card,
+  Divider,
+  FormControl,
+  Grid,
+  Hidden,
+  IconButton,
+  MenuItem,
+  Rating,
+  Select,
+  Slide,
+  Tab,
+  Tabs,
+  TextField,
+  Typography,
+  useTheme,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useSnackbar } from 'notistack'
+import numeral from 'numeral'
+import PropTypes from 'prop-types'
+import { ChangeEvent, FC, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Text from 'src/client/components/Text'
+import SwiperCore, { Navigation, Thumbs } from 'swiper/core'
+import { Swiper, SwiperSlide } from 'swiper/react'
+
+import type { Product } from 'src/client/models/product'
 import AdditionalInfoTab from './AdditionalInfoTab'
+import ReviewsTab from './ReviewsTab'
 
 SwiperCore.use([Navigation, Thumbs])
 
@@ -160,7 +160,7 @@ const ProductBody: FC<ProductBodyProps> = ({ product }) => {
     { value: 'additional_info', label: t('Additional Informations') },
   ]
 
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
+  const handleTabsChange = (_event: ChangeEvent<any>, value: string): void => {
     setCurrentTab(value)
   }
 

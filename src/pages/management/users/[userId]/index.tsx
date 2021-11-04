@@ -1,27 +1,26 @@
-import { useState, useCallback, ChangeEvent, useEffect } from 'react'
-import type { ReactElement } from 'react'
-import BoxedSidebarLayout from 'src/client/layouts/BoxedSidebarLayout'
-
+import { Box, Grid, Tab, Tabs } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import Head from 'next/head'
-import Footer from 'src/client/components/Footer'
-
-import { Box, Tabs, Tab, Grid } from '@mui/material'
 import { useRouter } from 'next/router'
-import useRefMounted from 'src/client/hooks/useRefMounted'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import type { User } from 'src/client/models/user'
+import Footer from 'src/client/components/Footer'
+import ActivityTab from 'src/client/components/Management/Users/Single/ActivityTab'
+import Addresses from 'src/client/components/Management/Users/Single/Addresses'
+import EditProfileTab from 'src/client/components/Management/Users/Single/EditProfileTab'
+import Feed from 'src/client/components/Management/Users/Single/Feed'
+import MyCards from 'src/client/components/Management/Users/Single/MyCards'
+import NotificationsTab from 'src/client/components/Management/Users/Single/NotificationsTab'
+import PopularTags from 'src/client/components/Management/Users/Single/PopularTags'
 import ProfileCover from 'src/client/components/Management/Users/Single/ProfileCover'
 import RecentActivity from 'src/client/components/Management/Users/Single/RecentActivity'
-import Feed from 'src/client/components/Management/Users/Single/Feed'
-import PopularTags from 'src/client/components/Management/Users/Single/PopularTags'
-import MyCards from 'src/client/components/Management/Users/Single/MyCards'
-import Addresses from 'src/client/components/Management/Users/Single/Addresses'
-import ActivityTab from 'src/client/components/Management/Users/Single/ActivityTab'
-import EditProfileTab from 'src/client/components/Management/Users/Single/EditProfileTab'
-import NotificationsTab from 'src/client/components/Management/Users/Single/NotificationsTab'
 import SecurityTab from 'src/client/components/Management/Users/Single/SecurityTab'
-import { styled } from '@mui/material/styles'
+import useRefMounted from 'src/client/hooks/useRefMounted'
+import BoxedSidebarLayout from 'src/client/layouts/BoxedSidebarLayout'
 import axios from 'src/client/utils/axios'
+
+import type { ReactElement } from 'react'
+import type { User } from 'src/client/models/user'
 
 const TabsWrapper = styled(Tabs)(
   () => `
@@ -47,7 +46,7 @@ function UserView() {
     { value: 'security', label: t('Passwords/Security') },
   ]
 
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
+  const handleTabsChange = (_event: ChangeEvent<any>, value: string): void => {
     setCurrentTab(value)
   }
 

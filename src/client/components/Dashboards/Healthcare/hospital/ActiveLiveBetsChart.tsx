@@ -1,6 +1,6 @@
 import { useTheme } from '@mui/material'
 import PropTypes from 'prop-types'
-import { FC } from 'react'
+import { FC, useEffect, useState } from 'react'
 import { Line } from 'react-chartjs-2'
 
 interface ActiveLiveBetsChartProps {
@@ -16,13 +16,13 @@ const ActiveLiveBetsChart: FC<ActiveLiveBetsChartProps> = ({ data: dataProp, lab
   const theme = useTheme()
 
   // const data = {
-  const data = {
+  const DEFAULT_DATA = {
     datasets: [
       {
         label: 'Bulls',
         backgroundColor: 'transparent',
-        // data: null,
-        data: dataProp.bulls,
+        data: null,
+        // data: dataProp.bulls,
         // data:
         //   dataProp.bulls.length > 50
         //     ? dataProp.bulls.slice(dataProp.bulls.length - 51, dataProp.bulls.length - 1)
@@ -43,8 +43,8 @@ const ActiveLiveBetsChart: FC<ActiveLiveBetsChartProps> = ({ data: dataProp, lab
       {
         label: 'Bears',
         backgroundColor: 'transparent',
-        // data: null,
-        data: dataProp.bears,
+        data: null,
+        // data: dataProp.bears,
         // data:
         //   dataProp.bears.length > 50
         //     ? dataProp.bears.slice(dataProp.bears.length - 51, dataProp.bears.length - 1)
@@ -151,35 +151,35 @@ const ActiveLiveBetsChart: FC<ActiveLiveBetsChartProps> = ({ data: dataProp, lab
     },
   }
 
-  // const [data, setData] = useState<any>(DEFAULT_DATA)
-  // const [lastTotal, setLastTotal] = useState<number>(0)
+  const [data, setData] = useState<any>(DEFAULT_DATA)
+  const [lastTotal, setLastTotal] = useState<number>(0)
 
-  // useEffect(() => {
-  //   console.log('ActiveLiveBetsChart > useEffect')
-  //   // if (!dataProp) return
+  useEffect(() => {
+    console.log('ActiveLiveBetsChart > useEffect')
+    // if (!dataProp) return
 
-  //   // if (!data) setData(DEFAULT_DATA)
+    // if (!data) setData(DEFAULT_DATA)
 
-  //   // const _data = data ? data : DEFAULT_DATA
+    // const _data = data ? data : DEFAULT_DATA
 
-  //   // if (dataProp.bulls.length === dataProp.bears.length && dataProp.bears.length === 0 && dataProp.bulls.length === 0) {
-  //   //   console.log('ActiveLiveBets > DEFAULT_STATUS')
-  //   //   setData(DEFAULT_DATA)
-  //   //   setLastTotal(0)
-  //   //   // router.replace(router.asPath)
-  //   //   return
-  //   // }
+    // if (dataProp.bulls.length === dataProp.bears.length && dataProp.bears.length === 0 && dataProp.bulls.length === 0) {
+    //   console.log('ActiveLiveBets > DEFAULT_STATUS')
+    //   setData(DEFAULT_DATA)
+    //   setLastTotal(0)
+    //   // router.replace(router.asPath)
+    //   return
+    // }
 
-  //   // if (dataProp.bulls.length + dataProp.bears.length === lastTotal) return
-  //   const ldata = data
-  //   ldata.datasets[0].data = dataProp.bulls
-  //   ldata.datasets[1].data = dataProp.bears
-  //   ldata.labels = labels
+    // if (dataProp.bulls.length + dataProp.bears.length === lastTotal) return
+    const ldata = data
+    ldata.datasets[0].data = dataProp.bulls
+    ldata.datasets[1].data = dataProp.bears
+    ldata.labels = labels
 
-  //   setData(ldata)
-  //   setLastTotal(dataProp.bulls.length + dataProp.bears.length)
-  //   // }, [dataProp, labels, DEFAULT_DATA])
-  // }, [dataProp, labels, data, lastTotal])
+    setData(ldata)
+    setLastTotal(dataProp.bulls.length + dataProp.bears.length)
+    // }, [dataProp, labels, DEFAULT_DATA])
+  }, [dataProp, labels, data, lastTotal])
 
   return (
     <div {...rest}>

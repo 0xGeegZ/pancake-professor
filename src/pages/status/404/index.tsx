@@ -1,22 +1,12 @@
-import {
-  Box,
-  Card,
-  Typography,
-  Container,
-  Divider,
-  Button,
-  FormControl,
-  OutlinedInput,
-  InputAdornment,
-} from '@mui/material'
-import type { ReactElement } from 'react'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+import { Box, Button, Card, Container, Divider, FormControl, InputAdornment, OutlinedInput, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import Head from 'next/head'
+import Image from 'next/image'
+import { useTranslation } from 'react-i18next'
 import BaseLayout from 'src/client/layouts/BaseLayout'
 
-import Head from 'next/head'
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
-
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
+import type { ReactElement } from 'react'
 
 const MainContent = styled(Box)(
   () => `
@@ -62,7 +52,9 @@ function Status404() {
         <TopWrapper>
           <Container maxWidth="md">
             <Box textAlign="center">
-              <img alt="404" height={180} src="/static/images/status/404.svg" />
+              {/* <img alt="404" height={180} src="/static/images/status/404.svg" /> */}
+              <Image alt="404" height={180} width={300} src="/static/images/status/404.svg" />
+
               <Typography variant="h2" sx={{ my: 2 }}>
                 {t("The page you were looking for doesn't exist.")}
               </Typography>

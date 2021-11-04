@@ -1,7 +1,8 @@
-import { ChangeEvent, useState } from 'react'
-import { Card, CardContent, CardHeader, Typography, Divider, Tabs, Tab, Box } from '@mui/material'
-import { useTranslation } from 'react-i18next'
+import { Box, Card, CardContent, CardHeader, Divider, Tab, Tabs, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { ChangeEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import ActivityChart from './ActivityChart'
 
 const TabsContainerWrapper = styled(CardContent)(
@@ -27,7 +28,7 @@ function Activity() {
     { value: 'monthly', label: t('Monthly') },
   ]
 
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
+  const handleTabsChange = (_event: ChangeEvent<any>, value: string): void => {
     setCurrentTab(value)
   }
 

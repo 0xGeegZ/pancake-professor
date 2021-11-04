@@ -9,6 +9,7 @@ import { FC, ReactNode, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 import menuItems from 'src/client/layouts/MainLayout/Sidebar/SidebarMenu/items'
+import { useGlobalStore } from 'src/client/store/swr'
 
 import Banner from './Banner'
 import Header from './Header'
@@ -47,6 +48,8 @@ const MainContent = styled(Box)(
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const { t }: { t: any } = useTranslation()
+  const { user: toto } = useGlobalStore()
+  console.log('🚀 ~ file: index.tsx ~ line 52 ~ toto', toto)
 
   // const isMountedRef = useRefMounted()
 
@@ -210,7 +213,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
 
   return (
     <>
-      {/* TODO FIX HEADER ON SCROLL */}
+      {/* FIX HEADER ON SCROLL */}
       {/* <Sidebar fetching={fetching} error={error} allMenuItems={allMenuItems} /> */}
       <Banner networkId={networkId} />
 

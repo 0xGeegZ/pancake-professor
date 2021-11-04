@@ -3,11 +3,6 @@ import 'moment-timezone'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
-import { useSnackbar } from 'notistack'
-import { useTheme, styled } from '@mui/material/styles'
-import Moment from 'react-moment'
-import moment from 'moment'
-
 import {
   Avatar,
   Box,
@@ -15,20 +10,23 @@ import {
   Card,
   CardActionArea,
   CardContent,
+  CircularProgress,
   Grid,
   IconButton,
+  LinearProgress,
   Link,
-  CircularProgress,
   Menu,
   MenuItem,
   Switch,
   Tooltip,
   Typography,
-  LinearProgress,
   Zoom,
 } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import moment from 'moment'
+import { useSnackbar } from 'notistack'
 import PropTypes from 'prop-types'
-import { useRef, useState, useEffect } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useToogleActivateStrategieMutation } from 'src/client/graphql/toogleActivateStrategie.generated'
 
@@ -71,7 +69,8 @@ const CardActiveStrategies = styled(Card)(
       width: 100%;
 
       &.Mui-active {
-        background: ${theme.palette.primary.main};
+        background: ${theme.palette.secondary.light};
+        border: 2px solid ${theme.palette.primary.main};
         color: ${theme.palette.primary.contrastText};
         box-shadow: ${theme.colors.shadows.primary};
 
@@ -160,18 +159,18 @@ const LinearProgressWrapper = styled(LinearProgress)(
 `
 )
 
-const DotLegend = styled('span')(
-  ({ theme }) => `
-    border-radius: 22px;
-    width: ${theme.spacing(1.5)};
-    height: ${theme.spacing(1.5)};
-    display: inline-block;
-    margin-right: ${theme.spacing(0.5)};
-`
-)
+// const DotLegend = styled('span')(
+//   ({ theme }) => `
+//     border-radius: 22px;
+//     width: ${theme.spacing(1.5)};
+//     height: ${theme.spacing(1.5)};
+//     display: inline-block;
+//     margin-right: ${theme.spacing(0.5)};
+// `
+// )
 function ActiveStrategies({ strategies: pstrategies }) {
   const { t }: { t: any } = useTranslation()
-  const theme = useTheme()
+  // const theme = useTheme()
 
   const [, toogleActivateStrategie] = useToogleActivateStrategieMutation()
   const { enqueueSnackbar } = useSnackbar()
@@ -351,7 +350,7 @@ function ActiveStrategies({ strategies: pstrategies }) {
                           </Box>
                         </Grid>
                         <Grid item xs={12} sm={4}>
-                          <Typography variant="caption" sx={{ pb: 1.5 }} component="div">
+                          <Typography variant="caption" sx={{ pb: 1.5, fontSize: '10px' }} component="div">
                             {t('Running since')}
                           </Typography>
                           <Box display="flex" alignItems="center">

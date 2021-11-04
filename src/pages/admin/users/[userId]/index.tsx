@@ -1,7 +1,6 @@
 import { Box, Grid } from '@mui/material'
 import Head from 'next/head'
 import Footer from 'src/client/components/Footer'
-import EditProfileTab from 'src/client/components/Management/Users/Single/EditProfileTab'
 import MainLayout from 'src/client/layouts/MainLayout'
 
 import type { ReactElement } from 'react'
@@ -65,40 +64,10 @@ function UserView() {
       </Head>
       <Box sx={{ mt: 3 }}>
         <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
-          {/* <Grid item xs={12}>
-            <TabsWrapper
-              onChange={handleTabsChange}
-              value={currentTab}
-              variant="scrollable"
-              scrollButtons="auto"
-              textColor="primary"
-              indicatorColor="primary"
-            >
-              {tabs.map((tab) => (
-                <Tab key={tab.value} label={tab.label} value={tab.value} />
-              ))}
-            </TabsWrapper>
-          </Grid> */}
           <Grid item xs={12}>
-            <EditProfileTab isAdmin />
-            {/* {currentTab === 'activity' && <ActivityTab />} */}
-            {/* {currentTab === 'edit_profile' && <EditProfileTab isAdmin />} */}
-            {/* {currentTab === 'notifications' && <NotificationsTab />}
-            {currentTab === 'security' && <SecurityTab />} */}
+            {/* Need to be reactivated */}
+            {/* <EditProfileTab isAdmin /> */}
           </Grid>
-          {/* <Grid item xs={12} md={8}>
-            <ProfileCover user={user} />
-          </Grid> */}
-          {/* <Grid item xs={12} md={12}>
-            <MyCards />
-          </Grid> */}
-
-          {/* <Grid item xs={12} md={4}>
-            <RecentActivity />
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <AccountSecurity />
-          </Grid> */}
         </Grid>
       </Box>
       <Footer />

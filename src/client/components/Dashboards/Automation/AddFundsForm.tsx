@@ -32,11 +32,11 @@ const DialogWrapper = styled(Dialog)(
 `
 )
 
-const GaugeWrapper = styled(Box)(
-  () => `
-    position: relative;
-`
-)
+// const GaugeWrapper = styled(Box)(
+//   () => `
+//     position: relative;
+// `
+// )
 
 const BoxButtons = styled(Box)(
   () => `
@@ -46,13 +46,14 @@ const BoxButtons = styled(Box)(
 )
 
 const LinearProgressWithLabel = (props: LinearProgressProps & { value: number }) => {
+  const { value } = props
   return (
     <Box sx={{ display: 'flex', alignItems: 'center' }}>
       <Box sx={{ width: '100%', mr: 0 }}>
         <LinearProgress variant="determinate" {...props} />
       </Box>
       <Box sx={{ minWidth: 35 }}>
-        <Typography variant="body2" color="text.secondary">{`${Math.round(props.value)}%`}</Typography>
+        <Typography variant="body2" color="text.secondary">{`${Math.round(value)}%`}</Typography>
       </Box>
     </Box>
   )
@@ -107,7 +108,7 @@ function AddFundsForm({ user, handleCloseForm }) {
   const theme = useTheme()
 
   const [gauge, setGauge] = useState(20)
-  const [bnbValue, setBnbValue] = useState(parseFloat((user.balance * 20) / 100).toFixed(4))
+  const [bnbValue, setBnbValue] = useState(((user.balance * 20) / 100).toFixed(4))
 
   const [openDialog, setOpenDialog] = useState(false)
 
@@ -121,7 +122,7 @@ function AddFundsForm({ user, handleCloseForm }) {
 
     const updated = gauge + 2
     setGauge(updated)
-    setBnbValue(parseFloat((user.balance * updated) / 100).toFixed(4))
+    setBnbValue(((user.balance * updated) / 100).toFixed(4))
   }
 
   const handleGaugeDecrease = (e: { preventDefault: () => void }) => {
@@ -130,7 +131,7 @@ function AddFundsForm({ user, handleCloseForm }) {
 
     const updated = gauge - 2
     setGauge(updated)
-    setBnbValue(parseFloat((user.balance * updated) / 100).toFixed(4))
+    setBnbValue(((user.balance * updated) / 100).toFixed(4))
   }
 
   const handleOpenDialog = () => {
@@ -286,7 +287,11 @@ function AddFundsForm({ user, handleCloseForm }) {
 }
 
 AddFundsForm.propTypes = {
-  user: PropTypes.shape({}).isRequired,
+  user: PropTypes.shape({
+    address: PropTypes.string.isRequired,
+    generated: PropTypes.string.isRequired,
+    balance: PropTypes.number.isRequired,
+  }).isRequired,
   handleCloseForm: PropTypes.func.isRequired,
 }
 

@@ -1,27 +1,26 @@
-import { useState, ChangeEvent } from 'react'
-
+import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone'
 import {
-  TextField,
-  Grid,
-  CardHeader,
-  Tab,
   Box,
-  Tabs,
-  Typography,
+  Card,
+  CardHeader,
+  Checkbox,
   Divider,
   FormControl,
-  Checkbox,
-  Tooltip,
-  InputAdornment,
   FormControlLabel,
+  Grid,
   IconButton,
+  InputAdornment,
   InputLabel,
   Select,
-  Card,
+  Tab,
+  Tabs,
+  TextField,
+  Tooltip,
+  Typography,
 } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 import { styled } from '@mui/material/styles'
-import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone'
+import { ChangeEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -41,7 +40,7 @@ function AdditionalInfo() {
     { value: 'shipping', label: t('Shipping') },
   ]
 
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
+  const handleTabsChange = (_event: ChangeEvent<any>, value: string): void => {
     setCurrentTab(value)
   }
 

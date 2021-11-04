@@ -254,7 +254,7 @@ function RegisterWizard() {
                           label: (
                             <Typography variant="body2">
                               {t('I accept the')}{' '}
-                              <Link component="a" href="#" underline="hover">
+                              <Link component="a" href="/" underline="hover">
                                 {t('terms and conditions')}
                               </Link>
                               .
