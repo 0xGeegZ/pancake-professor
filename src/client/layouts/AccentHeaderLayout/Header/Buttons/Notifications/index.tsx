@@ -13,16 +13,16 @@ import {
   Popover,
   Theme,
   Tooltip,
-  Typography
-} from '@mui/material';
-import { useRef, useState } from 'react';
-import NotificationsActiveTwoToneIcon from '@mui/icons-material/NotificationsActiveTwoTone';
-import Link from '@mui/material/Link';
-import { styled } from '@mui/material/styles';
-import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone';
-import CommentTwoToneIcon from '@mui/icons-material/CommentTwoTone';
-import { useTranslation } from 'react-i18next';
-import { formatDistance, subHours, subSeconds, subDays } from 'date-fns';
+  Typography,
+} from '@mui/material'
+import { useRef, useState } from 'react'
+import NotificationsActiveTwoToneIcon from '@mui/icons-material/NotificationsActiveTwoTone'
+import Link from '@mui/material/Link'
+import { styled } from '@mui/material/styles'
+import DescriptionTwoToneIcon from '@mui/icons-material/DescriptionTwoTone'
+import CommentTwoToneIcon from '@mui/icons-material/CommentTwoTone'
+import { useTranslation } from 'react-i18next'
+import { formatDistance, subHours, subSeconds, subDays } from 'date-fns'
 
 const AnimatedBadge = styled(Badge)(
   ({ theme }) => `
@@ -45,7 +45,7 @@ const AnimatedBadge = styled(Badge)(
         }
     }
 `
-);
+)
 
 const NotificationsBadge = styled(Badge)(
   ({ theme }) => `
@@ -69,7 +69,7 @@ const NotificationsBadge = styled(Badge)(
         }
     }
 `
-);
+)
 
 const IconButtonPrimary = styled(IconButton)(
   ({ theme }) => `
@@ -89,21 +89,21 @@ const IconButtonPrimary = styled(IconButton)(
       color: ${theme.colors.alpha.trueWhite[100]};
     }
 `
-);
+)
 
 function HeaderNotifications() {
-  const ref = useRef<any>(null);
-  const [isOpen, setOpen] = useState<boolean>(false);
+  const ref = useRef<any>(null)
+  const [isOpen, setOpen] = useState<boolean>(false)
 
   const handleOpen = (): void => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = (): void => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <>
@@ -113,9 +113,8 @@ function HeaderNotifications() {
             badgeContent={2}
             anchorOrigin={{
               vertical: 'top',
-              horizontal: 'right'
-            }}
-          >
+              horizontal: 'right',
+            }}>
             <NotificationsActiveTwoToneIcon />
           </NotificationsBadge>
         </IconButtonPrimary>
@@ -126,13 +125,12 @@ function HeaderNotifications() {
         open={isOpen}
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right'
+          horizontal: 'right',
         }}
         transformOrigin={{
           vertical: 'top',
-          horizontal: 'right'
-        }}
-      >
+          horizontal: 'right',
+        }}>
         <Box sx={{ p: 2 }} display="flex" justifyContent="space-between">
           <Typography variant="h5">{t('Notifications')}</Typography>
           <Link href="#" variant="caption" sx={{ textTransform: 'none' }}>
@@ -141,38 +139,23 @@ function HeaderNotifications() {
         </Box>
         <Divider />
         <List sx={{ p: 2 }}>
-          <ListItem
-            sx={{ display: { xs: 'block', sm: 'flex' } }}
-            button
-            selected
-          >
+          <ListItem sx={{ display: { xs: 'block', sm: 'flex' } }} button selected>
             <ListItemAvatar sx={{ mb: { xs: 1, sm: 0 } }}>
               <Avatar alt="James Dias" src="/static/images/avatars/1.jpg" />
             </ListItemAvatar>
             <Box flex="1">
-              <Box
-                display={{ xs: 'block', sm: 'flex' }}
-                justifyContent="space-between"
-              >
+              <Box display={{ xs: 'block', sm: 'flex' }} justifyContent="space-between">
                 <Typography sx={{ fontWeight: 'bold' }}>James Dias</Typography>
                 <Typography variant="caption" sx={{ textTransform: 'none' }}>
                   {formatDistance(subSeconds(new Date(), 19), new Date(), {
-                    addSuffix: true
+                    addSuffix: true,
                   })}
                 </Typography>
               </Box>
-              <Typography
-                component="span"
-                variant="body2"
-                sx={{ color: (theme: Theme) => theme.palette.error.main }}
-              >
+              <Typography component="span" variant="body2" sx={{ color: (theme: Theme) => theme.palette.error.main }}>
                 {t('Missed call')}
               </Typography>
-              <Typography
-                component="span"
-                variant="body2"
-                color="text.secondary"
-              >
+              <Typography component="span" variant="body2" color="text.secondary">
                 — I'll be in your neighborhood…
               </Typography>
             </Box>
@@ -186,26 +169,17 @@ function HeaderNotifications() {
                 variant="dot"
                 anchorOrigin={{
                   vertical: 'bottom',
-                  horizontal: 'right'
-                }}
-              >
-                <Avatar
-                  alt="Randy Shepard"
-                  src="/static/images/avatars/3.jpg"
-                />
+                  horizontal: 'right',
+                }}>
+                <Avatar alt="Randy Shepard" src="/static/images/avatars/3.jpg" />
               </AnimatedBadge>
             </ListItemAvatar>
             <Box flex="1">
-              <Box
-                display={{ xs: 'block', sm: 'flex' }}
-                justifyContent="space-between"
-              >
-                <Typography sx={{ fontWeight: 'bold' }}>
-                  Randy Shepard
-                </Typography>
+              <Box display={{ xs: 'block', sm: 'flex' }} justifyContent="space-between">
+                <Typography sx={{ fontWeight: 'bold' }}>Randy Shepard</Typography>
                 <Typography variant="caption" sx={{ textTransform: 'none' }}>
                   {formatDistance(subHours(new Date(), 3), new Date(), {
-                    addSuffix: true
+                    addSuffix: true,
                   })}
                 </Typography>
               </Box>
@@ -219,30 +193,20 @@ function HeaderNotifications() {
             </Box>
           </ListItem>
           <Divider variant="inset" sx={{ my: 1 }} component="li" />
-          <ListItem
-            sx={{ display: { xs: 'block', sm: 'flex' } }}
-            alignItems="flex-start"
-          >
+          <ListItem sx={{ display: { xs: 'block', sm: 'flex' } }} alignItems="flex-start">
             <ListItemAvatar sx={{ mb: { xs: 1, sm: 0 } }}>
               <Avatar alt="Sarah James" src="/static/images/avatars/2.jpg" />
             </ListItemAvatar>
             <Box flex="1">
-              <Box
-                display={{ xs: 'block', sm: 'flex' }}
-                justifyContent="space-between"
-              >
+              <Box display={{ xs: 'block', sm: 'flex' }} justifyContent="space-between">
                 <Typography sx={{ fontWeight: 'bold' }}>Sarah James</Typography>
                 <Typography variant="caption" sx={{ textTransform: 'none' }}>
                   {formatDistance(subDays(new Date(), 1), new Date(), {
-                    addSuffix: true
+                    addSuffix: true,
                   })}
                 </Typography>
               </Box>
-              <Typography
-                component="span"
-                variant="body2"
-                color="text.secondary"
-              >
+              <Typography component="span" variant="body2" color="text.secondary">
                 {t('Added some files to')}{' '}
                 <Link href="#" variant="body2">
                   Marketing tasks
@@ -257,9 +221,8 @@ function HeaderNotifications() {
                   maxWidth: 400,
                   flexWrap: 'wrap',
                   display: 'flex',
-                  background: (theme: Theme) => theme.colors.alpha.black[5]
-                }}
-              >
+                  background: (theme: Theme) => theme.colors.alpha.black[5],
+                }}>
                 <Box display={{ xs: 'block', md: 'flex' }} sx={{ p: 1 }}>
                   <DescriptionTwoToneIcon sx={{ mr: 0.5 }} />
                   <Box>
@@ -290,31 +253,24 @@ function HeaderNotifications() {
             <ListItemAvatar sx={{ mb: { xs: 1, sm: 0 } }}>
               <Avatar
                 sx={{
-                  background: (theme: Theme) => theme.palette.success.main
-                }}
-              >
+                  background: (theme: Theme) => theme.palette.success.main,
+                }}>
                 <CommentTwoToneIcon />
               </Avatar>
             </ListItemAvatar>
             <Box flex="1">
               <Box display="flex" justifyContent="space-between">
-                <Typography sx={{ fontWeight: 'bold' }}>
-                  Messaging Platform
-                </Typography>
+                <Typography sx={{ fontWeight: 'bold' }}>Messaging Platform</Typography>
                 <Typography variant="caption" sx={{ textTransform: 'none' }}>
                   {formatDistance(subDays(new Date(), 3), new Date(), {
-                    addSuffix: true
+                    addSuffix: true,
                   })}
                 </Typography>
               </Box>
               <Typography component="span" variant="body2" fontWeight="bold">
                 54
               </Typography>
-              <Typography
-                component="span"
-                variant="body2"
-                color="text.secondary"
-              >
+              <Typography component="span" variant="body2" color="text.secondary">
                 {' '}
                 {t('new messages in your inbox')}
               </Typography>
@@ -329,7 +285,7 @@ function HeaderNotifications() {
         </Box>
       </Popover>
     </>
-  );
+  )
 }
 
-export default HeaderNotifications;
+export default HeaderNotifications

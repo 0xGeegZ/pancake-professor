@@ -1,10 +1,10 @@
-import Link from 'src/client/components/Link';
-import { Box, Grid, Typography, Button } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
+import Link from 'src/client/components/Link'
+import { Box, Grid, Typography, Button } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
 
 function PageHeader() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
@@ -14,9 +14,7 @@ function PageHeader() {
             <Typography variant="h3" component="h3" gutterBottom>
               {t('Storefront')}
             </Typography>
-            <Typography variant="subtitle2">
-              {t('This is a list of all commerce products')}
-            </Typography>
+            <Typography variant="subtitle2">{t('This is a list of all commerce products')}</Typography>
           </Box>
         </Box>
       </Grid>
@@ -26,13 +24,12 @@ function PageHeader() {
           component={Link}
           startIcon={<EditTwoToneIcon />}
           href="/management/commerce/products"
-          variant="contained"
-        >
+          variant="contained">
           {t('Manage products')}
         </Button>
       </Grid>
     </Grid>
-  );
+  )
 }
 
-export default PageHeader;
+export default PageHeader

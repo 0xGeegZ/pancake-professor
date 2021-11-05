@@ -1,35 +1,34 @@
-import { useState, ChangeEvent } from 'react';
+import AlarmTwoToneIcon from '@mui/icons-material/AlarmTwoTone'
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone'
 import {
+  Avatar,
+  AvatarGroup,
   Box,
-  Typography,
+  Button,
+  Divider,
   FormControlLabel,
-  Switch,
-  Tabs,
-  Tab,
-  TextField,
   IconButton,
   InputAdornment,
-  Avatar,
+  lighten,
   List,
-  Button,
-  Tooltip,
-  Divider,
-  AvatarGroup,
-  ListItemButton,
   ListItemAvatar,
+  ListItemButton,
   ListItemText,
-  lighten
-} from '@mui/material';
-
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import { formatDistance, subMinutes, subHours } from 'date-fns';
-import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import Label from 'src/client/components/Label';
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
-import AlarmTwoToneIcon from '@mui/icons-material/AlarmTwoTone';
-import Link from 'src/client/components/Link';
+  Switch,
+  Tab,
+  Tabs,
+  TextField,
+  Tooltip,
+  Typography,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { formatDistance, subHours, subMinutes } from 'date-fns'
+import { ChangeEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Label from 'src/client/components/Label'
+import Link from 'src/client/components/Link'
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -40,7 +39,7 @@ const AvatarSuccess = styled(Avatar)(
           margin-left: auto;
           margin-right: auto;
     `
-);
+)
 
 const MeetingBox = styled(Box)(
   ({ theme }) => `
@@ -49,13 +48,13 @@ const MeetingBox = styled(Box)(
           border-radius: ${theme.general.borderRadius};
           padding: ${theme.spacing(2)};
     `
-);
+)
 
 const RootWrapper = styled(Box)(
   ({ theme }) => `
         padding: ${theme.spacing(2.5)};
   `
-);
+)
 
 const ListItemWrapper = styled(ListItemButton)(
   ({ theme }) => `
@@ -63,7 +62,7 @@ const ListItemWrapper = styled(ListItemButton)(
             margin: ${theme.spacing(1)} 0;
         }
   `
-);
+)
 
 const TabsContainerWrapper = styled(Box)(
   ({ theme }) => `
@@ -92,45 +91,41 @@ const TabsContainerWrapper = styled(Box)(
             }
         }
   `
-);
+)
 
 function SidebarContent() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
   // const { user } = useAuth();
 
   const [state, setState] = useState({
-    invisible: true
-  });
+    invisible: true,
+  })
 
   const handleChange = (event) => {
     setState({
       ...state,
-      [event.target.name]: event.target.checked
-    });
-  };
+      [event.target.name]: event.target.checked,
+    })
+  }
 
-  const [currentTab, setCurrentTab] = useState<string>('all');
+  const [currentTab, setCurrentTab] = useState<string>('all')
 
   const tabs = [
     { value: 'all', label: t('All') },
     { value: 'unread', label: t('Unread') },
-    { value: 'archived', label: t('Archived') }
-  ];
+    { value: 'archived', label: t('Archived') },
+  ]
 
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
-    setCurrentTab(value);
-  };
+  const handleTabsChange = (_event: ChangeEvent<any>, value: string): void => {
+    setCurrentTab(value)
+  }
 
   return (
     <RootWrapper>
       <Box display="flex" alignItems="flex-start">
         <Avatar alt="Margaret Gale" src="/static/images/avatars/1.jpg" />
         <Box sx={{ ml: 1.5, flex: 1 }}>
-          <Box
-            display="flex"
-            alignItems="flex-start"
-            justifyContent="space-between"
-          >
+          <Box display="flex" alignItems="flex-start" justifyContent="space-between">
             <Box>
               <Typography variant="h5" noWrap>
                 Margaret Gale
@@ -145,14 +140,7 @@ function SidebarContent() {
           </Box>
 
           <FormControlLabel
-            control={
-              <Switch
-                checked={state.invisible}
-                onChange={handleChange}
-                name="invisible"
-                color="primary"
-              />
-            }
+            control={<Switch checked={state.invisible} onChange={handleChange} name="invisible" color="primary" />}
             label={t('Invisible')}
           />
         </Box>
@@ -167,7 +155,7 @@ function SidebarContent() {
             <InputAdornment position="start">
               <SearchTwoToneIcon />
             </InputAdornment>
-          )
+          ),
         }}
         placeholder={t('Search...')}
       />
@@ -183,8 +171,7 @@ function SidebarContent() {
           variant="scrollable"
           scrollButtons="auto"
           textColor="primary"
-          indicatorColor="primary"
-        >
+          indicatorColor="primary">
           {tabs.map((tab) => (
             <Tab key={tab.value} label={tab.label} value={tab.value} />
           ))}
@@ -203,11 +190,11 @@ function SidebarContent() {
                 primaryTypographyProps={{
                   color: 'textPrimary',
                   variant: 'h5',
-                  noWrap: true
+                  noWrap: true,
                 }}
                 secondaryTypographyProps={{
                   color: 'textSecondary',
-                  noWrap: true
+                  noWrap: true,
                 }}
                 primary="Zain Baptista"
                 secondary="Hey there, how are you today? Is it ok if I call you?"
@@ -225,11 +212,11 @@ function SidebarContent() {
                 primaryTypographyProps={{
                   color: 'textPrimary',
                   variant: 'h5',
-                  noWrap: true
+                  noWrap: true,
                 }}
                 secondaryTypographyProps={{
                   color: 'textSecondary',
-                  noWrap: true
+                  noWrap: true,
                 }}
                 primary="Kierra Herwitz"
                 secondary="Hi! Did you manage to send me those documents"
@@ -244,11 +231,11 @@ function SidebarContent() {
                 primaryTypographyProps={{
                   color: 'textPrimary',
                   variant: 'h5',
-                  noWrap: true
+                  noWrap: true,
                 }}
                 secondaryTypographyProps={{
                   color: 'textSecondary',
-                  noWrap: true
+                  noWrap: true,
                 }}
                 primary="Craig Vaccaro"
                 secondary="Ola, I still haven't received the program schedule"
@@ -263,11 +250,11 @@ function SidebarContent() {
                 primaryTypographyProps={{
                   color: 'textPrimary',
                   variant: 'h5',
-                  noWrap: true
+                  noWrap: true,
                 }}
                 secondaryTypographyProps={{
                   color: 'textSecondary',
-                  noWrap: true
+                  noWrap: true,
                 }}
                 primary="Adison Press"
                 secondary="I recently did some buying on Amazon and now I'm stuck"
@@ -289,11 +276,11 @@ function SidebarContent() {
                 primaryTypographyProps={{
                   color: 'textPrimary',
                   variant: 'h5',
-                  noWrap: true
+                  noWrap: true,
                 }}
                 secondaryTypographyProps={{
                   color: 'textSecondary',
-                  noWrap: true
+                  noWrap: true,
                 }}
                 primary="Zain Baptista"
                 secondary="Hey there, how are you today? Is it ok if I call you?"
@@ -311,11 +298,11 @@ function SidebarContent() {
                 primaryTypographyProps={{
                   color: 'textPrimary',
                   variant: 'h5',
-                  noWrap: true
+                  noWrap: true,
                 }}
                 secondaryTypographyProps={{
                   color: 'textSecondary',
-                  noWrap: true
+                  noWrap: true,
                 }}
                 primary="Adison Press"
                 secondary="I recently did some buying on Amazon and now I'm stuck"
@@ -353,23 +340,19 @@ function SidebarContent() {
         <Box py={3} display="flex" alignItems="flex-start">
           <AlarmTwoToneIcon />
           <Box pl={1}>
-            <Typography
-              variant="subtitle2"
-              sx={{ lineHeight: 1 }}
-              color="text.primary"
-            >
+            <Typography variant="subtitle2" sx={{ lineHeight: 1 }} color="text.primary">
               10:00 - 11:30
             </Typography>
             <Typography variant="subtitle1">
               {formatDistance(subMinutes(new Date(), 12), new Date(), {
-                addSuffix: true
+                addSuffix: true,
               })}
             </Typography>
           </Box>
         </Box>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <AvatarGroup>
-            <Tooltip arrow title={t('View profile for') + ' Remy Sharp'}>
+            <Tooltip arrow title={`${t('View profile for')} Remy Sharp`}>
               <Avatar
                 sx={{ width: 28, height: 28 }}
                 component={Link}
@@ -378,7 +361,7 @@ function SidebarContent() {
                 src="/static/images/avatars/1.jpg"
               />
             </Tooltip>
-            <Tooltip arrow title={t('View profile for') + ' Travis Howard'}>
+            <Tooltip arrow title={`${t('View profile for')} Travis Howard`}>
               <Avatar
                 sx={{ width: 28, height: 28 }}
                 component={Link}
@@ -387,7 +370,7 @@ function SidebarContent() {
                 src="/static/images/avatars/2.jpg"
               />
             </Tooltip>
-            <Tooltip arrow title={t('View profile for') + ' Craig Vaccaro'}>
+            <Tooltip arrow title={`${t('View profile for')} Craig Vaccaro`}>
               <Avatar
                 sx={{ width: 28, height: 28 }}
                 component={Link}
@@ -410,23 +393,19 @@ function SidebarContent() {
         <Box py={3} display="flex" alignItems="flex-start">
           <AlarmTwoToneIcon />
           <Box pl={1}>
-            <Typography
-              variant="subtitle2"
-              sx={{ lineHeight: 1 }}
-              color="text.primary"
-            >
+            <Typography variant="subtitle2" sx={{ lineHeight: 1 }} color="text.primary">
               14:30 - 16:15
             </Typography>
             <Typography variant="subtitle1">
               {formatDistance(subHours(new Date(), 4), new Date(), {
-                addSuffix: true
+                addSuffix: true,
               })}
             </Typography>
           </Box>
         </Box>
         <Box display="flex" alignItems="center" justifyContent="space-between">
           <AvatarGroup>
-            <Tooltip arrow title={t('View profile for') + ' Travis Howard'}>
+            <Tooltip arrow title={`${t('View profile for')} Travis Howard`}>
               <Avatar
                 sx={{ width: 28, height: 28 }}
                 component={Link}
@@ -435,7 +414,7 @@ function SidebarContent() {
                 src="/static/images/avatars/4.jpg"
               />
             </Tooltip>
-            <Tooltip arrow title={t('View profile for') + ' Craig Vaccaro'}>
+            <Tooltip arrow title={`${t('View profile for')} Craig Vaccaro`}>
               <Avatar
                 sx={{ width: 28, height: 28 }}
                 component={Link}
@@ -452,7 +431,7 @@ function SidebarContent() {
         </Box>
       </MeetingBox>
     </RootWrapper>
-  );
+  )
 }
 
-export default SidebarContent;
+export default SidebarContent

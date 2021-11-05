@@ -14,14 +14,14 @@ import {
   List,
   Tooltip,
   Badge,
-  useTheme
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import Text from 'src/client/components/Text';
-import { formatDistance, subSeconds, subHours, subMinutes } from 'date-fns';
-import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
+  useTheme,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+import Text from 'src/client/components/Text'
+import { formatDistance, subSeconds, subHours, subMinutes } from 'date-fns'
+import StarTwoToneIcon from '@mui/icons-material/StarTwoTone'
 
 const DotLegend = styled('span')(
   ({ theme }) => `
@@ -31,18 +31,18 @@ const DotLegend = styled('span')(
     display: inline-block;
     border: ${theme.colors.alpha.white[100]} solid 2px;
 `
-);
+)
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
     width: ${theme.spacing(6)};
     height: ${theme.spacing(6)};
 `
-);
+)
 
 function TopTrainers() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   return (
     <Card sx={{ height: '100%' }}>
@@ -61,31 +61,20 @@ function TopTrainers() {
             <Badge
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               overlap="rectangular"
               badgeContent={
                 <Tooltip
                   arrow
                   placement="top"
-                  title={
-                    t('Online since') +
-                    ' ' +
-                    formatDistance(subMinutes(new Date(), 12), new Date(), {
-                      addSuffix: true
-                    })
-                  }
-                >
-                  <DotLegend
-                    style={{ background: `${theme.colors.success.main}` }}
-                  />
+                  title={`${t('Online since')} ${formatDistance(subMinutes(new Date(), 12), new Date(), {
+                    addSuffix: true,
+                  })}`}>
+                  <DotLegend style={{ background: `${theme.colors.success.main}` }} />
                 </Tooltip>
-              }
-            >
-              <AvatarWrapper
-                variant="rounded"
-                src="/static/images/avatars/1.jpg"
-              />
+              }>
+              <AvatarWrapper variant="rounded" src="/static/images/avatars/1.jpg" />
             </Badge>
           </ListItemAvatar>
           <ListItemText
@@ -101,9 +90,8 @@ function TopTrainers() {
               alignItems: 'center',
               justifyContent: 'center',
               flexDirection: 'column',
-              minWidth: 100
-            }}
-          >
+              minWidth: 100,
+            }}>
             <Text color="warning">
               <StarTwoToneIcon />
             </Text>
@@ -121,31 +109,20 @@ function TopTrainers() {
             <Badge
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               overlap="rectangular"
               badgeContent={
                 <Tooltip
                   arrow
                   placement="top"
-                  title={
-                    t('Offline since') +
-                    ' ' +
-                    formatDistance(subSeconds(new Date(), 12), new Date(), {
-                      addSuffix: true
-                    })
-                  }
-                >
-                  <DotLegend
-                    style={{ background: `${theme.colors.error.main}` }}
-                  />
+                  title={`${t('Offline since')} ${formatDistance(subSeconds(new Date(), 12), new Date(), {
+                    addSuffix: true,
+                  })}`}>
+                  <DotLegend style={{ background: `${theme.colors.error.main}` }} />
                 </Tooltip>
-              }
-            >
-              <AvatarWrapper
-                variant="rounded"
-                src="/static/images/avatars/3.jpg"
-              />
+              }>
+              <AvatarWrapper variant="rounded" src="/static/images/avatars/3.jpg" />
             </Badge>
           </ListItemAvatar>
           <ListItemText
@@ -161,9 +138,8 @@ function TopTrainers() {
               alignItems: 'center',
               justifyContent: 'center',
               flexDirection: 'column',
-              minWidth: 100
-            }}
-          >
+              minWidth: 100,
+            }}>
             <Text color="warning">
               <StarTwoToneIcon />
             </Text>
@@ -181,31 +157,20 @@ function TopTrainers() {
             <Badge
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               overlap="rectangular"
               badgeContent={
                 <Tooltip
                   arrow
                   placement="top"
-                  title={
-                    t('Idle for') +
-                    ' ' +
-                    formatDistance(subHours(new Date(), 9), new Date(), {
-                      addSuffix: true
-                    })
-                  }
-                >
-                  <DotLegend
-                    style={{ background: `${theme.colors.warning.main}` }}
-                  />
+                  title={`${t('Idle for')} ${formatDistance(subHours(new Date(), 9), new Date(), {
+                    addSuffix: true,
+                  })}`}>
+                  <DotLegend style={{ background: `${theme.colors.warning.main}` }} />
                 </Tooltip>
-              }
-            >
-              <AvatarWrapper
-                variant="rounded"
-                src="/static/images/avatars/2.jpg"
-              />
+              }>
+              <AvatarWrapper variant="rounded" src="/static/images/avatars/2.jpg" />
             </Badge>
           </ListItemAvatar>
           <ListItemText
@@ -221,9 +186,8 @@ function TopTrainers() {
               alignItems: 'center',
               justifyContent: 'center',
               flexDirection: 'column',
-              minWidth: 100
-            }}
-          >
+              minWidth: 100,
+            }}>
             <Text color="warning">
               <StarTwoToneIcon />
             </Text>
@@ -237,14 +201,11 @@ function TopTrainers() {
         </ListItem>
         <Divider component="li" />
       </List>
-      <CardActions
-        disableSpacing
-        sx={{ p: 2, display: 'flex', justifyContent: 'center' }}
-      >
+      <CardActions disableSpacing sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
         <Button size="small">{t('View all trainers')}</Button>
       </CardActions>
     </Card>
-  );
+  )
 }
 
-export default TopTrainers;
+export default TopTrainers

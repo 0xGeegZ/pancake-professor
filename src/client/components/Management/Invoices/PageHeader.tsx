@@ -1,42 +1,41 @@
-import { useState } from 'react';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import wait from 'src/client/utils/wait';
-import numeral from 'numeral';
-
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import DatePicker from '@mui/lab/DatePicker'
 import {
-  Grid,
-  Dialog,
-  DialogTitle,
-  Chip,
-  DialogContent,
-  Box,
-  Zoom,
-  Typography,
-  TextField,
-  CircularProgress,
-  Avatar,
   Autocomplete,
+  Avatar,
+  Box,
   Button,
-  Table,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  TableContainer,
-  Tooltip,
+  Chip,
+  CircularProgress,
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  Grid,
   IconButton,
   lighten,
-  useTheme,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TextField,
+  Tooltip,
+  Typography,
   useMediaQuery,
-  TableFooter
-} from '@mui/material';
-import DatePicker from '@mui/lab/DatePicker';
-import { useSnackbar } from 'notistack';
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
+  useTheme,
+  Zoom,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { Formik } from 'formik'
+import { useSnackbar } from 'notistack'
+import numeral from 'numeral'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import wait from 'src/client/utils/wait'
+import * as Yup from 'yup'
 
 const IconButtonError = styled(IconButton)(
   ({ theme }) => `
@@ -48,23 +47,23 @@ const IconButtonError = styled(IconButton)(
       background: ${lighten(theme.colors.error.lighter, 0.4)};
      }
 `
-);
+)
 
 interface Item {
-  id: number;
-  name: string;
-  quantity: number;
-  price: number;
-  currency: string;
+  id: number
+  name: string
+  quantity: number
+  price: number
+  currency: string
 }
 
 function PageHeader() {
-  const { t }: { t: any } = useTranslation();
-  const [open, setOpen] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const [open, setOpen] = useState(false)
+  const { enqueueSnackbar } = useSnackbar()
+  const theme = useTheme()
 
-  const mobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const mobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   const itemsList: Item[] = [
     {
@@ -72,65 +71,65 @@ function PageHeader() {
       name: 'Design services for March',
       quantity: 1,
       price: 8945,
-      currency: '$'
+      currency: '$',
     },
     {
       id: 2,
       name: 'Website migration services',
       quantity: 3,
       price: 2367,
-      currency: '$'
-    }
-  ];
+      currency: '$',
+    },
+  ]
 
   const members = [
     {
       avatar: '/static/images/avatars/1.jpg',
-      name: 'Maren Lipshutz'
+      name: 'Maren Lipshutz',
     },
     {
       avatar: '/static/images/avatars/2.jpg',
-      name: 'Zain Vetrovs'
+      name: 'Zain Vetrovs',
     },
     {
       avatar: '/static/images/avatars/3.jpg',
-      name: 'Hanna Siphron'
+      name: 'Hanna Siphron',
     },
     {
       avatar: '/static/images/avatars/4.jpg',
-      name: 'Cristofer Aminoff'
+      name: 'Cristofer Aminoff',
     },
     {
       avatar: '/static/images/avatars/5.jpg',
-      name: 'Maria Calzoni'
-    }
-  ];
+      name: 'Maria Calzoni',
+    },
+  ]
 
-  const [value, setValue] = useState<Date | null>(null);
-  const [value1, setValue1] = useState<Date | null>(null);
+  const [value, setValue] = useState<Date | null>(null)
+  const [value1, setValue1] = useState<Date | null>(null)
 
-  const [items] = useState<Item[]>(itemsList);
+  const [items] = useState<Item[]>(itemsList)
 
   const handleCreateInvoiceOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleCreateInvoiceClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const handleCreateInvoiceSuccess = () => {
     enqueueSnackbar(t('A new invoice has been created successfully'), {
       variant: 'success',
       anchorOrigin: {
         vertical: 'top',
-        horizontal: 'right'
+        horizontal: 'right',
       },
-      TransitionComponent: Zoom
-    });
+      TransitionComponent: Zoom,
+    })
 
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <>
@@ -139,72 +138,48 @@ function PageHeader() {
           <Typography variant="h3" component="h3" gutterBottom>
             {t('Invoices')}
           </Typography>
-          <Typography variant="subtitle2">
-            {t('All recent invoices can be found below')}
-          </Typography>
+          <Typography variant="subtitle2">{t('All recent invoices can be found below')}</Typography>
         </Grid>
         <Grid item>
           <Button
             sx={{ mt: { xs: 2, sm: 0 } }}
             onClick={handleCreateInvoiceOpen}
             variant="contained"
-            startIcon={<AddTwoToneIcon fontSize="small" />}
-          >
+            startIcon={<AddTwoToneIcon fontSize="small" />}>
             {t('Add new invoice')}
           </Button>
         </Grid>
       </Grid>
-      <Dialog
-        fullWidth
-        maxWidth="md"
-        open={open}
-        onClose={handleCreateInvoiceClose}
-      >
+      <Dialog fullWidth maxWidth="md" open={open} onClose={handleCreateInvoiceClose}>
         <DialogTitle sx={{ p: 3 }}>
           <Typography variant="h4" gutterBottom>
             {t('Create invoice')}
           </Typography>
-          <Typography variant="subtitle2">
-            {t('Use this modal dialog to create a new invoice')}
-          </Typography>
+          <Typography variant="subtitle2">{t('Use this modal dialog to create a new invoice')}</Typography>
         </DialogTitle>
         <Formik
           initialValues={{
             number: '',
-            submit: null
+            submit: null,
           }}
           validationSchema={Yup.object().shape({
-            number: Yup.string()
-              .max(255)
-              .required(t('The invoice number field is required'))
+            number: Yup.string().max(255).required(t('The invoice number field is required')),
           })}
-          onSubmit={async (
-            _values,
-            { resetForm, setErrors, setStatus, setSubmitting }
-          ) => {
+          onSubmit={async (_values, { resetForm, setErrors, setStatus, setSubmitting }) => {
             try {
-              await wait(1000);
-              resetForm();
-              setStatus({ success: true });
-              setSubmitting(false);
-              handleCreateInvoiceSuccess();
+              await wait(1000)
+              resetForm()
+              setStatus({ success: true })
+              setSubmitting(false)
+              handleCreateInvoiceSuccess()
             } catch (err) {
-              console.error(err);
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
+              console.error(err)
+              setStatus({ success: false })
+              setErrors({ submit: err.message })
+              setSubmitting(false)
             }
-          }}
-        >
-          {({
-            errors,
-            handleBlur,
-            handleChange,
-            handleSubmit,
-            isSubmitting,
-            touched,
-            values
-          }) => (
+          }}>
+          {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
             <form onSubmit={handleSubmit}>
               <DialogContent dividers sx={{ p: 3 }}>
                 <Grid container spacing={3}>
@@ -246,18 +221,15 @@ function PageHeader() {
                           variant="outlined"
                           fullWidth
                           InputLabelProps={{
-                            shrink: true
+                            shrink: true,
                           }}
                           placeholder={t('Select invoice recipient...')}
                         />
                       )}
+                      // eslint-disable-next-line no-shadow
                       renderTags={(members, getTagProps) =>
                         members.map((ev, index: number) => (
-                          <Chip
-                            label={ev.name}
-                            {...getTagProps({ index })}
-                            avatar={<Avatar src={ev.avatar} />}
-                          />
+                          <Chip label={ev.name} {...getTagProps({ index })} avatar={<Avatar src={ev.avatar} />} />
                         ))
                       }
                     />
@@ -269,15 +241,9 @@ function PageHeader() {
                     <DatePicker
                       value={value}
                       onChange={(newValue) => {
-                        setValue(newValue);
+                        setValue(newValue)
                       }}
-                      renderInput={(params) => (
-                        <TextField
-                          fullWidth
-                          placeholder={t('Select date...')}
-                          {...params}
-                        />
-                      )}
+                      renderInput={(params) => <TextField fullWidth placeholder={t('Select date...')} {...params} />}
                     />
                   </Grid>
                   <Grid item xs={12} md={6}>
@@ -287,15 +253,9 @@ function PageHeader() {
                     <DatePicker
                       value={value1}
                       onChange={(newValue1) => {
-                        setValue1(newValue1);
+                        setValue1(newValue1)
                       }}
-                      renderInput={(params) => (
-                        <TextField
-                          fullWidth
-                          placeholder={t('Select date...')}
-                          {...params}
-                        />
-                      )}
+                      renderInput={(params) => <TextField fullWidth placeholder={t('Select date...')} {...params} />}
                     />
                   </Grid>
                 </Grid>
@@ -318,12 +278,8 @@ function PageHeader() {
                           <Typography noWrap>{item.name}</Typography>
                         </TableCell>
                         <TableCell>{item.quantity}</TableCell>
-                        <TableCell>
-                          {numeral(item.price).format(`${item.currency}0,0.00`)}
-                        </TableCell>
-                        <TableCell>
-                          {numeral(item.price).format(`${item.currency}0,0.00`)}
-                        </TableCell>
+                        <TableCell>{numeral(item.price).format(`${item.currency}0,0.00`)}</TableCell>
+                        <TableCell>{numeral(item.price).format(`${item.currency}0,0.00`)}</TableCell>
                         <TableCell>
                           <Tooltip arrow title={t('Delete')}>
                             <IconButtonError>
@@ -337,20 +293,12 @@ function PageHeader() {
                   <TableFooter>
                     <TableRow>
                       <TableCell colSpan={0}>
-                        <Button
-                          startIcon={<AddTwoToneIcon />}
-                          variant="outlined"
-                        >
+                        <Button startIcon={<AddTwoToneIcon />} variant="outlined">
                           {t('Add item')}
                         </Button>
                       </TableCell>
                       <TableCell colSpan={4} align="right">
-                        <Typography
-                          gutterBottom
-                          variant="caption"
-                          color="text.secondary"
-                          fontWeight="bold"
-                        >
+                        <Typography gutterBottom variant="caption" color="text.secondary" fontWeight="bold">
                           {t('Total')}:
                         </Typography>
                         <Typography variant="h3" fontWeight="bold">
@@ -365,9 +313,7 @@ function PageHeader() {
                 <TextField
                   label={t('Additional informations')}
                   multiline
-                  placeholder={t(
-                    'Write here any additional informations you might have...'
-                  )}
+                  placeholder={t('Write here any additional informations you might have...')}
                   fullWidth
                   minRows={3}
                   maxRows={8}
@@ -378,9 +324,8 @@ function PageHeader() {
                   display: { xs: 'block', sm: 'flex' },
                   alignItems: 'center',
                   justifyContent: 'space-between',
-                  p: 3
-                }}
-              >
+                  p: 3,
+                }}>
                 <Box>
                   <Button fullWidth={mobile} variant="outlined">
                     {t('Preview invoice')}
@@ -392,20 +337,16 @@ function PageHeader() {
                     sx={{ mr: { xs: 0, sm: 2 }, my: { xs: 2, sm: 0 } }}
                     color="secondary"
                     variant="outlined"
-                    onClick={handleCreateInvoiceClose}
-                  >
+                    onClick={handleCreateInvoiceClose}>
                     {t('Save as draft')}
                   </Button>
                   <Button
                     fullWidth={mobile}
                     type="submit"
-                    startIcon={
-                      isSubmitting ? <CircularProgress size="1rem" /> : null
-                    }
+                    startIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
                     disabled={Boolean(errors.submit) || isSubmitting}
                     variant="contained"
-                    size="large"
-                  >
+                    size="large">
                     {t('Create invoice')}
                   </Button>
                 </Box>
@@ -415,7 +356,7 @@ function PageHeader() {
         </Formik>
       </Dialog>
     </>
-  );
+  )
 }
 
-export default PageHeader;
+export default PageHeader

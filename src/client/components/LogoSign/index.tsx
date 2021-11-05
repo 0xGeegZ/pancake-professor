@@ -1,7 +1,7 @@
-import { Box, Tooltip } from '@mui/material';
-import Link from 'src/client/components/Link';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+import { Box, Tooltip } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
 
 const LogoWrapper = styled(Link)(
   ({ theme }) => `
@@ -12,14 +12,14 @@ const LogoWrapper = styled(Link)(
         margin: 0 auto;
         font-weight: ${theme.typography.fontWeightBold};
 `
-);
+)
 
 const LogoSignWrapper = styled(Box)(
   () => `
         width: 52px;
         height: 38px;
 `
-);
+)
 
 const LogoSign = styled(Box)(
   ({ theme }) => `
@@ -56,7 +56,7 @@ const LogoSign = styled(Box)(
             background: ${theme.palette.secondary.main};
         }
 `
-);
+)
 
 const LogoSignInner = styled(Box)(
   ({ theme }) => `
@@ -69,13 +69,13 @@ const LogoSignInner = styled(Box)(
         border-radius: ${theme.general.borderRadiusSm};
         background: ${theme.header.background};
 `
-);
+)
 
 function Logo() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
-    <Tooltip title={t('Tokyo NextJS Admin Dashboard')} arrow>
+    <Tooltip title={t('Pancake Professor')} arrow>
       <LogoWrapper href="/">
         <LogoSignWrapper>
           <LogoSign>
@@ -84,7 +84,7 @@ function Logo() {
         </LogoSignWrapper>
       </LogoWrapper>
     </Tooltip>
-  );
+  )
 }
 
-export default Logo;
+export default Logo

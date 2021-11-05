@@ -2,7 +2,7 @@
 
 ## Hosting
 
-You can host your Bedrock-powered app at **any hosting provider that supports Next.js API routes**. I've personally used [Vercel](https://vercel.com), but [Netlify](https://netlify.com) and others should also work.
+You can host your Pancake Professor-powered app at **any hosting provider that supports Next.js API routes**. I've personally used [Vercel](https://vercel.com), but [Netlify](https://netlify.com) and others should also work.
 
 The same thing goes for your PostgreSQL instance: you can host that at any database hosting provider you prefer. A manual AWS EC2 setup, [Heroku](https://heroku.com), [Compose](https://compose.com), it doesn't matter as long as **you have a database connection URL** at the end everything should work.
 

@@ -1,20 +1,21 @@
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import { Box, Button, Card, ClickAwayListener, IconButton, TextField, Tooltip, Typography, Zoom } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useSnackbar } from 'notistack';
-import PropTypes from 'prop-types';
-import { ChangeEvent, FC, useState } from 'react';
-import { Draggable, Droppable } from 'react-beautiful-dnd';
-import { useTranslation } from 'react-i18next';
-import Label from 'src/client/components/Label';
-import { updateList } from 'src/client/slices/projects_board';
-import { useDispatch, useSelector } from 'src/client/store';
+/* eslint-disable import/order */
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
+import { Box, Button, Card, ClickAwayListener, IconButton, TextField, Tooltip, Typography, Zoom } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useSnackbar } from 'notistack'
+import PropTypes from 'prop-types'
+import { ChangeEvent, FC, useState } from 'react'
+import { Draggable, Droppable } from 'react-beautiful-dnd'
+import { useTranslation } from 'react-i18next'
+import Label from 'src/client/components/Label'
+import { updateList } from 'src/client/slices/projects_board'
+import { RootState, useDispatch, useSelector } from 'src/client/store/redux'
 
-import Task from './Task';
+import Task from './Task'
 
-import type { RootState } from 'src/client/store';
-import type { List as ListType } from 'src/client/models/projects_board';
+import type { List as ListType } from 'src/client/models/projects_board'
+
 const ListColumnWrapper = styled(Card)(
   ({ theme }) => `
       width: 340px;
@@ -23,7 +24,7 @@ const ListColumnWrapper = styled(Card)(
       border-top-width: 8px;
       border-top-style: solid;
   `
-);
+)
 
 const IconButtonEdit = styled(IconButton)(
   ({ theme }) => `
@@ -35,85 +36,79 @@ const IconButtonEdit = styled(IconButton)(
         color: ${theme.colors.primary.main};
       }
   `
-);
+)
 
 const ButtonAdd = styled(Button)(
   ({ theme }) => `
       background-color: ${theme.colors.alpha.black[10]};
       padding: ${theme.spacing(1)};
   `
-);
+)
 
 interface ResultsProps {
-  listId: string;
+  listId: string
 }
 
 const listSelector = (state: RootState, listId: string): ListType => {
-  const { lists } = state.projectsBoard;
+  const { lists } = state.projectsBoard
 
-  return lists.byId[listId];
-};
+  return lists.byId[listId]
+}
 
 const Results: FC<ResultsProps> = ({ listId }) => {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
-  const list = useSelector((state) => listSelector(state, listId));
-  const dispatch = useDispatch();
-  const { enqueueSnackbar } = useSnackbar();
-  const [name, setName] = useState<string>(list.name);
-  const [isRenaming, setRename] = useState<boolean>(false);
+  const list = useSelector((state) => listSelector(state, listId))
+  const dispatch = useDispatch()
+  const { enqueueSnackbar } = useSnackbar()
+  const [name, setName] = useState<string>(list.name)
+  const [isRenaming, setRename] = useState<boolean>(false)
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    event.persist();
-    setName(event.target.value);
-  };
+    event.persist()
+    setName(event.target.value)
+  }
 
   const handleRenameInit = (): void => {
-    setRename(true);
-  };
+    setRename(true)
+  }
 
   const handleRename = async (): Promise<void> => {
     try {
       if (!name) {
-        setName(list.name);
-        setRename(false);
-        return;
+        setName(list.name)
+        setRename(false)
+        return
       }
 
-      const update = { name };
+      const update = { name }
 
-      setRename(false);
-      await dispatch(updateList(list.id, update));
+      setRename(false)
+      await dispatch(updateList(list.id, update))
       enqueueSnackbar(t('The project board has been successfully updated'), {
         variant: 'success',
         anchorOrigin: {
           vertical: 'bottom',
-          horizontal: 'center'
+          horizontal: 'center',
         },
-        TransitionComponent: Zoom
-      });
+        TransitionComponent: Zoom,
+      })
     } catch (err) {
-      console.error(err);
+      console.error(err)
       enqueueSnackbar(t('There was an error, try again later'), {
         variant: 'error',
         anchorOrigin: {
           vertical: 'bottom',
-          horizontal: 'center'
+          horizontal: 'center',
         },
-        TransitionComponent: Zoom
-      });
+        TransitionComponent: Zoom,
+      })
     }
-  };
+  }
 
   return (
     <ListColumnWrapper sx={{ borderColor: list.color }}>
-      <Box
-        px={2}
-        pt={2}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
-      >
+      <Box px={2} pt={2} display="flex" justifyContent="space-between" alignItems="center">
         {isRenaming ? (
           <ClickAwayListener onClickAway={handleRename}>
             <TextField
@@ -150,9 +145,7 @@ const Results: FC<ResultsProps> = ({ listId }) => {
       </Box>
       {list.taskIds.length === 0 && (
         <Box p={4} textAlign="center">
-          <Typography variant="subtitle2">
-            {t('Drag tasks here to assign them to this board')}
-          </Typography>
+          <Typography variant="subtitle2">{t('Drag tasks here to assign them to this board')}</Typography>
         </Box>
       )}
       <Droppable droppableId={list.id}>
@@ -160,6 +153,7 @@ const Results: FC<ResultsProps> = ({ listId }) => {
           <Box sx={{ minHeight: 260 }} ref={provided.innerRef}>
             {list.taskIds.map((taskId, index) => (
               <Draggable draggableId={taskId} index={index} key={taskId}>
+                {/* eslint-disable-next-line no-shadow */}
                 {(provided, snapshot) => (
                   <Task
                     taskId={taskId}
@@ -188,11 +182,11 @@ const Results: FC<ResultsProps> = ({ listId }) => {
         </Tooltip>
       </Box>
     </ListColumnWrapper>
-  );
-};
+  )
+}
 
 Results.propTypes = {
-  listId: PropTypes.string.isRequired
-};
+  listId: PropTypes.string.isRequired,
+}
 
-export default Results;
+export default Results

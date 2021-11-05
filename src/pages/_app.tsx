@@ -1,91 +1,107 @@
-import 'nprogress/nprogress.css';
-import 'src/client/mocks';
-import 'src/client/utils/chart';
+import 'nprogress/nprogress.css'
+import 'src/client/mocks'
+import 'src/client/utils/chart'
 
-import { CacheProvider, EmotionCache } from '@emotion/react';
-import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
-import CssBaseline from '@mui/material/CssBaseline';
-import { appWithTranslation } from 'next-i18next';
-import { PageTransition } from 'next-page-transitions';
-import Head from 'next/head';
-import Router from 'next/router';
-import { SnackbarProvider } from 'notistack';
-import nProgress from 'nprogress';
-import { Provider as ReduxProvider } from 'react-redux';
-import { SidebarProvider } from 'src/client/contexts/SidebarContext';
-import createEmotionCache from 'src/client/createEmotionCache';
-import useScrollTop from 'src/client/hooks/useScrollTop';
-import store from 'src/client/store';
-import ThemeProvider from 'src/client/theme/ThemeProvider';
-import { Provider as GraphQLProvider } from 'urql';
+import { CacheProvider, EmotionCache } from '@emotion/react'
+import CloseIcon from '@mui/icons-material/Close'
+import AdapterDateFns from '@mui/lab/AdapterDateFns'
+import LocalizationProvider from '@mui/lab/LocalizationProvider'
+import { IconButton } from '@mui/material'
+import CssBaseline from '@mui/material/CssBaseline'
+import { appWithTranslation } from 'next-i18next'
+import { PageTransition } from 'next-page-transitions'
+import Head from 'next/head'
+import { Router, useRouter } from 'next/router'
+import { SnackbarProvider } from 'notistack'
+import nProgress from 'nprogress'
+import { FC, useRef } from 'react'
+import { SidebarProvider } from 'src/client/contexts/SidebarContext'
+import createEmotionCache from 'src/client/createEmotionCache'
+import { client } from 'src/client/graphql/client'
+import useScrollTop from 'src/client/hooks/useScrollTop'
+import { GlobalStateProvider } from 'src/client/store/swr'
+import ThemeProvider from 'src/client/theme/ThemeProvider'
+import { Provider as GraphQLProvider } from 'urql'
 
-import { client } from '../client/graphql/client';
+// import { Provider as ReduxProvider } from 'react-redux'
+// import store from 'src/client/store/redux'
 
-import type { ReactElement, ReactNode } from 'react';
+import type { ReactElement, ReactNode } from 'react'
+import type { NextPage } from 'next'
+import type { AppProps } from 'next/app'
 
-import type { NextPage } from 'next';
-import type { AppProps } from 'next/app';
-const clientSideEmotionCache = createEmotionCache();
+const clientSideEmotionCache = createEmotionCache()
 
 type NextPageWithLayout = NextPage & {
+  // eslint-disable-next-line no-unused-vars
   getLayout?: (page: ReactElement) => ReactNode
 }
 
 interface MyAppProps extends AppProps {
-  emotionCache?: EmotionCache;
+  // eslint-disable-next-line react/require-default-props
+  emotionCache?: EmotionCache
   Component: NextPageWithLayout
 }
 
-function MyApp(props: MyAppProps) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
+const MyApp: FC<MyAppProps> = (props: MyAppProps) => {
+  const notistackRef = useRef<any>(null)
+  const router = useRouter()
+
+  const { Component, emotionCache = clientSideEmotionCache, pageProps } = props
   const getLayout = Component.getLayout ?? ((page) => page)
-  useScrollTop();
+  useScrollTop()
   const TIMEOUT = 400
 
-  Router.events.on("routeChangeStart", nProgress.start);
-  Router.events.on("routeChangeError", nProgress.done);
-  Router.events.on("routeChangeComplete", nProgress.done);
+  Router.events.on('routeChangeStart', nProgress.start)
+  Router.events.on('routeChangeError', nProgress.done)
+  Router.events.on('routeChangeComplete', nProgress.done)
 
   return (
     <CacheProvider value={emotionCache}>
       <Head>
-        <title>Tokyo NextJS Admin Dashboard</title>
-        <meta
-          name="viewport"
-          content="width=device-width, initial-scale=1, shrink-to-fit=no"
-        />
+        <title>Pancake Professor</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       </Head>
       <GraphQLProvider value={client}>
-      <ReduxProvider store={store}>
-        <SidebarProvider>
-          <ThemeProvider>
-            <LocalizationProvider dateAdapter={AdapterDateFns}>
-              <SnackbarProvider
-                maxSnack={6}
-                anchorOrigin={{
-                  vertical: 'bottom',
-                  horizontal: 'right'
-                }}
-              >
-                <CssBaseline />
-                <PageTransition
-                  timeout={TIMEOUT}
-                  classNames="page-transition"
-                  loadingTimeout={{
-                    enter: TIMEOUT,
-                    exit: 500,
+        {/* <ReduxProvider store={store}> */}
+        <GlobalStateProvider>
+          <SidebarProvider>
+            <ThemeProvider>
+              <LocalizationProvider dateAdapter={AdapterDateFns}>
+                <SnackbarProvider
+                  maxSnack={6}
+                  anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
                   }}
-                  loadingClassNames="loading-indicator"
-                >
-                  {getLayout(<Component {...pageProps} />)}
-                </PageTransition>
-
-              </SnackbarProvider>
-            </LocalizationProvider>
-          </ThemeProvider>
-        </SidebarProvider>
-      </ReduxProvider>
+                  ref={notistackRef}
+                  action={(key) => (
+                    <IconButton
+                      size="small"
+                      onClick={() => notistackRef.current.closeSnackbar(key)}
+                      sx={{
+                        color: '#fff',
+                      }}>
+                      <CloseIcon fontSize="small" />
+                    </IconButton>
+                  )}>
+                  <CssBaseline />
+                  <PageTransition
+                    timeout={TIMEOUT}
+                    classNames="page-transition"
+                    loadingTimeout={{
+                      enter: TIMEOUT,
+                      exit: 500,
+                    }}
+                    loadingClassNames="loading-indicator">
+                    {getLayout(<Component {...pageProps} key={router.route} />)}
+                  </PageTransition>
+                </SnackbarProvider>
+              </LocalizationProvider>
+            </ThemeProvider>
+          </SidebarProvider>
+        </GlobalStateProvider>
+        {/* </ReduxProvider> */}
       </GraphQLProvider>
       <style jsx global>{`
         .page-transition-enter {
@@ -115,7 +131,11 @@ function MyApp(props: MyAppProps) {
         }
       `}</style>
     </CacheProvider>
-  );
+  )
 }
 
-export default appWithTranslation(MyApp);
+// MyApp.defaultProps = {
+//   emotionCache: {},
+// }
+
+export default appWithTranslation(MyApp)

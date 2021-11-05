@@ -1,47 +1,29 @@
-import { FC } from 'react';
-import {
-  Breadcrumbs,
-  Box,
-  Grid,
-  Link,
-  Typography,
-  Tooltip,
-  Button,
-  Container,
-  IconButton
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { useRouter } from 'next/router';
-import type { Invoice } from 'src/client/models/invoice';
-import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
-import PropTypes from 'prop-types';
+import { FC } from 'react'
+import { Breadcrumbs, Box, Grid, Link, Typography, Tooltip, Button, Container, IconButton } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { useRouter } from 'next/router'
+import type { Invoice } from 'src/client/models/invoice'
+import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone'
+import PropTypes from 'prop-types'
 
 interface PageHeaderProps {
-  invoice: Invoice;
+  invoice: Invoice
 }
 
 const PageHeader: FC<PageHeaderProps> = ({ invoice }) => {
-  const { t }: { t: any } = useTranslation();
-  const navigate = useRouter();
+  const { t }: { t: any } = useTranslation()
+  const navigate = useRouter()
 
   const handleBack = (): void => {
-    navigate.push('/management/invoices');
-  };
+    navigate.push('/management/invoices')
+  }
   return (
     <Container maxWidth="lg">
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="space-between"
-          >
+          <Box display="flex" alignItems="center" justifyContent="space-between">
             <Tooltip arrow placement="top" title={t('Go back')}>
-              <IconButton
-                onClick={handleBack}
-                color="primary"
-                sx={{ p: 2, mr: 2 }}
-              >
+              <IconButton onClick={handleBack} color="primary" sx={{ p: 2, mr: 2 }}>
                 <ArrowBackTwoToneIcon />
               </IconButton>
             </Tooltip>
@@ -59,10 +41,7 @@ const PageHeader: FC<PageHeaderProps> = ({ invoice }) => {
                 <Link color="inherit" href="#">
                   {t('Commerce')}
                 </Link>
-                <Link
-                  color="inherit"
-                  href="/management/invoices"
-                >
+                <Link color="inherit" href="/management/invoices">
                   {t('Invoices')}
                 </Link>
                 <Typography color="text.primary">
@@ -73,22 +52,18 @@ const PageHeader: FC<PageHeaderProps> = ({ invoice }) => {
           </Box>
         </Grid>
         <Grid item>
-          <Button
-            sx={{ mt: { xs: 2, sm: 0 } }}
-            onClick={handleBack}
-            variant="contained"
-          >
+          <Button sx={{ mt: { xs: 2, sm: 0 } }} onClick={handleBack} variant="contained">
             {t('View all invoices')}
           </Button>
         </Grid>
       </Grid>
     </Container>
-  );
-};
+  )
+}
 
 PageHeader.propTypes = {
   // @ts-ignore
-  invoice: PropTypes.object.isRequired
-};
+  invoice: PropTypes.object.isRequired,
+}
 
-export default PageHeader;
+export default PageHeader

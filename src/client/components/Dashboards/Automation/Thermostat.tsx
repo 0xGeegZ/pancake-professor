@@ -1,34 +1,32 @@
-import { useState } from 'react';
-
+import { useSwitch, UseSwitchProps } from '@mui/core/SwitchUnstyled'
+import AcUnitTwoToneIcon from '@mui/icons-material/AcUnitTwoTone'
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
+import AirTwoToneIcon from '@mui/icons-material/AirTwoTone'
+import AvTimerTwoToneIcon from '@mui/icons-material/AvTimerTwoTone'
+import BlenderTwoToneIcon from '@mui/icons-material/BlenderTwoTone'
+import ErrorOutlineTwoToneIcon from '@mui/icons-material/ErrorOutlineTwoTone'
+import LoopTwoToneIcon from '@mui/icons-material/LoopTwoTone'
+import RemoveTwoToneIcon from '@mui/icons-material/RemoveTwoTone'
+import TvTwoToneIcon from '@mui/icons-material/TvTwoTone'
 import {
+  Avatar,
   Box,
-  Typography,
   Card,
-  IconButton,
-  Divider,
-  Stack,
-  useTheme,
   CardActionArea,
+  Divider,
   Grid,
+  IconButton,
+  Stack,
   Tooltip,
-  Avatar
-} from '@mui/material';
-import clsx from 'clsx';
-
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import AcUnitTwoToneIcon from '@mui/icons-material/AcUnitTwoTone';
-import { useSwitch, UseSwitchProps } from '@mui/core/SwitchUnstyled';
-import AirTwoToneIcon from '@mui/icons-material/AirTwoTone';
-import AvTimerTwoToneIcon from '@mui/icons-material/AvTimerTwoTone';
-import LoopTwoToneIcon from '@mui/icons-material/LoopTwoTone';
-import Gauge from 'src/client/components/Gauge';
-import { buildStyles } from 'react-circular-progressbar';
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import RemoveTwoToneIcon from '@mui/icons-material/RemoveTwoTone';
-import ErrorOutlineTwoToneIcon from '@mui/icons-material/ErrorOutlineTwoTone';
-import TvTwoToneIcon from '@mui/icons-material/TvTwoTone';
-import BlenderTwoToneIcon from '@mui/icons-material/BlenderTwoTone';
+  Typography,
+  useTheme,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import clsx from 'clsx'
+import { useState } from 'react'
+import { buildStyles } from 'react-circular-progressbar'
+import { useTranslation } from 'react-i18next'
+import Gauge from 'src/client/components/Gauge'
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -37,7 +35,7 @@ const AvatarWrapper = styled(Avatar)(
     padding: ${theme.spacing(2, 5)};
     border-radius: ${theme.general.borderRadiusXl};
 `
-);
+)
 
 const CardActionAreaWrapper = styled(CardActionArea)(
   ({ theme }) => `
@@ -57,7 +55,7 @@ const CardActionAreaWrapper = styled(CardActionArea)(
         }
       }
 `
-);
+)
 
 const AvatarSecondary = styled(Avatar)(
   ({ theme }) => `
@@ -66,7 +64,7 @@ const AvatarSecondary = styled(Avatar)(
     width: ${theme.spacing(6)};
     height: ${theme.spacing(6)};
 `
-);
+)
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `
@@ -75,13 +73,13 @@ const AvatarPrimary = styled(Avatar)(
     width: ${theme.spacing(6)};
     height: ${theme.spacing(6)};
 `
-);
+)
 
 const GaugeWrapper = styled(Box)(
   () => `
     position: relative;
 `
-);
+)
 
 const BoxButtons = styled(Box)(
   () => `
@@ -92,7 +90,7 @@ const BoxButtons = styled(Box)(
     display: flex;
     justify-content: center;
 `
-);
+)
 
 const BoxDegrees = styled(Box)(
   () => `
@@ -107,7 +105,7 @@ const BoxDegrees = styled(Box)(
       margin: 2px 0 0 -3px;
     }
 `
-);
+)
 
 const IconButtonIncrement = styled(IconButton)(
   ({ theme }) => `
@@ -130,7 +128,7 @@ const IconButtonIncrement = styled(IconButton)(
         box-shadow: ${theme.colors.shadows.primary};
       }
 `
-);
+)
 
 const SwitchRoot = styled('span')(`
   display: inline-block;
@@ -138,7 +136,7 @@ const SwitchRoot = styled('span')(`
   width: 62px;
   height: 34px;
   padding: 7px;
-`);
+`)
 
 const SwitchInput = styled('input')(`
   position: absolute;
@@ -150,7 +148,7 @@ const SwitchInput = styled('input')(`
   z-index: 1;
   margin: 0;
   cursor: pointer;
-`);
+`)
 
 const SwitchThumb = styled('span')(
   ({ theme }) => `
@@ -170,8 +168,8 @@ const SwitchThumb = styled('span')(
     width: 100%;
     height: 100%;
     background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-    '#fff',
-  )}" d="M9.305 1.667V3.75h1.389V1.667h-1.39zm-4.707 1.95l-.982.982L5.09 6.072l.982-.982-1.473-1.473zm10.802 0L13.927 5.09l.982.982 1.473-1.473-.982-.982zM10 5.139a4.872 4.872 0 00-4.862 4.86A4.872 4.872 0 0010 14.862 4.872 4.872 0 0014.86 10 4.872 4.872 0 0010 5.139zm0 1.389A3.462 3.462 0 0113.471 10a3.462 3.462 0 01-3.473 3.472A3.462 3.462 0 016.527 10 3.462 3.462 0 0110 6.528zM1.665 9.305v1.39h2.083v-1.39H1.666zm14.583 0v1.39h2.084v-1.39h-2.084zM5.09 13.928L3.616 15.4l.982.982 1.473-1.473-.982-.982zm9.82 0l-.982.982 1.473 1.473.982-.982-1.473-1.473zM9.305 16.25v2.083h1.389V16.25h-1.39z"/></svg>') center center no-repeat;
+      '#fff'
+    )}" d="M9.305 1.667V3.75h1.389V1.667h-1.39zm-4.707 1.95l-.982.982L5.09 6.072l.982-.982-1.473-1.473zm10.802 0L13.927 5.09l.982.982 1.473-1.473-.982-.982zM10 5.139a4.872 4.872 0 00-4.862 4.86A4.872 4.872 0 0010 14.862 4.872 4.872 0 0014.86 10 4.872 4.872 0 0010 5.139zm0 1.389A3.462 3.462 0 0113.471 10a3.462 3.462 0 01-3.473 3.472A3.462 3.462 0 016.527 10 3.462 3.462 0 0110 6.528zM1.665 9.305v1.39h2.083v-1.39H1.666zm14.583 0v1.39h2.084v-1.39h-2.084zM5.09 13.928L3.616 15.4l.982.982 1.473-1.473-.982-.982zm9.82 0l-.982.982 1.473 1.473.982-.982-1.473-1.473zM9.305 16.25v2.083h1.389V16.25h-1.39z"/></svg>') center center no-repeat;
   }
 
   &.focusVisible {
@@ -183,12 +181,12 @@ const SwitchThumb = styled('span')(
     
     &:before {
       background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
-    '#fff',
-  )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>');
+        '#fff'
+      )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>');
     }
   }
-`,
-);
+`
+)
 
 const SwitchTrack = styled('span')(
   ({ theme }) => `
@@ -197,17 +195,17 @@ const SwitchTrack = styled('span')(
   width: 100%;
   height: 100%;
   display: block;
-`,
-);
+`
+)
 
 function MUISwitch(props: UseSwitchProps) {
-  const { getInputProps, checked, disabled, focusVisible } = useSwitch(props);
+  const { getInputProps, checked, disabled, focusVisible } = useSwitch(props)
 
   const stateClasses = {
     checked,
     disabled,
     focusVisible,
-  };
+  }
 
   return (
     <SwitchRoot className={clsx(stateClasses)}>
@@ -216,24 +214,24 @@ function MUISwitch(props: UseSwitchProps) {
       </SwitchTrack>
       <SwitchInput {...getInputProps()} aria-label="Demo switch" />
     </SwitchRoot>
-  );
+  )
 }
 
 function Thermostat() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
-  const [gauge, setGauge] = useState(70);
+  const [gauge, setGauge] = useState(70)
 
-  const handleGaugeIncrease = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    setGauge((gauge) => gauge + 2);
-  };
+  const handleGaugeIncrease = (e: { preventDefault: () => void }) => {
+    e.preventDefault()
+    setGauge((g) => g + 2)
+  }
 
-  const handleGaugeDecrease = (e: { preventDefault: () => void; }) => {
-    e.preventDefault();
-    setGauge((gauge) => gauge - 2);
-  };
+  const handleGaugeDecrease = (e: { preventDefault: () => void }) => {
+    e.preventDefault()
+    setGauge((g) => g - 2)
+  }
 
   return (
     <>
@@ -262,18 +260,23 @@ function Thermostat() {
                 styles={buildStyles({ rotation: 1 / 2 + 1 / 5.7 })}
                 value={gauge}
                 strokeWidth={10}
-                text={``}
+                text=""
                 color="primary"
-                size="xxlarge"
-              >
+                size="xxlarge">
                 <Box sx={{ mt: '-30px', textAlign: 'center' }}>
-                  <Typography sx={{ fontSize: `${theme.typography.pxToRem(13)}`, fontWeight: 'bold' }} variant="caption" color="text.secondary">
+                  <Typography
+                    sx={{ fontSize: `${theme.typography.pxToRem(13)}`, fontWeight: 'bold' }}
+                    variant="caption"
+                    color="text.secondary">
                     Cooling
                   </Typography>
                   <Typography sx={{ mt: '-8px', fontSize: `${theme.typography.pxToRem(45)}` }} variant="h1">
                     24.5<sup>°</sup>
                   </Typography>
-                  <Typography sx={{ fontSize: `${theme.typography.pxToRem(13)}` }} variant="caption" color="text.secondary">
+                  <Typography
+                    sx={{ fontSize: `${theme.typography.pxToRem(13)}` }}
+                    variant="caption"
+                    color="text.secondary">
                     under 5 minutes
                   </Typography>
                 </Box>
@@ -301,8 +304,7 @@ function Thermostat() {
               alignItems="center"
               direction="row"
               justifyContent="center"
-              divider={<Divider orientation="vertical" flexItem />}
-            >
+              divider={<Divider orientation="vertical" flexItem />}>
               <AvatarWrapper>
                 <AirTwoToneIcon fontSize="medium" />
               </AvatarWrapper>
@@ -320,28 +322,21 @@ function Thermostat() {
               direction="row"
               alignItems="center"
               justifyContent="center"
-              divider={<Divider sx={{ background: 'transparent' }} orientation="vertical" flexItem />}
-            >
+              divider={<Divider sx={{ background: 'transparent' }} orientation="vertical" flexItem />}>
               <Box sx={{ textAlign: 'center', width: 80 }}>
-                <Typography variant="h5">
-                  Fan Speed
-                </Typography>
+                <Typography variant="h5">Fan Speed</Typography>
                 <Typography variant="subtitle2" textAlign="center" noWrap>
                   Off
                 </Typography>
               </Box>
               <Box sx={{ textAlign: 'center', width: 80 }}>
-                <Typography variant="h5">
-                  Timer
-                </Typography>
+                <Typography variant="h5">Timer</Typography>
                 <Typography variant="subtitle2" textAlign="center" noWrap>
                   4 hours
                 </Typography>
               </Box>
               <Box sx={{ textAlign: 'center', width: 80 }}>
-                <Typography variant="h5">
-                  Auto mode
-                </Typography>
+                <Typography variant="h5">Auto mode</Typography>
                 <Typography variant="subtitle2" textAlign="center" noWrap>
                   On
                 </Typography>
@@ -373,11 +368,7 @@ function Thermostat() {
                 <AvatarSecondary>
                   <BlenderTwoToneIcon fontSize="medium" />
                 </AvatarSecondary>
-                <Tooltip
-                  placement="top"
-                  arrow
-                  title={t('This section can have a description!')}
-                >
+                <Tooltip placement="top" arrow title={t('This section can have a description!')}>
                   <IconButton component="span" size="small" color="secondary">
                     <ErrorOutlineTwoToneIcon fontSize="small" />
                   </IconButton>
@@ -396,7 +387,7 @@ function Thermostat() {
         </Grid>
       </Grid>
     </>
-  );
+  )
 }
 
-export default Thermostat;
+export default Thermostat

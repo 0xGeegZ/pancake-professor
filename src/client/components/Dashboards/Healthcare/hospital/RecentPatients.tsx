@@ -16,15 +16,15 @@ import {
   IconButton,
   useTheme,
   Box,
-  TableContainer
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import { format, subHours, subDays } from 'date-fns';
-import Text from 'src/client/components/Text';
+  TableContainer,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import { format, subHours, subDays } from 'date-fns'
+import Text from 'src/client/components/Text'
 
 const DotSuccess = styled('span')(
   ({ theme }) => `
@@ -35,7 +35,7 @@ const DotSuccess = styled('span')(
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 const DotWarning = styled('span')(
   ({ theme }) => `
@@ -46,22 +46,18 @@ const DotWarning = styled('span')(
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 function RecentPatients() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   return (
     <Card>
       <CardHeader
         title={t('Recent Patients')}
         action={
-          <Button
-            variant="outlined"
-            size="small"
-            endIcon={<ArrowForwardTwoToneIcon fontSize="small" />}
-          >
+          <Button variant="outlined" size="small" endIcon={<ArrowForwardTwoToneIcon fontSize="small" />}>
             {t('Detailed View')}
           </Button>
         }
@@ -89,8 +85,7 @@ function RecentPatients() {
                       Marilyn Stanton
                     </Typography>
                     <Typography variant="subtitle1" noWrap>
-                      {t('Admitted')}{' '}
-                      {format(subHours(new Date(), 5), 'MMMM dd yyyy')}
+                      {t('Admitted')} {format(subHours(new Date(), 5), 'MMMM dd yyyy')}
                     </Typography>
                   </Box>
                 </Box>
@@ -109,11 +104,7 @@ function RecentPatients() {
                     <Typography variant="h5" noWrap>
                       Carter Gouse
                     </Typography>
-                    <Typography
-                      variant="body2"
-                      noWrap
-                      sx={{ display: 'flex', alignItems: 'center', mr: 2 }}
-                    >
+                    <Typography variant="body2" noWrap sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
                       <DotWarning />
                       <Text color="warning">{t('On Planned Leave')}</Text>
                     </Typography>
@@ -135,11 +126,10 @@ function RecentPatients() {
                   <IconButton
                     sx={{
                       '&:hover': { background: theme.colors.primary.lighter },
-                      color: theme.palette.primary.main
+                      color: theme.palette.primary.main,
                     }}
                     color="inherit"
-                    size="small"
-                  >
+                    size="small">
                     <EditTwoToneIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
@@ -147,11 +137,10 @@ function RecentPatients() {
                   <IconButton
                     sx={{
                       '&:hover': { background: theme.colors.error.lighter },
-                      color: theme.palette.error.main
+                      color: theme.palette.error.main,
                     }}
                     color="inherit"
-                    size="small"
-                  >
+                    size="small">
                     <DeleteTwoToneIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
@@ -166,8 +155,7 @@ function RecentPatients() {
                       Nolan Lubin
                     </Typography>
                     <Typography variant="subtitle1" noWrap>
-                      {t('Admitted')}{' '}
-                      {format(subDays(new Date(), 12), 'MMMM dd yyyy')}
+                      {t('Admitted')} {format(subDays(new Date(), 12), 'MMMM dd yyyy')}
                     </Typography>
                   </Box>
                 </Box>
@@ -186,11 +174,7 @@ function RecentPatients() {
                     <Typography variant="h5" noWrap>
                       Craig Schleifer
                     </Typography>
-                    <Typography
-                      variant="body2"
-                      noWrap
-                      sx={{ display: 'flex', alignItems: 'center', mr: 2 }}
-                    >
+                    <Typography variant="body2" noWrap sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
                       <DotSuccess />
                       <Text color="success">{t('On Duty')}</Text>
                     </Typography>
@@ -212,11 +196,10 @@ function RecentPatients() {
                   <IconButton
                     sx={{
                       '&:hover': { background: theme.colors.primary.lighter },
-                      color: theme.palette.primary.main
+                      color: theme.palette.primary.main,
                     }}
                     color="inherit"
-                    size="small"
-                  >
+                    size="small">
                     <EditTwoToneIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
@@ -224,11 +207,10 @@ function RecentPatients() {
                   <IconButton
                     sx={{
                       '&:hover': { background: theme.colors.error.lighter },
-                      color: theme.palette.error.main
+                      color: theme.palette.error.main,
                     }}
                     color="inherit"
-                    size="small"
-                  >
+                    size="small">
                     <DeleteTwoToneIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
@@ -243,8 +225,7 @@ function RecentPatients() {
                       Lincoln Torff
                     </Typography>
                     <Typography variant="subtitle1" noWrap>
-                      {t('Admitted')}{' '}
-                      {format(subDays(new Date(), 5), 'MMMM dd yyyy')}
+                      {t('Admitted')} {format(subDays(new Date(), 5), 'MMMM dd yyyy')}
                     </Typography>
                   </Box>
                 </Box>
@@ -263,11 +244,7 @@ function RecentPatients() {
                     <Typography variant="h5" noWrap>
                       Gretchen Rosser
                     </Typography>
-                    <Typography
-                      variant="body2"
-                      noWrap
-                      sx={{ display: 'flex', alignItems: 'center', mr: 2 }}
-                    >
+                    <Typography variant="body2" noWrap sx={{ display: 'flex', alignItems: 'center', mr: 2 }}>
                       <DotWarning />
                       <Text color="warning">{t('On Planned Leave')}</Text>
                     </Typography>
@@ -289,11 +266,10 @@ function RecentPatients() {
                   <IconButton
                     sx={{
                       '&:hover': { background: theme.colors.primary.lighter },
-                      color: theme.palette.primary.main
+                      color: theme.palette.primary.main,
                     }}
                     color="inherit"
-                    size="small"
-                  >
+                    size="small">
                     <EditTwoToneIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
@@ -301,11 +277,10 @@ function RecentPatients() {
                   <IconButton
                     sx={{
                       '&:hover': { background: theme.colors.error.lighter },
-                      color: theme.palette.error.main
+                      color: theme.palette.error.main,
                     }}
                     color="inherit"
-                    size="small"
-                  >
+                    size="small">
                     <DeleteTwoToneIcon fontSize="small" />
                   </IconButton>
                 </Tooltip>
@@ -314,14 +289,11 @@ function RecentPatients() {
           </TableBody>
         </Table>
       </TableContainer>
-      <CardActions
-        disableSpacing
-        sx={{ p: 2, display: 'flex', justifyContent: 'center' }}
-      >
+      <CardActions disableSpacing sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
         <Pagination count={6} color="primary" />
       </CardActions>
     </Card>
-  );
+  )
 }
 
-export default RecentPatients;
+export default RecentPatients

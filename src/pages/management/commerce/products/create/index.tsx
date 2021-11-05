@@ -1,24 +1,17 @@
-import { useState } from 'react';
-import type { ReactElement } from 'react';
-import AccentHeaderLayout from "src/client/layouts/AccentHeaderLayout";
-import Head from 'next/head';
-import PageHeader from 'src/client/components/Management/Commerce/Create/PageHeader';
-import {
-  Box,
-  Drawer,
-  Grid,
-  Hidden,
-  useTheme,
-  IconButton
-} from '@mui/material';
-import { Scrollbars } from 'react-custom-scrollbars-2';
+import { useState } from 'react'
+import type { ReactElement } from 'react'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
+import Head from 'next/head'
+import PageHeader from 'src/client/components/Management/Commerce/Create/PageHeader'
+import { Box, Drawer, Grid, Hidden, useTheme, IconButton } from '@mui/material'
+import { Scrollbars } from 'react-custom-scrollbars-2'
 
-import Sidebar from 'src/client/components/Management/Commerce/Create/Sidebar';
+import Sidebar from 'src/client/components/Management/Commerce/Create/Sidebar'
 
-import AdditionalInfo from 'src/client/components/Management/Commerce/Create/AdditionalInfo';
-import GeneralSection from 'src/client/components/Management/Commerce/Create/GeneralSection';
-import { styled } from '@mui/material/styles';
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
+import AdditionalInfo from 'src/client/components/Management/Commerce/Create/AdditionalInfo'
+import GeneralSection from 'src/client/components/Management/Commerce/Create/GeneralSection'
+import { styled } from '@mui/material/styles'
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
 
 const DrawerWrapper = styled(Drawer)(
   ({ theme }) => `
@@ -36,7 +29,7 @@ const DrawerWrapper = styled(Drawer)(
         background: ${theme.colors.alpha.white[10]};
     }
 `
-);
+)
 
 const DrawerWrapperMobile = styled(Drawer)(
   ({ theme }) => `
@@ -49,35 +42,35 @@ const DrawerWrapperMobile = styled(Drawer)(
         background: ${theme.colors.alpha.white[30]};
   }
 `
-);
+)
 
 const MainContentWrapper = styled(Box)(
   () => `
   flex-grow: 1;
 `
-);
+)
 
 const IconButtonToggle = styled(IconButton)(
   ({ theme }) => `
   width: ${theme.spacing(6)};
   height: ${theme.spacing(6)};
 `
-);
+)
 
 function ManagementProductCreate() {
-  const theme = useTheme();
+  const theme = useTheme()
 
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+    setMobileOpen(!mobileOpen)
+  }
 
   const sidebarContent = (
     <Scrollbars universal autoHide>
       <Sidebar />
     </Scrollbars>
-  );
+  )
 
   return (
     <>
@@ -86,29 +79,12 @@ function ManagementProductCreate() {
       </Head>
       <Box mb={3} display="flex">
         <MainContentWrapper>
-          <Grid
-            sx={{ px: 4 }}
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="stretch"
-            spacing={3}
-          >
+          <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
             <Grid item xs={12}>
-              <Box
-                mt={3}
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
+              <Box mt={3} display="flex" alignItems="center" justifyContent="space-between">
                 <PageHeader />
                 <Hidden lgUp>
-                  <IconButtonToggle
-                    sx={{ ml: 2 }}
-                    color="primary"
-                    onClick={handleDrawerToggle}
-                    size="small"
-                  >
+                  <IconButtonToggle sx={{ ml: 2 }} color="primary" onClick={handleDrawerToggle} size="small">
                     <MenuTwoToneIcon />
                   </IconButtonToggle>
                 </Hidden>
@@ -127,31 +103,22 @@ function ManagementProductCreate() {
             variant="temporary"
             anchor={theme.direction === 'rtl' ? 'left' : 'right'}
             open={mobileOpen}
-            onClose={handleDrawerToggle}
-          >
+            onClose={handleDrawerToggle}>
             {sidebarContent}
           </DrawerWrapperMobile>
         </Hidden>
         <Hidden lgDown>
-          <DrawerWrapper
-            variant="permanent"
-            anchor={theme.direction === 'rtl' ? 'left' : 'right'}
-            open
-          >
+          <DrawerWrapper variant="permanent" anchor={theme.direction === 'rtl' ? 'left' : 'right'} open>
             {sidebarContent}
           </DrawerWrapper>
         </Hidden>
       </Box>
     </>
-  );
+  )
 }
 
-export default ManagementProductCreate;
+export default ManagementProductCreate
 
 ManagementProductCreate.getLayout = function getLayout(page: ReactElement) {
-  return (
-      <AccentHeaderLayout>
-          {page}
-      </AccentHeaderLayout>
-  )
+  return <AccentHeaderLayout>{page}</AccentHeaderLayout>
 }

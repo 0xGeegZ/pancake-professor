@@ -1,26 +1,19 @@
-import {
-  Box,
-  Button,
-  Container,
-  Grid,
-  Typography
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import Link from 'src/client/components/Link';
-
-import { styled } from '@mui/material/styles';
+import { Box, Button, Container, Grid, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
 
 const TypographyH1 = styled(Typography)(
   ({ theme }) => `
     font-size: ${theme.typography.pxToRem(50)};
 `
-);
+)
 
 const TypographyH2 = styled(Typography)(
   ({ theme }) => `
     font-size: ${theme.typography.pxToRem(17)};
 `
-);
+)
 
 const ImgWrapper = styled(Box)(
   ({ theme }) => `
@@ -36,7 +29,7 @@ const ImgWrapper = styled(Box)(
       width: 100%;
     }
   `
-);
+)
 
 const BoxAccent = styled(Box)(
   ({ theme }) => `
@@ -50,14 +43,14 @@ const BoxAccent = styled(Box)(
     display: block;
     z-index: 4;
   `
-);
+)
 
 const BoxContent = styled(Box)(
   () => `
   width: 150%;
   position: relative;
 `
-);
+)
 
 const LabelWrapper = styled(Box)(
   ({ theme }) => `
@@ -68,17 +61,17 @@ const LabelWrapper = styled(Box)(
     text-transform: uppercase;
     display: inline-block;
     font-size: ${theme.typography.pxToRem(11)};
-    padding: ${theme.spacing(.5)} ${theme.spacing(1.5)};
+    padding: ${theme.spacing(0.5)} ${theme.spacing(1.5)};
     margin-bottom: ${theme.spacing(2)};
 `
-);
+)
 
 const ListItemWrapper = styled(Box)(
   () => `
     display: flex;
     align-items: center;
 `
-);
+)
 
 const MuiAvatar = styled(Box)(
   ({ theme }) => `
@@ -98,7 +91,7 @@ const MuiAvatar = styled(Box)(
       display: block;
     }
 `
-);
+)
 
 const TsAvatar = styled(Box)(
   ({ theme }) => `
@@ -118,7 +111,7 @@ const TsAvatar = styled(Box)(
       display: block;
     }
 `
-);
+)
 
 const NextJsAvatar = styled(Box)(
   ({ theme }) => `
@@ -138,44 +131,28 @@ const NextJsAvatar = styled(Box)(
       display: block;
     }
 `
-);
+)
 
 function Hero() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Container maxWidth="lg">
       <Grid spacing={{ xs: 6, md: 10 }} justifyContent="center" alignItems="center" container>
         <Grid item md={6} pr={{ xs: 0, md: 3 }}>
-          <LabelWrapper color="success">{t('Version') + ' 1.0.0'}</LabelWrapper>
+          <LabelWrapper color="success">{`${t('Version')} 1.0.0`}</LabelWrapper>
           <TypographyH1 sx={{ mb: 2 }} variant="h1">
-            {t('Tokyo NextJS Admin Dashboard')}
+            {t('Pancake Professor')}
           </TypographyH1>
-          <TypographyH2
-            sx={{ lineHeight: 1.5, pb: 4 }}
-            variant="h4"
-            color="text.secondary"
-            fontWeight="normal"
-          >
+          <TypographyH2 sx={{ lineHeight: 1.5, pb: 4 }} variant="h4" color="text.secondary" fontWeight="normal">
             {t(
               'Production-ready updated admin dashboard powered by React and Material-UI built on NextJS features hundreds of components and examples that will help you build faster and better apps.'
             )}
           </TypographyH2>
-          <Button
-            component={Link}
-            href="/dashboards/analytics"
-            size="large"
-            variant="contained"
-          >
+          <Button component={Link} href="/dashboards/analytics" size="large" variant="contained">
             {t('Browse Live Preview')}
           </Button>
-          <Button
-            sx={{ ml: 2 }}
-            component="a"
-            href="#key-features"
-            size="large"
-            variant="text"
-          >
+          <Button sx={{ ml: 2 }} component="a" href="#key-features" size="large" variant="text">
             {t('Key Features')}
           </Button>
           <ListItemWrapper sx={{ mt: 5, mb: 2 }}>
@@ -183,7 +160,11 @@ function Hero() {
               <img src="/static/images/logo/next-js.svg" alt="NextJS" />
             </NextJsAvatar>
             <Typography variant="h6">
-              <b>Built with Next.js </b><Typography component="span" variant="subtitle2"> - Next.js gives you the best developer experience with all the features you need for production.</Typography>
+              <b>Built with Next.js </b>
+              <Typography component="span" variant="subtitle2">
+                {' '}
+                - Next.js gives you the best developer experience with all the features you need for production.
+              </Typography>
             </Typography>
           </ListItemWrapper>
           <ListItemWrapper sx={{ mb: 2 }}>
@@ -191,7 +172,11 @@ function Hero() {
               <img src="/static/images/logo/material-ui.svg" alt="Material-UI" />
             </MuiAvatar>
             <Typography variant="h6">
-              <b>Powered by Material-UI</b><Typography component="span" variant="subtitle2"> - A simple and customizable component library to build faster, beautiful, andaccessible React apps.</Typography>
+              <b>Powered by Material-UI</b>
+              <Typography component="span" variant="subtitle2">
+                {' '}
+                - A simple and customizable component library to build faster, beautiful, andaccessible React apps.
+              </Typography>
             </Typography>
           </ListItemWrapper>
           <ListItemWrapper sx={{ mb: 2 }}>
@@ -199,7 +184,11 @@ function Hero() {
               <img src="/static/images/logo/typescript.svg" alt="Typescript" />
             </TsAvatar>
             <Typography variant="h6">
-              <b>Built with Typescript</b><Typography component="span" variant="subtitle2"> - Tokyo features a modern technology stack and is built with React + Typescript.</Typography>
+              <b>Built with Typescript</b>
+              <Typography component="span" variant="subtitle2">
+                {' '}
+                - Tokyo features a modern technology stack and is built with React + Typescript.
+              </Typography>
             </Typography>
           </ListItemWrapper>
         </Grid>
@@ -213,7 +202,7 @@ function Hero() {
         </Grid>
       </Grid>
     </Container>
-  );
+  )
 }
 
-export default Hero;
+export default Hero

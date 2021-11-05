@@ -1,33 +1,26 @@
-import type { ReactElement } from 'react';
-import CollapsedSidebarLayout from "src/client/layouts/CollapsedSidebarLayout";
+import type { ReactElement } from 'react'
+import CollapsedSidebarLayout from 'src/client/layouts/CollapsedSidebarLayout'
 
-import { useState } from 'react';
-import Head from 'next/head';
-import PageHeader from 'src/client/components/Dashboards/Helpdesk/PageHeader';
+import { useState } from 'react'
+import Head from 'next/head'
+import PageHeader from 'src/client/components/Dashboards/Helpdesk/PageHeader'
 
-import {
-  Box,
-  Drawer,
-  Grid,
-  Hidden,
-  useTheme,
-  IconButton
-} from '@mui/material';
-import { Scrollbars } from 'react-custom-scrollbars-2';
+import { Box, Drawer, Grid, Hidden, useTheme, IconButton } from '@mui/material'
+import { Scrollbars } from 'react-custom-scrollbars-2'
 
-import HelpdeskSidebar from 'src/client/components/Dashboards/Helpdesk/HelpdeskSidebar';
-import UnresolvedTickets from 'src/client/components/Dashboards/Helpdesk/UnresolvedTickets';
-import PendingQuestions from 'src/client/components/Dashboards/Helpdesk/PendingQuestions';
-import UpdatedTickets from 'src/client/components/Dashboards/Helpdesk/UpdatedTickets';
-import AssignedTasks from 'src/client/components/Dashboards/Helpdesk/AssignedTasks';
-import PendingTickets from 'src/client/components/Dashboards/Helpdesk/PendingTickets';
-import RecentQuestions from 'src/client/components/Dashboards/Helpdesk/RecentQuestions';
-import TopAgentsHeading from 'src/client/components/Dashboards/Helpdesk/TopAgentsHeading';
-import TopAgents1 from 'src/client/components/Dashboards/Helpdesk/TopAgents1';
-import TopAgents2 from 'src/client/components/Dashboards/Helpdesk/TopAgents2';
+import HelpdeskSidebar from 'src/client/components/Dashboards/Helpdesk/HelpdeskSidebar'
+import UnresolvedTickets from 'src/client/components/Dashboards/Helpdesk/UnresolvedTickets'
+import PendingQuestions from 'src/client/components/Dashboards/Helpdesk/PendingQuestions'
+import UpdatedTickets from 'src/client/components/Dashboards/Helpdesk/UpdatedTickets'
+import AssignedTasks from 'src/client/components/Dashboards/Helpdesk/AssignedTasks'
+import PendingTickets from 'src/client/components/Dashboards/Helpdesk/PendingTickets'
+import RecentQuestions from 'src/client/components/Dashboards/Helpdesk/RecentQuestions'
+import TopAgentsHeading from 'src/client/components/Dashboards/Helpdesk/TopAgentsHeading'
+import TopAgents1 from 'src/client/components/Dashboards/Helpdesk/TopAgents1'
+import TopAgents2 from 'src/client/components/Dashboards/Helpdesk/TopAgents2'
 
-import { styled } from '@mui/material/styles';
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
+import { styled } from '@mui/material/styles'
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
 
 const DrawerWrapper = styled(Drawer)(
   ({ theme }) => `
@@ -45,7 +38,7 @@ const DrawerWrapper = styled(Drawer)(
         background: ${theme.colors.alpha.white[100]};
     }
 `
-);
+)
 
 const DrawerWrapperMobile = styled(Drawer)(
   () => `
@@ -57,35 +50,35 @@ const DrawerWrapperMobile = styled(Drawer)(
         z-index: 3;
   }
 `
-);
+)
 
 const MainContentWrapper = styled(Box)(
   () => `
   flex-grow: 1;
 `
-);
+)
 
 const IconButtonToggle = styled(IconButton)(
   ({ theme }) => `
   width: ${theme.spacing(6)};
   height: ${theme.spacing(6)};
 `
-);
+)
 
 function DashboardHelpdesk() {
-  const theme = useTheme();
+  const theme = useTheme()
 
-  const [mobileOpen, setMobileOpen] = useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false)
 
   const handleDrawerToggle = () => {
-    setMobileOpen(!mobileOpen);
-  };
+    setMobileOpen(!mobileOpen)
+  }
 
   const sidebarContent = (
     <Scrollbars universal autoHide>
       <HelpdeskSidebar />
     </Scrollbars>
-  );
+  )
 
   return (
     <>
@@ -94,29 +87,14 @@ function DashboardHelpdesk() {
       </Head>
       <Box sx={{ width: { xs: '100%', lg: 'calc(100% - 340px)' } }}>
         <MainContentWrapper>
-          <Grid
-            sx={{ px: 4 }}
-            container
-            direction="row"
-            justifyContent="center"
-            alignItems="stretch"
-            spacing={3}
-          >
+          <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
             <Grid item xs={12}>
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-              >
+              <Box display="flex" alignItems="center" justifyContent="space-between">
                 <Box mt={3}>
                   <PageHeader />
                 </Box>
                 <Hidden lgUp>
-                  <IconButtonToggle
-                    color="primary"
-                    onClick={handleDrawerToggle}
-                    size="small"
-                  >
+                  <IconButtonToggle color="primary" onClick={handleDrawerToggle} size="small">
                     <MenuTwoToneIcon />
                   </IconButtonToggle>
                 </Hidden>
@@ -163,31 +141,22 @@ function DashboardHelpdesk() {
             variant="temporary"
             anchor={theme.direction === 'rtl' ? 'left' : 'right'}
             open={mobileOpen}
-            onClose={handleDrawerToggle}
-          >
+            onClose={handleDrawerToggle}>
             {sidebarContent}
           </DrawerWrapperMobile>
         </Hidden>
         <Hidden lgDown>
-          <DrawerWrapper
-            variant="permanent"
-            anchor={theme.direction === 'rtl' ? 'left' : 'right'}
-            open
-          >
+          <DrawerWrapper variant="permanent" anchor={theme.direction === 'rtl' ? 'left' : 'right'} open>
             {sidebarContent}
           </DrawerWrapper>
         </Hidden>
       </Box>
     </>
-  );
+  )
 }
 
-export default DashboardHelpdesk;
+export default DashboardHelpdesk
 
 DashboardHelpdesk.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <CollapsedSidebarLayout>
-      {page}
-    </CollapsedSidebarLayout>
-  )
+  return <CollapsedSidebarLayout>{page}</CollapsedSidebarLayout>
 }

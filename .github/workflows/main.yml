@@ -51,6 +51,9 @@ jobs:
       - name: Copy example env
         run: cp .env.example .env
 
+      - name: Copy example env.local
+      run: cp .env.local.example .env.local
+
       - name: Generate
         run: yarn generate
 

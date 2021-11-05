@@ -1,7 +1,7 @@
-import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
-import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone';
-import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone';
+import AccountBoxTwoToneIcon from '@mui/icons-material/AccountBoxTwoTone'
+import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone'
+import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone'
+import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
 import {
   alpha,
   Avatar,
@@ -14,41 +14,41 @@ import {
   ListItemText,
   Popover,
   Typography,
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useRouter } from 'next/router';
-import { useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Link from 'src/client/components/Link';
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useRouter } from 'next/router'
+import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
 
 const UserBoxButton = styled(Button)(
   ({ theme }) => `
     padding: ${theme.spacing(1)};
-    background-color: ${darken(theme.sidebar.menuItemBg, .05)};
+    background-color: ${darken(theme.sidebar.menuItemBg, 0.05)};
 
     .MuiButton-label {
       justify-content: flex-start;
     }
 
     &:hover {
-      background-color: ${darken(theme.sidebar.menuItemBg, .1)};
+      background-color: ${darken(theme.sidebar.menuItemBg, 0.1)};
     }
 `
-);
+)
 
 const MenuUserBox = styled(Box)(
   ({ theme }) => `
     background: ${theme.colors.alpha.black[5]};
     padding: ${theme.spacing(2)};
 `
-);
+)
 
 const UserBoxText = styled(Box)(
   ({ theme }) => `
     text-align: left;
     padding-left: ${theme.spacing(1)};
 `
-);
+)
 
 const UserBoxLabel = styled(Typography)(
   ({ theme }) => `
@@ -60,61 +60,52 @@ const UserBoxLabel = styled(Typography)(
       color: ${theme.palette.secondary.main};
     }
 `
-);
+)
 
 const UserBoxDescription = styled(Typography)(
   ({ theme }) => `
-    color: ${alpha(theme.sidebar.menuItemColor, .6)};
+    color: ${alpha(theme.sidebar.menuItemColor, 0.6)};
 
     &.popoverTypo {
       color: ${theme.palette.secondary.light};
     }
 `
-);
+)
 
 function SidebarTopSection() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
-  
+  const router = useRouter()
 
-  const router = useRouter();
-
-  const ref = useRef<any>(null);
-  const [isOpen, setOpen] = useState<boolean>(false);
+  const ref = useRef<any>(null)
+  const [isOpen, setOpen] = useState<boolean>(false)
 
   const handleOpen = (): void => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = (): void => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   const handleLogout = async (): Promise<void> => {
     try {
-      handleClose();
-      await logout();
-      router.push('/');
+      handleClose()
+      // await logout()
+      router.push('/')
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
-  };
+  }
 
   return (
     <>
       <UserBoxButton fullWidth color="secondary" ref={ref} onClick={handleOpen}>
         <Avatar variant="rounded" alt="Margaret Gale" src="/static/images/avatars/1.jpg" />
-        <Box
-          display="flex"
-          flex={1}
-          alignItems="center"
-          justifyContent="space-between"
-        >
+        <Box display="flex" flex={1} alignItems="center" justifyContent="space-between">
           <UserBoxText>
             <UserBoxLabel variant="body1">Margaret Gale</UserBoxLabel>
-            <UserBoxDescription variant="body2">
-              Lead Developer
-            </UserBoxDescription>
+            <UserBoxDescription variant="body2">Lead Developer</UserBoxDescription>
           </UserBoxText>
           <UnfoldMoreTwoToneIcon fontSize="small" sx={{ ml: 1 }} />
         </Box>
@@ -125,17 +116,18 @@ function SidebarTopSection() {
         open={isOpen}
         anchorOrigin={{
           vertical: 'center',
-          horizontal: 'center'
+          horizontal: 'center',
         }}
         transformOrigin={{
           vertical: 'center',
-          horizontal: 'center'
-        }}
-      >
+          horizontal: 'center',
+        }}>
         <MenuUserBox sx={{ minWidth: 210 }} display="flex">
           <Avatar variant="rounded" alt="Margaret Gale" src="/static/images/avatars/1.jpg" />
           <UserBoxText>
-            <UserBoxLabel className="popoverTypo" variant="body1">Margaret Gale</UserBoxLabel>
+            <UserBoxLabel className="popoverTypo" variant="body1">
+              Margaret Gale
+            </UserBoxLabel>
             <UserBoxDescription className="popoverTypo" variant="body2">
               Lead Developer
             </UserBoxDescription>
@@ -144,17 +136,22 @@ function SidebarTopSection() {
         <Divider sx={{ mb: 0 }} />
         <List sx={{ p: 1 }} component="nav">
           <ListItem
-            onClick={() => { handleClose() }}
-            button href="/management/users/1" component={Link}>
+            onClick={() => {
+              handleClose()
+            }}
+            button
+            href="/management/users/1"
+            component={Link}>
             <AccountBoxTwoToneIcon fontSize="small" />
             <ListItemText primary={t('Profile')} />
           </ListItem>
           <ListItem
-            onClick={() => { handleClose() }}
+            onClick={() => {
+              handleClose()
+            }}
             button
             href="/applications/projects-board"
-            component={Link}
-          >
+            component={Link}>
             <AccountTreeTwoToneIcon fontSize="small" />
             <ListItemText primary={t('Projects')} />
           </ListItem>
@@ -168,7 +165,7 @@ function SidebarTopSection() {
         </Box>
       </Popover>
     </>
-  );
+  )
 }
 
-export default SidebarTopSection;
+export default SidebarTopSection

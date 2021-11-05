@@ -1,7 +1,7 @@
-const objectArray = (arr: any[], key: string = 'id') =>
+const objectArray = (arr: any[], key = 'id') =>
   arr.reduce((acc, cur) => {
-    acc[cur[key]] = cur;
-    return acc;
-  }, {});
+    acc[cur[key]] = cur
+    return acc
+  }, {})
 
-export default objectArray;
+export default objectArray

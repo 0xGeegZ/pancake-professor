@@ -1,20 +1,16 @@
-import { FC } from 'react';
-import PropTypes from 'prop-types';
-import { Bar } from 'react-chartjs-2';
-import { useTheme } from '@mui/material';
+import { FC } from 'react'
+import PropTypes from 'prop-types'
+import { Bar } from 'react-chartjs-2'
+import { useTheme } from '@mui/material'
 
 interface TimeSpentChartProps {
-  className?: string;
-  data: any;
-  labels: string[];
+  className?: string
+  data: any
+  labels: string[]
 }
 
-const TimeSpentChart: FC<TimeSpentChartProps> = ({
-  data: dataProp,
-  labels,
-  ...rest
-}) => {
-  const theme = useTheme();
+const TimeSpentChart: FC<TimeSpentChartProps> = ({ data: dataProp, labels, ...rest }) => {
+  const theme = useTheme()
 
   const data = {
     datasets: [
@@ -34,7 +30,7 @@ const TimeSpentChart: FC<TimeSpentChartProps> = ({
         pointHoverBorderWidth: 4,
         pointBackgroundColor: theme.palette.success.main,
         borderDash: [15, 5],
-        type: 'line'
+        type: 'line',
       },
       {
         label: 'Current Period',
@@ -43,37 +39,37 @@ const TimeSpentChart: FC<TimeSpentChartProps> = ({
         barThickness: 34,
         maxBarThickness: 40,
         barPercentage: 0.3,
-        categoryPercentage: 0.3
-      }
+        categoryPercentage: 0.3,
+      },
     ],
-    labels
-  };
+    labels,
+  }
 
   const options = {
     responsive: true,
     maintainAspectRatio: false,
     cornerRadius: 55,
     legend: {
-      display: false
+      display: false,
     },
     layout: {
       padding: {
         left: theme.spacing(15),
-        right: theme.spacing(15)
-      }
+        right: theme.spacing(15),
+      },
     },
     scales: {
       xAxes: [
         {
           gridLines: {
             display: false,
-            drawBorder: false
+            drawBorder: false,
           },
           ticks: {
             padding: 18,
-            fontColor: theme.palette.text.secondary
-          }
-        }
+            fontColor: theme.palette.text.secondary,
+          },
+        },
       ],
       yAxes: [
         {
@@ -84,16 +80,16 @@ const TimeSpentChart: FC<TimeSpentChartProps> = ({
             drawBorder: false,
             zeroLineBorderDash: [6],
             zeroLineBorderDashOffset: [0],
-            zeroLineColor: theme.palette.divider
+            zeroLineColor: theme.palette.divider,
           },
           ticks: {
             display: false,
             beginAtZero: true,
             min: 0,
-            maxTicksLimit: 10
-          }
-        }
-      ]
+            maxTicksLimit: 10,
+          },
+        },
+      ],
     },
     tooltips: {
       enabled: true,
@@ -110,24 +106,24 @@ const TimeSpentChart: FC<TimeSpentChartProps> = ({
       backgroundColor: theme.palette.common.black,
       titleFontColor: theme.palette.common.white,
       bodyFontColor: theme.palette.common.white,
-      footerFontColor: theme.palette.common.white
+      footerFontColor: theme.palette.common.white,
     },
     hover: {
       mode: 'nearest',
-      intersect: true
-    }
-  };
+      intersect: true,
+    },
+  }
 
   return (
     <div {...rest}>
       <Bar data={data} options={options} />
     </div>
-  );
-};
+  )
+}
 
 TimeSpentChart.propTypes = {
   data: PropTypes.object.isRequired,
-  labels: PropTypes.array.isRequired
-};
+  labels: PropTypes.array.isRequired,
+}
 
-export default TimeSpentChart;
+export default TimeSpentChart

@@ -1,4 +1,4 @@
-import { useState, ChangeEvent } from 'react';
+import { useState, ChangeEvent } from 'react'
 import {
   Button,
   Card,
@@ -13,16 +13,16 @@ import {
   IconButton,
   Tooltip,
   Switch,
-  alpha
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import Label from 'src/client/components/Label';
-import RouterTwoToneIcon from '@mui/icons-material/RouterTwoTone';
-import DnsTwoToneIcon from '@mui/icons-material/DnsTwoTone';
-import MemoryTwoToneIcon from '@mui/icons-material/MemoryTwoTone';
-import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone';
-import CachedTwoToneIcon from '@mui/icons-material/CachedTwoTone';
+  alpha,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import Label from 'src/client/components/Label'
+import RouterTwoToneIcon from '@mui/icons-material/RouterTwoTone'
+import DnsTwoToneIcon from '@mui/icons-material/DnsTwoTone'
+import MemoryTwoToneIcon from '@mui/icons-material/MemoryTwoTone'
+import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone'
+import CachedTwoToneIcon from '@mui/icons-material/CachedTwoTone'
 
 const DotError = styled('span')(
   ({ theme }) => `
@@ -33,7 +33,7 @@ const DotError = styled('span')(
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 const DotSuccess = styled('span')(
   ({ theme }) => `
@@ -44,7 +44,7 @@ const DotSuccess = styled('span')(
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 const SwitchSuccess = styled(Switch)(
   ({ theme }) => `
@@ -61,32 +61,32 @@ const SwitchSuccess = styled(Switch)(
       background-color: ${alpha(theme.colors.success.main, 0.1)};
     }
 `
-);
+)
 
 function VirtualServers() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const [state1, setState1] = useState({
-    server: true
-  });
+    server: true,
+  })
 
   const [state2, setState2] = useState({
-    server: false
-  });
+    server: false,
+  })
 
   const serverActivate1 = (event: ChangeEvent<HTMLInputElement>) => {
     setState1({
       ...state1,
-      [event.target.name]: event.target.checked
-    });
-  };
+      [event.target.name]: event.target.checked,
+    })
+  }
 
   const serverActivate2 = (event: ChangeEvent<HTMLInputElement>) => {
     setState2({
       ...state2,
-      [event.target.name]: event.target.checked
-    });
-  };
+      [event.target.name]: event.target.checked,
+    })
+  }
 
   return (
     <>
@@ -96,12 +96,7 @@ function VirtualServers() {
       <Grid container spacing={3}>
         <Grid item xs={12} md={6}>
           <Card>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              p={2}
-            >
+            <Box display="flex" alignItems="center" justifyContent="space-between" p={2}>
               <Typography variant="h5" lineHeight={1}>
                 App Staging
               </Typography>
@@ -138,12 +133,7 @@ function VirtualServers() {
                 </ListItem>
                 <Divider component="li" />
               </List>
-              <Box
-                display="flex"
-                alignItems="center"
-                pt={2}
-                justifyContent="space-between"
-              >
+              <Box display="flex" alignItems="center" pt={2} justifyContent="space-between">
                 <Box>
                   <Button variant="text">{t('More information')}</Button>
                 </Box>
@@ -159,12 +149,7 @@ function VirtualServers() {
                     </IconButton>
                   </Tooltip>
                   <Divider sx={{ mx: 2 }} orientation="vertical" flexItem />
-                  <SwitchSuccess
-                    checked={state1.server}
-                    onChange={serverActivate1}
-                    color="primary"
-                    name="server"
-                  />
+                  <SwitchSuccess checked={state1.server} onChange={serverActivate1} color="primary" name="server" />
                 </Box>
               </Box>
             </Box>
@@ -172,12 +157,7 @@ function VirtualServers() {
         </Grid>
         <Grid item xs={12} md={6}>
           <Card>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              p={2}
-            >
+            <Box display="flex" alignItems="center" justifyContent="space-between" p={2}>
               <Typography variant="h5" lineHeight={1}>
                 Ubuntu Server
               </Typography>
@@ -214,12 +194,7 @@ function VirtualServers() {
                 </ListItem>
                 <Divider component="li" />
               </List>
-              <Box
-                display="flex"
-                alignItems="center"
-                pt={2}
-                justifyContent="space-between"
-              >
+              <Box display="flex" alignItems="center" pt={2} justifyContent="space-between">
                 <Box>
                   <Button variant="text">{t('More information')}</Button>
                 </Box>
@@ -235,12 +210,7 @@ function VirtualServers() {
                     </IconButton>
                   </Tooltip>
                   <Divider sx={{ mx: 2 }} orientation="vertical" flexItem />
-                  <SwitchSuccess
-                    checked={state2.server}
-                    onChange={serverActivate2}
-                    color="primary"
-                    name="server"
-                  />
+                  <SwitchSuccess checked={state2.server} onChange={serverActivate2} color="primary" name="server" />
                 </Box>
               </Box>
             </Box>
@@ -248,7 +218,7 @@ function VirtualServers() {
         </Grid>
       </Grid>
     </>
-  );
+  )
 }
 
-export default VirtualServers;
+export default VirtualServers

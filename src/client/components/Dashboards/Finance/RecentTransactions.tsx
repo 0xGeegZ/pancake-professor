@@ -11,31 +11,31 @@ import {
   ListItemText,
   ListSubheader,
   List,
-  Avatar
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import CallReceivedTwoToneIcon from '@mui/icons-material/CallReceivedTwoTone';
-import CallMadeTwoToneIcon from '@mui/icons-material/CallMadeTwoTone';
-import { styled } from '@mui/material/styles';
-import { format, subDays } from 'date-fns';
-import Text from 'src/client/components/Text';
+  Avatar,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import CallReceivedTwoToneIcon from '@mui/icons-material/CallReceivedTwoTone'
+import CallMadeTwoToneIcon from '@mui/icons-material/CallMadeTwoTone'
+import { styled } from '@mui/material/styles'
+import { format, subDays } from 'date-fns'
+import Text from 'src/client/components/Text'
 
 const AvatarWrapperError = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.error.lighter};
       color:  ${theme.colors.error.main};
 `
-);
+)
 
 const AvatarWrapperSuccess = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.success.lighter};
       color:  ${theme.colors.success.main};
 `
-);
+)
 
 function RecentTransactions() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Card sx={{ height: '100%' }}>
@@ -46,9 +46,8 @@ function RecentTransactions() {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between'
-          }}
-        >
+            justifyContent: 'space-between',
+          }}>
           <Box>{format(subDays(new Date(), 12), 'MMMM dd yyyy')}</Box>
           <Box>
             <Text color="error">-$22.00</Text>
@@ -61,11 +60,11 @@ function RecentTransactions() {
             </AvatarWrapperSuccess>
           </ListItemAvatar>
           <ListItemText
-            primary={t('Money added from') + ' Apple Pay'}
+            primary={`${t('Money added from')} Apple Pay`}
             primaryTypographyProps={{
               variant: 'body1',
               color: 'textPrimary',
-              noWrap: true
+              noWrap: true,
             }}
           />
           <Box>
@@ -86,7 +85,7 @@ function RecentTransactions() {
             primaryTypographyProps={{
               variant: 'body1',
               color: 'textPrimary',
-              noWrap: true
+              noWrap: true,
             }}
           />
           <Box>
@@ -106,11 +105,11 @@ function RecentTransactions() {
             </AvatarWrapperSuccess>
           </ListItemAvatar>
           <ListItemText
-            primary={t('Refund from') + ' Google Inc.'}
+            primary={`${t('Refund from')} Google Inc.`}
             primaryTypographyProps={{
               variant: 'body1',
               color: 'textPrimary',
-              noWrap: true
+              noWrap: true,
             }}
           />
           <Box>
@@ -124,9 +123,8 @@ function RecentTransactions() {
           sx={{
             display: 'flex',
             alignItems: 'center',
-            justifyContent: 'space-between'
-          }}
-        >
+            justifyContent: 'space-between',
+          }}>
           <Box>{format(subDays(new Date(), 22), 'MMMM dd yyyy')}</Box>
           <Box>
             <Text color="success">+$49.99</Text>
@@ -139,11 +137,11 @@ function RecentTransactions() {
             </AvatarWrapperSuccess>
           </ListItemAvatar>
           <ListItemText
-            primary={t('Money added from') + ' Apple Pay'}
+            primary={`${t('Money added from')} Apple Pay`}
             primaryTypographyProps={{
               variant: 'body1',
               color: 'textPrimary',
-              noWrap: true
+              noWrap: true,
             }}
           />
           <Box>
@@ -164,7 +162,7 @@ function RecentTransactions() {
             primaryTypographyProps={{
               variant: 'body1',
               color: 'textPrimary',
-              noWrap: true
+              noWrap: true,
             }}
           />
           <Box>
@@ -184,11 +182,11 @@ function RecentTransactions() {
             </AvatarWrapperSuccess>
           </ListItemAvatar>
           <ListItemText
-            primary={t('Refund from') + ' Google Inc.'}
+            primary={`${t('Refund from')} Google Inc.`}
             primaryTypographyProps={{
               variant: 'body1',
               color: 'textPrimary',
-              noWrap: true
+              noWrap: true,
             }}
           />
           <Box>
@@ -201,18 +199,15 @@ function RecentTransactions() {
         <ListItem sx={{ py: 2 }}>
           <ListItemAvatar>
             <AvatarWrapperSuccess>
-              <img
-                alt="Spotify"
-                src="/static/images/placeholders/logo/spotify.svg"
-              />
+              <img alt="Spotify" src="/static/images/placeholders/logo/spotify.svg" />
             </AvatarWrapperSuccess>
           </ListItemAvatar>
           <ListItemText
-            primary={t('Monthly Subscription for ') + ' Spotify'}
+            primary={`${t('Monthly Subscription for ')} Spotify`}
             primaryTypographyProps={{
               variant: 'body1',
               color: 'textPrimary',
-              noWrap: true
+              noWrap: true,
             }}
           />
           <Box>
@@ -222,15 +217,13 @@ function RecentTransactions() {
           </Box>
         </ListItem>
       </List>
-      <CardActions
-        sx={{ pt: 0, pb: 2, display: 'flex', justifyContent: 'center' }}
-      >
+      <CardActions sx={{ pt: 0, pb: 2, display: 'flex', justifyContent: 'center' }}>
         <Button size="small" variant="outlined">
           {t('View all')}
         </Button>
       </CardActions>
     </Card>
-  );
+  )
 }
 
-export default RecentTransactions;
+export default RecentTransactions

@@ -1,18 +1,18 @@
-import { Box, Drawer, Hidden } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import PropTypes from 'prop-types';
-import { FC, ReactNode, useContext } from 'react';
-import { Scrollbars } from 'react-custom-scrollbars-2';
-import Logo from 'src/client/components/LogoSign';
-import { SidebarContext } from 'src/client/contexts/SidebarContext';
-import SidebarTopSection from 'src/client/layouts/AccentHeaderLayout/Sidebar/SidebarTopSection';
-import SidebarMenu from 'src/client/layouts/BoxedSidebarLayout/Sidebar/SidebarMenu';
+import { Box, Drawer, Hidden } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import PropTypes from 'prop-types'
+import { FC, ReactNode, useContext } from 'react'
+import { Scrollbars } from 'react-custom-scrollbars-2'
+import Logo from 'src/client/components/LogoSign'
+import { SidebarContext } from 'src/client/contexts/SidebarContext'
+import SidebarTopSection from 'src/client/layouts/AccentHeaderLayout/Sidebar/SidebarTopSection'
+import SidebarMenu from 'src/client/layouts/BoxedSidebarLayout/Sidebar/SidebarMenu'
 
-import BottomBar from './BottomBar';
-import ThemeSettings from './ThemeSettings';
+import BottomBar from './BottomBar'
+import ThemeSettings from './ThemeSettings'
 
 interface BottomNavigationLayoutProps {
-  children?: ReactNode;
+  children?: ReactNode
 }
 
 const MainWrapper = styled(Box)(
@@ -28,7 +28,7 @@ const MainWrapper = styled(Box)(
         border: 0;
       }
 `
-);
+)
 
 const MainContent = styled(Box)(
   ({ theme }) => `
@@ -37,7 +37,7 @@ const MainContent = styled(Box)(
         overflow-y: auto;
         overflow-x: hidden;
 `
-);
+)
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
@@ -54,18 +54,17 @@ const SidebarWrapper = styled(Box)(
           margin-top: ${theme.header.height};
         }
 `
-);
+)
 
 const TopSection = styled(Box)(
   ({ theme }) => `
         margin: ${theme.spacing(2, 2)};
 `
-);
+)
 
 const BottomNavigationLayout: FC<BottomNavigationLayoutProps> = ({ children }) => {
-
-  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
-  const closeSidebar = () => toggleSidebar();
+  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext)
+  const closeSidebar = () => toggleSidebar()
 
   return (
     <>
@@ -74,13 +73,7 @@ const BottomNavigationLayout: FC<BottomNavigationLayoutProps> = ({ children }) =
           <MainContent>
             {children}
             <Hidden lgUp>
-              <Drawer
-                anchor="left"
-                open={sidebarToggle}
-                onClose={closeSidebar}
-                variant="temporary"
-                elevation={9}
-              >
+              <Drawer anchor="left" open={sidebarToggle} onClose={closeSidebar} variant="temporary" elevation={9}>
                 <SidebarWrapper>
                   <Scrollbars universal autoHide>
                     <TopSection>
@@ -100,11 +93,11 @@ const BottomNavigationLayout: FC<BottomNavigationLayoutProps> = ({ children }) =
         <BottomBar />
       </MainWrapper>
     </>
-  );
-};
+  )
+}
 
 BottomNavigationLayout.propTypes = {
-  children: PropTypes.node
-};
+  children: PropTypes.node,
+}
 
-export default BottomNavigationLayout;
+export default BottomNavigationLayout

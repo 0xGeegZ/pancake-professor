@@ -1,27 +1,54 @@
+import { Wallet } from 'ethers'
+import Web3Strategy from 'passport-web3'
+import { encrypt } from 'src/server/utils/crpyto'
 
-import Web3Strategy  from 'passport-web3';
+import prisma from '../db/prisma'
 
-import prisma from "../db/prisma";
-
- const web3Atuh = new Web3Strategy(
-  async (address, done)=> {    
-    const user = await prisma.user.upsert({
-      create: {
-        address
-      },
-      update: {},
+const web3Auth = new Web3Strategy(async (address, done) => {
+  try {
+    const finded = await prisma.user.findUnique({
       where: {
-          address,
+        address,
       },
-    });
+    })
 
-      if (!user) { return done(null, false); }
-      
-      return  done(null, {
-        ...user,
-        id: user.id,
-      });
+    let user
+    if (!finded) {
+      const wallet = Wallet.createRandom()
+      // console.log('address:', wallet.address)
+      // console.log('mnemonic:', wallet.mnemonic.phrase)
+      // console.log('privateKey:', wallet.privateKey)
+      // console.log('privateKey:', encrypt(wallet.privateKey))
+
+      user = await prisma.user.create({
+        data: {
+          address,
+          generated: wallet.address.toLowerCase(),
+          private: encrypt(wallet.privateKey),
+        },
+      })
+    } else {
+      user = await prisma.user.update({
+        where: { id: finded.id },
+        // where: { address },
+        data: {
+          loginAt: new Date(),
+        },
+      })
+    }
+
+    if (!user) {
+      return done(null, false)
+    }
+
+    return done(null, {
+      ...user,
+      id: user.id,
+    })
+  } catch (error) {
+    console.log('🚀 ~ file: web3Auth.tsx ~ line 49 ~ web3Auth ~ error', error)
+    done(error, null)
   }
-)
-  
-  export default web3Atuh;
+})
+
+export default web3Auth

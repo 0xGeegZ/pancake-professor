@@ -1,25 +1,25 @@
-import { useEffect, useRef } from 'react';
-import type { ReactElement } from 'react';
+import { useEffect, useRef } from 'react'
+import type { ReactElement } from 'react'
 
-import Head from 'next/head';
-import AccentHeaderLayout from "src/client/layouts/AccentHeaderLayout";
+import Head from 'next/head'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 
-import TopBarContent from 'src/client/components/Applications/Messenger/TopBarContent';
-import BottomBarContent from 'src/client/components/Applications/Messenger/BottomBarContent';
-import SidebarContent from 'src/client/components/Applications/Messenger/SidebarContent';
-import ChatContent from 'src/client/components/Applications/Messenger/ChatContent';
+import TopBarContent from 'src/client/components/Applications/Messenger/TopBarContent'
+import BottomBarContent from 'src/client/components/Applications/Messenger/BottomBarContent'
+import SidebarContent from 'src/client/components/Applications/Messenger/SidebarContent'
+import ChatContent from 'src/client/components/Applications/Messenger/ChatContent'
 
-import { Scrollbars } from 'react-custom-scrollbars-2';
+import { Scrollbars } from 'react-custom-scrollbars-2'
 
-import { Box } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { Box } from '@mui/material'
+import { styled } from '@mui/material/styles'
 
 const RootWrapper = styled(Box)(
   () => `
        height: 100%;
        display: flex;
 `
-);
+)
 
 const Sidebar = styled(Box)(
   ({ theme }) => `
@@ -27,7 +27,7 @@ const Sidebar = styled(Box)(
         background: ${theme.colors.alpha.white[100]};
         border-right: ${theme.colors.alpha.black[10]} solid 1px;
 `
-);
+)
 
 const ChatWindow = styled(Box)(
   () => `
@@ -37,7 +37,7 @@ const ChatWindow = styled(Box)(
         flex-direction: column;
         flex: 1;
 `
-);
+)
 
 const ChatTopBar = styled(Box)(
   ({ theme }) => `
@@ -45,28 +45,28 @@ const ChatTopBar = styled(Box)(
         border-bottom: ${theme.colors.alpha.black[10]} solid 1px;
         padding: ${theme.spacing(3)};
 `
-);
+)
 
 const ChatMain = styled(Box)(
   () => `
         flex: 1;
 `
-);
+)
 
 const ChatBottomBar = styled(Box)(
   ({ theme }) => `
         padding: ${theme.spacing(3)};
 `
-);
+)
 
 function ApplicationsMessenger() {
-  const ref = useRef<any>(null);
+  const ref = useRef<any>(null)
 
   useEffect(() => {
     if (ref.current) {
-      ref.current.scrollToBottom();
+      ref.current.scrollToBottom()
     }
-  });
+  })
 
   return (
     <>
@@ -94,15 +94,11 @@ function ApplicationsMessenger() {
         </ChatWindow>
       </RootWrapper>
     </>
-  );
+  )
 }
 
-export default ApplicationsMessenger;
+export default ApplicationsMessenger
 
 ApplicationsMessenger.getLayout = function getLayout(page: ReactElement) {
-  return (
-      <AccentHeaderLayout>
-          {page}
-      </AccentHeaderLayout>
-  )
+  return <AccentHeaderLayout>{page}</AccentHeaderLayout>
 }

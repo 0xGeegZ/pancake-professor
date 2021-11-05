@@ -9,10 +9,10 @@ import {
   ListSubheader,
   ListItemText,
   Avatar,
-  useTheme
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+  useTheme,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const ListWrapper = styled(List)(
   () => `
@@ -21,11 +21,11 @@ const ListWrapper = styled(List)(
         margin: 0;
       }
 `
-);
+)
 
 function PopularTags() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   return (
     <Card sx={{ height: '100%' }}>
@@ -35,40 +35,36 @@ function PopularTags() {
         <ListItem
           sx={{
             color: `${theme.colors.primary.main}`,
-            '&:hover': { color: `${theme.colors.primary.dark}` }
+            '&:hover': { color: `${theme.colors.primary.dark}` },
           }}
-          button
-        >
+          button>
           <ListItemText primary="#HTML" />
         </ListItem>
         <Divider />
         <ListItem
           sx={{
             color: `${theme.colors.primary.main}`,
-            '&:hover': { color: `${theme.colors.primary.dark}` }
+            '&:hover': { color: `${theme.colors.primary.dark}` },
           }}
-          button
-        >
+          button>
           <ListItemText primary="#software_development" />
         </ListItem>
         <Divider />
         <ListItem
           sx={{
             color: `${theme.colors.primary.main}`,
-            '&:hover': { color: `${theme.colors.primary.dark}` }
+            '&:hover': { color: `${theme.colors.primary.dark}` },
           }}
-          button
-        >
+          button>
           <ListItemText primary="#TrendingInfuencers" />
         </ListItem>
         <Divider />
         <ListItem
           sx={{
             color: `${theme.colors.primary.main}`,
-            '&:hover': { color: `${theme.colors.primary.dark}` }
+            '&:hover': { color: `${theme.colors.primary.dark}` },
           }}
-          button
-        >
+          button>
           <ListItemText primary="#investorsWatch2022" />
         </ListItem>
         <Divider />
@@ -85,16 +81,15 @@ function PopularTags() {
                 width: 38,
                 height: 38,
                 background: `${theme.colors.info.main}`,
-                color: `${theme.palette.info.contrastText}`
-              }}
-            >
+                color: `${theme.palette.info.contrastText}`,
+              }}>
               WD
             </Avatar>
           </ListItemAvatar>
           <ListItemText
             primaryTypographyProps={{
               variant: 'h5',
-              color: `${theme.colors.alpha.black[100]}`
+              color: `${theme.colors.alpha.black[100]}`,
             }}
             primary="Web Designers Lounge"
           />
@@ -107,16 +102,15 @@ function PopularTags() {
                 width: 38,
                 height: 38,
                 background: `${theme.colors.alpha.black[100]}`,
-                color: `${theme.colors.alpha.white[100]}`
-              }}
-            >
+                color: `${theme.colors.alpha.white[100]}`,
+              }}>
               D
             </Avatar>
           </ListItemAvatar>
           <ListItemText
             primaryTypographyProps={{
               variant: 'h5',
-              color: `${theme.colors.alpha.black[100]}`
+              color: `${theme.colors.alpha.black[100]}`,
             }}
             primary="Writer’s Digest Daily"
           />
@@ -124,22 +118,19 @@ function PopularTags() {
         <Divider />
         <ListItem button>
           <ListItemAvatar>
-            <Avatar
-              sx={{ width: 38, height: 38 }}
-              src="/static/images/logo/google.svg"
-            />
+            <Avatar sx={{ width: 38, height: 38 }} src="/static/images/logo/google.svg" />
           </ListItemAvatar>
           <ListItemText
             primaryTypographyProps={{
               variant: 'h5',
-              color: `${theme.colors.alpha.black[100]}`
+              color: `${theme.colors.alpha.black[100]}`,
             }}
             primary="Google Developers"
           />
         </ListItem>
       </ListWrapper>
     </Card>
-  );
+  )
 }
 
-export default PopularTags;
+export default PopularTags

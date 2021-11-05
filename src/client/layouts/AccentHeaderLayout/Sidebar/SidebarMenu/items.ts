@@ -1,42 +1,42 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from 'react'
 
-import AnalyticsTwoToneIcon from '@mui/icons-material/AnalyticsTwoTone';
-import AccountBalanceTwoToneIcon from '@mui/icons-material/AccountBalanceTwoTone';
-import StoreTwoToneIcon from '@mui/icons-material/StoreTwoTone';
-import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone';
-import MonetizationOnTwoToneIcon from '@mui/icons-material/MonetizationOnTwoTone';
-import KitchenTwoToneIcon from '@mui/icons-material/KitchenTwoTone';
-import HealthAndSafetyTwoToneIcon from '@mui/icons-material/HealthAndSafetyTwoTone';
-import ContactSupportTwoToneIcon from '@mui/icons-material/ContactSupportTwoTone';
-import LocalLibraryTwoToneIcon from '@mui/icons-material/LocalLibraryTwoTone';
-import DnsTwoToneIcon from '@mui/icons-material/DnsTwoTone';
-import TaskAltTwoToneIcon from '@mui/icons-material/TaskAltTwoTone';
-import DocumentScannerTwoToneIcon from '@mui/icons-material/DocumentScannerTwoTone';
-import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone';
-import QuestionAnswerTwoToneIcon from '@mui/icons-material/QuestionAnswerTwoTone';
-import DashboardCustomizeTwoToneIcon from '@mui/icons-material/DashboardCustomizeTwoTone';
-import AssignmentIndTwoToneIcon from '@mui/icons-material/AssignmentIndTwoTone';
-import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone';
-import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone';
-import VpnKeyTwoToneIcon from '@mui/icons-material/VpnKeyTwoTone';
-import ErrorTwoToneIcon from '@mui/icons-material/ErrorTwoTone';
-import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone';
-import SupportTwoToneIcon from '@mui/icons-material/SupportTwoTone';
-import ReceiptTwoToneIcon from '@mui/icons-material/ReceiptTwoTone';
-import BackupTableTwoToneIcon from '@mui/icons-material/BackupTableTwoTone';
-import SmartToyTwoToneIcon from '@mui/icons-material/SmartToyTwoTone';
+import AnalyticsTwoToneIcon from '@mui/icons-material/AnalyticsTwoTone'
+import AccountBalanceTwoToneIcon from '@mui/icons-material/AccountBalanceTwoTone'
+import StoreTwoToneIcon from '@mui/icons-material/StoreTwoTone'
+import AccountBalanceWalletTwoToneIcon from '@mui/icons-material/AccountBalanceWalletTwoTone'
+import MonetizationOnTwoToneIcon from '@mui/icons-material/MonetizationOnTwoTone'
+import KitchenTwoToneIcon from '@mui/icons-material/KitchenTwoTone'
+import HealthAndSafetyTwoToneIcon from '@mui/icons-material/HealthAndSafetyTwoTone'
+import ContactSupportTwoToneIcon from '@mui/icons-material/ContactSupportTwoTone'
+import LocalLibraryTwoToneIcon from '@mui/icons-material/LocalLibraryTwoTone'
+import DnsTwoToneIcon from '@mui/icons-material/DnsTwoTone'
+import TaskAltTwoToneIcon from '@mui/icons-material/TaskAltTwoTone'
+import DocumentScannerTwoToneIcon from '@mui/icons-material/DocumentScannerTwoTone'
+import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone'
+import QuestionAnswerTwoToneIcon from '@mui/icons-material/QuestionAnswerTwoTone'
+import DashboardCustomizeTwoToneIcon from '@mui/icons-material/DashboardCustomizeTwoTone'
+import AssignmentIndTwoToneIcon from '@mui/icons-material/AssignmentIndTwoTone'
+import AccountTreeTwoToneIcon from '@mui/icons-material/AccountTreeTwoTone'
+import StorefrontTwoToneIcon from '@mui/icons-material/StorefrontTwoTone'
+import VpnKeyTwoToneIcon from '@mui/icons-material/VpnKeyTwoTone'
+import ErrorTwoToneIcon from '@mui/icons-material/ErrorTwoTone'
+import DesignServicesTwoToneIcon from '@mui/icons-material/DesignServicesTwoTone'
+import SupportTwoToneIcon from '@mui/icons-material/SupportTwoTone'
+import ReceiptTwoToneIcon from '@mui/icons-material/ReceiptTwoTone'
+import BackupTableTwoToneIcon from '@mui/icons-material/BackupTableTwoTone'
+import SmartToyTwoToneIcon from '@mui/icons-material/SmartToyTwoTone'
 
 export interface MenuItem {
-  link?: string;
-  icon?: ReactNode;
-  badge?: string;
-  items?: MenuItem[];
-  name: string;
+  link?: string
+  icon?: ReactNode
+  badge?: string
+  items?: MenuItem[]
+  name: string
 }
 
 export interface MenuItems {
-  items: MenuItem[];
-  heading: string;
+  items: MenuItem[]
+  heading: string
 }
 
 const menuItems: MenuItems[] = [
@@ -51,31 +51,31 @@ const menuItems: MenuItems[] = [
         items: [
           {
             name: 'Accent header',
-            link: '/dashboards/analytics'
+            link: '/dashboards/analytics',
           },
           {
             name: 'Accent sidebar',
-            link: '/dashboards/banking'
+            link: '/dashboards/banking',
           },
           {
             name: 'Boxed sidebar',
-            link: '/dashboards/monitoring'
+            link: '/dashboards/monitoring',
           },
           {
             name: 'Collapsed sidebar',
-            link: '/dashboards/helpdesk'
+            link: '/dashboards/helpdesk',
           },
           {
             name: 'Bottom navigation',
-            link: '/dashboards/automation'
+            link: '/dashboards/automation',
           },
           {
             name: 'Top navigation',
-            link: '/dashboards/finance'
-          }
-        ]
+            link: '/dashboards/finance',
+          },
+        ],
       },
-    ]
+    ],
   },
   {
     heading: 'Dashboards',
@@ -84,12 +84,12 @@ const menuItems: MenuItems[] = [
         name: 'Automation',
         icon: SmartToyTwoToneIcon,
         link: '/dashboards/automation',
-        badge: 'Hot'
+        badge: 'Hot',
       },
       {
         name: 'Analytics',
         icon: AnalyticsTwoToneIcon,
-        link: '/dashboards/analytics'
+        link: '/dashboards/analytics',
       },
       {
         name: 'Banking',
@@ -99,22 +99,22 @@ const menuItems: MenuItems[] = [
       {
         name: 'Commerce',
         icon: StoreTwoToneIcon,
-        link: '/dashboards/commerce'
+        link: '/dashboards/commerce',
       },
       {
         name: 'Crypto',
         icon: AccountBalanceWalletTwoToneIcon,
-        link: '/dashboards/crypto'
+        link: '/dashboards/crypto',
       },
       {
         name: 'Finance',
         icon: MonetizationOnTwoToneIcon,
-        link: '/dashboards/finance'
+        link: '/dashboards/finance',
       },
       {
         name: 'Fitness',
         icon: KitchenTwoToneIcon,
-        link: '/dashboards/fitness'
+        link: '/dashboards/fitness',
       },
       {
         name: 'Healthcare',
@@ -124,35 +124,35 @@ const menuItems: MenuItems[] = [
           {
             name: 'Doctors Page',
             badge: 'Hot',
-            link: '/dashboards/healthcare/doctor'
+            link: '/dashboards/healthcare/doctor',
           },
           {
             name: 'Hospital Overview',
-            link: '/dashboards/healthcare/hospital'
-          }
-        ]
+            link: '/dashboards/healthcare/hospital',
+          },
+        ],
       },
       {
         name: 'Helpdesk',
         icon: ContactSupportTwoToneIcon,
-        link: '/dashboards/helpdesk'
+        link: '/dashboards/helpdesk',
       },
       {
         name: 'Learning',
         icon: LocalLibraryTwoToneIcon,
-        link: '/dashboards/learning'
+        link: '/dashboards/learning',
       },
       {
         name: 'Monitoring',
         icon: DnsTwoToneIcon,
-        link: '/dashboards/monitoring'
+        link: '/dashboards/monitoring',
       },
       {
         name: 'Tasks',
         icon: TaskAltTwoToneIcon,
-        link: '/dashboards/tasks'
-      }
-    ]
+        link: '/dashboards/tasks',
+      },
+    ],
   },
   {
     heading: 'Applications',
@@ -160,24 +160,24 @@ const menuItems: MenuItems[] = [
       {
         name: 'File Manager',
         icon: DocumentScannerTwoToneIcon,
-        link: '/applications/file-manager'
+        link: '/applications/file-manager',
       },
       {
         name: 'Jobs Platform',
         icon: WorkTwoToneIcon,
-        link: '/applications/jobs-platform'
+        link: '/applications/jobs-platform',
       },
       {
         name: 'Messenger',
         icon: QuestionAnswerTwoToneIcon,
-        link: '/applications/messenger'
+        link: '/applications/messenger',
       },
       {
         name: 'Projects Board',
         icon: DashboardCustomizeTwoToneIcon,
-        link: '/applications/projects-board'
-      }
-    ]
+        link: '/applications/projects-board',
+      },
+    ],
   },
   {
     heading: 'Management',
@@ -185,12 +185,12 @@ const menuItems: MenuItems[] = [
       {
         name: 'Users',
         icon: AssignmentIndTwoToneIcon,
-        link: '/management/users'
+        link: '/management/users',
       },
       {
         name: 'Projects',
         icon: AccountTreeTwoToneIcon,
-        link: '/management/projects'
+        link: '/management/projects',
       },
       {
         name: 'Commerce',
@@ -199,24 +199,24 @@ const menuItems: MenuItems[] = [
         items: [
           {
             name: 'Shop',
-            link: '/management/commerce/shop'
+            link: '/management/commerce/shop',
           },
           {
             name: 'Products List',
-            link: '/management/commerce/products'
+            link: '/management/commerce/products',
           },
           {
             name: 'Create Product',
-            link: '/management/commerce/products/create'
-          }
-        ]
+            link: '/management/commerce/products/create',
+          },
+        ],
       },
       {
         name: 'Invoices',
         icon: ReceiptTwoToneIcon,
-        link: '/management/invoices'
+        link: '/management/invoices',
       },
-    ]
+    ],
   },
   {
     heading: 'Extra Pages',
@@ -231,36 +231,36 @@ const menuItems: MenuItems[] = [
             items: [
               {
                 name: 'Basic',
-                link: '/account/login-basic'
+                link: '/account/login-basic',
               },
               {
                 name: 'Cover',
-                link: '/account/login-cover'
-              }
-            ]
+                link: '/account/login-cover',
+              },
+            ],
           },
           {
             name: 'Register',
             items: [
               {
                 name: 'Basic',
-                link: '/account/register-basic'
+                link: '/account/register-basic',
               },
               {
                 name: 'Cover',
-                link: '/account/register-cover'
+                link: '/account/register-cover',
               },
               {
                 name: 'Wizard',
-                link: '/account/register-wizard'
-              }
-            ]
+                link: '/account/register-wizard',
+              },
+            ],
           },
           {
             name: 'Recover Password',
-            link: '/account/recover-password'
-          }
-        ]
+            link: '/account/recover-password',
+          },
+        ],
       },
       {
         name: 'Status',
@@ -269,23 +269,23 @@ const menuItems: MenuItems[] = [
         items: [
           {
             name: 'Error 404',
-            link: '/status/404'
+            link: '/status/404',
           },
           {
             name: 'Error 500',
-            link: '/status/500'
+            link: '/status/500',
           },
           {
             name: 'Maintenance',
-            link: '/status/maintenance'
+            link: '/status/maintenance',
           },
           {
             name: 'Coming Soon',
-            link: '/status/coming-soon'
-          }
-        ]
-      }
-    ]
+            link: '/status/coming-soon',
+          },
+        ],
+      },
+    ],
   },
   {
     heading: 'Foundation',
@@ -293,15 +293,15 @@ const menuItems: MenuItems[] = [
       {
         name: 'Overview',
         link: '/',
-        icon: DesignServicesTwoToneIcon
+        icon: DesignServicesTwoToneIcon,
       },
       {
         name: 'Documentation',
         icon: SupportTwoToneIcon,
-        link: '/docs'
-      }
-    ]
-  }
-];
+        link: '/docs',
+      },
+    ],
+  },
+]
 
-export default menuItems;
+export default menuItems

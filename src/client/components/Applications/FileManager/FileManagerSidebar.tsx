@@ -8,27 +8,27 @@ import {
   ListItem,
   ListItemText,
   Alert,
-  Button
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import Gauge from 'src/client/components/Gauge';
-import { buildStyles } from 'react-circular-progressbar';
-import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone';
-import ImageTwoToneIcon from '@mui/icons-material/ImageTwoTone';
-import VideocamTwoToneIcon from '@mui/icons-material/VideocamTwoTone';
-import TextSnippetTwoToneIcon from '@mui/icons-material/TextSnippetTwoTone';
-import { useDropzone } from 'react-dropzone';
-import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone';
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
-import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone';
+  Button,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import Gauge from 'src/client/components/Gauge'
+import { buildStyles } from 'react-circular-progressbar'
+import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone'
+import ImageTwoToneIcon from '@mui/icons-material/ImageTwoTone'
+import VideocamTwoToneIcon from '@mui/icons-material/VideocamTwoTone'
+import TextSnippetTwoToneIcon from '@mui/icons-material/TextSnippetTwoTone'
+import { useDropzone } from 'react-dropzone'
+import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone'
+import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone'
 
 const WarningTwoToneIconWrapper = styled(WarningTwoToneIcon)(
   ({ theme }) => `
     color: ${theme.colors.warning.main};
 `
-);
+)
 
 const ButtonContrast = styled(Button)(
   ({ theme }) => `
@@ -39,7 +39,7 @@ const ButtonContrast = styled(Button)(
       background: ${theme.colors.alpha.trueWhite[30]};
     }
 `
-);
+)
 
 const BoxUploadWrapper = styled(Box)(
   ({ theme }) => `
@@ -60,7 +60,7 @@ const BoxUploadWrapper = styled(Box)(
       border-color: ${theme.colors.alpha.trueWhite[70]};
     }
 `
-);
+)
 
 const UploadBox = styled(Box)(
   ({ theme }) => `
@@ -68,25 +68,25 @@ const UploadBox = styled(Box)(
     padding: ${theme.spacing(2)};
     background: ${theme.colors.alpha.trueWhite[10]};
 `
-);
+)
 
 const TypographyPrimary = styled(Typography)(
   ({ theme }) => `
     color: ${theme.colors.alpha.trueWhite[100]};
   `
-);
+)
 
 const TypographySecondary = styled(Typography)(
   ({ theme }) => `
     color: ${theme.colors.alpha.trueWhite[70]};
   `
-);
+)
 
 const DividerContrast = styled(Divider)(
   ({ theme }) => `
     background: ${theme.colors.alpha.trueWhite[10]};
   `
-);
+)
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -94,7 +94,7 @@ const AvatarWrapper = styled(Avatar)(
     width: ${theme.spacing(7)};
     height: ${theme.spacing(7)};
 `
-);
+)
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -102,7 +102,7 @@ const AvatarSuccess = styled(Avatar)(
     width: ${theme.spacing(7)};
     height: ${theme.spacing(7)};
 `
-);
+)
 
 const AvatarDanger = styled(Avatar)(
   ({ theme }) => `
@@ -110,7 +110,7 @@ const AvatarDanger = styled(Avatar)(
     width: ${theme.spacing(7)};
     height: ${theme.spacing(7)};
 `
-);
+)
 
 const BoxUpgrade = styled(Box)(
   ({ theme }) => `
@@ -124,25 +124,18 @@ const BoxUpgrade = styled(Box)(
       right: 0;
     }
 `
-);
+)
 
 function FileManagerSidebar() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const data = {
-    percentage: 68.45
-  };
+    percentage: 68.45,
+  }
 
-  const {
-    acceptedFiles,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-    getRootProps,
-    getInputProps
-  } = useDropzone({
-    accept: 'image/jpeg, image/png'
-  });
+  const { acceptedFiles, isDragActive, isDragAccept, isDragReject, getRootProps, getInputProps } = useDropzone({
+    accept: 'image/jpeg, image/png',
+  })
 
   const files = acceptedFiles.map((file, index) => (
     <ListItem disableGutters component="div" key={index}>
@@ -150,7 +143,7 @@ function FileManagerSidebar() {
       <b>{file.size} bytes</b>
       <DividerContrast />
     </ListItem>
-  ));
+  ))
 
   return (
     <Box>
@@ -167,7 +160,7 @@ function FileManagerSidebar() {
             text={`${data.percentage}%`}
             color="trueWhite"
             size="large"
-          ></Gauge>
+          />
 
           <Box pl={2} pt={2}>
             <WarningTwoToneIconWrapper />
@@ -279,9 +272,7 @@ function FileManagerSidebar() {
                 <AvatarSuccess variant="rounded">
                   <CheckTwoToneIcon />
                 </AvatarSuccess>
-                <TypographyPrimary sx={{ mt: 2 }}>
-                  {t('Drop the files to start uploading')}
-                </TypographyPrimary>
+                <TypographyPrimary sx={{ mt: 2 }}>{t('Drop the files to start uploading')}</TypographyPrimary>
               </>
             )}
             {isDragReject && (
@@ -289,9 +280,7 @@ function FileManagerSidebar() {
                 <AvatarDanger variant="rounded">
                   <CloseTwoToneIcon />
                 </AvatarDanger>
-                <TypographyPrimary sx={{ mt: 2 }}>
-                  {t('You cannot upload these file types')}
-                </TypographyPrimary>
+                <TypographyPrimary sx={{ mt: 2 }}>{t('You cannot upload these file types')}</TypographyPrimary>
               </>
             )}
             {!isDragActive && (
@@ -299,9 +288,7 @@ function FileManagerSidebar() {
                 <AvatarWrapper variant="rounded">
                   <CloudUploadTwoToneIcon />
                 </AvatarWrapper>
-                <TypographyPrimary sx={{ mt: 2 }}>
-                  {t('Drag & drop files here')}
-                </TypographyPrimary>
+                <TypographyPrimary sx={{ mt: 2 }}>{t('Drag & drop files here')}</TypographyPrimary>
               </>
             )}
           </BoxUploadWrapper>
@@ -330,14 +317,11 @@ function FileManagerSidebar() {
           <ButtonContrast startIcon={<SpeedTwoToneIcon />} variant="contained">
             {t('Increase storage')}
           </ButtonContrast>
-          <img
-            src="/static/images/placeholders/illustrations/2.png"
-            alt="..."
-          />
+          <img src="/static/images/placeholders/illustrations/2.png" alt="..." />
         </BoxUpgrade>
       </Box>
     </Box>
-  );
+  )
 }
 
-export default FileManagerSidebar;
+export default FileManagerSidebar

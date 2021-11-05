@@ -1,38 +1,38 @@
-import { useState, useEffect, useCallback } from 'react';
-import axios from 'src/client/utils/axios';
-import type { ReactElement } from 'react';
-import AccentHeaderLayout from "src/client/layouts/AccentHeaderLayout";
+import { Grid } from '@mui/material'
+import Head from 'next/head'
+import { useCallback, useEffect, useState } from 'react'
+import Footer from 'src/client/components/Footer'
+import PageHeader from 'src/client/components/Management/Users/PageHeader'
+import Results from 'src/client/components/Management/Users/UsersList'
+import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
+import useRefMounted from 'src/client/hooks/useRefMounted'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
+import axios from 'src/client/utils/axios'
 
-import Head from 'next/head';
-import PageHeader from 'src/client/components/Management/Users/PageHeader';
-import Footer from 'src/client/components/Footer';
-
-import { Grid } from '@mui/material';
-import useRefMounted from 'src/client/hooks/useRefMounted';
-import type { User } from 'src/client/models/user';
-import PageTitleWrapper from 'src/client/components/PageTitleWrapper';
-
-import Results from 'src/client/components/Management/Users/Results';
+import type { ReactElement } from 'react'
+import type { User } from 'src/client/models/user'
 
 function ManagementUsers() {
-  const isMountedRef = useRefMounted();
-  const [users, setUsers] = useState<User[]>([]);
+  const isMountedRef = useRefMounted()
+  const [users, setUsers] = useState<User[]>([])
+  const [fetching, setFetching] = useState<boolean>(true)
 
   const getUsers = useCallback(async () => {
     try {
-      const response = await axios.get<{ users: User[] }>('/api/users');
+      const response = await axios.get<{ users: User[] }>('/api/users')
 
       if (isMountedRef.current) {
-        setUsers(response.data.users);
+        setUsers(response.data.users)
+        setFetching(false)
       }
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
-  }, [isMountedRef]);
+  }, [isMountedRef])
 
   useEffect(() => {
-    getUsers();
-  }, [getUsers]);
+    getUsers()
+  }, [getUsers])
 
   return (
     <>
@@ -43,29 +43,18 @@ function ManagementUsers() {
         <PageHeader />
       </PageTitleWrapper>
 
-      <Grid
-        sx={{ px: 4 }}
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={3}
-      >
+      <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
         <Grid item xs={12}>
-          <Results users={users} />
+          <Results users={users} fetching={fetching} />
         </Grid>
       </Grid>
       <Footer />
     </>
-  );
+  )
 }
 
-export default ManagementUsers;
+export default ManagementUsers
 
 ManagementUsers.getLayout = function getLayout(page: ReactElement) {
-  return (
-      <AccentHeaderLayout>
-          {page}
-      </AccentHeaderLayout>
-  )
+  return <AccentHeaderLayout>{page}</AccentHeaderLayout>
 }

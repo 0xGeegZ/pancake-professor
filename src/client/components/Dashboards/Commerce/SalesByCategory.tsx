@@ -1,24 +1,15 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  Typography,
-  Grid,
-  Divider,
-  useTheme,
-  Box
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
+import { Card, CardContent, CardHeader, Typography, Grid, Divider, useTheme, Box } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
 
-import SalesCategoryChart from './SalesCategoryChart';
+import SalesCategoryChart from './SalesCategoryChart'
 
 const SalesCategoryChartWrapper = styled(SalesCategoryChart)(
   () => `
               width: 100%;
               height: 100%;
 `
-);
+)
 
 const DotLegend = styled('span')(
   ({ theme }) => `
@@ -28,11 +19,11 @@ const DotLegend = styled('span')(
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 function SalesByCategory() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   const sales = {
     datasets: [
@@ -42,24 +33,24 @@ function SalesByCategory() {
           theme.palette.primary.main,
           theme.palette.success.main,
           theme.palette.warning.main,
-          theme.palette.info.main
+          theme.palette.info.main,
         ],
         hoverBackgroundColor: [
           theme.palette.primary.light,
           theme.palette.success.light,
           theme.palette.warning.light,
-          theme.palette.info.light
+          theme.palette.info.light,
         ],
         hoverBorderColor: [
           theme.colors.primary.lighter,
           theme.colors.success.lighter,
           theme.colors.warning.lighter,
-          theme.colors.info.lighter
-        ]
-      }
+          theme.colors.info.lighter,
+        ],
+      },
     ],
-    labels: [t('Electronics'), t('Furniture'), t('Fashion'), t('Home & Decor')]
-  };
+    labels: [t('Electronics'), t('Furniture'), t('Fashion'), t('Home & Decor')],
+  }
 
   return (
     <Card>
@@ -67,13 +58,7 @@ function SalesByCategory() {
       <Divider />
       <CardContent>
         <Grid container spacing={3}>
-          <Grid
-            md={6}
-            item
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
+          <Grid md={6} item display="flex" justifyContent="center" alignItems="center">
             <Box style={{ width: '200px', height: '200px' }}>
               <SalesCategoryChartWrapper data={sales} />
             </Box>
@@ -88,21 +73,19 @@ function SalesByCategory() {
                     py: 0.5,
                     display: 'flex',
                     alignItems: 'center',
-                    mr: 2
-                  }}
-                >
+                    mr: 2,
+                  }}>
                   <DotLegend
                     style={{
-                      background: `${sales.datasets[0].backgroundColor[i]}`
+                      background: `${sales.datasets[0].backgroundColor[i]}`,
                     }}
                   />
                   <span
                     style={{
                       paddingRight: 6,
                       fontSize: `${theme.typography.pxToRem(11)}`,
-                      color: `${sales.datasets[0].backgroundColor[i]}`
-                    }}
-                  >
+                      color: `${sales.datasets[0].backgroundColor[i]}`,
+                    }}>
                     {sales.datasets[0].data[i]}%
                   </span>
                   {label}
@@ -113,7 +96,7 @@ function SalesByCategory() {
         </Grid>
       </CardContent>
     </Card>
-  );
+  )
 }
 
-export default SalesByCategory;
+export default SalesByCategory

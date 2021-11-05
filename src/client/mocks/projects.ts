@@ -1,8 +1,8 @@
-import { mock } from 'src/client/utils/axios';
-import type { Project } from 'src/client/models/project';
-import { subDays } from 'date-fns';
+import { mock } from 'src/client/utils/axios'
+import type { Project } from 'src/client/models/project'
+import { subDays } from 'date-fns'
 
-let projects: Project[] = [
+const projects: Project[] = [
   {
     id: '1',
     name: 'Cebus apella',
@@ -15,38 +15,37 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '2',
         name: 'Darice Malyon',
-        avatar: '/static/images/avatars/2.jpg'
+        avatar: '/static/images/avatars/2.jpg',
       },
       {
         id: '3',
         name: 'Dwain Culpan',
-        avatar: '/static/images/avatars/3.jpg'
+        avatar: '/static/images/avatars/3.jpg',
       },
       {
         id: '4',
         name: 'Carleton Henric',
-        avatar: '/static/images/avatars/4.jpg'
+        avatar: '/static/images/avatars/4.jpg',
       },
       {
         id: '5',
         name: 'Dillie Considine',
-        avatar: '/static/images/avatars/5.jpg'
-      }
+        avatar: '/static/images/avatars/5.jpg',
+      },
     ],
     progress: 56,
-    status: 'completed'
+    status: 'completed',
   },
   {
     id: '2',
     name: 'Macropus agilis',
     screenshot: '/static/images/placeholders/fitness/2.jpg',
-    description:
-      'Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio.',
+    description: 'Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio.',
     tags: ['Backend'],
     startDate: subDays(new Date(), 2).getTime(),
     dueDate: subDays(new Date(), 5).getTime(),
@@ -54,16 +53,16 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '3',
         name: 'Dwain Culpan',
-        avatar: '/static/images/avatars/3.jpg'
-      }
+        avatar: '/static/images/avatars/3.jpg',
+      },
     ],
     progress: 45,
-    status: 'not_started'
+    status: 'not_started',
   },
   {
     id: '3',
@@ -78,16 +77,16 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '5',
         name: 'Dillie Considine',
-        avatar: '/static/images/avatars/5.jpg'
-      }
+        avatar: '/static/images/avatars/5.jpg',
+      },
     ],
     progress: 35,
-    status: 'completed'
+    status: 'completed',
   },
   {
     id: '4',
@@ -102,28 +101,27 @@ let projects: Project[] = [
       {
         id: '2',
         name: 'Darice Malyon',
-        avatar: '/static/images/avatars/2.jpg'
+        avatar: '/static/images/avatars/2.jpg',
       },
       {
         id: '4',
         name: 'Carleton Henric',
-        avatar: '/static/images/avatars/4.jpg'
+        avatar: '/static/images/avatars/4.jpg',
       },
       {
         id: '3',
         name: 'Dwain Culpan',
-        avatar: '/static/images/avatars/3.jpg'
-      }
+        avatar: '/static/images/avatars/3.jpg',
+      },
     ],
     progress: 76,
-    status: 'in_progress'
+    status: 'in_progress',
   },
   {
     id: '5',
     name: 'Nucifraga columbiana',
     screenshot: '/static/images/placeholders/fitness/1.jpg',
-    description:
-      'Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.',
+    description: 'Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.',
     tags: ['UX', 'Marketing Research'],
     startDate: subDays(new Date(), 5).getTime(),
     dueDate: subDays(new Date(), 15).getTime(),
@@ -131,23 +129,22 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '2',
         name: 'Darice Malyon',
-        avatar: '/static/images/avatars/2.jpg'
-      }
+        avatar: '/static/images/avatars/2.jpg',
+      },
     ],
     progress: 15,
-    status: 'in_progress'
+    status: 'in_progress',
   },
   {
     id: '6',
     name: 'Drymarchon corias couperi',
     screenshot: '/static/images/placeholders/fitness/2.jpg',
-    description:
-      'Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.',
+    description: 'Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.',
     tags: ['Frontend', 'Marketing'],
     startDate: subDays(new Date(), 6).getTime(),
     dueDate: subDays(new Date(), 12).getTime(),
@@ -155,31 +152,31 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '2',
         name: 'Darice Malyon',
-        avatar: '/static/images/avatars/2.jpg'
+        avatar: '/static/images/avatars/2.jpg',
       },
       {
         id: '3',
         name: 'Dwain Culpan',
-        avatar: '/static/images/avatars/3.jpg'
+        avatar: '/static/images/avatars/3.jpg',
       },
       {
         id: '4',
         name: 'Carleton Henric',
-        avatar: '/static/images/avatars/4.jpg'
+        avatar: '/static/images/avatars/4.jpg',
       },
       {
         id: '5',
         name: 'Dillie Considine',
-        avatar: '/static/images/avatars/5.jpg'
-      }
+        avatar: '/static/images/avatars/5.jpg',
+      },
     ],
     progress: 98,
-    status: 'in_progress'
+    status: 'in_progress',
   },
   {
     id: '7',
@@ -193,26 +190,26 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '3',
         name: 'Dwain Culpan',
-        avatar: '/static/images/avatars/3.jpg'
+        avatar: '/static/images/avatars/3.jpg',
       },
       {
         id: '2',
         name: 'Darice Malyon',
-        avatar: '/static/images/avatars/2.jpg'
+        avatar: '/static/images/avatars/2.jpg',
       },
       {
         id: '5',
         name: 'Dillie Considine',
-        avatar: '/static/images/avatars/5.jpg'
-      }
+        avatar: '/static/images/avatars/5.jpg',
+      },
     ],
     progress: 76,
-    status: 'in_progress'
+    status: 'in_progress',
   },
   {
     id: '8',
@@ -227,23 +224,22 @@ let projects: Project[] = [
       {
         id: '3',
         name: 'Dwain Culpan',
-        avatar: '/static/images/avatars/3.jpg'
+        avatar: '/static/images/avatars/3.jpg',
       },
       {
         id: '4',
         name: 'Carleton Henric',
-        avatar: '/static/images/avatars/4.jpg'
-      }
+        avatar: '/static/images/avatars/4.jpg',
+      },
     ],
     progress: 38,
-    status: 'not_started'
+    status: 'not_started',
   },
   {
     id: '9',
     name: 'Pseudocheirus peregrinus',
     screenshot: '/static/images/placeholders/fitness/1.jpg',
-    description:
-      'Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.',
+    description: 'Duis bibendum. Morbi non quam nec dui luctus rutrum. Nulla tellus.',
     tags: ['Design'],
     startDate: subDays(new Date(), 9).getTime(),
     dueDate: subDays(new Date(), 43).getTime(),
@@ -251,28 +247,27 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '2',
         name: 'Darice Malyon',
-        avatar: '/static/images/avatars/2.jpg'
+        avatar: '/static/images/avatars/2.jpg',
       },
       {
         id: '5',
         name: 'Dillie Considine',
-        avatar: '/static/images/avatars/5.jpg'
-      }
+        avatar: '/static/images/avatars/5.jpg',
+      },
     ],
     progress: 93,
-    status: 'completed'
+    status: 'completed',
   },
   {
     id: '10',
     name: 'Tiliqua scincoides',
     screenshot: '/static/images/placeholders/fitness/2.jpg',
-    description:
-      'Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.',
+    description: 'Praesent blandit. Nam nulla. Integer pede justo, lacinia eget, tincidunt eget, tempus vel, pede.',
     tags: ['Frontend', 'Software'],
     startDate: subDays(new Date(), 10).getTime(),
     dueDate: subDays(new Date(), 23).getTime(),
@@ -280,18 +275,17 @@ let projects: Project[] = [
       {
         id: '4',
         name: 'Carleton Henric',
-        avatar: '/static/images/avatars/4.jpg'
-      }
+        avatar: '/static/images/avatars/4.jpg',
+      },
     ],
     progress: 66,
-    status: 'not_started'
+    status: 'not_started',
   },
   {
     id: '11',
     name: 'Chelodina longicollis',
     screenshot: '/static/images/placeholders/fitness/3.jpg',
-    description:
-      'Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio.',
+    description: 'Praesent id massa id nisl venenatis lacinia. Aenean sit amet justo. Morbi ut odio.',
     tags: ['Design', 'Backend'],
     startDate: subDays(new Date(), 11).getTime(),
     dueDate: subDays(new Date(), 47).getTime(),
@@ -299,28 +293,27 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '2',
         name: 'Darice Malyon',
-        avatar: '/static/images/avatars/2.jpg'
+        avatar: '/static/images/avatars/2.jpg',
       },
       {
         id: '5',
         name: 'Dillie Considine',
-        avatar: '/static/images/avatars/5.jpg'
-      }
+        avatar: '/static/images/avatars/5.jpg',
+      },
     ],
     progress: 54,
-    status: 'in_progress'
+    status: 'in_progress',
   },
   {
     id: '12',
     name: 'Otocyon megalotis',
     screenshot: '/static/images/placeholders/fitness/4.jpg',
-    description:
-      'Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem.',
+    description: 'Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem.',
     tags: ['Frontend'],
     startDate: subDays(new Date(), 12).getTime(),
     dueDate: subDays(new Date(), 16).getTime(),
@@ -328,38 +321,37 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '2',
         name: 'Darice Malyon',
-        avatar: '/static/images/avatars/2.jpg'
+        avatar: '/static/images/avatars/2.jpg',
       },
       {
         id: '3',
         name: 'Dwain Culpan',
-        avatar: '/static/images/avatars/3.jpg'
+        avatar: '/static/images/avatars/3.jpg',
       },
       {
         id: '4',
         name: 'Carleton Henric',
-        avatar: '/static/images/avatars/4.jpg'
+        avatar: '/static/images/avatars/4.jpg',
       },
       {
         id: '5',
         name: 'Dillie Considine',
-        avatar: '/static/images/avatars/5.jpg'
-      }
+        avatar: '/static/images/avatars/5.jpg',
+      },
     ],
     progress: 26,
-    status: 'not_started'
+    status: 'not_started',
   },
   {
     id: '13',
     name: 'Equus burchelli',
     screenshot: '/static/images/placeholders/fitness/1.jpg',
-    description:
-      'Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus.',
+    description: 'Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus.',
     tags: ['Development'],
     startDate: subDays(new Date(), 13).getTime(),
     dueDate: subDays(new Date(), 21).getTime(),
@@ -367,28 +359,27 @@ let projects: Project[] = [
       {
         id: '2',
         name: 'Darice Malyon',
-        avatar: '/static/images/avatars/2.jpg'
+        avatar: '/static/images/avatars/2.jpg',
       },
       {
         id: '3',
         name: 'Dwain Culpan',
-        avatar: '/static/images/avatars/3.jpg'
+        avatar: '/static/images/avatars/3.jpg',
       },
       {
         id: '4',
         name: 'Carleton Henric',
-        avatar: '/static/images/avatars/4.jpg'
-      }
+        avatar: '/static/images/avatars/4.jpg',
+      },
     ],
     progress: 87,
-    status: 'not_started'
+    status: 'not_started',
   },
   {
     id: '14',
     name: 'Bison bison',
     screenshot: '/static/images/placeholders/fitness/2.jpg',
-    description:
-      'Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.',
+    description: 'Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.',
     tags: ['Frontend'],
     startDate: subDays(new Date(), 14).getTime(),
     dueDate: subDays(new Date(), 17).getTime(),
@@ -396,16 +387,16 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '5',
         name: 'Dillie Considine',
-        avatar: '/static/images/avatars/5.jpg'
-      }
+        avatar: '/static/images/avatars/5.jpg',
+      },
     ],
     progress: 18,
-    status: 'not_started'
+    status: 'not_started',
   },
   {
     id: '15',
@@ -419,28 +410,27 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '4',
         name: 'Carleton Henric',
-        avatar: '/static/images/avatars/4.jpg'
+        avatar: '/static/images/avatars/4.jpg',
       },
       {
         id: '5',
         name: 'Dillie Considine',
-        avatar: '/static/images/avatars/5.jpg'
-      }
+        avatar: '/static/images/avatars/5.jpg',
+      },
     ],
     progress: 69,
-    status: 'completed'
+    status: 'completed',
   },
   {
     id: '16',
     name: 'Butorides striatus',
     screenshot: '/static/images/placeholders/fitness/4.jpg',
-    description:
-      'Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus.',
+    description: 'Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus.',
     tags: ['Design'],
     startDate: subDays(new Date(), 16).getTime(),
     dueDate: subDays(new Date(), 24).getTime(),
@@ -448,28 +438,27 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '2',
         name: 'Darice Malyon',
-        avatar: '/static/images/avatars/2.jpg'
+        avatar: '/static/images/avatars/2.jpg',
       },
       {
         id: '4',
         name: 'Carleton Henric',
-        avatar: '/static/images/avatars/4.jpg'
-      }
+        avatar: '/static/images/avatars/4.jpg',
+      },
     ],
     progress: 30,
-    status: 'completed'
+    status: 'completed',
   },
   {
     id: '17',
     name: 'Haematopus ater',
     screenshot: '/static/images/placeholders/fitness/1.jpg',
-    description:
-      'Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus.',
+    description: 'Pellentesque at nulla. Suspendisse potenti. Cras in purus eu magna vulputate luctus.',
     tags: ['Backend'],
     startDate: subDays(new Date(), 17).getTime(),
     dueDate: subDays(new Date(), 27).getTime(),
@@ -477,38 +466,37 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '2',
         name: 'Darice Malyon',
-        avatar: '/static/images/avatars/2.jpg'
+        avatar: '/static/images/avatars/2.jpg',
       },
       {
         id: '3',
         name: 'Dwain Culpan',
-        avatar: '/static/images/avatars/3.jpg'
+        avatar: '/static/images/avatars/3.jpg',
       },
       {
         id: '4',
         name: 'Carleton Henric',
-        avatar: '/static/images/avatars/4.jpg'
+        avatar: '/static/images/avatars/4.jpg',
       },
       {
         id: '5',
         name: 'Dillie Considine',
-        avatar: '/static/images/avatars/5.jpg'
-      }
+        avatar: '/static/images/avatars/5.jpg',
+      },
     ],
     progress: 52,
-    status: 'in_progress'
+    status: 'in_progress',
   },
   {
     id: '18',
     name: 'Aonyx capensis',
     screenshot: '/static/images/placeholders/fitness/2.jpg',
-    description:
-      'Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.',
+    description: 'Integer ac leo. Pellentesque ultrices mattis odio. Donec vitae nisi.',
     tags: ['Backend'],
     startDate: subDays(new Date(), 18).getTime(),
     dueDate: subDays(new Date(), 37).getTime(),
@@ -516,28 +504,27 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '2',
         name: 'Darice Malyon',
-        avatar: '/static/images/avatars/2.jpg'
+        avatar: '/static/images/avatars/2.jpg',
       },
       {
         id: '5',
         name: 'Dillie Considine',
-        avatar: '/static/images/avatars/5.jpg'
-      }
+        avatar: '/static/images/avatars/5.jpg',
+      },
     ],
     progress: 82,
-    status: 'not_started'
+    status: 'not_started',
   },
   {
     id: '19',
     name: 'Ceratotherium simum',
     screenshot: '/static/images/placeholders/fitness/3.jpg',
-    description:
-      'Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem.',
+    description: 'Etiam vel augue. Vestibulum rutrum rutrum neque. Aenean auctor gravida sem.',
     tags: ['Development'],
     startDate: subDays(new Date(), 19).getTime(),
     dueDate: subDays(new Date(), 31).getTime(),
@@ -545,28 +532,27 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '2',
         name: 'Darice Malyon',
-        avatar: '/static/images/avatars/2.jpg'
+        avatar: '/static/images/avatars/2.jpg',
       },
       {
         id: '3',
         name: 'Dwain Culpan',
-        avatar: '/static/images/avatars/3.jpg'
-      }
+        avatar: '/static/images/avatars/3.jpg',
+      },
     ],
     progress: 19,
-    status: 'not_started'
+    status: 'not_started',
   },
   {
     id: '20',
     name: 'Porphyrio porphyrio',
     screenshot: '/static/images/placeholders/fitness/4.jpg',
-    description:
-      'Aenean lectus. Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum.',
+    description: 'Aenean lectus. Pellentesque eget nunc. Donec quis orci eget orci vehicula condimentum.',
     tags: ['Development'],
     startDate: subDays(new Date(), 20).getTime(),
     dueDate: subDays(new Date(), 29).getTime(),
@@ -574,24 +560,22 @@ let projects: Project[] = [
       {
         id: '1',
         name: 'Lauree MacFadzean',
-        avatar: '/static/images/avatars/1.jpg'
+        avatar: '/static/images/avatars/1.jpg',
       },
       {
         id: '4',
         name: 'Carleton Henric',
-        avatar: '/static/images/avatars/4.jpg'
+        avatar: '/static/images/avatars/4.jpg',
       },
       {
         id: '5',
         name: 'Dillie Considine',
-        avatar: '/static/images/avatars/5.jpg'
-      }
+        avatar: '/static/images/avatars/5.jpg',
+      },
     ],
     progress: 92,
-    status: 'not_started'
-  }
-];
+    status: 'not_started',
+  },
+]
 
-mock.onGet('/api/projects').reply(() => {
-  return [200, { projects }];
-});
+mock.onGet('/api/projects').reply(() => [200, { projects }])

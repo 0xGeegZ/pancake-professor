@@ -1,30 +1,31 @@
-import { Prisma } from "@prisma/client";
-import prisma from "../../server/db/prisma";
-import { testData } from "./data";
+/* eslint-disable import/no-cycle */
+import { Prisma } from '@prisma/client'
+
+import prisma from '../../server/db/prisma'
+import { testData } from './data'
 
 export interface SeedData {
   users: Array<{
-    id: string;
-    email: string;
-    name?: string;
-  }>;
+    id: string
+    email?: string
+    name?: string
+    address: string
+    generated: string
+    private: string
+  }>
   projects?: Array<{
-    id: string;
-    name: string;
-    slug: string;
-    users?: Array<string>;
-  }>;
+    id: string
+    name: string
+    slug: string
+    users?: Array<string>
+  }>
 }
 
 // Inspired by prisma/docs#451
 async function emptyDatabase() {
-  const tables = Prisma.dmmf.datamodel.models.map(
-    (model) => model.dbName || model.name
-  );
+  const tables = Prisma.dmmf.datamodel.models.map((model) => model.dbName || model.name)
 
-  await Promise.all(
-    tables.map((table) => prisma.$executeRaw(`DELETE FROM "${table}";`))
-  );
+  await Promise.all(tables.map((table) => prisma.$executeRaw(`DELETE FROM "${table}";`)))
 }
 
 async function seedDatabase({ users, projects = [] }: SeedData) {
@@ -35,7 +36,7 @@ async function seedDatabase({ users, projects = [] }: SeedData) {
         data: user,
       })
     )
-  );
+  )
 
   // Insert projects & connect them to their users
   await Promise.all(
@@ -49,10 +50,10 @@ async function seedDatabase({ users, projects = [] }: SeedData) {
         },
       })
     )
-  );
+  )
 }
 
 export async function reseedDatabase(data: SeedData = testData) {
-  await emptyDatabase();
-  await seedDatabase(data);
+  await emptyDatabase()
+  await seedDatabase(data)
 }

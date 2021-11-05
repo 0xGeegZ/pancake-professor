@@ -3,6 +3,23 @@ query GetCurrentUser {
     id
     name
     address
+    generated
     email
+    registeredAt
+    loginAt
+    strategies {
+      id
+      player
+      startedAmount
+      currentAmount
+      roundsCount
+      playsCount
+      isActive
+      isRunning
+      isDeleted
+      maxLooseAmount
+      minWinAmount
+      createdAt
+    }
   }
 }

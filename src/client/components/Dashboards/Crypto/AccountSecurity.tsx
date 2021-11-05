@@ -1,60 +1,50 @@
-import { useState } from 'react';
-import {
-  Card,
-  CardHeader,
-  ListItemText,
-  List,
-  ListItem,
-  Divider,
-  Switch,
-  ListItemAvatar,
-  Avatar
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import LockTwoToneIcon from '@mui/icons-material/LockTwoTone';
-import PhoneLockedTwoToneIcon from '@mui/icons-material/PhoneLockedTwoTone';
-import EmailTwoToneIcon from '@mui/icons-material/EmailTwoTone';
-import Text from 'src/client/components/Text';
+import { useState } from 'react'
+import { Card, CardHeader, ListItemText, List, ListItem, Divider, Switch, ListItemAvatar, Avatar } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import LockTwoToneIcon from '@mui/icons-material/LockTwoTone'
+import PhoneLockedTwoToneIcon from '@mui/icons-material/PhoneLockedTwoTone'
+import EmailTwoToneIcon from '@mui/icons-material/EmailTwoTone'
+import Text from 'src/client/components/Text'
 
 const AvatarWrapperError = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.error.lighter};
       color:  ${theme.colors.error.main};
 `
-);
+)
 
 const AvatarWrapperSuccess = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.success.lighter};
       color:  ${theme.colors.success.main};
 `
-);
+)
 
 const AvatarWrapperWarning = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.warning.lighter};
       color:  ${theme.colors.warning.main};
 `
-);
+)
 
 function AccountSecurity() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
-  const [checked, setChecked] = useState(['phone_verification']);
+  const [checked, setChecked] = useState(['phone_verification'])
 
   const handleToggle = (value: string) => () => {
-    const currentIndex = checked.indexOf(value);
-    const newChecked = [...checked];
+    const currentIndex = checked.indexOf(value)
+    const newChecked = [...checked]
 
     if (currentIndex === -1) {
-      newChecked.push(value);
+      newChecked.push(value)
     } else {
-      newChecked.splice(currentIndex, 1);
+      newChecked.splice(currentIndex, 1)
     }
 
-    setChecked(newChecked);
-  };
+    setChecked(newChecked)
+  }
 
   return (
     <Card>
@@ -74,17 +64,12 @@ function AccountSecurity() {
               fontWeight: 'bold',
               color: 'textPrimary',
               gutterBottom: true,
-              noWrap: true
+              noWrap: true,
             }}
             secondary={<Text color="error">{t('Disabled')}</Text>}
             secondaryTypographyProps={{ variant: 'body2', noWrap: true }}
           />
-          <Switch
-            edge="end"
-            color="primary"
-            onChange={handleToggle('2fa')}
-            checked={checked.indexOf('2fa') !== -1}
-          />
+          <Switch edge="end" color="primary" onChange={handleToggle('2fa')} checked={checked.indexOf('2fa') !== -1} />
         </ListItem>
         <Divider />
         <ListItem sx={{ py: 2 }}>
@@ -100,7 +85,7 @@ function AccountSecurity() {
               fontWeight: 'bold',
               color: 'textPrimary',
               gutterBottom: true,
-              noWrap: true
+              noWrap: true,
             }}
             secondary={<Text color="success">{t('Active')}</Text>}
             secondaryTypographyProps={{ variant: 'body2', noWrap: true }}
@@ -126,7 +111,7 @@ function AccountSecurity() {
               fontWeight: 'bold',
               color: 'textPrimary',
               gutterBottom: true,
-              noWrap: true
+              noWrap: true,
             }}
             secondary={<Text color="warning">{t('Not completed')}</Text>}
             secondaryTypographyProps={{ variant: 'body2', noWrap: true }}
@@ -140,7 +125,7 @@ function AccountSecurity() {
         </ListItem>
       </List>
     </Card>
-  );
+  )
 }
 
-export default AccountSecurity;
+export default AccountSecurity

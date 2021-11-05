@@ -1,50 +1,50 @@
-import { useState, Ref, forwardRef } from 'react';
-
-import type { FC, ChangeEvent, ReactElement } from 'react';
-import PropTypes from 'prop-types';
-import Link from 'src/client/components/Link';
-import numeral from 'numeral';
-
+import CloseIcon from '@mui/icons-material/Close'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
 import {
   Avatar,
   Box,
+  Button,
   Card,
   Checkbox,
-  Grid,
-  Slide,
+  Dialog,
   Divider,
-  Tooltip,
+  FormControl,
+  Grid,
   IconButton,
+  InputAdornment,
+  InputLabel,
   MenuItem,
+  Select,
+  Slide,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TablePagination,
-  TableContainer,
   TableRow,
   TextField,
-  Button,
+  Tooltip,
   Typography,
-  Dialog,
-  FormControl,
-  Select,
-  InputLabel,
   Zoom,
-  InputAdornment
-} from '@mui/material';
-import { TransitionProps } from '@mui/material/transitions';
-import CloseIcon from '@mui/icons-material/Close';
-import type { Invoice, InvoiceStatus } from 'src/client/models/invoice';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
-import Label from 'src/client/components/Label';
-import BulkActions from './BulkActions';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import { useSnackbar } from 'notistack';
-import { format, formatDistance } from 'date-fns';
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { TransitionProps } from '@mui/material/transitions'
+import { format, formatDistance } from 'date-fns'
+import { useSnackbar } from 'notistack'
+import numeral from 'numeral'
+import PropTypes from 'prop-types'
+import { forwardRef, Ref, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Label from 'src/client/components/Label'
+import Link from 'src/client/components/Link'
+
+
+import type { FC, ChangeEvent, ReactElement } from 'react'
+import type { Invoice, InvoiceStatus } from 'src/client/models/invoice'
+import BulkActions from './BulkActions'
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -52,7 +52,7 @@ const DialogWrapper = styled(Dialog)(
         overflow: visible;
       }
 `
-);
+)
 
 const AvatarError = styled(Avatar)(
   ({ theme }) => `
@@ -65,7 +65,7 @@ const AvatarError = styled(Avatar)(
         font-size: ${theme.typography.pxToRem(45)};
       }
 `
-);
+)
 
 const ButtonError = styled(Button)(
   ({ theme }) => `
@@ -76,210 +76,189 @@ const ButtonError = styled(Button)(
         background: ${theme.colors.error.dark};
      }
     `
-);
+)
 
 interface ResultsProps {
-  invoices: Invoice[];
+  invoices: Invoice[]
 }
 
 interface Filters {
-  status?: InvoiceStatus;
+  status?: InvoiceStatus
 }
 
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement<any, any> },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="down" ref={ref} {...props} />;
-});
+/* eslint-disable */
+const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
+  <Slide direction="down" ref={ref} {...props} />
+))
+/* eslint-enable */
 
 const getInvoiceStatusLabel = (invoiceStatus: InvoiceStatus): JSX.Element => {
   const map = {
     pending: {
       text: 'Pending Payment',
-      color: 'warning'
+      color: 'warning',
     },
     completed: {
       text: 'Completed',
-      color: 'success'
+      color: 'success',
     },
     draft: {
       text: 'Draft',
-      color: 'info'
+      color: 'info',
     },
     progress: {
       text: 'In progress',
-      color: 'primary'
-    }
-  };
+      color: 'primary',
+    },
+  }
 
-  const { text, color }: any = map[invoiceStatus];
+  const { text, color }: any = map[invoiceStatus]
 
   return (
     <Label color={color}>
       <b>{text}</b>
     </Label>
-  );
-};
+  )
+}
 
-const applyFilters = (
-  invoices: Invoice[],
-  query: string,
-  filters: Filters
-): Invoice[] => {
-  return invoices.filter((invoice) => {
-    let matches = true;
+const applyFilters = (invoices: Invoice[], query: string, filters: Filters): Invoice[] =>
+  invoices.filter((invoice) => {
+    let matches = true
 
     if (query) {
-      const properties = ['clientName'];
-      let containsQuery = false;
+      const properties = ['clientName']
+      let containsQuery = false
 
       properties.forEach((property) => {
         if (invoice[property].toLowerCase().includes(query.toLowerCase())) {
-          containsQuery = true;
+          containsQuery = true
         }
-      });
+      })
 
       if (filters.status && invoice.status !== filters.status) {
-        matches = false;
+        matches = false
       }
 
       if (!containsQuery) {
-        matches = false;
+        matches = false
       }
     }
 
     Object.keys(filters).forEach((key) => {
-      const value = filters[key];
+      const value = filters[key]
 
       if (value && invoice[key] !== value) {
-        matches = false;
+        matches = false
       }
-    });
+    })
 
-    return matches;
-  });
-};
+    return matches
+  })
 
-const applyPagination = (
-  invoices: Invoice[],
-  page: number,
-  limit: number
-): Invoice[] => {
-  return invoices.slice(page * limit, page * limit + limit);
-};
+const applyPagination = (invoices: Invoice[], page: number, limit: number): Invoice[] =>
+  invoices.slice(page * limit, page * limit + limit)
 
 const Results: FC<ResultsProps> = ({ invoices }) => {
-  const [selectedItems, setSelectedInvoices] = useState<string[]>([]);
-  const { t }: { t: any } = useTranslation();
-  const { enqueueSnackbar } = useSnackbar();
+  const [selectedItems, setSelectedInvoices] = useState<string[]>([])
+  const { t }: { t: any } = useTranslation()
+  const { enqueueSnackbar } = useSnackbar()
 
-  const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(5);
-  const [query, setQuery] = useState<string>('');
+  const [page, setPage] = useState<number>(0)
+  const [limit, setLimit] = useState<number>(5)
+  const [query, setQuery] = useState<string>('')
   const [filters, setFilters] = useState<Filters>({
-    status: null
-  });
+    status: null,
+  })
 
   const statusOptions = [
     {
       id: 'all',
-      name: 'Show all'
+      name: 'Show all',
     },
     {
       id: 'pending',
-      name: t('Pending Payment')
+      name: t('Pending Payment'),
     },
     {
       id: 'completed',
-      name: t('Completed')
+      name: t('Completed'),
     },
     {
       id: 'draft',
-      name: t('Draft')
+      name: t('Draft'),
     },
     {
       id: 'progress',
-      name: t('In Progress')
-    }
-  ];
+      name: t('In Progress'),
+    },
+  ]
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    event.persist();
-    setQuery(event.target.value);
-  };
+    event.persist()
+    setQuery(event.target.value)
+  }
 
   const handleStatusChange = (e: ChangeEvent<HTMLInputElement>): void => {
-    let value = null;
+    let value = null
 
     if (e.target.value !== 'all') {
-      value = e.target.value;
+      value = e.target.value
     }
 
     setFilters((prevFilters) => ({
       ...prevFilters,
-      status: value
-    }));
-  };
+      status: value,
+    }))
+  }
 
-  const handleSelectAllInvoices = (
-    event: ChangeEvent<HTMLInputElement>
-  ): void => {
-    setSelectedInvoices(
-      event.target.checked ? invoices.map((invoice) => invoice.id) : []
-    );
-  };
+  const handleSelectAllInvoices = (event: ChangeEvent<HTMLInputElement>): void => {
+    setSelectedInvoices(event.target.checked ? invoices.map((invoice) => invoice.id) : [])
+  }
 
-  const handleSelectOneInvoice = (
-    _event: ChangeEvent<HTMLInputElement>,
-    invoiceId: string
-  ): void => {
+  const handleSelectOneInvoice = (_event: ChangeEvent<HTMLInputElement>, invoiceId: string): void => {
     if (!selectedItems.includes(invoiceId)) {
-      setSelectedInvoices((prevSelected) => [...prevSelected, invoiceId]);
+      setSelectedInvoices((prevSelected) => [...prevSelected, invoiceId])
     } else {
-      setSelectedInvoices((prevSelected) =>
-        prevSelected.filter((id) => id !== invoiceId)
-      );
+      setSelectedInvoices((prevSelected) => prevSelected.filter((id) => id !== invoiceId))
     }
-  };
+  }
 
   const handlePageChange = (_event: any, newPage: number): void => {
-    setPage(newPage);
-  };
+    setPage(newPage)
+  }
 
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(parseInt(event.target.value));
-  };
+    setLimit(+event.target.value)
+  }
 
-  const filteredInvoices = applyFilters(invoices, query, filters);
-  const paginatedInvoices = applyPagination(filteredInvoices, page, limit);
-  const selectedBulkActions = selectedItems.length > 0;
-  const selectedSomeInvoices =
-    selectedItems.length > 0 && selectedItems.length < invoices.length;
-  const selectedAllInvoices = selectedItems.length === invoices.length;
+  const filteredInvoices = applyFilters(invoices, query, filters)
+  const paginatedInvoices = applyPagination(filteredInvoices, page, limit)
+  const selectedBulkActions = selectedItems.length > 0
+  const selectedSomeInvoices = selectedItems.length > 0 && selectedItems.length < invoices.length
+  const selectedAllInvoices = selectedItems.length === invoices.length
 
-  const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
 
   const handleConfirmDelete = () => {
-    setOpenConfirmDelete(true);
-  };
+    setOpenConfirmDelete(true)
+  }
 
   const closeConfirmDelete = () => {
-    setOpenConfirmDelete(false);
-  };
+    setOpenConfirmDelete(false)
+  }
 
   const handleDeleteCompleted = () => {
-    setOpenConfirmDelete(false);
+    setOpenConfirmDelete(false)
 
     enqueueSnackbar(t('Delete action completed successfully'), {
       variant: 'success',
       anchorOrigin: {
         vertical: 'top',
-        horizontal: 'right'
+        horizontal: 'right',
       },
-      TransitionComponent: Zoom
-    });
-  };
+      TransitionComponent: Zoom,
+    })
+  }
 
   return (
     <>
@@ -288,9 +267,8 @@ const Results: FC<ResultsProps> = ({ invoices }) => {
           p: 2,
           mb: 3,
           display: 'flex',
-          alignItems: 'center'
-        }}
-      >
+          alignItems: 'center',
+        }}>
         <Grid alignItems="center" container spacing={3}>
           <Grid item xs={12} lg={7} md={6}>
             <TextField
@@ -299,7 +277,7 @@ const Results: FC<ResultsProps> = ({ invoices }) => {
                   <InputAdornment position="start">
                     <SearchTwoToneIcon />
                   </InputAdornment>
-                )
+                ),
               }}
               sx={{ m: 0 }}
               onChange={handleQueryChange}
@@ -312,11 +290,7 @@ const Results: FC<ResultsProps> = ({ invoices }) => {
           <Grid item xs={12} lg={5} md={6}>
             <FormControl fullWidth variant="outlined">
               <InputLabel>{t('Status')}</InputLabel>
-              <Select
-                value={filters.status || 'all'}
-                onChange={handleStatusChange}
-                label={t('Status')}
-              >
+              <Select value={filters.status || 'all'} onChange={handleStatusChange} label={t('Status')}>
                 {statusOptions.map((statusOption) => (
                   <MenuItem key={statusOption.id} value={statusOption.id}>
                     {statusOption.name}
@@ -345,8 +319,7 @@ const Results: FC<ResultsProps> = ({ invoices }) => {
               p={2}
               display={{ xs: 'block', sm: 'flex' }}
               alignItems="center"
-              justifyContent="space-between"
-            >
+              justifyContent="space-between">
               <Box>
                 <Typography component="span" variant="subtitle1">
                   {t('Showing')}:
@@ -368,13 +341,7 @@ const Results: FC<ResultsProps> = ({ invoices }) => {
         <Divider />
 
         {paginatedInvoices.length === 0 ? (
-          <Typography
-            sx={{ py: 10 }}
-            variant="h3"
-            fontWeight="normal"
-            color="text.secondary"
-            align="center"
-          >
+          <Typography sx={{ py: 10 }} variant="h3" fontWeight="normal" color="text.secondary" align="center">
             {t("We couldn't find any invoices matching your search criteria")}
           </Typography>
         ) : (
@@ -393,22 +360,14 @@ const Results: FC<ResultsProps> = ({ invoices }) => {
                 </TableHead>
                 <TableBody>
                   {paginatedInvoices.map((invoice) => {
-                    const isInvoiceSelected = selectedItems.includes(
-                      invoice.id
-                    );
+                    const isInvoiceSelected = selectedItems.includes(invoice.id)
                     return (
-                      <TableRow
-                        hover
-                        key={invoice.id}
-                        selected={isInvoiceSelected}
-                      >
+                      <TableRow hover key={invoice.id} selected={isInvoiceSelected}>
                         <TableCell>
                           <Box display="flex" alignItems="center">
                             <Checkbox
                               checked={isInvoiceSelected}
-                              onChange={(event) =>
-                                handleSelectOneInvoice(event, invoice.id)
-                              }
+                              onChange={(event) => handleSelectOneInvoice(event, invoice.id)}
                               value={isInvoiceSelected}
                             />
                             <Box pl={1}>
@@ -419,61 +378,37 @@ const Results: FC<ResultsProps> = ({ invoices }) => {
                           </Box>
                         </TableCell>
                         <TableCell>
-                          <Typography noWrap>
-                            {format(invoice.issuedDate, 'MMMM dd yyyy')}
-                          </Typography>
+                          <Typography noWrap>{format(invoice.issuedDate, 'MMMM dd yyyy')}</Typography>
                           <Typography noWrap variant="subtitle1">
-                            {t('Due')}{' '}
-                            <b>
-                              {formatDistance(
-                                invoice.dueDate,
-                                invoice.issuedDate,
-                                { addSuffix: true }
-                              )}
-                            </b>
+                            {t('Due')} <b>{formatDistance(invoice.dueDate, invoice.issuedDate, { addSuffix: true })}</b>
                           </Typography>
                         </TableCell>
                         <TableCell>
                           <Box display="flex" alignItems="center">
                             <Avatar sx={{ mr: 1 }} src={invoice.clientAvatar} />
-                            <Typography variant="h5">
-                              {invoice.clientName}
-                            </Typography>
+                            <Typography variant="h5">{invoice.clientName}</Typography>
                           </Box>
                         </TableCell>
+                        <TableCell>{numeral(invoice.amount).format(`${invoice.currency}0,0.00`)}</TableCell>
                         <TableCell>
-                          {numeral(invoice.amount).format(
-                            `${invoice.currency}0,0.00`
-                          )}
-                        </TableCell>
-                        <TableCell>
-                          <Typography noWrap>
-                            {getInvoiceStatusLabel(invoice.status)}
-                          </Typography>
+                          <Typography noWrap>{getInvoiceStatusLabel(invoice.status)}</Typography>
                         </TableCell>
                         <TableCell align="center">
                           <Typography noWrap>
                             <Tooltip title={t('View')} arrow>
-                              <IconButton
-                                component={Link}
-                                href={'/management/invoices/' + invoice.id}
-                                color="primary"
-                              >
+                              <IconButton component={Link} href={`/management/invoices/${invoice.id}`} color="primary">
                                 <LaunchTwoToneIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
                             <Tooltip title={t('Delete')} arrow>
-                              <IconButton
-                                onClick={handleConfirmDelete}
-                                color="primary"
-                              >
+                              <IconButton onClick={handleConfirmDelete} color="primary">
                                 <DeleteTwoToneIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
                           </Typography>
                         </TableCell>
                       </TableRow>
-                    );
+                    )
                   })}
                 </TableBody>
               </Table>
@@ -499,15 +434,8 @@ const Results: FC<ResultsProps> = ({ invoices }) => {
         fullWidth
         TransitionComponent={Transition}
         keepMounted
-        onClose={closeConfirmDelete}
-      >
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          flexDirection="column"
-          p={5}
-        >
+        onClose={closeConfirmDelete}>
+        <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={5}>
           <AvatarError>
             <CloseIcon />
           </AvatarError>
@@ -521,41 +449,30 @@ const Results: FC<ResultsProps> = ({ invoices }) => {
             sx={{ pt: 2, pb: 4, px: 6 }}
             fontWeight="normal"
             color="text.secondary"
-            variant="h3"
-          >
+            variant="h3">
             {t("You won't be able to revert after deletion")}
           </Typography>
 
           <Box>
-            <Button
-              variant="text"
-              size="large"
-              sx={{ mx: 1 }}
-              onClick={closeConfirmDelete}
-            >
+            <Button variant="text" size="large" sx={{ mx: 1 }} onClick={closeConfirmDelete}>
               {t('Cancel')}
             </Button>
-            <ButtonError
-              onClick={handleDeleteCompleted}
-              size="large"
-              sx={{ mx: 1, px: 3 }}
-              variant="contained"
-            >
+            <ButtonError onClick={handleDeleteCompleted} size="large" sx={{ mx: 1, px: 3 }} variant="contained">
               {t('Delete')}
             </ButtonError>
           </Box>
         </Box>
       </DialogWrapper>
     </>
-  );
-};
+  )
+}
 
 Results.propTypes = {
-  invoices: PropTypes.array.isRequired
-};
+  invoices: PropTypes.array.isRequired,
+}
 
 Results.defaultProps = {
-  invoices: []
-};
+  invoices: [],
+}
 
-export default Results;
+export default Results

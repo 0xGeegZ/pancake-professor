@@ -1,36 +1,35 @@
-import type { ReactElement } from 'react';
-import AccentHeaderLayout from "src/client/layouts/AccentHeaderLayout";
+import { Grid, Tab, Tabs } from '@mui/material'
+import Head from 'next/head'
+import { ChangeEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Checklist from 'src/client/components/Dashboards/Tasks/Checklist'
+import PageHeader from 'src/client/components/Dashboards/Tasks/PageHeader'
+import Performance from 'src/client/components/Dashboards/Tasks/Performance'
+import Profile from 'src/client/components/Dashboards/Tasks/Profile'
+import Projects from 'src/client/components/Dashboards/Tasks/Projects'
+import TasksAnalytics from 'src/client/components/Dashboards/Tasks/TasksAnalytics'
+import TaskSearch from 'src/client/components/Dashboards/Tasks/TaskSearch'
+import TeamOverview from 'src/client/components/Dashboards/Tasks/TeamOverview'
+import Footer from 'src/client/components/Footer'
+import Link from 'src/client/components/Link'
+import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 
-import { ChangeEvent, useState } from 'react';
-import Head from 'next/head';
-import PageHeader from 'src/client/components/Dashboards/Tasks/PageHeader';
-import Footer from 'src/client/components/Footer';
-import { Grid, Tab, Tabs } from '@mui/material';
-import Link from 'src/client/components/Link';
-import PageTitleWrapper from 'src/client/components/PageTitleWrapper';
-
-import TeamOverview from 'src/client/components/Dashboards/Tasks/TeamOverview';
-import TasksAnalytics from 'src/client/components/Dashboards/Tasks/TasksAnalytics';
-import Performance from 'src/client/components/Dashboards/Tasks/Performance';
-import Projects from 'src/client/components/Dashboards/Tasks/Projects';
-import Checklist from 'src/client/components/Dashboards/Tasks/Checklist';
-import Profile from 'src/client/components/Dashboards/Tasks/Profile';
-import TaskSearch from 'src/client/components/Dashboards/Tasks/TaskSearch';
-import { useTranslation } from 'react-i18next';
+import type { ReactElement } from 'react'
 
 function DashboardTasks() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
-  const [currentTab, setCurrentTab] = useState<string>('analytics');
+  const [currentTab, setCurrentTab] = useState<string>('analytics')
 
   const tabs = [
     { value: 'analytics', label: t('Analytics Overview') },
-    { value: 'taskSearch', label: t('Task Search') }
-  ];
+    { value: 'taskSearch', label: t('Task Search') },
+  ]
 
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
-    setCurrentTab(value);
-  };
+  const handleTabsChange = (_event: ChangeEvent<any>, value: string): void => {
+    setCurrentTab(value)
+  }
 
   return (
     <>
@@ -41,14 +40,7 @@ function DashboardTasks() {
         <PageHeader />
       </PageTitleWrapper>
 
-      <Grid
-        sx={{ px: 4 }}
-        container
-        direction="row"
-        justifyContent="center"
-        alignItems="stretch"
-        spacing={3}
-      >
+      <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
         <Grid item xs={12}>
           <Tabs
             onChange={handleTabsChange}
@@ -56,16 +48,11 @@ function DashboardTasks() {
             variant="scrollable"
             scrollButtons="auto"
             textColor="primary"
-            indicatorColor="primary"
-          >
+            indicatorColor="primary">
             {tabs.map((tab) => (
               <Tab key={tab.value} label={tab.label} value={tab.value} />
             ))}
-            <Tab
-              component={Link}
-              label={t('Projects Board')}
-              href="/applications/projects-board"
-            />
+            <Tab component={Link} label={t('Projects Board')} href="/applications/projects-board" />
           </Tabs>
         </Grid>
         {currentTab === 'analytics' && (
@@ -99,15 +86,11 @@ function DashboardTasks() {
 
       <Footer />
     </>
-  );
+  )
 }
 
-export default DashboardTasks;
+export default DashboardTasks
 
 DashboardTasks.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <AccentHeaderLayout>
-      {page}
-    </AccentHeaderLayout>
-  )
+  return <AccentHeaderLayout>{page}</AccentHeaderLayout>
 }

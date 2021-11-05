@@ -1,7 +1,7 @@
-import { mock } from 'src/client/utils/axios';
-import type { Product } from 'src/client/models/product';
+import { mock } from 'src/client/utils/axios'
+import type { Product } from 'src/client/models/product'
 
-let products: Product[] = [
+const products: Product[] = [
   {
     id: '1',
     name: 'Amazon Dot Echo 3',
@@ -14,11 +14,10 @@ let products: Product[] = [
       '/static/images/placeholders/fitness/1.jpg',
       '/static/images/placeholders/fitness/2.jpg',
       '/static/images/placeholders/fitness/3.jpg',
-      '/static/images/placeholders/fitness/4.jpg'
+      '/static/images/placeholders/fitness/4.jpg',
     ],
     orders: 34,
-    summary:
-      'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium',
+    summary: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium',
     description: `
     <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
 
@@ -26,7 +25,7 @@ let products: Product[] = [
     
     <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
     `,
-    categories: ['Electronics', 'IOT Devices']
+    categories: ['Electronics', 'IOT Devices'],
   },
   {
     id: '2',
@@ -40,11 +39,10 @@ let products: Product[] = [
       '/static/images/placeholders/fitness/1.jpg',
       '/static/images/placeholders/fitness/2.jpg',
       '/static/images/placeholders/fitness/3.jpg',
-      '/static/images/placeholders/fitness/4.jpg'
+      '/static/images/placeholders/fitness/4.jpg',
     ],
     orders: 75,
-    summary:
-      'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit',
+    summary: 'Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit',
     description: `
     <p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?</p>
 
@@ -52,7 +50,7 @@ let products: Product[] = [
 
 <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
     `,
-    categories: ['3D Printers']
+    categories: ['3D Printers'],
   },
   {
     id: '3',
@@ -66,11 +64,10 @@ let products: Product[] = [
       '/static/images/placeholders/fitness/1.jpg',
       '/static/images/placeholders/fitness/2.jpg',
       '/static/images/placeholders/fitness/3.jpg',
-      '/static/images/placeholders/fitness/4.jpg'
+      '/static/images/placeholders/fitness/4.jpg',
     ],
     orders: 75,
-    summary:
-      'Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis',
+    summary: 'Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis',
     description: `
     <p>Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</p>
 
@@ -78,7 +75,7 @@ let products: Product[] = [
 
 <p>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
     `,
-    categories: ['Phones', 'Apple']
+    categories: ['Phones', 'Apple'],
   },
   {
     id: '4',
@@ -92,11 +89,10 @@ let products: Product[] = [
       '/static/images/placeholders/fitness/1.jpg',
       '/static/images/placeholders/fitness/2.jpg',
       '/static/images/placeholders/fitness/3.jpg',
-      '/static/images/placeholders/fitness/4.jpg'
+      '/static/images/placeholders/fitness/4.jpg',
     ],
     orders: 19,
-    summary:
-      'Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus',
+    summary: 'Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus',
     description: `
     <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
 
@@ -104,7 +100,7 @@ let products: Product[] = [
 
 <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
     `,
-    categories: ['Video Cameras']
+    categories: ['Video Cameras'],
   },
   {
     id: '5',
@@ -118,11 +114,10 @@ let products: Product[] = [
       '/static/images/placeholders/fitness/1.jpg',
       '/static/images/placeholders/fitness/2.jpg',
       '/static/images/placeholders/fitness/3.jpg',
-      '/static/images/placeholders/fitness/4.jpg'
+      '/static/images/placeholders/fitness/4.jpg',
     ],
     orders: 98,
-    summary:
-      'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum',
+    summary: 'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum',
     description: `
     <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga.</p>
 
@@ -130,7 +125,7 @@ let products: Product[] = [
 
 <p>Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
     `,
-    categories: ['Apple', 'Watches']
+    categories: ['Apple', 'Watches'],
   },
   {
     id: '6',
@@ -144,11 +139,10 @@ let products: Product[] = [
       '/static/images/placeholders/fitness/1.jpg',
       '/static/images/placeholders/fitness/2.jpg',
       '/static/images/placeholders/fitness/3.jpg',
-      '/static/images/placeholders/fitness/4.jpg'
+      '/static/images/placeholders/fitness/4.jpg',
     ],
     orders: 185,
-    summary:
-      'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque',
+    summary: 'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque',
     description: `
     <p>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.</p>
 
@@ -156,7 +150,7 @@ let products: Product[] = [
 
 <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
     `,
-    categories: ['Speakers']
+    categories: ['Speakers'],
   },
   {
     id: '7',
@@ -170,7 +164,7 @@ let products: Product[] = [
       '/static/images/placeholders/fitness/1.jpg',
       '/static/images/placeholders/fitness/2.jpg',
       '/static/images/placeholders/fitness/3.jpg',
-      '/static/images/placeholders/fitness/4.jpg'
+      '/static/images/placeholders/fitness/4.jpg',
     ],
     orders: 26,
     summary:
@@ -182,7 +176,7 @@ let products: Product[] = [
 
 <p>Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea commodi consequatur?</p>
     `,
-    categories: ['Electronics', 'Coffee Machines']
+    categories: ['Electronics', 'Coffee Machines'],
   },
   {
     id: '8',
@@ -196,11 +190,10 @@ let products: Product[] = [
       '/static/images/placeholders/fitness/1.jpg',
       '/static/images/placeholders/fitness/2.jpg',
       '/static/images/placeholders/fitness/3.jpg',
-      '/static/images/placeholders/fitness/4.jpg'
+      '/static/images/placeholders/fitness/4.jpg',
     ],
     orders: 9,
-    summary:
-      'Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur',
+    summary: 'Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur',
     description: `
     <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
 
@@ -208,7 +201,7 @@ let products: Product[] = [
 
 <p>Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus.</p>
     `,
-    categories: ['Apple', 'Laptops', 'Computers']
+    categories: ['Apple', 'Laptops', 'Computers'],
   },
   {
     id: '9',
@@ -222,11 +215,10 @@ let products: Product[] = [
       '/static/images/placeholders/fitness/1.jpg',
       '/static/images/placeholders/fitness/2.jpg',
       '/static/images/placeholders/fitness/3.jpg',
-      '/static/images/placeholders/fitness/4.jpg'
+      '/static/images/placeholders/fitness/4.jpg',
     ],
     orders: 73,
-    summary:
-      'Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores',
+    summary: 'Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores',
     description: `
     <p>Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.</p>
 
@@ -234,7 +226,7 @@ let products: Product[] = [
 
 <p>Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.</p>
     `,
-    categories: ['Apple', 'TV', 'WIFI']
+    categories: ['Apple', 'TV', 'WIFI'],
   },
   {
     id: '10',
@@ -248,11 +240,10 @@ let products: Product[] = [
       '/static/images/placeholders/fitness/1.jpg',
       '/static/images/placeholders/fitness/2.jpg',
       '/static/images/placeholders/fitness/3.jpg',
-      '/static/images/placeholders/fitness/4.jpg'
+      '/static/images/placeholders/fitness/4.jpg',
     ],
     orders: 94,
-    summary:
-      'Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit',
+    summary: 'Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit',
     description: `
     <p>Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora incidunt ut labore et dolore magnam aliquam quaerat voluptatem.</p>
 
@@ -260,17 +251,15 @@ let products: Product[] = [
 
 <p>Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas nulla pariatur?</p>
     `,
-    categories: ['Apple', 'Tablets', 'Electronics']
-  }
-];
+    categories: ['Apple', 'Tablets', 'Electronics'],
+  },
+]
 
-mock.onGet('/api/products').reply(() => {
-  return [200, { products }];
-});
+mock.onGet('/api/products').reply(() => [200, { products }])
 
 mock.onGet('/api/product').reply((config) => {
-  const { productId } = config.params;
-  const product = products.find((_product) => _product.id === productId);
+  const { productId } = config.params
+  const product = products.find((_product) => _product.id === productId)
 
-  return [200, { product }];
-});
+  return [200, { product }]
+})

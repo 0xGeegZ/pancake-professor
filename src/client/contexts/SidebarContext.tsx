@@ -1,24 +1,18 @@
-import { useState, ReactNode, createContext } from 'react';
-type SidebarContext = { sidebarToggle: any; toggleSidebar: () => void };
+import { createContext, ReactNode, useState } from 'react'
 
-// eslint-disable-next-line @typescript-eslint/no-redeclare
-export const SidebarContext = createContext<SidebarContext>(
-  {} as SidebarContext
-);
+type SidebarContext = { sidebarToggle: any; toggleSidebar: () => void }
+
+export const SidebarContext = createContext<SidebarContext>({} as SidebarContext)
 
 type Props = {
-  children: ReactNode;
-};
+  children: ReactNode
+}
 
 export function SidebarProvider({ children }: Props) {
-  const [sidebarToggle, setSidebarToggle] = useState(false);
+  const [sidebarToggle, setSidebarToggle] = useState(false)
   const toggleSidebar = () => {
-    setSidebarToggle(!sidebarToggle);
-  };
+    setSidebarToggle(!sidebarToggle)
+  }
 
-  return (
-    <SidebarContext.Provider value={{ sidebarToggle, toggleSidebar }}>
-      {children}
-    </SidebarContext.Provider>
-  );
-};
+  return <SidebarContext.Provider value={{ sidebarToggle, toggleSidebar }}>{children}</SidebarContext.Provider>
+}

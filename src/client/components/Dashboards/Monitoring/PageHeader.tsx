@@ -1,14 +1,14 @@
-import { useState } from 'react';
-import { Typography, Grid } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from '@mui/lab/LoadingButton'
+import { Grid, Typography } from '@mui/material'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 function PageHeader() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
-  const [pending, setPending] = useState(false);
-  function handleClick() {
-    setPending(true);
+  const [pending, setPending] = useState(false)
+  const handleClick = () => {
+    setPending(true)
   }
 
   return (
@@ -18,9 +18,7 @@ function PageHeader() {
           {t('Monitoring')}
         </Typography>
         <Typography variant="h4" color="text.secondary" fontWeight="normal">
-          {t(
-            'This dashboard shows a live status for all your servers and database clusters!'
-          )}
+          {t('This dashboard shows a live status for all your servers and database clusters!')}
         </Typography>
       </Grid>
       <Grid item>
@@ -29,13 +27,12 @@ function PageHeader() {
           onClick={handleClick}
           loading={pending}
           variant="contained"
-          color="primary"
-        >
+          color="primary">
           {t('Refresh view')}
         </LoadingButton>
       </Grid>
     </Grid>
-  );
+  )
 }
 
-export default PageHeader;
+export default PageHeader

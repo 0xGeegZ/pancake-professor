@@ -1,40 +1,39 @@
-import { forwardRef, Ref, useState, ChangeEvent } from 'react';
-import type { ReactElement } from 'react';
-
+import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
+import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
 import {
+  alpha,
   Avatar,
-  Link,
   Box,
   Button,
-  Divider,
-  InputAdornment,
-  lighten,
-  List,
-  ListItem,
-  ListItemAvatar,
-  TextField,
-  Theme,
-  Typography,
   Dialog,
   DialogContent,
   DialogTitle,
-  Slide,
+  Divider,
   Hidden,
-  alpha
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { TransitionProps } from '@mui/material/transitions';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import FindInPageTwoToneIcon from '@mui/icons-material/FindInPageTwoTone';
-import { useTranslation } from 'react-i18next';
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
+  InputAdornment,
+  lighten,
+  Link,
+  List,
+  ListItem,
+  ListItemAvatar,
+  Slide,
+  TextField,
+  Theme,
+  Typography,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { TransitionProps } from '@mui/material/transitions'
+import { ChangeEvent, forwardRef, Ref, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement<any, any> },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="down" ref={ref} {...props} />;
-});
+import type { ReactElement } from 'react'
+
+/* eslint-disable */
+const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
+  <Slide direction="down" ref={ref} {...props} />
+))
+/* eslint-enable */
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -46,7 +45,7 @@ const DialogWrapper = styled(Dialog)(
         max-height: calc(100% - 64px)
     }
 `
-);
+)
 
 const SearchInputWrapper = styled(TextField)(
   ({ theme }) => `
@@ -56,7 +55,7 @@ const SearchInputWrapper = styled(TextField)(
         font-size: ${theme.typography.pxToRem(17)};
     }
 `
-);
+)
 
 const SearchInputWrapperButton = styled(Button)(
   ({ theme }) => `
@@ -69,7 +68,7 @@ const SearchInputWrapperButton = styled(Button)(
     border: ${theme.colors.alpha.white[30]} solid 1px;
   }
 `
-);
+)
 
 const BtnControl = styled(Box)(
   ({ theme }) => `
@@ -82,42 +81,42 @@ const BtnControl = styled(Box)(
   padding: 0 6px;
   margin-left: ${theme.spacing(2)};
 `
-);
+)
 
 const DialogTitleWrapper = styled(DialogTitle)(
   ({ theme }) => `
     background: ${theme.colors.alpha.black[5]};
     padding: ${theme.spacing(3)}
 `
-);
+)
 
 function HeaderSearch() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
-  const [openSearchResults, setOpenSearchResults] = useState(false);
-  const [searchValue, setSearchValue] = useState('');
+  const [openSearchResults, setOpenSearchResults] = useState(false)
+  const [searchValue, setSearchValue] = useState('')
 
   const handleSearchChange = (event: ChangeEvent<{ value: unknown }>) => {
-    setSearchValue(event.target.value as string);
+    setSearchValue(event.target.value as string)
 
     if (event.target.value) {
       if (!openSearchResults) {
-        setOpenSearchResults(true);
+        setOpenSearchResults(true)
       }
     } else {
-      setOpenSearchResults(false);
+      setOpenSearchResults(false)
     }
-  };
+  }
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false)
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
     <>
@@ -125,15 +124,12 @@ function HeaderSearch() {
         variant="contained"
         disableElevation
         onClick={handleClickOpen}
-        startIcon={
-          <SearchTwoToneIcon />
-        }
+        startIcon={<SearchTwoToneIcon />}
         endIcon={
-          <><BtnControl>
-            Shift+S
-          </BtnControl></>
-        }
-      >
+          <>
+            <BtnControl>Shift+S</BtnControl>
+          </>
+        }>
         {t('Search...')}
       </SearchInputWrapperButton>
 
@@ -144,19 +140,18 @@ function HeaderSearch() {
         maxWidth="sm"
         fullWidth
         scroll="paper"
-        onClose={handleClose}
-      >
+        onClose={handleClose}>
         <DialogTitleWrapper>
           <SearchInputWrapper
             value={searchValue}
-            autoFocus={true}
+            autoFocus
             onChange={handleSearchChange}
             InputProps={{
               startAdornment: (
                 <InputAdornment position="start">
                   <SearchTwoToneIcon />
                 </InputAdornment>
-              )
+              ),
             }}
             placeholder={t('Search terms here...')}
             fullWidth
@@ -166,13 +161,8 @@ function HeaderSearch() {
         <Divider />
         <DialogContent>
           {!openSearchResults ? (
-
             <>
-              <Box
-                sx={{ pt: 0, pb: 1 }}
-                display="flex"
-                justifyContent="space-between"
-              >
+              <Box sx={{ pt: 0, pb: 1 }} display="flex" justifyContent="space-between">
                 <Typography variant="body2" component="span">
                   {t('Recent searches')}{' '}
                 </Typography>
@@ -196,13 +186,9 @@ function HeaderSearch() {
                       component="span"
                       variant="body2"
                       sx={{
-                        color: (theme: Theme) =>
-                          lighten(theme.palette.secondary.main, 0.5)
-                      }}
-                    >
-                      {t(
-                        'This page contains all the necessary information for managing all hospital staff.'
-                      )}
+                        color: (theme: Theme) => lighten(theme.palette.secondary.main, 0.5),
+                      }}>
+                      {t('This page contains all the necessary information for managing all hospital staff.')}
                     </Typography>
                   </Box>
                   <ChevronRightTwoToneIcon />
@@ -221,13 +207,9 @@ function HeaderSearch() {
                       component="span"
                       variant="body2"
                       sx={{
-                        color: (theme: Theme) =>
-                          lighten(theme.palette.secondary.main, 0.5)
-                      }}
-                    >
-                      {t(
-                        'This is yet another search result pointing to a app page.'
-                      )}
+                        color: (theme: Theme) => lighten(theme.palette.secondary.main, 0.5),
+                      }}>
+                      {t('This is yet another search result pointing to a app page.')}
                     </Typography>
                   </Box>
                   <ChevronRightTwoToneIcon />
@@ -246,13 +228,9 @@ function HeaderSearch() {
                       component="span"
                       variant="body2"
                       sx={{
-                        color: (theme: Theme) =>
-                          lighten(theme.palette.secondary.main, 0.5)
-                      }}
-                    >
-                      {t(
-                        'Choose if you would like to show or not this typography section here...'
-                      )}
+                        color: (theme: Theme) => lighten(theme.palette.secondary.main, 0.5),
+                      }}>
+                      {t('Choose if you would like to show or not this typography section here...')}
                     </Typography>
                   </Box>
                   <ChevronRightTwoToneIcon />
@@ -263,21 +241,12 @@ function HeaderSearch() {
                 <Button color="primary">{t('View all recent searches')}</Button>
               </Box>
             </>
-
           ) : (
             <>
-              <Box
-                sx={{ pt: 0, pb: 1 }}
-                display="flex"
-                justifyContent="space-between"
-              >
+              <Box sx={{ pt: 0, pb: 1 }} display="flex" justifyContent="space-between">
                 <Typography variant="body2" component="span">
                   {t('Search results for')}{' '}
-                  <Typography
-                    sx={{ fontWeight: 'bold' }}
-                    variant="body1"
-                    component="span"
-                  >
+                  <Typography sx={{ fontWeight: 'bold' }} variant="body1" component="span">
                     {searchValue}
                   </Typography>
                 </Typography>
@@ -292,10 +261,8 @@ function HeaderSearch() {
                     <ListItemAvatar>
                       <Avatar
                         sx={{
-                          background: (theme: Theme) =>
-                            theme.palette.secondary.main
-                        }}
-                      >
+                          background: (theme: Theme) => theme.palette.secondary.main,
+                        }}>
                         <FindInPageTwoToneIcon />
                       </Avatar>
                     </ListItemAvatar>
@@ -310,13 +277,9 @@ function HeaderSearch() {
                       component="span"
                       variant="body2"
                       sx={{
-                        color: (theme: Theme) =>
-                          lighten(theme.palette.secondary.main, 0.5)
-                      }}
-                    >
-                      {t(
-                        'This page contains all the necessary information for managing all hospital staff.'
-                      )}
+                        color: (theme: Theme) => lighten(theme.palette.secondary.main, 0.5),
+                      }}>
+                      {t('This page contains all the necessary information for managing all hospital staff.')}
                     </Typography>
                   </Box>
                   <ChevronRightTwoToneIcon />
@@ -327,10 +290,8 @@ function HeaderSearch() {
                     <ListItemAvatar>
                       <Avatar
                         sx={{
-                          background: (theme: Theme) =>
-                            theme.palette.secondary.main
-                        }}
-                      >
+                          background: (theme: Theme) => theme.palette.secondary.main,
+                        }}>
                         <FindInPageTwoToneIcon />
                       </Avatar>
                     </ListItemAvatar>
@@ -345,13 +306,9 @@ function HeaderSearch() {
                       component="span"
                       variant="body2"
                       sx={{
-                        color: (theme: Theme) =>
-                          lighten(theme.palette.secondary.main, 0.5)
-                      }}
-                    >
-                      {t(
-                        'This is yet another search result pointing to a app page.'
-                      )}
+                        color: (theme: Theme) => lighten(theme.palette.secondary.main, 0.5),
+                      }}>
+                      {t('This is yet another search result pointing to a app page.')}
                     </Typography>
                   </Box>
                   <ChevronRightTwoToneIcon />
@@ -362,10 +319,8 @@ function HeaderSearch() {
                     <ListItemAvatar>
                       <Avatar
                         sx={{
-                          background: (theme: Theme) =>
-                            theme.palette.secondary.main
-                        }}
-                      >
+                          background: (theme: Theme) => theme.palette.secondary.main,
+                        }}>
                         <FindInPageTwoToneIcon />
                       </Avatar>
                     </ListItemAvatar>
@@ -380,13 +335,9 @@ function HeaderSearch() {
                       component="span"
                       variant="body2"
                       sx={{
-                        color: (theme: Theme) =>
-                          lighten(theme.palette.secondary.main, 0.5)
-                      }}
-                    >
-                      {t(
-                        'Choose if you would like to show or not this typography section here...'
-                      )}
+                        color: (theme: Theme) => lighten(theme.palette.secondary.main, 0.5),
+                      }}>
+                      {t('Choose if you would like to show or not this typography section here...')}
                     </Typography>
                   </Box>
                   <ChevronRightTwoToneIcon />
@@ -397,7 +348,7 @@ function HeaderSearch() {
         </DialogContent>
       </DialogWrapper>
     </>
-  );
+  )
 }
 
-export default HeaderSearch;
+export default HeaderSearch

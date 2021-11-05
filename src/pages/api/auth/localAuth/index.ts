@@ -1,7 +1,10 @@
-import handler from "../../../../server/api-route";
-import passport from "passport";
+import passport from 'passport'
 
-export default handler().use(passport.authenticate("local"))
-.use((req, res) => {
-  res.redirect( "/dasboard");
-});
+import { handler } from '../../../../server/api-route'
+
+export default handler()
+  .use(passport.authenticate('local'))
+  // @ts-ignore
+  .use((req, res) => {
+    res.redirect('/dasboard')
+  })

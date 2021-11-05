@@ -1,40 +1,26 @@
-import { useState } from 'react';
-
-import {
-  Box,
-  Typography,
-  Card,
-  Grid,
-  Button,
-  Avatar,
-  ButtonGroup,
-  IconButton,
-  Stack,
-  Slider,
-  useTheme
-} from '@mui/material';
-
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import OpacityTwoToneIcon from '@mui/icons-material/OpacityTwoTone';
-import DeviceThermostatTwoToneIcon from '@mui/icons-material/DeviceThermostatTwoTone';
-import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone';
-import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone';
-import TrendingDown from '@mui/icons-material/TrendingDown';
-import TrendingUp from '@mui/icons-material/TrendingUp';
-import Text from 'src/client/components/Text';
-import PauseRounded from '@mui/icons-material/PauseRounded';
-import PlayArrowRounded from '@mui/icons-material/PlayArrowRounded';
-import FastForwardRounded from '@mui/icons-material/FastForwardRounded';
-import FastRewindRounded from '@mui/icons-material/FastRewindRounded';
-import VolumeUpRounded from '@mui/icons-material/VolumeUpRounded';
-import VolumeDownRounded from '@mui/icons-material/VolumeDownRounded';
+import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone'
+import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone'
+import DeviceThermostatTwoToneIcon from '@mui/icons-material/DeviceThermostatTwoTone'
+import FastForwardRounded from '@mui/icons-material/FastForwardRounded'
+import FastRewindRounded from '@mui/icons-material/FastRewindRounded'
+import OpacityTwoToneIcon from '@mui/icons-material/OpacityTwoTone'
+import PauseRounded from '@mui/icons-material/PauseRounded'
+import PlayArrowRounded from '@mui/icons-material/PlayArrowRounded'
+import TrendingDown from '@mui/icons-material/TrendingDown'
+import TrendingUp from '@mui/icons-material/TrendingUp'
+import VolumeDownRounded from '@mui/icons-material/VolumeDownRounded'
+import VolumeUpRounded from '@mui/icons-material/VolumeUpRounded'
+import { Avatar, Box, Button, ButtonGroup, Card, Grid, IconButton, Slider, Stack, Typography, useTheme } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Text from 'src/client/components/Text'
 
 const WallPaper = styled(Card)(({ theme }) => ({
   position: 'relative',
   background: theme.colors.gradients.pink1,
   transition: 'all 500ms cubic-bezier(0.175, 0.885, 0.32, 1.275) 0s',
-}));
+}))
 
 const Widget = styled('div')(({ theme }) => ({
   padding: 16,
@@ -43,10 +29,9 @@ const Widget = styled('div')(({ theme }) => ({
   margin: 'auto',
   position: 'relative',
   zIndex: 1,
-  backgroundColor:
-    theme.palette.mode === 'dark' ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.4)',
+  backgroundColor: theme.palette.mode === 'dark' ? 'rgba(0,0,0,0.6)' : 'rgba(255,255,255,0.4)',
   backdropFilter: 'blur(40px)',
-}));
+}))
 
 const CoverImage = styled('div')({
   width: 100,
@@ -58,30 +43,30 @@ const CoverImage = styled('div')({
   backgroundColor: 'rgba(0,0,0,0.08)',
   '& > img': {
     height: '100%',
-    width: 'auto'
+    width: 'auto',
   },
-});
+})
 
 const TinyText = styled(Typography)({
   fontSize: '0.75rem',
   opacity: 0.58,
   fontWeight: 500,
   letterSpacing: 0.2,
-});
+})
 
 const AvatarWrapperError = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.error.lighter};
       color:  ${theme.colors.error.main};
 `
-);
+)
 
 const AvatarWrapperSuccess = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.success.lighter};
       color:  ${theme.colors.success.main};
 `
-);
+)
 
 const CardWrapper = styled(Card)(
   ({ theme }) => `
@@ -90,22 +75,22 @@ const CardWrapper = styled(Card)(
     font-size: ${theme.typography.pxToRem(50)};
   }
 `
-);
+)
 
 function Sensors() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
-  const duration = 200; // seconds
-  const [position, setPosition] = useState(32);
-  const [paused, setPaused] = useState(false);
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
+  // seconds
+  const duration = 200
+  const [position, setPosition] = useState(32)
+  const [paused, setPaused] = useState(false)
   function formatDuration(value: number) {
-    const minute = Math.floor(value / 60);
-    const secondLeft = value - minute * 60;
-    return `${minute}:${secondLeft < 9 ? `0${secondLeft}` : secondLeft}`;
+    const minute = Math.floor(value / 60)
+    const secondLeft = value - minute * 60
+    return `${minute}:${secondLeft < 9 ? `0${secondLeft}` : secondLeft}`
   }
-  const mainIconColor = theme.palette.mode === 'dark' ? '#fff' : '#000';
-  const lightIconColor =
-    theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)';
+  const mainIconColor = theme.palette.mode === 'dark' ? '#fff' : '#000'
+  const lightIconColor = theme.palette.mode === 'dark' ? 'rgba(255,255,255,0.4)' : 'rgba(0,0,0,0.4)'
 
   return (
     <>
@@ -115,10 +100,7 @@ function Sensors() {
             <Widget>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <CoverImage>
-                  <img
-                    alt="can't win - Chilling Sunday"
-                    src="/static/images/placeholders/fitness/4.jpg"
-                  />
+                  <img alt="can't win - Chilling Sunday" src="/static/images/placeholders/fitness/4.jpg" />
                 </CoverImage>
                 <Box sx={{ ml: 1.5, minWidth: 0 }}>
                   <Typography variant="caption" color="text.secondary" fontWeight={500}>
@@ -153,10 +135,9 @@ function Sensors() {
                       boxShadow: '0 2px 12px 0 rgba(0,0,0,0.4)',
                     },
                     '&:hover, &.Mui-focusVisible': {
-                      boxShadow: `0px 0px 0px 8px ${theme.palette.mode === 'dark'
-                        ? 'rgb(255 255 255 / 16%)'
-                        : 'rgb(0 0 0 / 16%)'
-                        }`,
+                      boxShadow: `0px 0px 0px 8px ${
+                        theme.palette.mode === 'dark' ? 'rgb(255 255 255 / 16%)' : 'rgb(0 0 0 / 16%)'
+                      }`,
                     },
                     '&.Mui-active': {
                       width: 20,
@@ -174,8 +155,7 @@ function Sensors() {
                   alignItems: 'center',
                   justifyContent: 'space-between',
                   mt: -2,
-                }}
-              >
+                }}>
                 <TinyText>{formatDuration(position)}</TinyText>
                 <TinyText>-{formatDuration(duration - position)}</TinyText>
               </Box>
@@ -185,20 +165,16 @@ function Sensors() {
                   alignItems: 'center',
                   justifyContent: 'center',
                   mt: -1,
-                }}
-              >
+                }}>
                 <IconButton sx={{ borderRadius: '50px' }} aria-label="previous song">
                   <FastRewindRounded fontSize="large" htmlColor={mainIconColor} />
                 </IconButton>
-                <IconButton sx={{ borderRadius: '50px' }}
+                <IconButton
+                  sx={{ borderRadius: '50px' }}
                   aria-label={paused ? 'play' : 'pause'}
-                  onClick={() => setPaused(!paused)}
-                >
+                  onClick={() => setPaused(!paused)}>
                   {paused ? (
-                    <PlayArrowRounded
-                      sx={{ fontSize: '3rem' }}
-                      htmlColor={mainIconColor}
-                    />
+                    <PlayArrowRounded sx={{ fontSize: '3rem' }} htmlColor={mainIconColor} />
                   ) : (
                     <PauseRounded sx={{ fontSize: '3rem' }} htmlColor={mainIconColor} />
                   )}
@@ -255,13 +231,13 @@ function Sensors() {
                   25.4<sup>°</sup>
                 </Text>
               </Typography>
-              <ButtonGroup
-                orientation="vertical"
-                aria-label="vertical contained button group"
-                variant="contained"
-              >
-                <Button><ArrowUpwardTwoToneIcon /></Button>
-                <Button><ArrowDownwardTwoToneIcon /></Button>
+              <ButtonGroup orientation="vertical" aria-label="vertical contained button group" variant="contained">
+                <Button>
+                  <ArrowUpwardTwoToneIcon />
+                </Button>
+                <Button>
+                  <ArrowDownwardTwoToneIcon />
+                </Button>
               </ButtonGroup>
             </Box>
           </CardWrapper>
@@ -283,20 +259,20 @@ function Sensors() {
               <Typography align="center" variant="h1">
                 <Text color="black">59%</Text>
               </Typography>
-              <ButtonGroup
-                orientation="vertical"
-                aria-label="vertical contained button group"
-                variant="outlined"
-              >
-                <Button><ArrowUpwardTwoToneIcon /></Button>
-                <Button><ArrowDownwardTwoToneIcon /></Button>
+              <ButtonGroup orientation="vertical" aria-label="vertical contained button group" variant="outlined">
+                <Button>
+                  <ArrowUpwardTwoToneIcon />
+                </Button>
+                <Button>
+                  <ArrowDownwardTwoToneIcon />
+                </Button>
               </ButtonGroup>
             </Box>
           </CardWrapper>
         </Grid>
       </Grid>
     </>
-  );
+  )
 }
 
-export default Sensors;
+export default Sensors

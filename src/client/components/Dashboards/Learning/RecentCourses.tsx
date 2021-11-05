@@ -1,40 +1,40 @@
-import { ChangeEvent, useState } from 'react';
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import LocalFireDepartmentTwoToneIcon from '@mui/icons-material/LocalFireDepartmentTwoTone'
+import PendingTwoToneIcon from '@mui/icons-material/PendingTwoTone'
+import TimerTwoToneIcon from '@mui/icons-material/TimerTwoTone'
 import {
-  Button,
-  Typography,
-  Card,
+  Avatar,
   Box,
+  Button,
+  Card,
+  CardActions,
   CardContent,
   CardHeader,
-  Link,
-  Divider,
-  Tabs,
-  Tab,
   Chip,
+  Divider,
+  IconButton,
+  Link,
   List,
   ListItem,
-  IconButton,
   ListItemAvatar,
   ListItemText,
-  Avatar,
-  useTheme,
   Pagination,
-  CardActions
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import { useSnackbar } from 'notistack';
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
-import Text from 'src/client/components/Text';
-import PendingTwoToneIcon from '@mui/icons-material/PendingTwoTone';
-import LocalFireDepartmentTwoToneIcon from '@mui/icons-material/LocalFireDepartmentTwoTone';
-import TimerTwoToneIcon from '@mui/icons-material/TimerTwoTone';
+  Tab,
+  Tabs,
+  Typography,
+  useTheme,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useSnackbar } from 'notistack'
+import { ChangeEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Text from 'src/client/components/Text'
 
 const TabsContainerWrapper = styled(CardContent)(
   ({ theme }) => `
       background-color: ${theme.colors.alpha.black[5]};
 `
-);
+)
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -44,7 +44,7 @@ const AvatarSuccess = styled(Avatar)(
       height: ${theme.spacing(4)};
       margin-right: ${theme.spacing(1)};
 `
-);
+)
 
 const AvatarInfo = styled(Avatar)(
   ({ theme }) => `
@@ -54,7 +54,7 @@ const AvatarInfo = styled(Avatar)(
       height: ${theme.spacing(4)};
       margin-right: ${theme.spacing(1)};
 `
-);
+)
 
 const EmptyResultsWrapper = styled('img')(
   ({ theme }) => `
@@ -64,7 +64,7 @@ const EmptyResultsWrapper = styled('img')(
       margin: ${theme.spacing(4)} auto 0;
       display: block;
 `
-);
+)
 
 const IconButtonWrapper = styled(IconButton)(
   ({ theme }) => `
@@ -74,37 +74,37 @@ const IconButtonWrapper = styled(IconButton)(
         color: ${theme.colors.alpha.black[100]};
       }
 `
-);
+)
 
 function RecentCourses() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
-  const { enqueueSnackbar } = useSnackbar();
+  const { enqueueSnackbar } = useSnackbar()
 
   const handleDelete = () => {
     enqueueSnackbar(t('You clicked on delete!'), {
-      variant: 'error'
-    });
-  };
+      variant: 'error',
+    })
+  }
 
   const handleClick = () => {
     enqueueSnackbar(t('You clicked on the chip!'), {
-      variant: 'success'
-    });
-  };
+      variant: 'success',
+    })
+  }
 
-  const [currentTab, setCurrentTab] = useState<string>('all');
+  const [currentTab, setCurrentTab] = useState<string>('all')
 
   const tabs = [
     { value: 'all', label: t('All Courses') },
     { value: 'active', label: t('Active') },
-    { value: 'upcoming', label: t('Upcoming') }
-  ];
+    { value: 'upcoming', label: t('Upcoming') },
+  ]
 
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
-    setCurrentTab(value);
-  };
+  const handleTabsChange = (_event: ChangeEvent<any>, value: string): void => {
+    setCurrentTab(value)
+  }
 
   return (
     <Card>
@@ -117,8 +117,7 @@ function RecentCourses() {
           variant="scrollable"
           scrollButtons="auto"
           textColor="primary"
-          indicatorColor="primary"
-        >
+          indicatorColor="primary">
           {tabs.map((tab) => (
             <Tab key={tab.value} label={tab.label} value={tab.value} />
           ))}
@@ -136,14 +135,10 @@ function RecentCourses() {
                   sx={{
                     transition: 'all .2s',
                     opacity: 1,
-                    '&:hover': { opacity: 0.8 }
+                    '&:hover': { opacity: 0.8 },
                   }}
-                  href="#"
-                >
-                  <img
-                    src="/static/images/placeholders/fitness/1.jpg"
-                    alt="..."
-                  />
+                  href="#">
+                  <img src="/static/images/placeholders/fitness/1.jpg" alt="..." />
                 </Link>
               </ListItemAvatar>
               <ListItemText
@@ -175,11 +170,7 @@ function RecentCourses() {
                         onDelete={handleDelete}
                       />
                     </Box>
-                    <Link
-                      underline="none"
-                      sx={{ '&:hover': { color: theme.colors.primary.dark } }}
-                      href="#"
-                    >
+                    <Link underline="none" sx={{ '&:hover': { color: theme.colors.primary.dark } }} href="#">
                       Machine learning basics: Regression
                     </Link>
                   </>
@@ -200,15 +191,10 @@ function RecentCourses() {
                 }
                 secondaryTypographyProps={{
                   variant: 'subtitle2',
-                  sx: { pt: 1 }
+                  sx: { pt: 1 },
                 }}
               />
-              <Box
-                sx={{ my: { xs: 2, md: 0 } }}
-                display="flex"
-                alignItems="center"
-                justifyContent="flex-right"
-              >
+              <Box sx={{ my: { xs: 2, md: 0 } }} display="flex" alignItems="center" justifyContent="flex-right">
                 <Box display="flex" alignItems="center">
                   <Text color="warning">
                     <LocalFireDepartmentTwoToneIcon />
@@ -231,14 +217,10 @@ function RecentCourses() {
                   sx={{
                     transition: 'all .2s',
                     opacity: 1,
-                    '&:hover': { opacity: 0.8 }
+                    '&:hover': { opacity: 0.8 },
                   }}
-                  href="#"
-                >
-                  <img
-                    src="/static/images/placeholders/fitness/2.jpg"
-                    alt="..."
-                  />
+                  href="#">
+                  <img src="/static/images/placeholders/fitness/2.jpg" alt="..." />
                 </Link>
               </ListItemAvatar>
               <ListItemText
@@ -262,11 +244,7 @@ function RecentCourses() {
                         onDelete={handleDelete}
                       />
                     </Box>
-                    <Link
-                      underline="none"
-                      sx={{ '&:hover': { color: theme.colors.primary.dark } }}
-                      href="#"
-                    >
+                    <Link underline="none" sx={{ '&:hover': { color: theme.colors.primary.dark } }} href="#">
                       Project Management: Managing Front-End Planning
                     </Link>
                   </>
@@ -287,15 +265,10 @@ function RecentCourses() {
                 }
                 secondaryTypographyProps={{
                   variant: 'subtitle2',
-                  sx: { pt: 1 }
+                  sx: { pt: 1 },
                 }}
               />
-              <Box
-                sx={{ my: { xs: 2, md: 0 } }}
-                display="flex"
-                alignItems="center"
-                justifyContent="flex-right"
-              >
+              <Box sx={{ my: { xs: 2, md: 0 } }} display="flex" alignItems="center" justifyContent="flex-right">
                 <Box display="flex" alignItems="center">
                   <Text color="warning">
                     <LocalFireDepartmentTwoToneIcon />
@@ -312,10 +285,7 @@ function RecentCourses() {
             </ListItem>
             <Divider component="li" />
           </List>
-          <CardActions
-            disableSpacing
-            sx={{ p: 3, display: 'flex', justifyContent: 'center' }}
-          >
+          <CardActions disableSpacing sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
             <Pagination size="large" count={7} color="primary" />
           </CardActions>
         </>
@@ -331,8 +301,7 @@ function RecentCourses() {
             fontWeight="normal"
             color="text.secondary"
             sx={{ py: 4, mb: 3 }}
-            gutterBottom
-          >
+            gutterBottom>
             {t('There are no active courses!')}
           </Typography>
         </>
@@ -348,14 +317,13 @@ function RecentCourses() {
             fontWeight="normal"
             color="text.secondary"
             sx={{ py: 4, mb: 3 }}
-            gutterBottom
-          >
+            gutterBottom>
             {t('There are no upcoming courses!')}
           </Typography>
         </>
       )}
     </Card>
-  );
+  )
 }
 
-export default RecentCourses;
+export default RecentCourses

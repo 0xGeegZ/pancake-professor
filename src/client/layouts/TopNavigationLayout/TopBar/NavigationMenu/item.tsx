@@ -1,12 +1,11 @@
-import KeyboardArrowDownTwoToneIcon from '@mui/icons-material/KeyboardArrowDownTwoTone';
-import KeyboardArrowUpTwoToneIcon from '@mui/icons-material/KeyboardArrowUpTwoTone';
-import { Badge, Box, darken, IconButton, ListItem, Popover } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import clsx from 'clsx';
-import PropTypes from 'prop-types';
-import { FC, ReactNode, useContext, useState } from 'react';
-import { SidebarContext } from 'src/client/contexts/SidebarContext';
-
+import KeyboardArrowDownTwoToneIcon from '@mui/icons-material/KeyboardArrowDownTwoTone'
+import KeyboardArrowUpTwoToneIcon from '@mui/icons-material/KeyboardArrowUpTwoTone'
+import { Badge, Box, darken, IconButton, ListItem, Popover } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import clsx from 'clsx'
+import PropTypes from 'prop-types'
+import { FC, ReactNode, useContext, useState } from 'react'
+import { SidebarContext } from 'src/client/contexts/SidebarContext'
 
 const IndicatorWrapper = styled(Box)(
   () => `
@@ -18,7 +17,7 @@ const IndicatorWrapper = styled(Box)(
     height: auto;
   }
 `
-);
+)
 
 const PopoverWrapper = styled(Popover)(
   ({ theme }) => `
@@ -36,7 +35,7 @@ const PopoverWrapper = styled(Popover)(
         padding: ${theme.spacing(1, 2)} !important;
 
         .name-wrapper {
-          color: ${darken(theme.sidebar.menuItemColor, .3)} !important;
+          color: ${darken(theme.sidebar.menuItemColor, 0.3)} !important;
         }
 
         &.Mui-active,
@@ -49,16 +48,16 @@ const PopoverWrapper = styled(Popover)(
     }  
   }
 `
-);
+)
 
 interface NavigationMenuItemProps {
-  children?: ReactNode;
-  link?: string;
-  icon?: any;
-  badge?: string;
-  open?: boolean;
-  active?: boolean;
-  name: string;
+  children?: ReactNode
+  link?: string
+  icon?: any
+  badge?: string
+  open?: boolean
+  active?: boolean
+  name: string
 }
 
 const NavigationMenuItem: FC<NavigationMenuItemProps> = ({
@@ -66,41 +65,35 @@ const NavigationMenuItem: FC<NavigationMenuItemProps> = ({
   link,
   icon: Icon,
   badge,
-  open: openParent,
+  // open: openParent,
   active,
   name,
   ...rest
 }) => {
-  const { toggleSidebar } = useContext(SidebarContext);
+  const { toggleSidebar } = useContext(SidebarContext)
 
-  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null);
+  const [anchorEl, setAnchorEl] = useState<HTMLButtonElement | null>(null)
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    setAnchorEl(event.currentTarget);
-  };
+    setAnchorEl(event.currentTarget)
+  }
 
   const handleClose = () => {
-    setAnchorEl(null);
-  };
+    setAnchorEl(null)
+  }
 
-  const open = Boolean(anchorEl);
+  const open = Boolean(anchorEl)
 
   if (children) {
     return (
       <ListItem component="div" className="Mui-children" key={name} {...rest}>
-        <IconButton
-          className={clsx({ 'Mui-active': open })}
-          onClick={handleClick}
-        >
+        <IconButton className={clsx({ 'Mui-active': open })} onClick={handleClick}>
           {Icon && <Icon />}
-          <span className="name-wrapper">
-            {name}
-          </span>
+          <span className="name-wrapper">{name}</span>
           <IndicatorWrapper>
             {open ? <KeyboardArrowUpTwoToneIcon /> : <KeyboardArrowDownTwoToneIcon />}
           </IndicatorWrapper>
           {badge && <Badge badgeContent={badge} />}
-
         </IconButton>
         <PopoverWrapper
           classes={{ root: 'child-popover' }}
@@ -115,27 +108,23 @@ const NavigationMenuItem: FC<NavigationMenuItemProps> = ({
           anchorEl={anchorEl}
           onClose={handleClose}
           onClick={handleClose}
-          open={open}>{children}</PopoverWrapper>
+          open={open}>
+          {children}
+        </PopoverWrapper>
       </ListItem>
-    );
+    )
   }
 
   return (
     <ListItem component="div" key={name} {...rest}>
-      <IconButton
-        className={clsx({ 'Mui-active': active })}
-        onClick={toggleSidebar}
-        href={link}
-      >
+      <IconButton className={clsx({ 'Mui-active': active })} onClick={toggleSidebar} href={link}>
         {Icon && <Icon />}
-        <span className="name-wrapper">
-          {name}
-        </span>
+        <span className="name-wrapper">{name}</span>
         {badge && <Badge badgeContent={badge} />}
       </IconButton>
     </ListItem>
-  );
-};
+  )
+}
 
 NavigationMenuItem.propTypes = {
   children: PropTypes.node,
@@ -144,12 +133,12 @@ NavigationMenuItem.propTypes = {
   icon: PropTypes.elementType,
   badge: PropTypes.string,
   open: PropTypes.bool,
-  name: PropTypes.string.isRequired
-};
+  name: PropTypes.string.isRequired,
+}
 
 NavigationMenuItem.defaultProps = {
   open: false,
   active: false,
-};
+}
 
-export default NavigationMenuItem;
+export default NavigationMenuItem

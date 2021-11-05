@@ -1,17 +1,9 @@
-import {
-  Box,
-  Typography,
-  Card,
-  CardHeader,
-  Divider,
-  Avatar,
-  useTheme
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import ShoppingBagTwoToneIcon from '@mui/icons-material/ShoppingBagTwoTone';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-import StarTwoToneIcon from '@mui/icons-material/StarTwoTone';
+import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
+import ShoppingBagTwoToneIcon from '@mui/icons-material/ShoppingBagTwoTone'
+import StarTwoToneIcon from '@mui/icons-material/StarTwoTone'
+import { Avatar, Box, Card, CardHeader, Divider, Typography, useTheme } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `
@@ -20,11 +12,11 @@ const AvatarPrimary = styled(Avatar)(
       width: ${theme.spacing(7)};
       height: ${theme.spacing(7)};
 `
-);
+)
 
 function RecentActivity() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
   return (
     <Card>
@@ -39,21 +31,13 @@ function RecentActivity() {
 
           <Box pt={2} display="flex">
             <Box pr={8}>
-              <Typography
-                gutterBottom
-                variant="caption"
-                sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}
-              >
+              <Typography gutterBottom variant="caption" sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}>
                 {t('Total')}
               </Typography>
               <Typography variant="h2">485</Typography>
             </Box>
             <Box>
-              <Typography
-                gutterBottom
-                variant="caption"
-                sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}
-              >
+              <Typography gutterBottom variant="caption" sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}>
                 {t('Failed')}
               </Typography>
               <Typography variant="h2">8</Typography>
@@ -71,21 +55,13 @@ function RecentActivity() {
 
           <Box pt={2} display="flex">
             <Box pr={8}>
-              <Typography
-                gutterBottom
-                variant="caption"
-                sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}
-              >
+              <Typography gutterBottom variant="caption" sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}>
                 {t('Products')}
               </Typography>
               <Typography variant="h2">64</Typography>
             </Box>
             <Box>
-              <Typography
-                gutterBottom
-                variant="caption"
-                sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}
-              >
+              <Typography gutterBottom variant="caption" sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}>
                 {t('Lists')}
               </Typography>
               <Typography variant="h2">15</Typography>
@@ -103,21 +79,13 @@ function RecentActivity() {
 
           <Box pt={2} display="flex">
             <Box pr={8}>
-              <Typography
-                gutterBottom
-                variant="caption"
-                sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}
-              >
+              <Typography gutterBottom variant="caption" sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}>
                 {t('Total')}
               </Typography>
               <Typography variant="h2">654</Typography>
             </Box>
             <Box>
-              <Typography
-                gutterBottom
-                variant="caption"
-                sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}
-              >
+              <Typography gutterBottom variant="caption" sx={{ fontSize: `${theme.typography.pxToRem(16)}` }}>
                 {t('Useful')}
               </Typography>
               <Typography variant="h2">21</Typography>
@@ -126,7 +94,7 @@ function RecentActivity() {
         </Box>
       </Box>
     </Card>
-  );
+  )
 }
 
-export default RecentActivity;
+export default RecentActivity

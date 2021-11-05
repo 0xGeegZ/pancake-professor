@@ -1,38 +1,36 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react'
 
-import { Card } from '@mui/material';
-import axios from 'src/client/utils/axios';
-import useRefMounted from 'src/client/hooks/useRefMounted';
-import { CryptoOrder } from 'src/client/models/crypto_order';
-import RecentOrdersTable from './RecentOrdersTable';
+import { Card } from '@mui/material'
+import axios from 'src/client/utils/axios'
+import useRefMounted from 'src/client/hooks/useRefMounted'
+import { CryptoOrder } from 'src/client/models/crypto_order'
+import RecentOrdersTable from './RecentOrdersTable'
 
 function RecentOrders() {
-  const isMountedRef = useRefMounted();
-  const [cryptoOrders, setCryptoOrders] = useState<CryptoOrder[]>([]);
+  const isMountedRef = useRefMounted()
+  const [cryptoOrders, setCryptoOrders] = useState<CryptoOrder[]>([])
 
   const getCryptoOrders = useCallback(async () => {
     try {
-      const response = await axios.get<{ cryptoOrders: CryptoOrder[] }>(
-        '/api/crypto-orders'
-      );
+      const response = await axios.get<{ cryptoOrders: CryptoOrder[] }>('/api/crypto-orders')
 
       if (isMountedRef.current) {
-        setCryptoOrders(response.data.cryptoOrders);
+        setCryptoOrders(response.data.cryptoOrders)
       }
     } catch (err) {
-      console.error(err);
+      console.error(err)
     }
-  }, [isMountedRef]);
+  }, [isMountedRef])
 
   useEffect(() => {
-    getCryptoOrders();
-  }, [getCryptoOrders]);
+    getCryptoOrders()
+  }, [getCryptoOrders])
 
   return (
     <Card>
       <RecentOrdersTable cryptoOrders={cryptoOrders} />
     </Card>
-  );
+  )
 }
 
-export default RecentOrders;
+export default RecentOrders

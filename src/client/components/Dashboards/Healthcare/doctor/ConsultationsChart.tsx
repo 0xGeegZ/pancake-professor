@@ -1,14 +1,14 @@
-import { FC } from 'react';
-import PropTypes from 'prop-types';
-import { Doughnut } from 'react-chartjs-2';
-import { useTheme } from '@mui/material';
+import { FC } from 'react'
+import PropTypes from 'prop-types'
+import { Doughnut } from 'react-chartjs-2'
+import { useTheme } from '@mui/material'
 
 interface ChartProps {
-  data: any;
+  data: any
 }
 
 const ConsultationsChart: FC<ChartProps> = ({ data: dataProp, ...rest }) => {
-  const theme = useTheme();
+  const theme = useTheme()
 
   const data = {
     datasets: dataProp.datasets.map((dataset) => ({
@@ -16,10 +16,10 @@ const ConsultationsChart: FC<ChartProps> = ({ data: dataProp, ...rest }) => {
       borderColor: theme.palette.common.white,
       hoverBorderColor: theme.palette.common.white,
       borderWidth: 10,
-      hoverBorderWidth: 10
+      hoverBorderWidth: 10,
     })),
-    labels: dataProp.labels
-  };
+    labels: dataProp.labels,
+  }
 
   const options = {
     responsive: true,
@@ -27,10 +27,10 @@ const ConsultationsChart: FC<ChartProps> = ({ data: dataProp, ...rest }) => {
     animation: false,
     cutoutPercentage: 70,
     legend: {
-      display: false
+      display: false,
     },
     layout: {
-      padding: 0
+      padding: 0,
     },
     tooltips: {
       enabled: true,
@@ -49,20 +49,20 @@ const ConsultationsChart: FC<ChartProps> = ({ data: dataProp, ...rest }) => {
       footerFontColor: theme.palette.common.white,
       callbacks: {
         label(tooltipItem, _data) {
-          const label = _data.labels[tooltipItem.index];
-          const value = _data.datasets[0].data[tooltipItem.index];
+          const label = _data.labels[tooltipItem.index]
+          const value = _data.datasets[0].data[tooltipItem.index]
 
-          return `${label}: ${value} appointments`;
-        }
-      }
-    }
-  };
+          return `${label}: ${value} appointments`
+        },
+      },
+    },
+  }
 
-  return <Doughnut data={data} options={options} {...rest} />;
-};
+  return <Doughnut data={data} options={options} {...rest} />
+}
 
 ConsultationsChart.propTypes = {
-  data: PropTypes.object.isRequired
-};
+  data: PropTypes.object.isRequired,
+}
 
-export default ConsultationsChart;
+export default ConsultationsChart

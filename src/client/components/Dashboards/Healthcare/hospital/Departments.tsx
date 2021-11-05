@@ -1,25 +1,15 @@
-import {
-  Button,
-  Card,
-  CardHeader,
-  CardActions,
-  Typography,
-  Divider,
-  Hidden,
-  Grid,
-  Box
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
-import { styled } from '@mui/material/styles';
+import { Button, Card, CardHeader, CardActions, Typography, Divider, Hidden, Grid, Box } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
+import { styled } from '@mui/material/styles'
 
-import DepartmentsChart from './DepartmentsChart';
+import DepartmentsChart from './DepartmentsChart'
 
 const DepartmentsChartWrapper = styled(DepartmentsChart)(
   () => `
     width: 90px;
 `
-);
+)
 
 const BoxChartWrapper = styled(Box)(
   ({ theme }) => `
@@ -29,7 +19,7 @@ const BoxChartWrapper = styled(Box)(
     justify-content: center;
     flex-direction: column;
 `
-);
+)
 
 const BoxChartWrapperText = styled(Box)(
   ({ theme }) => `
@@ -51,48 +41,48 @@ const BoxChartWrapperText = styled(Box)(
       justify-content: center;
     }
 `
-);
+)
 
 function Departments() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const beds = {
     og: {
       datasets: [
         {
-          data: [20, 10]
-        }
+          data: [20, 10],
+        },
       ],
-      labels: [t('Free Beds'), t('Occupied Beds')]
+      labels: [t('Free Beds'), t('Occupied Beds')],
     },
     mg: {
       datasets: [
         {
-          data: [20, 10]
-        }
+          data: [20, 10],
+        },
       ],
-      labels: [t('Free Beds'), t('Occupied Beds')]
-    }
-  };
+      labels: [t('Free Beds'), t('Occupied Beds')],
+    },
+  }
 
   const doctors = {
     og: {
       datasets: [
         {
-          data: [67, 33]
-        }
+          data: [67, 33],
+        },
       ],
-      labels: [t('Free Doctors'), t('Occupied Doctors')]
+      labels: [t('Free Doctors'), t('Occupied Doctors')],
     },
     mg: {
       datasets: [
         {
-          data: [50, 50]
-        }
+          data: [50, 50],
+        },
       ],
-      labels: [t('Free Doctors'), t('Occupied Doctors')]
-    }
-  };
+      labels: [t('Free Doctors'), t('Occupied Doctors')],
+    },
+  }
 
   return (
     <Card sx={{ height: '100%' }}>
@@ -100,14 +90,7 @@ function Departments() {
       <Divider />
       <Box py={3}>
         <Grid container spacing={0} justifyContent="center" alignItems="center">
-          <Grid
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            xs={12}
-            sm={4}
-            item
-          >
+          <Grid display="flex" alignItems="center" justifyContent="center" xs={12} sm={4} item>
             <Box sx={{ maxWidth: 150 }}>
               <Typography align="center" variant="h4">
                 {t('Obstetrics and Gynaecology')}
@@ -151,14 +134,7 @@ function Departments() {
       <Divider />
       <Box py={3}>
         <Grid container spacing={0} justifyContent="center" alignItems="center">
-          <Grid
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            xs={12}
-            sm={4}
-            item
-          >
+          <Grid display="flex" alignItems="center" justifyContent="center" xs={12} sm={4} item>
             <Box sx={{ maxWidth: 150 }}>
               <Typography align="center" variant="h4">
                 {t('Medical Gastroenterology')}
@@ -201,16 +177,12 @@ function Departments() {
       </Box>
       <Divider />
       <CardActions sx={{ justifyContent: 'center', py: 2 }}>
-        <Button
-          variant="contained"
-          size="small"
-          endIcon={<ArrowForwardTwoToneIcon fontSize="small" />}
-        >
+        <Button variant="contained" size="small" endIcon={<ArrowForwardTwoToneIcon fontSize="small" />}>
           {t('View all departments')}
         </Button>
       </CardActions>
     </Card>
-  );
+  )
 }
 
-export default Departments;
+export default Departments

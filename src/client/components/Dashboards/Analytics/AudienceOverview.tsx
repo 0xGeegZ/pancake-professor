@@ -1,6 +1,6 @@
-import { useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
+import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 
 import {
   Button,
@@ -14,12 +14,12 @@ import {
   CardActions,
   Grid,
   Typography,
-  Divider
-} from '@mui/material';
+  Divider,
+} from '@mui/material'
 
-import AudienceOverviewChart from './AudienceOverviewChart';
-import AudienceOverviewSparklines from './AudienceOverviewSparklines';
-import { styled } from '@mui/material/styles';
+import { styled } from '@mui/material/styles'
+import AudienceOverviewChart from './AudienceOverviewChart'
+import AudienceOverviewSparklines from './AudienceOverviewSparklines'
 
 const CardActionsWrapper = styled(CardActions)(
   ({ theme }) => `
@@ -27,74 +27,74 @@ const CardActionsWrapper = styled(CardActions)(
       padding: 0;
       display: block;
 `
-);
+)
 
 const AudienceOverviewChartWrapper = styled(AudienceOverviewChart)(
   () => `
         height: 200px;
 `
-);
+)
 
 const SparklinesChartWrapper = styled(AudienceOverviewSparklines)(
   () => `
         height: 50px;
 `
-);
+)
 
 function AudienceOverview() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   const periods = [
     {
       value: 'today',
-      text: t('Today')
+      text: t('Today'),
     },
     {
       value: 'yesterday',
-      text: t('Yesterday')
+      text: t('Yesterday'),
     },
     {
       value: 'last_month',
-      text: t('Last month')
+      text: t('Last month'),
     },
     {
       value: 'last_year',
-      text: t('Last year')
-    }
-  ];
+      text: t('Last year'),
+    },
+  ]
   const audiences = [
     {
       value: 'users',
-      text: t('Users')
+      text: t('Users'),
     },
     {
       value: 'new_users',
-      text: t('New users')
+      text: t('New users'),
     },
     {
       value: 'page_views',
-      text: t('Page views')
+      text: t('Page views'),
     },
     {
       value: 'avg_session_duration',
-      text: t('Avg. session duration')
+      text: t('Avg. session duration'),
     },
     {
       value: 'bounce_rate',
-      text: t('Bounce rate')
+      text: t('Bounce rate'),
     },
     {
       value: 'sessions',
-      text: t('Sessions')
-    }
-  ];
+      text: t('Sessions'),
+    },
+  ]
 
-  const actionRef1 = useRef<any>(null);
-  const actionRef2 = useRef<any>(null);
-  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false);
-  const [openAudience, setOpenMenuAudience] = useState<boolean>(false);
-  const [period, setPeriod] = useState<string>(periods[3].text);
-  const [audience, setAudience] = useState<string>(audiences[1].text);
+  const actionRef1 = useRef<any>(null)
+  const actionRef2 = useRef<any>(null)
+  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false)
+  const [openAudience, setOpenMenuAudience] = useState<boolean>(false)
+  const [period, setPeriod] = useState<string>(periods[3].text)
+  const [audience, setAudience] = useState<string>(audiences[1].text)
 
   const data = {
     users: 14.586,
@@ -102,64 +102,51 @@ function AudienceOverview() {
     pageViews: 67.492,
     avgSessionDuration: '00:05:21',
     bounceRate: '65.37%',
-    sessions: 25.694
-  };
+    sessions: 25.694,
+  }
 
   const newUsersAudience = {
     month: {
-      data: [324, 315, 578, 576, 227, 459, 473, 282, 214, 623, 477, 401]
-    }
-  };
+      data: [324, 315, 578, 576, 227, 459, 473, 282, 214, 623, 477, 401],
+    },
+  }
 
   const usersSparklines = {
     month: {
-      data: [467, 696, 495, 477, 422, 585, 691, 294, 508, 304, 499, 390]
-    }
-  };
+      data: [467, 696, 495, 477, 422, 585, 691, 294, 508, 304, 499, 390],
+    },
+  }
   const newUsersSparklines = {
     month: {
-      data: [581, 203, 462, 518, 329, 395, 375, 447, 303, 423, 405, 589]
-    }
-  };
+      data: [581, 203, 462, 518, 329, 395, 375, 447, 303, 423, 405, 589],
+    },
+  }
   const pageViewsSparklines = {
     month: {
-      data: [353, 380, 325, 246, 682, 605, 672, 271, 386, 630, 577, 511]
-    }
-  };
+      data: [353, 380, 325, 246, 682, 605, 672, 271, 386, 630, 577, 511],
+    },
+  }
   const avgSessionDurationSparklines = {
     month: {
-      data: [508, 420, 336, 278, 627, 475, 575, 307, 441, 249, 413, 574]
-    }
-  };
+      data: [508, 420, 336, 278, 627, 475, 575, 307, 441, 249, 413, 574],
+    },
+  }
   const bounceRateSparklines = {
     month: {
-      data: [534, 345, 622, 332, 567, 250, 494, 270, 313, 470, 329, 287]
-    }
-  };
+      data: [534, 345, 622, 332, 567, 250, 494, 270, 313, 470, 329, 287],
+    },
+  }
   const sessionsSparklines = {
     month: {
-      data: [610, 234, 374, 423, 207, 507, 699, 304, 285, 257, 350, 227]
-    }
-  };
+      data: [610, 234, 374, 423, 207, 507, 699, 304, 285, 257, 350, 227],
+    },
+  }
 
   const generic = {
     month: {
-      labels: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec'
-      ]
-    }
-  };
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+    },
+  }
 
   return (
     <Card>
@@ -171,32 +158,28 @@ function AudienceOverview() {
               variant="outlined"
               ref={actionRef1}
               onClick={() => setOpenMenuPeriod(true)}
-              endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}
-            >
+              endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}>
               {period}
             </Button>
             <Menu
               anchorEl={actionRef1.current}
               onClose={() => setOpenMenuPeriod(false)}
               open={openPeriod}
-
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'right'
-              }}
-            >
+                horizontal: 'right',
+              }}>
               {periods.map((_period) => (
                 <MenuItem
                   key={_period.value}
                   onClick={() => {
-                    setPeriod(_period.text);
-                    setOpenMenuPeriod(false);
-                  }}
-                >
+                    setPeriod(_period.text)
+                    setOpenMenuPeriod(false)
+                  }}>
                   {_period.text}
                 </MenuItem>
               ))}
@@ -212,42 +195,35 @@ function AudienceOverview() {
           variant="outlined"
           ref={actionRef2}
           onClick={() => setOpenMenuAudience(true)}
-          endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}
-        >
+          endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}>
           {audience}
         </Button>
         <Menu
           anchorEl={actionRef2.current}
           onClose={() => setOpenMenuAudience(false)}
           open={openAudience}
-
           anchorOrigin={{
             vertical: 'bottom',
-            horizontal: 'left'
+            horizontal: 'left',
           }}
           transformOrigin={{
             vertical: 'top',
-            horizontal: 'left'
-          }}
-        >
+            horizontal: 'left',
+          }}>
           {audiences.map((_audience) => (
             <MenuItem
               key={_audience.value}
               onClick={() => {
-                setAudience(_audience.text);
-                setOpenMenuAudience(false);
-              }}
-            >
+                setAudience(_audience.text)
+                setOpenMenuAudience(false)
+              }}>
               {_audience.text}
             </MenuItem>
           ))}
         </Menu>
 
         <Box sx={{ my: 3 }} height={200}>
-          <AudienceOverviewChartWrapper
-            data={newUsersAudience.month.data}
-            labels={generic.month.labels}
-          />
+          <AudienceOverviewChartWrapper data={newUsersAudience.month.data} labels={generic.month.labels} />
         </Box>
       </CardContent>
       <Divider />
@@ -267,10 +243,7 @@ function AudienceOverview() {
                 </Box>
 
                 <Box sx={{ mr: 3 }} height={50}>
-                  <SparklinesChartWrapper
-                    data={usersSparklines.month.data}
-                    labels={generic.month.labels}
-                  />
+                  <SparklinesChartWrapper data={usersSparklines.month.data} labels={generic.month.labels} />
                 </Box>
               </Box>
               <Divider />
@@ -288,10 +261,7 @@ function AudienceOverview() {
                 </Box>
 
                 <Box sx={{ mr: 3 }} height={50}>
-                  <SparklinesChartWrapper
-                    data={newUsersSparklines.month.data}
-                    labels={generic.month.labels}
-                  />
+                  <SparklinesChartWrapper data={newUsersSparklines.month.data} labels={generic.month.labels} />
                 </Box>
               </Box>
               <Divider />
@@ -309,10 +279,7 @@ function AudienceOverview() {
                 </Box>
 
                 <Box sx={{ mr: 3 }} height={50}>
-                  <SparklinesChartWrapper
-                    data={pageViewsSparklines.month.data}
-                    labels={generic.month.labels}
-                  />
+                  <SparklinesChartWrapper data={pageViewsSparklines.month.data} labels={generic.month.labels} />
                 </Box>
               </Box>
               <Divider />
@@ -326,9 +293,7 @@ function AudienceOverview() {
                   <Typography variant="subtitle2" gutterBottom>
                     {t('Avg. Session Duration')}
                   </Typography>
-                  <Typography variant="h3">
-                    {data.avgSessionDuration}
-                  </Typography>
+                  <Typography variant="h3">{data.avgSessionDuration}</Typography>
                 </Box>
 
                 <Box sx={{ mr: 3 }} height={50}>
@@ -353,10 +318,7 @@ function AudienceOverview() {
                 </Box>
 
                 <Box sx={{ mr: 3 }} height={50}>
-                  <SparklinesChartWrapper
-                    data={bounceRateSparklines.month.data}
-                    labels={generic.month.labels}
-                  />
+                  <SparklinesChartWrapper data={bounceRateSparklines.month.data} labels={generic.month.labels} />
                 </Box>
               </Box>
               <Divider />
@@ -374,10 +336,7 @@ function AudienceOverview() {
                 </Box>
 
                 <Box sx={{ mr: 3 }} height={50}>
-                  <SparklinesChartWrapper
-                    data={sessionsSparklines.month.data}
-                    labels={generic.month.labels}
-                  />
+                  <SparklinesChartWrapper data={sessionsSparklines.month.data} labels={generic.month.labels} />
                 </Box>
               </Box>
               <Divider />
@@ -386,7 +345,7 @@ function AudienceOverview() {
         </Box>
       </CardActionsWrapper>
     </Card>
-  );
+  )
 }
 
-export default AudienceOverview;
+export default AudienceOverview

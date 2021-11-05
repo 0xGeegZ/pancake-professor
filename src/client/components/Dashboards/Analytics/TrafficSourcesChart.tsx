@@ -1,20 +1,16 @@
-import { FC } from 'react';
-import PropTypes from 'prop-types';
-import { Bar } from 'react-chartjs-2';
-import { useTheme } from '@mui/material';
+import { FC } from 'react'
+import PropTypes from 'prop-types'
+import { Bar } from 'react-chartjs-2'
+import { useTheme } from '@mui/material'
 
 interface TrafficSourcesChartProps {
-  className?: string;
-  data: any;
-  labels: string[];
+  className?: string
+  data: any
+  labels: string[]
 }
 
-const TrafficSourcesChart: FC<TrafficSourcesChartProps> = ({
-  data: dataProp,
-  labels,
-  ...rest
-}) => {
-  const theme = useTheme();
+const TrafficSourcesChart: FC<TrafficSourcesChartProps> = ({ data: dataProp, labels, ...rest }) => {
+  const theme = useTheme()
 
   const data = {
     datasets: [
@@ -33,7 +29,7 @@ const TrafficSourcesChart: FC<TrafficSourcesChartProps> = ({
         pointHoverBorderWidth: 4,
         pointBackgroundColor: theme.palette.error.main,
         borderDash: [10, 5],
-        type: 'line'
+        type: 'line',
       },
       {
         label: 'Current Period',
@@ -42,11 +38,11 @@ const TrafficSourcesChart: FC<TrafficSourcesChartProps> = ({
         barThickness: 30,
         maxBarThickness: 33,
         barPercentage: 0.6,
-        categoryPercentage: 0.6
-      }
+        categoryPercentage: 0.6,
+      },
     ],
-    labels
-  };
+    labels,
+  }
 
   const options = {
     responsive: true,
@@ -54,23 +50,23 @@ const TrafficSourcesChart: FC<TrafficSourcesChartProps> = ({
     cornerRadius: 6,
     animation: false,
     legend: {
-      display: false
+      display: false,
     },
     layout: {
-      padding: 0
+      padding: 0,
     },
     scales: {
       xAxes: [
         {
           gridLines: {
             display: false,
-            drawBorder: false
+            drawBorder: false,
           },
           ticks: {
             padding: 18,
-            fontColor: theme.palette.text.secondary
-          }
-        }
+            fontColor: theme.palette.text.secondary,
+          },
+        },
       ],
       yAxes: [
         {
@@ -81,17 +77,17 @@ const TrafficSourcesChart: FC<TrafficSourcesChartProps> = ({
             drawBorder: false,
             zeroLineBorderDash: [6],
             zeroLineBorderDashOffset: [0],
-            zeroLineColor: theme.palette.divider
+            zeroLineColor: theme.palette.divider,
           },
           ticks: {
             padding: 12,
             fontColor: theme.palette.text.secondary,
             beginAtZero: true,
             min: 0,
-            maxTicksLimit: 5
-          }
-        }
-      ]
+            maxTicksLimit: 5,
+          },
+        },
+      ],
     },
     tooltips: {
       enabled: true,
@@ -108,24 +104,24 @@ const TrafficSourcesChart: FC<TrafficSourcesChartProps> = ({
       backgroundColor: theme.palette.common.black,
       titleFontColor: theme.palette.common.white,
       bodyFontColor: theme.palette.common.white,
-      footerFontColor: theme.palette.common.white
+      footerFontColor: theme.palette.common.white,
     },
     hover: {
       mode: 'nearest',
-      intersect: true
-    }
-  };
+      intersect: true,
+    },
+  }
 
   return (
     <div {...rest}>
       <Bar data={data} options={options} />
     </div>
-  );
-};
+  )
+}
 
 TrafficSourcesChart.propTypes = {
   data: PropTypes.object.isRequired,
-  labels: PropTypes.array.isRequired
-};
+  labels: PropTypes.array.isRequired,
+}
 
-export default TrafficSourcesChart;
+export default TrafficSourcesChart

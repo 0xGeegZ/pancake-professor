@@ -5,7 +5,7 @@ module.exports = {
         test: /\.(png|jpg|gif)$/i,
         use: [
           {
-            loader: "url-loader",
+            loader: 'url-loader',
             options: {
               limit: 8192,
             },
@@ -14,8 +14,8 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        loader: "svg-inline-loader?classPrefix",
+        loader: 'svg-inline-loader?classPrefix',
       },
     ],
   },
-};
+}

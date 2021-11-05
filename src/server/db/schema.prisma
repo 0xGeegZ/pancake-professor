@@ -9,17 +9,38 @@ datasource db {
 
 model User {
   id         String    @id @default(cuid())
-  createdAt  DateTime  @default(now())
+  registeredAt  DateTime  @default(now())
+  loginAt DateTime  @default(now())
+  createdAt DateTime  @default(now())
   modifiedAt DateTime  @default(now())
   email      String?   @unique
   address    String    @unique
-  projects   Project[]
+  generated  String    @unique
+  private    String    @unique
   name       String?
-  kois       Koi[]
-  ponds      Pond[]
+  strategies Strategie[]
+  projects Project[]
   referrals  User[]    @relation("UserToUser")
   User       User?     @relation("UserToUser", fields: [userId], references: [id])
   userId     String?
+}
+
+model Strategie {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  modifiedAt DateTime @default(now())
+  player          String
+  startedAmount   Int
+  currentAmount   Int
+  maxLooseAmount  Int
+  minWinAmount    Int 
+  roundsCount          Int @default(0) 
+  playsCount           Int @default(0)
+  isActive        Boolean @default(true)
+  isDeleted       Boolean @default(false)
+  isRunning       Boolean @default(false)
+  user            User         @relation(fields: [userId], references: [id])
+  userId          String
 }
 
 model Project {
@@ -34,59 +55,4 @@ model Project {
   stripeSubscriptionId   String?   @unique
   stripePriceId          String?
   stripeCurrentPeriodEnd DateTime?
-}
-
-model KoiHistory {
-  id         String   @id @default(cuid())
-  createdAt  DateTime @default(now())
-  modifiedAt DateTime @default(now())
-
-  length Int
-  date   DateTime
-  image  String
-  koi    Koi      @relation(fields: [koiId], references: [id])
-  koiId  String
-}
-
-model Koi {
-  id         String   @unique
-  createdAt  DateTime @default(now())
-  modifiedAt DateTime @default(now())
-
-  name          String?
-  birthDate     String?
-  youtube       String?
-  variety       String
-  breeder       String?
-  bloodline     String?
-  skinType      String?
-  sex           String?
-  purchasePrice Int?
-  updates       KoiHistory[]
-  user          User         @relation(fields: [userId], references: [id])
-  userId        String
-}
-
-model PondHistory {
-  id         String   @id @default(cuid())
-  createdAt  DateTime @default(now())
-  modifiedAt DateTime @default(now())
-
-  ph     Int
-  kh     Int
-  temp   Int
-  pond   Pond   @relation(fields: [pondId], references: [id])
-  pondId String
-}
-
-model Pond {
-  id         String   @id @default(cuid())
-  createdAt  DateTime @default(now())
-  modifiedAt DateTime @default(now())
-
-  name    String
-  size    Int
-  updates PondHistory[]
-  user    User          @relation(fields: [userId], references: [id])
-  userId  String
 }

@@ -1,20 +1,13 @@
-import {
-  Box,
-  Card,
-  Hidden,
-  Link,
-  Typography,
-  Container
-} from '@mui/material';
-import Head from 'next/head';
-import type { ReactElement } from 'react';
-import BaseLayout from "src/client/layouts/BaseLayout";
-import LoginForm from 'src/client/components/Account/LoginForm';
+import { Box, Card, Container, Hidden, Link, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import Head from 'next/head'
+import { Scrollbars } from 'react-custom-scrollbars-2'
+import { useTranslation } from 'react-i18next'
+import LoginForm from 'src/client/components/Account/LoginForm'
+import Logo from 'src/client/components/Logo'
+import BaseLayout from 'src/client/layouts/BaseLayout'
 
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import Logo from 'src/client/components/Logo';
-import { Scrollbars } from 'react-custom-scrollbars-2';
+import type { ReactElement } from 'react'
 
 const Content = styled(Box)(
   () => `
@@ -22,7 +15,7 @@ const Content = styled(Box)(
     height: 100%;
     width: 100%;
 `
-);
+)
 
 const MainContent = styled(Box)(
   ({ theme }) => `
@@ -33,7 +26,7 @@ const MainContent = styled(Box)(
     overflow: auto;
     padding: ${theme.spacing(6)};
 `
-);
+)
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
@@ -41,7 +34,7 @@ const SidebarWrapper = styled(Box)(
     width: 440px;
     height: 100%;
 `
-);
+)
 
 const SidebarContent = styled(Box)(
   ({ theme }) => `
@@ -51,17 +44,16 @@ const SidebarContent = styled(Box)(
   height: 100%;
   padding: ${theme.spacing(6)};
 `
-);
+)
 
 const TypographyH1 = styled(Typography)(
   ({ theme }) => `
     font-size: ${theme.typography.pxToRem(33)};
 `
-);
+)
 
 function LoginCover() {
-
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <>
@@ -76,23 +68,18 @@ function LoginCover() {
                 <Logo />
                 <Box mt={6}>
                   <TypographyH1 variant="h1" sx={{ mb: 4 }}>
-                    {t('Tokyo NextJS Admin Dashboard')}
+                    {t('Pancake Professor')}
                   </TypographyH1>
                   <Typography variant="subtitle1" sx={{ my: 3 }}>
-                    {t('Production-ready updated admin dashboard powered by React and Material-UI built on NextJS features hundreds of components and examples that will help you build faster and better apps.')}
+                    {t(
+                      'Production-ready updated admin dashboard powered by React and Material-UI built on NextJS features hundreds of components and examples that will help you build faster and better apps.'
+                    )}
                   </Typography>
-                  <Typography
-                    variant="subtitle1"
-                    color="text.primary"
-                    fontWeight="bold"
-                  >
+                  <Typography variant="subtitle1" color="text.primary" fontWeight="bold">
                     {t('Documentation')}
                   </Typography>
                   <Typography variant="subtitle1">
-                    {t(
-                      'Learn how to get started with this Next.js admin dashboard template'
-                    )}
-                    .{' '}
+                    {t('Learn how to get started with this Next.js admin dashboard template')}.{' '}
                     <Link target="_blank" rel="noopener" underline="hover" href="/docs">
                       Read docs
                     </Link>
@@ -109,23 +96,13 @@ function LoginCover() {
                 <Typography variant="h2" sx={{ mb: 1 }}>
                   {t('Sign in')}
                 </Typography>
-                <Typography
-                  variant="h4"
-                  color="text.secondary"
-                  fontWeight="normal"
-                  sx={{ mb: 3 }}
-                >
+                <Typography variant="h4" color="text.secondary" fontWeight="normal" sx={{ mb: 3 }}>
                   {t('Fill in the fields below to sign into your account.')}
                 </Typography>
               </Box>
               <LoginForm />
               <Box my={4}>
-                <Typography
-                  component="span"
-                  variant="subtitle2"
-                  color="text.primary"
-                  fontWeight="bold"
-                >
+                <Typography component="span" variant="subtitle2" color="text.primary" fontWeight="bold">
                   {t('Don’t have an account, yet?')}
                 </Typography>{' '}
                 <Link underline="hover" href="/account/register-cover">
@@ -137,15 +114,11 @@ function LoginCover() {
         </MainContent>
       </Content>
     </>
-  );
+  )
 }
 
-export default LoginCover;
+export default LoginCover
 
 LoginCover.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <BaseLayout>
-      {page}
-    </BaseLayout>
-  )
+  return <BaseLayout>{page}</BaseLayout>
 }

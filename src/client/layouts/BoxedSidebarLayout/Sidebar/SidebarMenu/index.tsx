@@ -1,14 +1,16 @@
-import { ListSubheader, Box, alpha, darken, lighten, List } from '@mui/material';
-import { useRouter } from 'next/router';
-import SidebarMenuItem from './item';
-import menuItems, { MenuItem } from './items';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+/* eslint-disable no-use-before-define */
+import { alpha, Box, darken, lighten, List, ListSubheader } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useRouter } from 'next/router'
+import { useTranslation } from 'react-i18next'
+
+import SidebarMenuItem from './item'
+import menuItems, { MenuItem } from './items'
 
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
   .MuiList-root {
-    margin-bottom: ${theme.spacing(.5)};
+    margin-bottom: ${theme.spacing(0.5)};
     padding: 0;
 
     & > .MuiList-root {
@@ -20,12 +22,12 @@ const MenuWrapper = styled(Box)(
       text-transform: uppercase;
       font-weight: bold;
       font-size: ${theme.typography.pxToRem(11)};
-      color: ${lighten(theme.sidebar.menuItemHeadingColor, .3)};
+      color: ${lighten(theme.sidebar.menuItemHeadingColor, 0.3)};
       padding: ${theme.spacing(1, 3.2)};
       line-height: 1.4;
     }
 `
-);
+)
 
 const SubMenuWrapper = styled(Box)(
   ({ theme }) => `
@@ -77,8 +79,8 @@ const SubMenuWrapper = styled(Box)(
           .MuiButton-startIcon {
             transition: ${theme.transitions.create(['all'])};
             border-radius: ${theme.general.borderRadius};
-            background: ${lighten(theme.sidebar.menuItemBgActive, .05)};
-            box-shadow: 0px 2px 4px 0 ${alpha(darken(theme.sidebar.menuItemIconColor, .2), .6)};
+            background: ${lighten(theme.sidebar.menuItemBgActive, 0.05)};
+            box-shadow: 0px 2px 4px 0 ${alpha(darken(theme.sidebar.menuItemIconColor, 0.2), 0.6)};
             font-size: ${theme.typography.pxToRem(18)};
             margin-right: ${theme.spacing(1.5)};
             width: 36px;
@@ -86,7 +88,7 @@ const SubMenuWrapper = styled(Box)(
             display: flex;
             align-items: center;
             justify-content: center;
-            color: ${lighten(theme.sidebar.menuItemIconColorActive, .3)};
+            color: ${lighten(theme.sidebar.menuItemIconColorActive, 0.3)};
           }
           
           .MuiButton-endIcon {
@@ -105,8 +107,11 @@ const SubMenuWrapper = styled(Box)(
           }
 
           &.Mui-active {
-            background-color: ${alpha(theme.sidebar.menuItemBgActive, .8)};
-            box-shadow: 0px 2px 4px ${alpha(darken(theme.sidebar.menuItemBg, .35), .8)}, 0px 1px 8px 0px ${alpha(darken(theme.sidebar.menuItemBg, .35), .3)};
+            background-color: ${alpha(theme.sidebar.menuItemBgActive, 0.8)};
+            box-shadow: 0px 2px 4px ${alpha(darken(theme.sidebar.menuItemBg, 0.35), 0.8)}, 0px 1px 8px 0px ${alpha(
+    darken(theme.sidebar.menuItemBg, 0.35),
+    0.3
+  )};
             color: ${theme.sidebar.menuItemColorActive};
             font-weight: bold;
 
@@ -154,33 +159,25 @@ const SubMenuWrapper = styled(Box)(
       }
     }
 `
-);
+)
 
-const renderSidebarMenuItems = ({
-  items,
-  path
-}: {
-  items: MenuItem[];
-  path: string;
-}): JSX.Element => (
+const renderSidebarMenuItems = ({ items, path }: { items: MenuItem[]; path: string }): JSX.Element => (
   <SubMenuWrapper>
-    <List component="div">
-      {items.reduce((ev, item) => reduceChildRoutes({ ev, item, path }), [])}
-    </List>
+    <List component="div">{items.reduce((ev, item) => ReduceChildRoutes({ ev, item, path }), [])}</List>
   </SubMenuWrapper>
-);
+)
 
-const reduceChildRoutes = ({
+const ReduceChildRoutes = ({
   ev,
   path,
-  item
+  item,
 }: {
-  ev: JSX.Element[];
-  path: string;
-  item: MenuItem;
+  ev: JSX.Element[]
+  path: string
+  item: MenuItem
 }): Array<JSX.Element> => {
-  const key = item.name;
-  const router = useRouter();
+  const key = item.name
+  const router = useRouter()
 
   if (item.items) {
     ev.push(
@@ -191,14 +188,13 @@ const reduceChildRoutes = ({
         name={item.name}
         icon={item.icon}
         link={item.link}
-        badge={item.badge}
-      >
+        badge={item.badge}>
         {renderSidebarMenuItems({
           path,
-          items: item.items
+          items: item.items,
         })}
       </SidebarMenuItem>
-    );
+    )
   } else {
     ev.push(
       <SidebarMenuItem
@@ -209,15 +205,15 @@ const reduceChildRoutes = ({
         badge={item.badge}
         icon={item.icon}
       />
-    );
+    )
   }
 
-  return ev;
+  return ev
 }
 
 function SidebarMenu() {
-  const router = useRouter();
-  const { t }: { t: any } = useTranslation();
+  const router = useRouter()
+  const { t }: { t: any } = useTranslation()
 
   return (
     <>
@@ -226,18 +222,19 @@ function SidebarMenu() {
           <List
             component="div"
             subheader={
-              <ListSubheader component="div" disableSticky>{t(section.heading)}</ListSubheader>
-            }
-          >
+              <ListSubheader component="div" disableSticky>
+                {t(section.heading)}
+              </ListSubheader>
+            }>
             {renderSidebarMenuItems({
               items: section.items,
-              path: router.pathname
+              path: router.pathname,
             })}
           </List>
         </MenuWrapper>
       ))}
     </>
-  );
+  )
 }
 
-export default SidebarMenu;
+export default SidebarMenu

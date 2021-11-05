@@ -1,4 +1,4 @@
-import handler from "../../../../server/api-route";
-import magicLink from "../../../../server/passport/magicLink";
+import { handler } from '../../../../server/api-route'
+import magicLink from '../../../../server/passport/magicLink'
 
-export default handler().post(magicLink.send);
+export default handler().post(magicLink.send)

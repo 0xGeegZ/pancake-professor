@@ -1,131 +1,101 @@
-import { useState } from 'react';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import wait from 'src/client/utils/wait';
+import { Grid, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
+// import { useState } from 'react'
+// const Input = styled('input')({
+//   display: 'none',
+// })
 
-import {
-  Grid,
-  Dialog,
-  DialogTitle,
-  DialogActions,
-  DialogContent,
-  Box,
-  Zoom,
-  Typography,
-  Divider,
-  TextField,
-  CircularProgress,
-  Switch,
-  Avatar,
-  Autocomplete,
-  IconButton,
-  Button
-} from '@mui/material';
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import { useSnackbar } from 'notistack';
-import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone';
+// const AvatarWrapper = styled(Box)(
+//   ({ theme }) => `
 
-const Input = styled('input')({
-  display: 'none'
-});
+//     position: relative;
 
-const AvatarWrapper = styled(Box)(
-  ({ theme }) => `
+//     .MuiAvatar-root {
+//       width: ${theme.spacing(16)};
+//       height: ${theme.spacing(16)};
+//     }
+// `
+// )
 
-    position: relative;
+// const ButtonUploadWrapper = styled(Box)(
+//   ({ theme }) => `
+//     position: absolute;
+//     width: ${theme.spacing(6)};
+//     height: ${theme.spacing(6)};
+//     bottom: -${theme.spacing(2)};
+//     right: -${theme.spacing(2)};
 
-    .MuiAvatar-root {
-      width: ${theme.spacing(16)};
-      height: ${theme.spacing(16)};
-    }
-`
-);
+//     .MuiIconButton-root {
+//       border-radius: 100%;
+//       background: ${theme.colors.primary.main};
+//       color: ${theme.palette.primary.contrastText};
+//       box-shadow: ${theme.colors.shadows.primary};
+//       width: ${theme.spacing(6)};
+//       height: ${theme.spacing(6)};
+//       padding: 0;
 
-const ButtonUploadWrapper = styled(Box)(
-  ({ theme }) => `
-    position: absolute;
-    width: ${theme.spacing(6)};
-    height: ${theme.spacing(6)};
-    bottom: -${theme.spacing(2)};
-    right: -${theme.spacing(2)};
+//       &:hover {
+//         background: ${theme.colors.primary.dark};
+//       }
+//     }
+// `
+// )
 
-    .MuiIconButton-root {
-      border-radius: 100%;
-      background: ${theme.colors.primary.main};
-      color: ${theme.palette.primary.contrastText};
-      box-shadow: ${theme.colors.shadows.primary};
-      width: ${theme.spacing(6)};
-      height: ${theme.spacing(6)};
-      padding: 0;
-  
-      &:hover {
-        background: ${theme.colors.primary.dark};
-      }
-    }
-`
-);
-
-const roles = [
-  { label: 'Administrator', value: 'admin' },
-  { label: 'Subscriber', value: 'subscriber' },
-  { label: 'Customer', value: 'customer' }
-];
+// const roles = [
+//   { label: 'Administrator', value: 'admin' },
+//   { label: 'Subscriber', value: 'subscriber' },
+//   { label: 'Customer', value: 'customer' },
+// ]
 
 function PageHeader() {
-  const { t }: { t: any } = useTranslation();
-  const [open, setOpen] = useState(false);
-  const { enqueueSnackbar } = useSnackbar();
+  const { t }: { t: any } = useTranslation()
+  // const [open, setOpen] = useState(false)
+  // const { enqueueSnackbar } = useSnackbar()
   // const { user } = useAuth();
 
-  const [publicProfile, setPublicProfile] = useState({
-    public: true
-  });
+  // const [publicProfile, setPublicProfile] = useState({
+  //   public: true,
+  // })
 
-  const handlePublicProfile = (event) => {
-    setPublicProfile({
-      ...publicProfile,
-      [event.target.name]: event.target.checked
-    });
-  };
+  // const handlePublicProfile = (event) => {
+  //   setPublicProfile({
+  //     ...publicProfile,
+  //     [event.target.name]: event.target.checked,
+  //   })
+  // }
 
-  const handleCreateUserOpen = () => {
-    setOpen(true);
-  };
+  // const handleCreateUserOpen = () => {
+  //   setOpen(true)
+  // }
 
-  const handleCreateUserClose = () => {
-    setOpen(false);
-  };
+  // const handleCreateUserClose = () => {
+  //   setOpen(false)
+  // }
 
-  const handleCreateUserSuccess = () => {
-    enqueueSnackbar(t('The user account was created successfully'), {
-      variant: 'success',
-      anchorOrigin: {
-        vertical: 'top',
-        horizontal: 'right'
-      },
-      TransitionComponent: Zoom
-    });
+  // const handleCreateUserSuccess = () => {
+  //   enqueueSnackbar(t('The user account was created successfully'), {
+  //     variant: 'success',
+  //     anchorOrigin: {
+  //       vertical: 'top',
+  //       horizontal: 'right',
+  //     },
+  //     TransitionComponent: Zoom,
+  //   })
 
-    setOpen(false);
-  };
+  //   setOpen(false)
+  // }
 
   return (
     <>
       <Grid container justifyContent="space-between" alignItems="center">
         <Grid item>
           <Typography variant="h3" component="h3" gutterBottom>
-            {t('Users Management')}
+            {t('Copy best players')}
           </Typography>
-          <Typography variant="subtitle2">
-            {t(
-              'All aspects related to the app users can be managed from this page'
-            )}
-          </Typography>
+          <Typography variant="subtitle2">{t('Choose a player and follow all his actions')}</Typography>
         </Grid>
-        <Grid item>
+        {/* <Grid item>
           <Button
             sx={{ mt: { xs: 2, sm: 0 } }}
             onClick={handleCreateUserOpen}
@@ -134,22 +104,15 @@ function PageHeader() {
           >
             {t('Create user')}
           </Button>
-        </Grid>
+        </Grid> */}
       </Grid>
-      <Dialog
-        fullWidth
-        maxWidth="md"
-        open={open}
-        onClose={handleCreateUserClose}
-      >
+      {/* <Dialog fullWidth maxWidth="md" open={open} onClose={handleCreateUserClose}>
         <DialogTitle sx={{ p: 3 }}>
           <Typography variant="h4" gutterBottom>
             {t('Add new user')}
           </Typography>
           <Typography variant="subtitle2">
-            {t(
-              'Fill in the fields below to create and add a new user to the site'
-            )}
+            {t('Fill in the fields below to create and add a new user to the site')}
           </Typography>
         </DialogTitle>
         <Formik
@@ -159,53 +122,33 @@ function PageHeader() {
             first_name: '',
             last_name: '',
             password: '',
-            submit: null
+            submit: null,
           }}
           validationSchema={Yup.object().shape({
-            username: Yup.string()
-              .max(255)
-              .required(t('The username field is required')),
-            first_name: Yup.string()
-              .max(255)
-              .required(t('The first name field is required')),
-            last_name: Yup.string()
-              .max(255)
-              .required(t('The last name field is required')),
+            username: Yup.string().max(255).required(t('The username field is required')),
+            first_name: Yup.string().max(255).required(t('The first name field is required')),
+            last_name: Yup.string().max(255).required(t('The last name field is required')),
             email: Yup.string()
               .email(t('The email provided should be a valid email address'))
               .max(255)
               .required(t('The email field is required')),
-            password: Yup.string()
-              .max(255)
-              .required(t('The password field is required'))
+            password: Yup.string().max(255).required(t('The password field is required')),
           })}
-          onSubmit={async (
-            _values,
-            { resetForm, setErrors, setStatus, setSubmitting }
-          ) => {
+          onSubmit={async (_values, { resetForm, setErrors, setStatus, setSubmitting }) => {
             try {
-              await wait(1000);
-              resetForm();
-              setStatus({ success: true });
-              setSubmitting(false);
-              handleCreateUserSuccess();
+              await wait(1000)
+              resetForm()
+              setStatus({ success: true })
+              setSubmitting(false)
+              handleCreateUserSuccess()
             } catch (err) {
-              console.error(err);
-              setStatus({ success: false });
-              setErrors({ submit: err.message });
-              setSubmitting(false);
+              console.error(err)
+              setStatus({ success: false })
+              setErrors({ submit: err.message })
+              setSubmitting(false)
             }
-          }}
-        >
-          {({
-            errors,
-            handleBlur,
-            handleChange,
-            handleSubmit,
-            isSubmitting,
-            touched,
-            values
-          }) => (
+          }}>
+          {({ errors, handleBlur, handleChange, handleSubmit, isSubmitting, touched, values }) => (
             <form onSubmit={handleSubmit}>
               <DialogContent dividers sx={{ p: 3 }}>
                 <Grid container spacing={3}>
@@ -226,9 +169,7 @@ function PageHeader() {
                       </Grid>
                       <Grid item xs={12} md={6}>
                         <TextField
-                          error={Boolean(
-                            touched.first_name && errors.first_name
-                          )}
+                          error={Boolean(touched.first_name && errors.first_name)}
                           fullWidth
                           helperText={touched.first_name && errors.first_name}
                           label={t('First name')}
@@ -286,38 +227,17 @@ function PageHeader() {
                           disablePortal
                           options={roles}
                           getOptionLabel={(option) => option.label}
-                          renderInput={(params) => (
-                            <TextField
-                              fullWidth
-                              {...params}
-                              label={t('User role')}
-                            />
-                          )}
+                          renderInput={(params) => <TextField fullWidth {...params} label={t('User role')} />}
                         />
                       </Grid>
                     </Grid>
                   </Grid>
                   <Grid item xs={12} lg={5} justifyContent="center">
-                    <Box
-                      display="flex"
-                      alignItems="center"
-                      justifyContent="center"
-                      flexDirection="column"
-                      mt={3}
-                    >
+                    <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" mt={3}>
                       <AvatarWrapper>
-                        <Avatar
-                          variant="rounded"
-                          alt="Margaret Gale"
-                          src="/static/images/avatars/1.jpg"
-                        />
+                        <Avatar variant="rounded" alt="Margaret Gale" src="/static/images/avatars/1.jpg" />
                         <ButtonUploadWrapper>
-                          <Input
-                            accept="image/*"
-                            id="icon-button-file"
-                            name="icon-button-file"
-                            type="file"
-                          />
+                          <Input accept="image/*" id="icon-button-file" name="icon-button-file" type="file" />
                           <label htmlFor="icon-button-file">
                             <IconButton component="span" color="primary">
                               <CloudUploadTwoToneIcon />
@@ -326,12 +246,7 @@ function PageHeader() {
                         </ButtonUploadWrapper>
                       </AvatarWrapper>
                       <Divider flexItem sx={{ m: 4 }} />
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        flexDirection="column"
-                        justifyContent="space-between"
-                      >
+                      <Box display="flex" alignItems="center" flexDirection="column" justifyContent="space-between">
                         <Typography variant="h4" sx={{ pb: 1 }}>
                           {t('Public Profile')}
                         </Typography>
@@ -352,21 +267,18 @@ function PageHeader() {
                 </Button>
                 <Button
                   type="submit"
-                  startIcon={
-                    isSubmitting ? <CircularProgress size="1rem" /> : null
-                  }
+                  startIcon={isSubmitting ? <CircularProgress size="1rem" /> : null}
                   disabled={Boolean(errors.submit) || isSubmitting}
-                  variant="contained"
-                >
+                  variant="contained">
                   {t('Add new user')}
                 </Button>
               </DialogActions>
             </form>
           )}
         </Formik>
-      </Dialog>
+      </Dialog> */}
     </>
-  );
+  )
 }
 
-export default PageHeader;
+export default PageHeader

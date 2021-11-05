@@ -1,10 +1,10 @@
-import { FC, ReactNode } from 'react';
-import PropTypes from 'prop-types';
-import { Box } from '@mui/material';
-import { styled } from '@mui/material/styles';
+import { FC, ReactNode } from 'react'
+import PropTypes from 'prop-types'
+import { Box } from '@mui/material'
+import { styled } from '@mui/material/styles'
 
 interface BaseLayoutProps {
-  children?: ReactNode;
+  children?: ReactNode
 }
 
 const MainWrapper = styled(Box)(
@@ -15,14 +15,12 @@ const MainWrapper = styled(Box)(
         overflow-x: hidden;
         overflow-y: auto;
 `
-);
+)
 
-const BaseLayout: FC<BaseLayoutProps> = ({ children }) => {
-  return <MainWrapper>{children}</MainWrapper>;
-};
+const BaseLayout: FC<BaseLayoutProps> = ({ children }) => <MainWrapper>{children}</MainWrapper>
 
 BaseLayout.propTypes = {
-  children: PropTypes.node
-};
+  children: PropTypes.node,
+}
 
-export default BaseLayout;
+export default BaseLayout

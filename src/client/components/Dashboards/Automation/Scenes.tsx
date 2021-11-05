@@ -1,18 +1,11 @@
-import {
-  Box,
-  Typography,
-  Stack,
-  Card,
-  IconButton,
-  Tooltip
-} from '@mui/material';
+import { Box, Typography, Stack, Card, IconButton, Tooltip } from '@mui/material'
 
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import MusicNoteTwoToneIcon from '@mui/icons-material/MusicNoteTwoTone';
-import DirectionsWalkTwoToneIcon from '@mui/icons-material/DirectionsWalkTwoTone';
-import NightlightTwoToneIcon from '@mui/icons-material/NightlightTwoTone';
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import MusicNoteTwoToneIcon from '@mui/icons-material/MusicNoteTwoTone'
+import DirectionsWalkTwoToneIcon from '@mui/icons-material/DirectionsWalkTwoTone'
+import NightlightTwoToneIcon from '@mui/icons-material/NightlightTwoTone'
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 
 const IconWrapper = styled(IconButton)(
   ({ theme }) => `
@@ -60,32 +53,23 @@ const IconWrapper = styled(IconButton)(
         }
       }
 `
-);
+)
 
 function Scenes() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <>
       <Box mb={1} display="flex" justifyContent="space-between" alignItems="center">
-        <Typography variant="h3">
-          {t('Scenes')}
-        </Typography>
+        <Typography variant="h3">{t('Scenes')}</Typography>
         <Tooltip placement="top" title={t('Add new scene')} arrow>
-          <IconButton
-            size="large"
-            color="primary"
-          >
+          <IconButton size="large" color="primary">
             <AddTwoToneIcon />
           </IconButton>
         </Tooltip>
       </Box>
       <Card sx={{ p: 2 }}>
-        <Stack
-          spacing={3}
-          direction="row"
-          justifyContent="space-evenly"
-        >
+        <Stack spacing={3} direction="row" justifyContent="space-evenly">
           <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
             <IconWrapper>
               <MusicNoteTwoToneIcon fontSize="large" />
@@ -113,7 +97,7 @@ function Scenes() {
         </Stack>
       </Card>
     </>
-  );
+  )
 }
 
-export default Scenes;
+export default Scenes

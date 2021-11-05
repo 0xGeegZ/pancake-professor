@@ -1,14 +1,14 @@
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
-import { Box, Hidden, IconButton, Tooltip } from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useContext } from 'react';
-import Logo from 'src/client/components/Logo';
-import { SidebarContext } from 'src/client/contexts/SidebarContext';
+import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import { Box, Hidden, IconButton, Tooltip } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useContext } from 'react'
+import Logo from 'src/client/components/Logo'
+import { SidebarContext } from 'src/client/contexts/SidebarContext'
 
-import HeaderButtons from './Buttons';
-import HeaderMenu from './Menu';
-import HeaderUserbox from './Userbox';
+import HeaderButtons from './Buttons'
+import HeaderMenu from './Menu'
+import HeaderUserbox from './Userbox'
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
@@ -27,10 +27,10 @@ const HeaderWrapper = styled(Box)(
             width: auto;
         }
 `
-);
+)
 
 function Header() {
-  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext);
+  const { sidebarToggle, toggleSidebar } = useContext(SidebarContext)
 
   return (
     <HeaderWrapper display="flex" alignItems="center">
@@ -54,7 +54,7 @@ function Header() {
         </Hidden>
       </Box>
     </HeaderWrapper>
-  );
+  )
 }
 
-export default Header;
+export default Header

@@ -1,7 +1,7 @@
-import { mock } from 'src/client/utils/axios';
-import wait from 'src/client/utils/wait';
-import { sign, decode, JWT_SECRET, JWT_EXPIRES_IN } from 'src/client/utils/jwt';
-import randomId from 'src/client/utils/randomId';
+import { mock } from 'src/client/utils/axios'
+import wait from 'src/client/utils/wait'
+import { sign, decode, JWT_SECRET, JWT_EXPIRES_IN } from 'src/client/utils/jwt'
+import randomId from 'src/client/utils/randomId'
 
 const users = [
   {
@@ -14,25 +14,25 @@ const users = [
     jobtitle: 'Lead Developer',
     password: 'TokyoPass1@',
     role: 'admin',
-    posts: '27'
-  }
-];
+    posts: '27',
+  },
+]
 
 mock.onPost('/api/account/login').reply(async (config) => {
-  await wait(1000);
+  await wait(1000)
 
   try {
-    const { email, password } = JSON.parse(config.data);
+    const { email, password } = JSON.parse(config.data)
 
-    const user = users.find((_user) => _user.email === email);
+    const user = users.find((_user) => _user.email === email)
 
-    if (!user || (user.password !== password)) {
-      return [400, { message: 'Verify that your email and password are correct' }];
+    if (!user || user.password !== password) {
+      return [400, { message: 'Verify that your email and password are correct' }]
     }
 
     const accessToken = sign({ userId: user.id }, JWT_SECRET, {
-      expiresIn: JWT_EXPIRES_IN
-    });
+      expiresIn: JWT_EXPIRES_IN,
+    })
 
     return [
       200,
@@ -47,26 +47,26 @@ mock.onPost('/api/account/login').reply(async (config) => {
           location: user.location,
           username: user.username,
           role: user.role,
-          posts: user.posts
-        }
-      }
-    ];
+          posts: user.posts,
+        },
+      },
+    ]
   } catch (err) {
-    console.error('Error: ', err);
-    return [500, { message: 'Encountered a server error' }];
+    console.error('Error: ', err)
+    return [500, { message: 'Encountered a server error' }]
   }
-});
+})
 
 mock.onPost('/api/account/register').reply(async (config) => {
-  await wait(1000);
+  await wait(1000)
 
   try {
-    const { email, name, password } = JSON.parse(config.data);
+    const { email, name, password } = JSON.parse(config.data)
 
-    let user = users.find((_user) => _user.email === email);
+    let user = users.find((_user) => _user.email === email)
 
     if (user) {
-      return [400, { message: 'This user already exists' }];
+      return [400, { message: 'This user already exists' }]
     }
 
     user = {
@@ -79,14 +79,14 @@ mock.onPost('/api/account/register').reply(async (config) => {
       password,
       location: null,
       role: 'admin',
-      posts: '56'
-    };
+      posts: '56',
+    }
 
-    users.push(user);
+    users.push(user)
 
     const accessToken = sign({ userId: user.id }, JWT_SECRET, {
-      expiresIn: JWT_EXPIRES_IN
-    });
+      expiresIn: JWT_EXPIRES_IN,
+    })
 
     return [
       200,
@@ -101,30 +101,30 @@ mock.onPost('/api/account/register').reply(async (config) => {
           location: user.location,
           username: user.username,
           role: user.role,
-          posts: user.posts
-        }
-      }
-    ];
+          posts: user.posts,
+        },
+      },
+    ]
   } catch (err) {
-    console.error('Error: ', err);
-    return [500, { message: 'Encountered a server error' }];
+    console.error('Error: ', err)
+    return [500, { message: 'Encountered a server error' }]
   }
-});
+})
 
 mock.onGet('/api/account/personal').reply((config) => {
   try {
-    const { Authorization } = config.headers;
+    const { Authorization } = config.headers
 
     if (!Authorization) {
-      return [401, { message: 'Auth token is missing' }];
+      return [401, { message: 'Auth token is missing' }]
     }
 
-    const accessToken = Authorization.split(' ')[1];
-    const { userId } = decode(accessToken) as any;
-    const user = users.find((_user) => _user.id === userId);
+    const accessToken = Authorization.split(' ')[1]
+    const { userId } = decode(accessToken) as any
+    const user = users.find((_user) => _user.id === userId)
 
     if (!user) {
-      return [401, { message: 'Invalid auth token' }];
+      return [401, { message: 'Invalid auth token' }]
     }
 
     return [
@@ -139,12 +139,12 @@ mock.onGet('/api/account/personal').reply((config) => {
           location: user.location,
           username: user.username,
           role: user.role,
-          posts: user.posts
-        }
-      }
-    ];
+          posts: user.posts,
+        },
+      },
+    ]
   } catch (err) {
-    console.error('Error: ', err);
-    return [500, { message: 'Encountered a server error' }];
+    console.error('Error: ', err)
+    return [500, { message: 'Encountered a server error' }]
   }
-});
+})

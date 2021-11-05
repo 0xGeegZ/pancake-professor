@@ -1,25 +1,25 @@
-import type { ReactNode } from 'react';
+import type { ReactNode } from 'react'
 
-import AnalyticsTwoToneIcon from '@mui/icons-material/AnalyticsTwoTone';
-import AccountBalanceTwoToneIcon from '@mui/icons-material/AccountBalanceTwoTone';
-import MonetizationOnTwoToneIcon from '@mui/icons-material/MonetizationOnTwoTone';
-import KitchenTwoToneIcon from '@mui/icons-material/KitchenTwoTone';
-import HealthAndSafetyTwoToneIcon from '@mui/icons-material/HealthAndSafetyTwoTone';
-import BackupTableTwoToneIcon from '@mui/icons-material/BackupTableTwoTone';
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone';
-import SchoolTwoToneIcon from '@mui/icons-material/SchoolTwoTone';
+import AnalyticsTwoToneIcon from '@mui/icons-material/AnalyticsTwoTone'
+import AccountBalanceTwoToneIcon from '@mui/icons-material/AccountBalanceTwoTone'
+import MonetizationOnTwoToneIcon from '@mui/icons-material/MonetizationOnTwoTone'
+import KitchenTwoToneIcon from '@mui/icons-material/KitchenTwoTone'
+import HealthAndSafetyTwoToneIcon from '@mui/icons-material/HealthAndSafetyTwoTone'
+import BackupTableTwoToneIcon from '@mui/icons-material/BackupTableTwoTone'
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import SchoolTwoToneIcon from '@mui/icons-material/SchoolTwoTone'
 
 export interface MenuItem {
-  link?: string;
-  icon?: ReactNode;
-  badge?: string;
-  items?: MenuItem[];
-  name: string;
+  link?: string
+  icon?: ReactNode
+  badge?: string
+  items?: MenuItem[]
+  name: string
 }
 
 export interface MenuItems {
-  items: MenuItem[];
-  heading: string;
+  items: MenuItem[]
+  heading: string
 }
 
 const menuItems: MenuItems[] = [
@@ -29,17 +29,17 @@ const menuItems: MenuItems[] = [
       {
         name: 'Analytics',
         icon: AnalyticsTwoToneIcon,
-        link: '/dashboards/analytics'
+        link: '/dashboards/analytics',
       },
       {
         name: 'Finance',
         icon: MonetizationOnTwoToneIcon,
-        link: '/dashboards/finance'
+        link: '/dashboards/finance',
       },
       {
         name: 'Fitness',
         icon: KitchenTwoToneIcon,
-        link: '/dashboards/fitness'
+        link: '/dashboards/fitness',
       },
       {
         name: 'Healthcare',
@@ -49,23 +49,23 @@ const menuItems: MenuItems[] = [
           {
             name: 'Doctors Page',
             badge: 'Hot',
-            link: '/dashboards/healthcare/doctor'
+            link: '/dashboards/healthcare/doctor',
           },
           {
             name: 'Hospital Overview',
-            link: '/dashboards/healthcare/hospital'
-          }
-        ]
+            link: '/dashboards/healthcare/hospital',
+          },
+        ],
       },
       {
         name: 'Banking',
         icon: AccountBalanceTwoToneIcon,
-        link: '/dashboards/banking'
+        link: '/dashboards/banking',
       },
       {
         name: 'Learning',
         icon: SchoolTwoToneIcon,
-        link: '/dashboards/learning'
+        link: '/dashboards/learning',
       },
       {
         name: '',
@@ -74,21 +74,21 @@ const menuItems: MenuItems[] = [
         items: [
           {
             name: 'Monitoring',
-            link: '/dashboards/monitoring'
+            link: '/dashboards/monitoring',
           },
           {
             name: 'Tasks',
-            link: '/dashboards/tasks'
+            link: '/dashboards/tasks',
           },
           {
             name: 'Commerce',
-            link: '/dashboards/commerce'
+            link: '/dashboards/commerce',
           },
           {
             name: 'Crypto',
-            link: '/dashboards/crypto'
+            link: '/dashboards/crypto',
           },
-        ]
+        ],
       },
       {
         name: '',
@@ -97,32 +97,32 @@ const menuItems: MenuItems[] = [
         items: [
           {
             name: 'Accent header',
-            link: '/dashboards/analytics'
+            link: '/dashboards/analytics',
           },
           {
             name: 'Accent sidebar',
-            link: '/dashboards/banking'
+            link: '/dashboards/banking',
           },
           {
             name: 'Boxed sidebar',
-            link: '/dashboards/monitoring'
+            link: '/dashboards/monitoring',
           },
           {
             name: 'Collapsed sidebar',
-            link: '/dashboards/helpdesk'
+            link: '/dashboards/helpdesk',
           },
           {
             name: 'Bottom navigation',
-            link: '/dashboards/automation'
+            link: '/dashboards/automation',
           },
           {
             name: 'Top navigation',
-            link: '/dashboards/finance'
-          }
-        ]
-      }
-    ]
+            link: '/dashboards/finance',
+          },
+        ],
+      },
+    ],
   },
-];
+]
 
-export default menuItems;
+export default menuItems

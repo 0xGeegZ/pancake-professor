@@ -1,48 +1,48 @@
-import { useState, Ref, forwardRef } from 'react';
-import type { FC, ChangeEvent, ReactElement } from 'react';
-
-import PropTypes from 'prop-types';
-import numeral from 'numeral';
-
+import CloseIcon from '@mui/icons-material/Close'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone'
+import LocalFireDepartmentTwoToneIcon from '@mui/icons-material/LocalFireDepartmentTwoTone'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
 import {
   Avatar,
   Box,
+  Button,
   Card,
   Checkbox,
-  Slide,
+  Dialog,
   Divider,
-  Tooltip,
   IconButton,
-  Link,
   InputAdornment,
+  Link,
+  Slide,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TablePagination,
-  TableContainer,
   TableRow,
   TextField,
-  Button,
+  Tooltip,
   Typography,
-  Dialog,
   useMediaQuery,
   useTheme,
-  Zoom
-} from '@mui/material';
-import { TransitionProps } from '@mui/material/transitions';
-import CloseIcon from '@mui/icons-material/Close';
-import type { Product } from 'src/client/models/product';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone';
-import Label from 'src/client/components/Label';
-import BulkActions from 'src/client/components/BulkActions';
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
-import { useSnackbar } from 'notistack';
-import Text from 'src/client/components/Text';
-import LocalFireDepartmentTwoToneIcon from '@mui/icons-material/LocalFireDepartmentTwoTone';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
+  Zoom,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { TransitionProps } from '@mui/material/transitions'
+import { useSnackbar } from 'notistack'
+import numeral from 'numeral'
+import PropTypes from 'prop-types'
+import { forwardRef, Ref, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import BulkActions from 'src/client/components/BulkActions'
+import Label from 'src/client/components/Label'
+import Text from 'src/client/components/Text'
+
+import type { FC, ChangeEvent, ReactElement } from 'react'
+
+import type { Product } from 'src/client/models/product'
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -50,14 +50,14 @@ const DialogWrapper = styled(Dialog)(
         overflow: visible;
       }
 `
-);
+)
 
 const ImgWrapper = styled('img')(
   ({ theme }) => `
       width: ${theme.spacing(8)};
       height: auto;
 `
-);
+)
 
 const AvatarError = styled(Avatar)(
   ({ theme }) => `
@@ -70,7 +70,7 @@ const AvatarError = styled(Avatar)(
         font-size: ${theme.typography.pxToRem(45)};
       }
 `
-);
+)
 
 const ButtonError = styled(Button)(
   ({ theme }) => `
@@ -81,124 +81,107 @@ const ButtonError = styled(Button)(
         background: ${theme.colors.error.dark};
      }
     `
-);
+)
 
 interface ResultsProps {
-  products: Product[];
+  products: Product[]
 }
 
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement<any, any> },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="down" ref={ref} {...props} />;
-});
+/* eslint-disable */
+const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
+  <Slide direction="down" ref={ref} {...props} />
+))
+/* eslint-enable */
 
-const applyFilters = (products: Product[], query: string): Product[] => {
-  return products.filter((product) => {
-    let matches = true;
+const applyFilters = (products: Product[], query: string): Product[] =>
+  products.filter((product) => {
+    let matches = true
 
     if (query) {
-      const properties = ['name'];
-      let containsQuery = false;
+      const properties = ['name']
+      let containsQuery = false
 
       properties.forEach((property) => {
         if (product[property].toLowerCase().includes(query.toLowerCase())) {
-          containsQuery = true;
+          containsQuery = true
         }
-      });
+      })
 
       if (!containsQuery) {
-        matches = false;
+        matches = false
       }
     }
 
-    return matches;
-  });
-};
+    return matches
+  })
 
-const applyPagination = (
-  products: Product[],
-  page: number,
-  limit: number
-): Product[] => {
-  return products.slice(page * limit, page * limit + limit);
-};
+const applyPagination = (products: Product[], page: number, limit: number): Product[] =>
+  products.slice(page * limit, page * limit + limit)
 
 const Results: FC<ResultsProps> = ({ products }) => {
-  const [selectedItems, setSelectedProducts] = useState<string[]>([]);
-  const { t }: { t: any } = useTranslation();
-  const { enqueueSnackbar } = useSnackbar();
-  const theme = useTheme();
+  const [selectedItems, setSelectedProducts] = useState<string[]>([])
+  const { t }: { t: any } = useTranslation()
+  const { enqueueSnackbar } = useSnackbar()
+  const theme = useTheme()
 
-  const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(5);
-  const [query, setQuery] = useState<string>('');
+  const [page, setPage] = useState<number>(0)
+  const [limit, setLimit] = useState<number>(5)
+  const [query, setQuery] = useState<string>('')
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    event.persist();
-    setQuery(event.target.value);
-  };
+    event.persist()
+    setQuery(event.target.value)
+  }
 
-  const handleSelectAllProducts = (
-    event: ChangeEvent<HTMLInputElement>
-  ): void => {
-    setSelectedProducts(
-      event.target.checked ? products.map((product) => product.id) : []
-    );
-  };
+  const handleSelectAllProducts = (event: ChangeEvent<HTMLInputElement>): void => {
+    setSelectedProducts(event.target.checked ? products.map((product) => product.id) : [])
+  }
 
-  const handleSelectOneProduct = (
-    _event: ChangeEvent<HTMLInputElement>,
-    productId: string
-  ): void => {
+  const handleSelectOneProduct = (_event: ChangeEvent<HTMLInputElement>, productId: string): void => {
     if (!selectedItems.includes(productId)) {
-      setSelectedProducts((prevSelected) => [...prevSelected, productId]);
+      setSelectedProducts((prevSelected) => [...prevSelected, productId])
     } else {
-      setSelectedProducts((prevSelected) =>
-        prevSelected.filter((id) => id !== productId)
-      );
+      setSelectedProducts((prevSelected) => prevSelected.filter((id) => id !== productId))
     }
-  };
+  }
 
   const handlePageChange = (_event: any, newPage: number): void => {
-    setPage(newPage);
-  };
+    setPage(newPage)
+  }
 
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(parseInt(event.target.value));
-  };
+    setLimit(+event.target.value)
+  }
 
-  const filteredProducts = applyFilters(products, query);
-  const paginatedProducts = applyPagination(filteredProducts, page, limit);
-  const selectedBulkActions = selectedItems.length > 0;
-  const selectedSomeProducts =
-    selectedItems.length > 0 && selectedItems.length < products.length;
-  const selectedAllProducts = selectedItems.length === products.length;
-  const mobile = useMediaQuery(theme.breakpoints.down('md'));
+  const filteredProducts = applyFilters(products, query)
+  const paginatedProducts = applyPagination(filteredProducts, page, limit)
+  const selectedBulkActions = selectedItems.length > 0
+  const selectedSomeProducts = selectedItems.length > 0 && selectedItems.length < products.length
+  const selectedAllProducts = selectedItems.length === products.length
+  const mobile = useMediaQuery(theme.breakpoints.down('md'))
 
-  const [openConfirmDelete, setOpenConfirmDelete] = useState(false);
+  const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
 
   const handleConfirmDelete = () => {
-    setOpenConfirmDelete(true);
-  };
+    setOpenConfirmDelete(true)
+  }
 
   const closeConfirmDelete = () => {
-    setOpenConfirmDelete(false);
-  };
+    setOpenConfirmDelete(false)
+  }
 
   const handleDeleteCompleted = () => {
-    setOpenConfirmDelete(false);
+    setOpenConfirmDelete(false)
 
     enqueueSnackbar(t('You successfully deleted the product'), {
       variant: 'success',
       anchorOrigin: {
         vertical: 'top',
-        horizontal: 'right'
+        horizontal: 'right',
       },
-      TransitionComponent: Zoom
-    });
-  };
+      TransitionComponent: Zoom,
+    })
+  }
 
   return (
     <>
@@ -215,8 +198,7 @@ const Results: FC<ResultsProps> = ({ products }) => {
               p={2}
               display={{ xs: 'block', md: 'flex' }}
               alignItems="center"
-              justifyContent="space-between"
-            >
+              justifyContent="space-between">
               <Box sx={{ mb: { xs: 2, md: 0 } }}>
                 <TextField
                   size="small"
@@ -228,7 +210,7 @@ const Results: FC<ResultsProps> = ({ products }) => {
                       <InputAdornment position="start">
                         <SearchTwoToneIcon />
                       </InputAdornment>
-                    )
+                    ),
                   }}
                   placeholder={t('Search by product name...')}
                 />
@@ -248,13 +230,7 @@ const Results: FC<ResultsProps> = ({ products }) => {
         <Divider />
 
         {paginatedProducts.length === 0 ? (
-          <Typography
-            sx={{ py: 10 }}
-            variant="h3"
-            fontWeight="normal"
-            color="text.secondary"
-            align="center"
-          >
+          <Typography sx={{ py: 10 }} variant="h3" fontWeight="normal" color="text.secondary" align="center">
             {t("We couldn't find any products matching your search criteria")}
           </Typography>
         ) : (
@@ -281,21 +257,13 @@ const Results: FC<ResultsProps> = ({ products }) => {
                 </TableHead>
                 <TableBody>
                   {paginatedProducts.map((product) => {
-                    const isProductSelected = selectedItems.includes(
-                      product.id
-                    );
+                    const isProductSelected = selectedItems.includes(product.id)
                     return (
-                      <TableRow
-                        hover
-                        key={product.id}
-                        selected={isProductSelected}
-                      >
+                      <TableRow hover key={product.id} selected={isProductSelected}>
                         <TableCell padding="checkbox">
                           <Checkbox
                             checked={isProductSelected}
-                            onChange={(event) =>
-                              handleSelectOneProduct(event, product.id)
-                            }
+                            onChange={(event) => handleSelectOneProduct(event, product.id)}
                             value={isProductSelected}
                           />
                         </TableCell>
@@ -305,13 +273,9 @@ const Results: FC<ResultsProps> = ({ products }) => {
                             <Box pl={1} sx={{ width: 250 }}>
                               <Link
                                 component={Link}
-                                href={
-                                  '/management/commerce/products/' +
-                                  product.id
-                                }
+                                href={`/management/commerce/products/${product.id}`}
                                 underline="hover"
-                                variant="h5"
-                              >
+                                variant="h5">
                                 {product.name}
                               </Link>
                               <Typography variant="subtitle2" noWrap>
@@ -323,17 +287,13 @@ const Results: FC<ResultsProps> = ({ products }) => {
                         <TableCell>
                           <Typography
                             sx={{
-                              textDecorationLine:
-                                product.sale_price !== 0 ? 'line-through' : ''
-                            }}
-                          >
+                              textDecorationLine: product.sale_price !== 0 ? 'line-through' : '',
+                            }}>
                             ${numeral(product.price).format(`0,0.00`)}
                           </Typography>
                           {product.sale_price !== 0 && (
                             <Typography>
-                              <Text color="error">
-                                ${numeral(product.sale_price).format(`0,0.00`)}
-                              </Text>
+                              <Text color="error">${numeral(product.sale_price).format(`0,0.00`)}</Text>
                             </Typography>
                           )}
                         </TableCell>
@@ -354,40 +314,34 @@ const Results: FC<ResultsProps> = ({ products }) => {
                         </TableCell>
                         <TableCell align="center">{product.orders}</TableCell>
                         <TableCell>
-                          {product.categories.map((value) => {
-                            return (
-                              <span key={value}>
-                                <Link href="#" underline="hover">{value}</Link>,{' '}
-                              </span>
-                            );
-                          })}
+                          {product.categories.map((value) => (
+                            <span key={value}>
+                              <Link href="#" underline="hover">
+                                {value}
+                              </Link>
+                              ,{' '}
+                            </span>
+                          ))}
                         </TableCell>
                         <TableCell align="center">
                           <Typography noWrap>
                             <Tooltip title={t('View')} arrow>
                               <IconButton
                                 component={Link}
-                                href={
-                                  '/management/commerce/products/' +
-                                  product.id
-                                }
-                                color="primary"
-                              >
+                                href={`/management/commerce/products/${product.id}`}
+                                color="primary">
                                 <LaunchTwoToneIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
                             <Tooltip title={t('Delete')} arrow>
-                              <IconButton
-                                onClick={handleConfirmDelete}
-                                color="primary"
-                              >
+                              <IconButton onClick={handleConfirmDelete} color="primary">
                                 <DeleteTwoToneIcon fontSize="small" />
                               </IconButton>
                             </Tooltip>
                           </Typography>
                         </TableCell>
                       </TableRow>
-                    );
+                    )
                   })}
                 </TableBody>
               </Table>
@@ -412,15 +366,8 @@ const Results: FC<ResultsProps> = ({ products }) => {
         fullWidth
         TransitionComponent={Transition}
         keepMounted
-        onClose={closeConfirmDelete}
-      >
-        <Box
-          display="flex"
-          alignItems="center"
-          justifyContent="center"
-          flexDirection="column"
-          p={5}
-        >
+        onClose={closeConfirmDelete}>
+        <Box display="flex" alignItems="center" justifyContent="center" flexDirection="column" p={5}>
           <AvatarError>
             <CloseIcon />
           </AvatarError>
@@ -434,41 +381,30 @@ const Results: FC<ResultsProps> = ({ products }) => {
             sx={{ pt: 2, pb: 4, px: 6 }}
             fontWeight="normal"
             color="text.secondary"
-            variant="h3"
-          >
+            variant="h3">
             {t("You won't be able to revert after deletion")}
           </Typography>
 
           <Box>
-            <Button
-              variant="text"
-              size="large"
-              sx={{ mx: 1 }}
-              onClick={closeConfirmDelete}
-            >
+            <Button variant="text" size="large" sx={{ mx: 1 }} onClick={closeConfirmDelete}>
               {t('Cancel')}
             </Button>
-            <ButtonError
-              onClick={handleDeleteCompleted}
-              size="large"
-              sx={{ mx: 1, px: 3 }}
-              variant="contained"
-            >
+            <ButtonError onClick={handleDeleteCompleted} size="large" sx={{ mx: 1, px: 3 }} variant="contained">
               {t('Delete')}
             </ButtonError>
           </Box>
         </Box>
       </DialogWrapper>
     </>
-  );
-};
+  )
+}
 
 Results.propTypes = {
-  products: PropTypes.array.isRequired
-};
+  products: PropTypes.array.isRequired,
+}
 
 Results.defaultProps = {
-  products: []
-};
+  products: [],
+}
 
-export default Results;
+export default Results

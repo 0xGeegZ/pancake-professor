@@ -1,36 +1,34 @@
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
-import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone';
-import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone';
-import { Box, Button, Divider, Menu, MenuItem, Popover, Stack, Tooltip, Typography } from '@mui/material';
-import Fab from '@mui/material/Fab';
-import { styled } from '@mui/material/styles';
-import { FC, useContext, useEffect, useRef, useState } from 'react';
-import { useTranslation } from 'react-i18next';
-import Link from 'src/client/components/Link';
-import { ThemeContext } from 'src/client/theme/ThemeProvider';
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone'
+import { Box, Divider, Popover, Stack, Tooltip, Typography } from '@mui/material'
+import Fab from '@mui/material/Fab'
+import { styled } from '@mui/material/styles'
+import { FC, useContext, useEffect, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import { ThemeContext } from 'src/client/theme/ThemeProvider'
 
 const ThemeSettingsButton = styled(Box)(
-    ({ theme }) => `
+  ({ theme }) => `
           position: fixed;
           z-index: 9999;
           right: ${theme.spacing(4)};
           bottom: ${theme.spacing(4)};
   `
-);
+)
 
 const ThemeToggleWrapper = styled(Box)(
-    ({ theme }) => `
+  ({ theme }) => `
           padding: ${theme.spacing(2)};
           min-width: 220px;
   `
-);
+)
 
 const ButtonWrapper = styled(Box)(
-    ({ theme }) => `
+  ({ theme }) => `
         cursor: pointer;
         position: relative;
         border-radius: ${theme.general.borderRadiusXl};
-        padding: ${theme.spacing(.8)};
+        padding: ${theme.spacing(0.8)};
         display: flex;
         flex-direction: row;
         align-items: stretch;
@@ -49,10 +47,10 @@ const ButtonWrapper = styled(Box)(
             }
         }
   `
-);
+)
 
 const ColorSchemeWrapper = styled(Box)(
-    ({ theme }) => `
+  ({ theme }) => `
 
     position: relative;
 
@@ -152,10 +150,10 @@ const ColorSchemeWrapper = styled(Box)(
     }
 
   `
-);
+)
 
 const CheckSelected = styled(Box)(
-    ({ theme }) => `
+  ({ theme }) => `
     background: ${theme.palette.success.main};
     border-radius: 50px;
     height: 26px;
@@ -176,66 +174,65 @@ const CheckSelected = styled(Box)(
     }
 
   `
-);
+)
 
-const ThemeSettings: FC = (_props) => {
-    const { t }: { t: any } = useTranslation();
+// const ThemeSettings: FC = (_props) => {
+const ThemeSettings: FC = () => {
+  const { t }: { t: any } = useTranslation()
 
-    const ref = useRef<any>(null);
-    const [isOpen, setOpen] = useState<boolean>(false);
+  const ref = useRef<any>(null)
+  const [isOpen, setOpen] = useState<boolean>(false)
+  const [theme, setTheme] = useState('PureLightTheme')
 
-    const handleOpen = (): void => {
-        setOpen(true);
-    };
+  const handleOpen = (): void => {
+    setOpen(true)
+  }
 
-    const handleClose = (): void => {
-        setOpen(false);
-    };
+  const handleClose = (): void => {
+    setOpen(false)
+  }
 
-    const setThemeName = useContext(ThemeContext);
+  const setThemeName = useContext(ThemeContext)
 
-    useEffect(() => {
-        const curThemeName = window.localStorage.getItem('appTheme') || 'PureLightTheme';
-        setTheme(curThemeName);
-      }, []);
+  useEffect(() => {
+    const curThemeName = window.localStorage.getItem('appTheme') || 'PureLightTheme'
+    setTheme(curThemeName)
+  }, [])
 
-    const [theme, setTheme] = useState('PureLightTheme');
+  const changeTheme = (theme): void => {
+    setTheme(theme)
+    setThemeName(theme)
+  }
 
-    const changeTheme = (theme): void => {
-        setTheme(theme);
-        setThemeName(theme);
-    };
-
-    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const open = Boolean(anchorEl);
-    const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
-        setAnchorEl(event.currentTarget);
-    };
-    const closeMenu = () => {
-        setAnchorEl(null);
-    };
-    return (
-        <>
-            <ThemeSettingsButton>
-                <Tooltip arrow title={t('Theme Settings')}>
-                    <Fab ref={ref} onClick={handleOpen} color="primary" aria-label="add">
-                        <SettingsTwoToneIcon />
-                    </Fab>
-                </Tooltip>
-                <Popover
-                    anchorEl={ref.current}
-                    onClose={handleClose}
-                    open={isOpen}
-                    anchorOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'left',
-                    }}
-                    transformOrigin={{
-                        vertical: 'bottom',
-                        horizontal: 'right',
-                    }}
-                >
-                    <Box p={2}>
+  // const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null)
+  // const open = Boolean(anchorEl)
+  // const openMenu = (event: React.MouseEvent<HTMLButtonElement>) => {
+  //   setAnchorEl(event.currentTarget)
+  // }
+  // const closeMenu = () => {
+  //   setAnchorEl(null)
+  // }
+  return (
+    <>
+      <ThemeSettingsButton>
+        <Tooltip arrow title={t('Theme Settings')}>
+          <Fab ref={ref} onClick={handleOpen} color="primary" aria-label="add">
+            <SettingsTwoToneIcon />
+          </Fab>
+        </Tooltip>
+        <Popover
+          anchorEl={ref.current}
+          onClose={handleClose}
+          open={isOpen}
+          anchorOrigin={{
+            vertical: 'bottom',
+            horizontal: 'left',
+          }}
+          transformOrigin={{
+            vertical: 'bottom',
+            horizontal: 'right',
+          }}>
+          {/* <Box p={2}>
                         <Typography sx={{ mb: 2, textAlign: 'center', fontWeight: 'bold', textTransform: 'uppercase' }} variant="body1">
                             Layout Blueprints
                         </Typography>
@@ -273,121 +270,150 @@ const ThemeSettings: FC = (_props) => {
                             <MenuItem sx={{ fontWeight: 'bold' }} component={Link} href="/top-navigation/dashboards">Top navigation</MenuItem>
                         </Menu>
                     </Box>
-                    <Divider />
-                    <Stack
-                        direction="row"
-                        divider={<Divider orientation="vertical" flexItem />}
-                    >
-                        <ThemeToggleWrapper>
-                            <Typography sx={{ mt: 1, mb: 3, textAlign: 'center', fontWeight: 'bold', textTransform: 'uppercase' }} variant="body1">
-                                Light color schemes
-                            </Typography>
-                            <Stack alignItems="center" spacing={2}>
-                                <Tooltip placement="left" title="Pure Light" arrow>
-                                    <ButtonWrapper className={theme === 'PureLightTheme' ? 'active' : ''} onClick={() => {
-                                        changeTheme('PureLightTheme');
-                                    }}>
-                                        {theme === 'PureLightTheme' && <CheckSelected>
-                                            <CheckTwoToneIcon />
-                                        </CheckSelected>}
-                                        <ColorSchemeWrapper className="colorSchemeWrapper pureLight">
-                                            <Box className="primary" />
-                                            <Box className="secondary" />
-                                        </ColorSchemeWrapper>
-                                    </ButtonWrapper>
-                                </Tooltip>
-                                <Tooltip placement="left" title="Light Bloom" arrow>
-                                    <ButtonWrapper className={theme === 'LightBloomTheme' ? 'active' : ''} onClick={() => {
-                                        changeTheme('LightBloomTheme');
-                                    }}>
-                                        {theme === 'LightBloomTheme' && <CheckSelected>
-                                            <CheckTwoToneIcon />
-                                        </CheckSelected>}
-                                        <ColorSchemeWrapper className="colorSchemeWrapper lightBloom">
-                                            <Box className="primary" />
-                                            <Box className="secondary" />
-                                        </ColorSchemeWrapper>
-                                    </ButtonWrapper>
-                                </Tooltip>
-                                <Tooltip placement="left" title="Grey Goose" arrow>
-                                    <ButtonWrapper className={theme === 'GreyGooseTheme' ? 'active' : ''} onClick={() => {
-                                        changeTheme('GreyGooseTheme');
-                                    }}>
-                                        {theme === 'GreyGooseTheme' && <CheckSelected>
-                                            <CheckTwoToneIcon />
-                                        </CheckSelected>}
-                                        <ColorSchemeWrapper className="colorSchemeWrapper greyGoose">
-                                            <Box className="primary" />
-                                            <Box className="secondary" />
-                                        </ColorSchemeWrapper>
-                                    </ButtonWrapper>
-                                </Tooltip>
-                                <Tooltip placement="left" title="Purple Flow" arrow>
-                                    <ButtonWrapper className={theme === 'PurpleFlowTheme' ? 'active' : ''} onClick={() => {
-                                        changeTheme('PurpleFlowTheme');
-                                    }}>
-                                        {theme === 'PurpleFlowTheme' && <CheckSelected>
-                                            <CheckTwoToneIcon />
-                                        </CheckSelected>}
-                                        <ColorSchemeWrapper className="colorSchemeWrapper purpleFlow">
-                                            <Box className="primary" />
-                                            <Box className="secondary" />
-                                        </ColorSchemeWrapper>
-                                    </ButtonWrapper>
-                                </Tooltip>
-                            </Stack>
-                        </ThemeToggleWrapper>
-                        <ThemeToggleWrapper>
-                            <Typography sx={{ mt: 1, mb: 3, textAlign: 'center', fontWeight: 'bold', textTransform: 'uppercase' }} variant="body1">
-                                Dark color schemes
-                            </Typography>
-                            <Stack alignItems="center" spacing={2}>
-                                <Tooltip placement="left" title="Nebula Fighter" arrow>
-                                    <ButtonWrapper className={theme === 'NebulaFighterTheme' ? 'active' : ''} onClick={() => {
-                                        changeTheme('NebulaFighterTheme');
-                                    }}>
-                                        {theme === 'NebulaFighterTheme' && <CheckSelected>
-                                            <CheckTwoToneIcon />
-                                        </CheckSelected>}
-                                        <ColorSchemeWrapper className="colorSchemeWrapper nebulaFighter">
-                                            <Box className="primary" />
-                                            <Box className="secondary" />
-                                        </ColorSchemeWrapper>
-                                    </ButtonWrapper>
-                                </Tooltip>
-                                <Tooltip placement="left" title="Green Fields" arrow>
-                                    <ButtonWrapper className={theme === 'GreenFieldsTheme' ? 'active' : ''} onClick={() => {
-                                        changeTheme('GreenFieldsTheme');
-                                    }}>
-                                        {theme === 'GreenFieldsTheme' && <CheckSelected>
-                                            <CheckTwoToneIcon />
-                                        </CheckSelected>}
-                                        <ColorSchemeWrapper className="colorSchemeWrapper greenFields">
-                                            <Box className="primary" />
-                                            <Box className="secondary" />
-                                        </ColorSchemeWrapper>
-                                    </ButtonWrapper>
-                                </Tooltip>
-                                <Tooltip placement="left" title="Dark Spaces" arrow>
-                                    <ButtonWrapper className={theme === 'DarkSpacesTheme' ? 'active' : ''} onClick={() => {
-                                        changeTheme('DarkSpacesTheme');
-                                    }}>
-                                        {theme === 'DarkSpacesTheme' && <CheckSelected>
-                                            <CheckTwoToneIcon />
-                                        </CheckSelected>}
-                                        <ColorSchemeWrapper className="colorSchemeWrapper darkSpaces">
-                                            <Box className="primary" />
-                                            <Box className="secondary" />
-                                        </ColorSchemeWrapper>
-                                    </ButtonWrapper>
-                                </Tooltip>
-                            </Stack>
-                        </ThemeToggleWrapper>
-                    </Stack>
-                </Popover>
-            </ThemeSettingsButton>
-        </>
-    );
-};
+                    <Divider /> */}
+          <Stack direction="row" divider={<Divider orientation="vertical" flexItem />}>
+            <ThemeToggleWrapper>
+              <Typography
+                sx={{ mt: 1, mb: 3, textAlign: 'center', fontWeight: 'bold', textTransform: 'uppercase' }}
+                variant="body1">
+                Light color schemes
+              </Typography>
+              <Stack alignItems="center" spacing={2}>
+                <Tooltip placement="left" title="Pure Light" arrow>
+                  <ButtonWrapper
+                    className={theme === 'PureLightTheme' ? 'active' : ''}
+                    onClick={() => {
+                      changeTheme('PureLightTheme')
+                    }}>
+                    {theme === 'PureLightTheme' && (
+                      <CheckSelected>
+                        <CheckTwoToneIcon />
+                      </CheckSelected>
+                    )}
+                    <ColorSchemeWrapper className="colorSchemeWrapper pureLight">
+                      <Box className="primary" />
+                      <Box className="secondary" />
+                    </ColorSchemeWrapper>
+                  </ButtonWrapper>
+                </Tooltip>
+                <Tooltip placement="left" title="Light Bloom" arrow>
+                  <ButtonWrapper
+                    className={theme === 'LightBloomTheme' ? 'active' : ''}
+                    onClick={() => {
+                      changeTheme('LightBloomTheme')
+                    }}>
+                    {theme === 'LightBloomTheme' && (
+                      <CheckSelected>
+                        <CheckTwoToneIcon />
+                      </CheckSelected>
+                    )}
+                    <ColorSchemeWrapper className="colorSchemeWrapper lightBloom">
+                      <Box className="primary" />
+                      <Box className="secondary" />
+                    </ColorSchemeWrapper>
+                  </ButtonWrapper>
+                </Tooltip>
+                <Tooltip placement="left" title="Grey Goose" arrow>
+                  <ButtonWrapper
+                    className={theme === 'GreyGooseTheme' ? 'active' : ''}
+                    onClick={() => {
+                      changeTheme('GreyGooseTheme')
+                    }}>
+                    {theme === 'GreyGooseTheme' && (
+                      <CheckSelected>
+                        <CheckTwoToneIcon />
+                      </CheckSelected>
+                    )}
+                    <ColorSchemeWrapper className="colorSchemeWrapper greyGoose">
+                      <Box className="primary" />
+                      <Box className="secondary" />
+                    </ColorSchemeWrapper>
+                  </ButtonWrapper>
+                </Tooltip>
+                <Tooltip placement="left" title="Purple Flow" arrow>
+                  <ButtonWrapper
+                    className={theme === 'PurpleFlowTheme' ? 'active' : ''}
+                    onClick={() => {
+                      changeTheme('PurpleFlowTheme')
+                    }}>
+                    {theme === 'PurpleFlowTheme' && (
+                      <CheckSelected>
+                        <CheckTwoToneIcon />
+                      </CheckSelected>
+                    )}
+                    <ColorSchemeWrapper className="colorSchemeWrapper purpleFlow">
+                      <Box className="primary" />
+                      <Box className="secondary" />
+                    </ColorSchemeWrapper>
+                  </ButtonWrapper>
+                </Tooltip>
+              </Stack>
+            </ThemeToggleWrapper>
+            <ThemeToggleWrapper>
+              <Typography
+                sx={{ mt: 1, mb: 3, textAlign: 'center', fontWeight: 'bold', textTransform: 'uppercase' }}
+                variant="body1">
+                Dark color schemes
+              </Typography>
+              <Stack alignItems="center" spacing={2}>
+                <Tooltip placement="left" title="Nebula Fighter" arrow>
+                  <ButtonWrapper
+                    className={theme === 'NebulaFighterTheme' ? 'active' : ''}
+                    onClick={() => {
+                      changeTheme('NebulaFighterTheme')
+                    }}>
+                    {theme === 'NebulaFighterTheme' && (
+                      <CheckSelected>
+                        <CheckTwoToneIcon />
+                      </CheckSelected>
+                    )}
+                    <ColorSchemeWrapper className="colorSchemeWrapper nebulaFighter">
+                      <Box className="primary" />
+                      <Box className="secondary" />
+                    </ColorSchemeWrapper>
+                  </ButtonWrapper>
+                </Tooltip>
+                <Tooltip placement="left" title="Green Fields" arrow>
+                  <ButtonWrapper
+                    className={theme === 'GreenFieldsTheme' ? 'active' : ''}
+                    onClick={() => {
+                      changeTheme('GreenFieldsTheme')
+                    }}>
+                    {theme === 'GreenFieldsTheme' && (
+                      <CheckSelected>
+                        <CheckTwoToneIcon />
+                      </CheckSelected>
+                    )}
+                    <ColorSchemeWrapper className="colorSchemeWrapper greenFields">
+                      <Box className="primary" />
+                      <Box className="secondary" />
+                    </ColorSchemeWrapper>
+                  </ButtonWrapper>
+                </Tooltip>
+                <Tooltip placement="left" title="Dark Spaces" arrow>
+                  <ButtonWrapper
+                    className={theme === 'DarkSpacesTheme' ? 'active' : ''}
+                    onClick={() => {
+                      changeTheme('DarkSpacesTheme')
+                    }}>
+                    {theme === 'DarkSpacesTheme' && (
+                      <CheckSelected>
+                        <CheckTwoToneIcon />
+                      </CheckSelected>
+                    )}
+                    <ColorSchemeWrapper className="colorSchemeWrapper darkSpaces">
+                      <Box className="primary" />
+                      <Box className="secondary" />
+                    </ColorSchemeWrapper>
+                  </ButtonWrapper>
+                </Tooltip>
+              </Stack>
+            </ThemeToggleWrapper>
+          </Stack>
+        </Popover>
+      </ThemeSettingsButton>
+    </>
+  )
+}
 
-export default ThemeSettings;
+export default ThemeSettings

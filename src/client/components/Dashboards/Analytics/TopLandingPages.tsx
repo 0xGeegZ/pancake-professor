@@ -11,12 +11,12 @@ import {
   Card,
   ListItemText,
   List,
-  ListItem
-} from '@mui/material';
+  ListItem,
+} from '@mui/material'
 
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import Label from 'src/client/components/Label';
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import Label from 'src/client/components/Label'
 
 const AvatarLight = styled(Avatar)(
   ({ theme }) => `
@@ -25,10 +25,10 @@ const AvatarLight = styled(Avatar)(
       font-weight: ${theme.typography.fontWeightBold};
       font-size: ${theme.typography.pxToRem(15)};
 `
-);
+)
 
 function TopLandingPages() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -40,8 +40,7 @@ function TopLandingPages() {
             sx={{ display: { xs: 'block', sm: 'flex' } }}
             disableGutters
             alignItems="flex-start"
-            component="div"
-          >
+            component="div">
             <ListItemAvatar>
               <AvatarLight>1</AvatarLight>
             </ListItemAvatar>
@@ -52,18 +51,13 @@ function TopLandingPages() {
                 variant: 'h6',
                 sx: { mt: 1 },
                 gutterBottom: true,
-                noWrap: true
+                noWrap: true,
               }}
               secondaryTypographyProps={{ variant: 'h3', noWrap: true }}
               secondary={
                 <Box sx={{ mt: 1, flexDirection: 'row', display: 'flex' }}>
                   <Box sx={{ mr: 5 }}>
-                    <Typography
-                      component="div"
-                      variant="body2"
-                      gutterBottom
-                      color="text.secondary"
-                    >
+                    <Typography component="div" variant="body2" gutterBottom color="text.secondary">
                       {t('Impressions')}
                     </Typography>
                     <Box display="flex" alignItems="center">
@@ -74,12 +68,7 @@ function TopLandingPages() {
                     </Box>
                   </Box>
                   <Box>
-                    <Typography
-                      component="div"
-                      variant="body2"
-                      gutterBottom
-                      color="text.secondary"
-                    >
+                    <Typography component="div" variant="body2" gutterBottom color="text.secondary">
                       {t('Clicks')}
                     </Typography>
                     <Box display="flex" alignItems="center">
@@ -103,8 +92,7 @@ function TopLandingPages() {
             sx={{ display: { xs: 'block', sm: 'flex' } }}
             disableGutters
             alignItems="flex-start"
-            component="div"
-          >
+            component="div">
             <ListItemAvatar>
               <AvatarLight>2</AvatarLight>
             </ListItemAvatar>
@@ -115,18 +103,13 @@ function TopLandingPages() {
                 variant: 'h6',
                 sx: { mt: 1 },
                 gutterBottom: true,
-                noWrap: true
+                noWrap: true,
               }}
               secondaryTypographyProps={{ variant: 'h3', noWrap: true }}
               secondary={
                 <Box sx={{ mt: 1, flexDirection: 'row', display: 'flex' }}>
                   <Box sx={{ mr: 5 }}>
-                    <Typography
-                      component="div"
-                      variant="body2"
-                      gutterBottom
-                      color="text.secondary"
-                    >
+                    <Typography component="div" variant="body2" gutterBottom color="text.secondary">
                       {t('Impressions')}
                     </Typography>
                     <Box display="flex" alignItems="center">
@@ -137,12 +120,7 @@ function TopLandingPages() {
                     </Box>
                   </Box>
                   <Box>
-                    <Typography
-                      component="div"
-                      variant="body2"
-                      gutterBottom
-                      color="text.secondary"
-                    >
+                    <Typography component="div" variant="body2" gutterBottom color="text.secondary">
                       {t('Clicks')}
                     </Typography>
                     <Box display="flex" alignItems="center">
@@ -166,8 +144,7 @@ function TopLandingPages() {
             sx={{ display: { xs: 'block', sm: 'flex' } }}
             disableGutters
             alignItems="flex-start"
-            component="div"
-          >
+            component="div">
             <ListItemAvatar>
               <AvatarLight>3</AvatarLight>
             </ListItemAvatar>
@@ -178,18 +155,13 @@ function TopLandingPages() {
                 variant: 'h6',
                 sx: { mt: 1 },
                 gutterBottom: true,
-                noWrap: true
+                noWrap: true,
               }}
               secondaryTypographyProps={{ variant: 'h3', noWrap: true }}
               secondary={
                 <Box sx={{ mt: 1, flexDirection: 'row', display: 'flex' }}>
                   <Box sx={{ mr: 5 }}>
-                    <Typography
-                      component="div"
-                      variant="body2"
-                      gutterBottom
-                      color="text.secondary"
-                    >
+                    <Typography component="div" variant="body2" gutterBottom color="text.secondary">
                       {t('Impressions')}
                     </Typography>
                     <Box display="flex" alignItems="center">
@@ -200,12 +172,7 @@ function TopLandingPages() {
                     </Box>
                   </Box>
                   <Box>
-                    <Typography
-                      component="div"
-                      variant="body2"
-                      gutterBottom
-                      color="text.secondary"
-                    >
+                    <Typography component="div" variant="body2" gutterBottom color="text.secondary">
                       {t('Clicks')}
                     </Typography>
                     <Box display="flex" alignItems="center">
@@ -227,15 +194,13 @@ function TopLandingPages() {
         </List>
       </CardContent>
       <Divider />
-      <CardActions
-        sx={{ py: 2, height: '100%', flex: 1, justifyContent: 'center' }}
-      >
+      <CardActions sx={{ py: 2, height: '100%', flex: 1, justifyContent: 'center' }}>
         <Button size="small" variant="contained" color="primary">
           {t('Advanced View')}
         </Button>
       </CardActions>
     </Card>
-  );
+  )
 }
 
-export default TopLandingPages;
+export default TopLandingPages

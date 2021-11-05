@@ -1,19 +1,11 @@
-import {
-  Avatar,
-  Card,
-  CardHeader,
-  Grid,
-  Typography,
-  LinearProgress,
-  Box
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import Text from 'src/client/components/Text';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import MonetizationOnTwoToneIcon from '@mui/icons-material/MonetizationOnTwoTone';
-import ShoppingCartTwoToneIcon from '@mui/icons-material/ShoppingCartTwoTone';
+import { Avatar, Card, CardHeader, Grid, Typography, LinearProgress, Box } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import Text from 'src/client/components/Text'
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
+import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
+import MonetizationOnTwoToneIcon from '@mui/icons-material/MonetizationOnTwoTone'
+import ShoppingCartTwoToneIcon from '@mui/icons-material/ShoppingCartTwoTone'
 
 const AvatarWrapperError = styled(Avatar)(
   ({ theme }) => `
@@ -24,7 +16,7 @@ const AvatarWrapperError = styled(Avatar)(
       background-color: ${theme.colors.error.lighter};
       color:  ${theme.colors.error.main};
 `
-);
+)
 
 const AvatarWrapperSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -35,10 +27,10 @@ const AvatarWrapperSuccess = styled(Avatar)(
       background-color: ${theme.colors.success.lighter};
       color:  ${theme.colors.success.main};
 `
-);
+)
 
 function Budget() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Card sx={{ p: { xs: 1, sm: 3 } }}>
@@ -46,8 +38,7 @@ function Budget() {
         title={t('Budget')}
         subheader={
           <>
-            {t('You had')} <b>258</b> {t('expense transactions this month')},{' '}
-            <b>43</b> {t('more than previous month')}.
+            {t('You had')} <b>258</b> {t('expense transactions this month')}, <b>43</b> {t('more than previous month')}.
           </>
         }
         subheaderTypographyProps={{ variant: 'subtitle1', sx: { pt: 1 } }}
@@ -90,12 +81,7 @@ function Budget() {
             <Typography variant="subtitle1" gutterBottom color="text.secondary">
               {t('Expenses')}
             </Typography>
-            <Box
-              display="flex"
-              alignItems="flex-end"
-              justifyContent="space-between"
-              sx={{ mb: 1 }}
-            >
+            <Box display="flex" alignItems="flex-end" justifyContent="space-between" sx={{ mb: 1 }}>
               <Typography variant="h4" color="text.primary">
                 $574.21
               </Typography>
@@ -108,12 +94,7 @@ function Budget() {
         </Box>
         <Typography variant="body2" color="text.secondary">
           {t('Minimum credit payment due in 15 days')}:{' '}
-          <Typography
-            variant="body2"
-            component="span"
-            fontWeight="bold"
-            color="text.primary"
-          >
+          <Typography variant="body2" component="span" fontWeight="bold" color="text.primary">
             $84.00
           </Typography>
         </Typography>
@@ -126,12 +107,7 @@ function Budget() {
             <Typography variant="subtitle1" gutterBottom color="text.secondary">
               {t('Savings')}
             </Typography>
-            <Box
-              display="flex"
-              alignItems="flex-end"
-              justifyContent="space-between"
-              sx={{ mb: 1 }}
-            >
+            <Box display="flex" alignItems="flex-end" justifyContent="space-between" sx={{ mb: 1 }}>
               <Typography variant="h4" color="text.primary">
                 $23,536.44
               </Typography>
@@ -143,13 +119,11 @@ function Budget() {
           </Box>
         </Box>
         <Typography variant="body2" color="text.secondary">
-          <Text color="success">
-            {t('You have almost reached your target goal!!!')}
-          </Text>
+          <Text color="success">{t('You have almost reached your target goal!!!')}</Text>
         </Typography>
       </Box>
     </Card>
-  );
+  )
 }
 
-export default Budget;
+export default Budget

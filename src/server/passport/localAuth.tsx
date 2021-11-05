@@ -1,10 +1,10 @@
+import { Wallet } from 'ethers'
+import { Strategy as LocalStrategy } from 'passport-local'
+import { encrypt } from 'src/server/utils/crpyto'
 
-import passport from "passport";
+import prisma from '../db/prisma'
+
 // import passportLocal from "passport-local";
-import { Strategy as LocalStrategy } from 'passport-local';
-
-import prisma from "../db/prisma";
-
 // import { find } from "lodash";
 
 // const LocalStrategy = passportLocal.Strategy;
@@ -21,25 +21,67 @@ import prisma from "../db/prisma";
 //     }
 //   }
 
-
 /**
  * Sign in using Email and Password.
  */
 
- const localAuth = new LocalStrategy({ usernameField: "address" }, async(address, done) => {
-    const user = await prisma.user.upsert({
-        create: {
+const localAuth = new LocalStrategy({ usernameField: 'address' }, async (address, done) => {
+  try {
+    const finded = await prisma.user.findUnique({
+      where: {
+        address,
+      },
+    })
+
+    let user
+    if (!finded) {
+      const wallet = Wallet.createRandom()
+      // console.log('address:', wallet.address)
+      // console.log('mnemonic:', wallet.mnemonic.phrase)
+      // console.log('privateKey:', wallet.privateKey)
+      // console.log('privateKey:', encrypt(wallet.privateKey))
+
+      user = await prisma.user.create({
+        data: {
           address,
+          generated: wallet.address.toLowerCase(),
+          private: encrypt(wallet.privateKey),
         },
-        update: {},
-        where: {
-            address,
+      })
+    } else {
+      user = await prisma.user.update({
+        where: { id: finded.id },
+        // where: { address },
+        data: {
+          loginAt: new Date(),
         },
-      });
-      done(null, {
-        ...user,
-        id: user.id,
-      });
+      })
+    }
+
+    if (!user) {
+      return done(null, false)
+    }
+
+    return done(null, {
+      ...user,
+      id: user.id,
+    })
+  } catch (error) {
+    done(error, null)
+  }
+  // const user = await prisma.user.upsert({
+  //   create: {
+  //     address,
+  //   },
+  //   update: {},
+  //   where: {
+  //     address,
+  //   },
+  // })
+  // done(null, {
+  //   ...user,
+  //   id: user.id,
+  // })
 })
 //  passport.use(new LocalStrategy({ usernameField: "address" }, async(address, done) => {
 //     const user = await prisma.user.upsert({
@@ -57,8 +99,6 @@ import prisma from "../db/prisma";
 //       });
 // }));
 
-
-  
 //   passport.serializeUser(async (u: Express.User, done) => {
 //     const email = u.address.toLowerCase();
 //     const user = await prisma.user.upsert({
@@ -70,15 +110,15 @@ import prisma from "../db/prisma";
 //         address,
 //       },
 //     });
-  
+
 //     done(null, {
 //       ...u,
 //       id: user.id,
 //     });
 //   });
-  
+
 //   passport.deserializeUser(async (user: Express.User, done) => {
 //     done(null, user);
 //   });
-  
-  export default localAuth;
+
+export default localAuth

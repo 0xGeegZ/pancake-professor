@@ -1,27 +1,18 @@
-import { FC } from 'react';
-import PropTypes from 'prop-types';
-import type { User } from 'src/client/models/user';
-import {
-  Box,
-  Typography,
-  Card,
-  Tooltip,
-  Avatar,
-  CardMedia,
-  Button,
-  IconButton
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone';
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone';
-import { useRouter } from 'next/router';
-import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone';
-import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone';
+import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone'
+import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
+import MoreHorizTwoToneIcon from '@mui/icons-material/MoreHorizTwoTone'
+import UploadTwoToneIcon from '@mui/icons-material/UploadTwoTone'
+import { Box, Button, Card, IconButton, Tooltip, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useRouter } from 'next/router'
+import { FC } from 'react'
+import { useTranslation } from 'react-i18next'
+
+import type { User } from 'src/client/models/user'
 
 const Input = styled('input')({
-  display: 'none'
-});
+  display: 'none',
+})
 
 const AvatarWrapper = styled(Card)(
   ({ theme }) => `
@@ -37,7 +28,7 @@ const AvatarWrapper = styled(Card)(
       height: ${theme.spacing(16)};
     }
 `
-);
+)
 
 const ButtonUploadWrapper = styled(Box)(
   ({ theme }) => `
@@ -61,7 +52,7 @@ const ButtonUploadWrapper = styled(Box)(
       }
     }
 `
-);
+)
 
 const CardCover = styled(Card)(
   ({ theme }) => `
@@ -71,7 +62,7 @@ const CardCover = styled(Card)(
       height: ${theme.spacing(26)};
     }
 `
-);
+)
 
 const CardCoverAction = styled(Box)(
   ({ theme }) => `
@@ -79,19 +70,19 @@ const CardCoverAction = styled(Box)(
     right: ${theme.spacing(2)};
     bottom: ${theme.spacing(2)};
 `
-);
+)
 
 interface ProfileCoverProps {
-  user: User;
+  user: User
 }
 
 const ProfileCover: FC<ProfileCoverProps> = ({ user }) => {
-  const { t }: { t: any } = useTranslation();
-  const navigate = useRouter();
+  const { t }: { t: any } = useTranslation()
+  const navigate = useRouter()
 
   const handleBack = (): void => {
-    navigate.push('/management/users');
-  };
+    navigate.push('/management/users')
+  }
 
   return (
     <>
@@ -111,29 +102,21 @@ const ProfileCover: FC<ProfileCoverProps> = ({ user }) => {
         </Box>
       </Box>
       <CardCover>
-        <CardMedia image={user.coverImg} />
+        {/* <CardMedia image={user.coverImg} /> */}
         <CardCoverAction>
           <Input accept="image/*" id="change-cover" multiple type="file" />
           <label htmlFor="change-cover">
-            <Button
-              startIcon={<UploadTwoToneIcon />}
-              variant="contained"
-              component="span"
-            >
+            <Button startIcon={<UploadTwoToneIcon />} variant="contained" component="span">
               {t('Change cover')}
             </Button>
           </label>
         </CardCoverAction>
       </CardCover>
       <AvatarWrapper>
-        <Avatar variant="rounded" alt={user.name} src={user.avatar} />
+        {/* <Avatar variant="rounded" alt={user.name} src={user.avatar} /> */}
         <ButtonUploadWrapper>
-          <Input
-            accept="image/*"
-            id="icon-button-file"
-            name="icon-button-file"
-            type="file"
-          />
+          <Input accept="image/*" id="icon-button-file" name="icon-button-file" type="file" />
+          {/* eslint-disable-next-line jsx-a11y/label-has-associated-control */}
           <label htmlFor="icon-button-file">
             <IconButton component="span" color="primary">
               <UploadTwoToneIcon />
@@ -143,17 +126,14 @@ const ProfileCover: FC<ProfileCoverProps> = ({ user }) => {
       </AvatarWrapper>
       <Box py={2} pl={2} mb={3}>
         <Typography gutterBottom variant="h4">
-        {user.name}
+          {user.name}
         </Typography>
-        <Typography variant="subtitle2">{user.description}</Typography>
+        <Typography variant="subtitle2">user.description</Typography>
         <Typography sx={{ py: 2 }} variant="subtitle2" color="text.primary">
-        {user.jobtitle} | {user.location} | {user.followers} {t('followers')}
+          {/* {user.jobtitle} | {user.location} | {user.followers}  */}
+          {t('followers')}
         </Typography>
-        <Box
-          display={{ xs: 'block', md: 'flex' }}
-          alignItems="center"
-          justifyContent="space-between"
-        >
+        <Box display={{ xs: 'block', md: 'flex' }} alignItems="center" justifyContent="space-between">
           <Box>
             <Button size="small" variant="contained">
               {t('Follow')}
@@ -165,25 +145,19 @@ const ProfileCover: FC<ProfileCoverProps> = ({ user }) => {
               <MoreHorizTwoToneIcon />
             </IconButton>
           </Box>
-          <Button
-            sx={{ mt: { xs: 2, md: 0 } }}
-            size="small"
-            variant="text"
-            endIcon={<ArrowForwardTwoToneIcon />}
-          >
+          <Button sx={{ mt: { xs: 2, md: 0 } }} size="small" variant="text" endIcon={<ArrowForwardTwoToneIcon />}>
             {t('See all')}
-            {' ' + user.followers + ' '}
+            {/* {` ${user.followers} `} */}
             {t('connections')}
           </Button>
         </Box>
       </Box>
     </>
-  );
-};
+  )
+}
 
-ProfileCover.propTypes = {
-  // @ts-ignore
-  user: PropTypes.object.isRequired
-};
+// ProfileCover.propTypes = {
+//   user: PropTypes.shape({}).isRequired,
+// }
 
-export default ProfileCover;
+export default ProfileCover

@@ -1,7 +1,7 @@
-import { Box, Hidden, Tooltip } from '@mui/material';
-import Link from 'src/client/components/Link';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
+import { Box, Hidden, Tooltip } from '@mui/material'
+import Link from 'src/client/components/Link'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const LogoWrapper = styled(Link)(
   ({ theme }) => `
@@ -11,7 +11,7 @@ const LogoWrapper = styled(Link)(
         text-decoration: none;
         font-weight: ${theme.typography.fontWeightBold};
 `
-);
+)
 
 const LogoSignWrapper = styled(Box)(
   () => `
@@ -20,7 +20,7 @@ const LogoSignWrapper = styled(Box)(
         margin-top: 4px;
         transform: scale(.8);
 `
-);
+)
 
 const LogoSign = styled(Box)(
   ({ theme }) => `
@@ -57,7 +57,7 @@ const LogoSign = styled(Box)(
             background: ${theme.palette.secondary.main};
         }
 `
-);
+)
 
 const LogoSignInner = styled(Box)(
   ({ theme }) => `
@@ -70,13 +70,13 @@ const LogoSignInner = styled(Box)(
         border-radius: ${theme.general.borderRadiusSm};
         background: ${theme.header.background};
 `
-);
+)
 
 const LogoTextWrapper = styled(Box)(
   ({ theme }) => `
         padding-left: ${theme.spacing(1)};
 `
-);
+)
 
 const VersionBadge = styled(Box)(
   ({ theme }) => `
@@ -89,20 +89,20 @@ const VersionBadge = styled(Box)(
         line-height: 1;
         font-size: ${theme.typography.pxToRem(11)};
 `
-);
+)
 
 const LogoText = styled(Box)(
   ({ theme }) => `
         font-size: ${theme.typography.pxToRem(15)};
         font-weight: ${theme.typography.fontWeightBold};
 `
-);
+)
 
 function Logo() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
-    <LogoWrapper href="/">
+    <LogoWrapper href="/app">
       <LogoSignWrapper>
         <LogoSign>
           <LogoSignInner />
@@ -110,14 +110,14 @@ function Logo() {
       </LogoSignWrapper>
       <Hidden smDown>
         <LogoTextWrapper>
-          <Tooltip title={t('Version') + ' 1.0.0'} arrow placement="right">
-            <VersionBadge>1.0</VersionBadge>
+          <Tooltip title={`${t('Version')} 0.0.1`} arrow placement="right">
+            <VersionBadge>0.0.1</VersionBadge>
           </Tooltip>
-          <LogoText>Tokyo</LogoText>
+          <LogoText>Pancake Professor</LogoText>
         </LogoTextWrapper>
       </Hidden>
     </LogoWrapper>
-  );
+  )
 }
 
-export default Logo;
+export default Logo

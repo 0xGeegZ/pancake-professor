@@ -6,13 +6,13 @@ The only thing that matters when building a product is **that the app works for 
 
 We had over 600 end-to-end tests at Spectrum for every feature of the app and they saved our butts more times than I can count!
 
-That's why Bedrock ships with a really nice end-to-end testing and an (optional) API integration testing setup: they ensure the app and (if you want users to use it directly) the API work as they should.
+That's why Pancake Professor ships with a really nice end-to-end testing and an (optional) API integration testing setup: they ensure the app and (if you want users to use it directly) the API work as they should.
 
 Commonly, people associate end-to-end tests as being slow and flakey, but [Cypress](https://cypress.io) has solved those problems entirely. Our 600 end-to-end tests ran in ~6 minutes flat on CI!
 
 ## End-to-end tests
 
-You write end-to-end tests with [Cypress](https://cypress.io). Bedrock also already adds support for authentication and a really nice database seeding setup. This is what a typical end-to-end test looks like:
+You write end-to-end tests with [Cypress](https://cypress.io). Pancake Professor also already adds support for authentication and a really nice database seeding setup. This is what a typical end-to-end test looks like:
 
 ```ts
 import { testData } from "../../src/test/seed/data";
@@ -94,7 +94,7 @@ it("should handle a user being a member of two projects", () => {
 
 You run API integration tests with the `yarn test` command, which uses [Jest](https://jestjs.io) as the test runner. API integration tests use the same seed data and mechanism as end-to-end tests.
 
-Bedrock also has a small abstraction over graphql to query the GraphQL schema without spinning up a server for it in `src/test/request.ts` which is much faster.
+Pancake Professor also has a small abstraction over graphql to query the GraphQL schema without spinning up a server for it in `src/test/request.ts` which is much faster.
 
 For example, here is what a typical API integration test looks like:
 

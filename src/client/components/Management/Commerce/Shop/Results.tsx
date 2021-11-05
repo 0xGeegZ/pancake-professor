@@ -1,84 +1,76 @@
-import { FC, useState, ChangeEvent, MouseEvent } from 'react';
-import type { Product } from 'src/client/models/product';
-import PropTypes from 'prop-types';
-import Link from 'src/client/components/Link';
+import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
+import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
 import {
-  Grid,
-  Typography,
-  Card,
+  Avatar,
   Box,
-  TextField,
+  Button,
+  Card,
+  Divider,
+  Grid,
+  Hidden,
   IconButton,
   InputAdornment,
-  Avatar,
-  Button,
-  ToggleButton,
-  ToggleButtonGroup,
   Rating,
   Slide,
-  Divider,
-  Hidden,
-  TablePagination
-} from '@mui/material';
-import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import numeral from 'numeral';
-import Text from 'src/client/components/Text';
-import { useSnackbar } from 'notistack';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone';
-import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone';
+  TablePagination,
+  TextField,
+  ToggleButton,
+  ToggleButtonGroup,
+  Typography,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useSnackbar } from 'notistack'
+import numeral from 'numeral'
+import PropTypes from 'prop-types'
+import { ChangeEvent, FC, MouseEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
+import Text from 'src/client/components/Text'
+
+import type { Product } from 'src/client/models/product'
 
 interface ResultsProps {
-  products: Product[];
+  products: Product[]
 }
 
-const applyFilters = (products: Product[], query: string): Product[] => {
-  return products.filter((product) => {
-    let matches = true;
+const applyFilters = (products: Product[], query: string): Product[] =>
+  products.filter((product) => {
+    let matches = true
 
     if (query) {
-      const properties = ['name'];
-      let containsQuery = false;
+      const properties = ['name']
+      let containsQuery = false
 
       properties.forEach((property) => {
         if (product[property].toLowerCase().includes(query.toLowerCase())) {
-          containsQuery = true;
+          containsQuery = true
         }
-      });
+      })
 
       if (!containsQuery) {
-        matches = false;
+        matches = false
       }
     }
 
-    return matches;
-  });
-};
+    return matches
+  })
 
-const applyPagination = (
-  products: Product[],
-  page: number,
-  limit: number
-): Product[] => {
-  return products.slice(page * limit, page * limit + limit);
-};
+const applyPagination = (products: Product[], page: number, limit: number): Product[] =>
+  products.slice(page * limit, page * limit + limit)
 
 const Results: FC<ResultsProps> = ({ products }) => {
-  const [page, setPage] = useState<number>(0);
-  const [limit, setLimit] = useState<number>(4);
-  const { t }: { t: any } = useTranslation();
-  const { enqueueSnackbar } = useSnackbar();
-  const [query, setQuery] = useState<string>('');
-  const [toggleView, setToggleView] = useState<string | null>('grid_view');
+  const [page, setPage] = useState<number>(0)
+  const [limit, setLimit] = useState<number>(4)
+  const { t }: { t: any } = useTranslation()
+  const { enqueueSnackbar } = useSnackbar()
+  const [query, setQuery] = useState<string>('')
+  const [toggleView, setToggleView] = useState<string | null>('grid_view')
 
-  const handleViewOrientation = (
-    _event: MouseEvent<HTMLElement>,
-    newValue: string | null
-  ) => {
-    setToggleView(newValue);
-  };
+  const handleViewOrientation = (_event: MouseEvent<HTMLElement>, newValue: string | null) => {
+    setToggleView(newValue)
+  }
 
   const handleCart = () => {
     enqueueSnackbar(t('You added a product to cart'), {
@@ -86,27 +78,27 @@ const Results: FC<ResultsProps> = ({ products }) => {
       preventDuplicate: true,
       anchorOrigin: {
         vertical: 'top',
-        horizontal: 'right'
+        horizontal: 'right',
       },
-      TransitionComponent: Slide
-    });
-  };
+      TransitionComponent: Slide,
+    })
+  }
 
   const handlePageChange = (_event: any, newPage: number): void => {
-    setPage(newPage);
-  };
+    setPage(newPage)
+  }
 
   const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(parseInt(event.target.value));
-  };
+    setLimit(+event.target.value)
+  }
 
   const handleQueryChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    event.persist();
-    setQuery(event.target.value);
-  };
+    event.persist()
+    setQuery(event.target.value)
+  }
 
-  const filteredProducts = applyFilters(products, query);
-  const paginatedProducts = applyPagination(filteredProducts, page, limit);
+  const filteredProducts = applyFilters(products, query)
+  const paginatedProducts = applyPagination(filteredProducts, page, limit)
 
   const AvatarWrapper = styled(Box)(
     ({ theme }) => `
@@ -120,7 +112,7 @@ const Results: FC<ResultsProps> = ({ products }) => {
         }
       }
 `
-  );
+  )
 
   const IconButtonError = styled(IconButton)(
     ({ theme }) => `
@@ -130,7 +122,7 @@ const Results: FC<ResultsProps> = ({ products }) => {
         background: ${theme.colors.error.lighter};
       }
   `
-  );
+  )
 
   return (
     <Grid container spacing={3}>
@@ -145,7 +137,7 @@ const Results: FC<ResultsProps> = ({ products }) => {
                 <InputAdornment position="start">
                   <SearchTwoToneIcon />
                 </InputAdornment>
-              )
+              ),
             }}
             placeholder={t('Search by product name...')}
           />
@@ -161,11 +153,7 @@ const Results: FC<ResultsProps> = ({ products }) => {
               {filteredProducts.length} {t('products')}
             </b>
           </Box>
-          <ToggleButtonGroup
-            value={toggleView}
-            exclusive
-            onChange={handleViewOrientation}
-          >
+          <ToggleButtonGroup value={toggleView} exclusive onChange={handleViewOrientation}>
             <ToggleButton disableRipple value="list_view">
               <TableRowsTwoToneIcon />
             </ToggleButton>
@@ -180,110 +168,72 @@ const Results: FC<ResultsProps> = ({ products }) => {
         <>
           {paginatedProducts.length === 0 ? (
             <Grid item xs={12}>
-              <Typography
-                sx={{ py: 10 }}
-                variant="h3"
-                fontWeight="normal"
-                color="text.secondary"
-                align="center"
-              >
-                {t(
-                  "We couldn't find any products matching your search criteria"
-                )}
+              <Typography sx={{ py: 10 }} variant="h3" fontWeight="normal" color="text.secondary" align="center">
+                {t("We couldn't find any products matching your search criteria")}
               </Typography>
             </Grid>
           ) : (
             <>
-              {paginatedProducts.map((product) => {
-                return (
-                  <Grid key={product.id} item xs={12} md={6}>
-                    <Card>
-                      <AvatarWrapper
-                        p={3}
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="center"
-                      >
-                        <Avatar
-                          component={Link}
-                          href={
-                            '/management/commerce/products/' + product.id
-                          }
-                          src={product.images[0]}
-                          variant="rounded"
-                        />
-                      </AvatarWrapper>
-                      <Box textAlign="center" px={3}>
-                        <Typography variant="h3" sx={{ mb: 1 }}>
-                          {product.name}
-                        </Typography>
-                        <Typography variant="h6" color="text.secondary">
-                          {product.summary}
-                        </Typography>
-                        <Box py={2}>
-                          <Rating
-                            readOnly
-                            defaultValue={product.rating}
-                            precision={0.5}
-                          />
-                        </Box>
+              {paginatedProducts.map((product) => (
+                <Grid key={product.id} item xs={12} md={6}>
+                  <Card>
+                    <AvatarWrapper p={3} display="flex" alignItems="center" justifyContent="center">
+                      <Avatar
+                        component={Link}
+                        href={`/management/commerce/products/${product.id}`}
+                        src={product.images[0]}
+                        variant="rounded"
+                      />
+                    </AvatarWrapper>
+                    <Box textAlign="center" px={3}>
+                      <Typography variant="h3" sx={{ mb: 1 }}>
+                        {product.name}
+                      </Typography>
+                      <Typography variant="h6" color="text.secondary">
+                        {product.summary}
+                      </Typography>
+                      <Box py={2}>
+                        <Rating readOnly defaultValue={product.rating} precision={0.5} />
                       </Box>
-                      <Box display="flex" justifyContent="center">
-                        <Box>
-                          <Typography
-                            component="span"
-                            variant={product.sale_price !== 0 ? 'h4' : 'h3'}
-                            sx={{
-                              pr: 2,
-                              textDecorationLine:
-                                product.sale_price !== 0 ? 'line-through' : ''
-                            }}
-                          >
-                            ${numeral(product.price).format(`0,0.00`)}
+                    </Box>
+                    <Box display="flex" justifyContent="center">
+                      <Box>
+                        <Typography
+                          component="span"
+                          variant={product.sale_price !== 0 ? 'h4' : 'h3'}
+                          sx={{
+                            pr: 2,
+                            textDecorationLine: product.sale_price !== 0 ? 'line-through' : '',
+                          }}>
+                          ${numeral(product.price).format(`0,0.00`)}
+                        </Typography>
+                        {product.sale_price !== 0 && (
+                          <Typography component="span" variant="h3">
+                            <Text color="error">${numeral(product.sale_price).format(`0,0.00`)}</Text>
                           </Typography>
-                          {product.sale_price !== 0 && (
-                            <Typography component="span" variant="h3">
-                              <Text color="error">
-                                ${numeral(product.sale_price).format(`0,0.00`)}
-                              </Text>
-                            </Typography>
-                          )}
-                        </Box>
+                        )}
                       </Box>
-                      <Box pb={3} pt={1} display="flex" justifyContent="center">
-                        <Button
-                          size="small"
-                          variant="outlined"
-                          onClick={handleCart}
-                        >
-                          {t('Add to cart')}
-                        </Button>
-                      </Box>
-                      <Divider />
-                      <Box
-                        p={2}
-                        display="flex"
-                        alignItems="center"
-                        justifyContent="space-between"
-                      >
-                        <IconButtonError size="small">
-                          <FavoriteTwoToneIcon fontSize="small" />
-                        </IconButtonError>
-                        <Typography variant="subtitle2">
-                          {t('In Stock')}:{' '}
-                          <Typography
-                            component="span"
-                            color="text.primary"
-                            variant="h4"
-                          >
-                            {product.stock}
-                          </Typography>
+                    </Box>
+                    <Box pb={3} pt={1} display="flex" justifyContent="center">
+                      <Button size="small" variant="outlined" onClick={handleCart}>
+                        {t('Add to cart')}
+                      </Button>
+                    </Box>
+                    <Divider />
+                    <Box p={2} display="flex" alignItems="center" justifyContent="space-between">
+                      <IconButtonError size="small">
+                        <FavoriteTwoToneIcon fontSize="small" />
+                      </IconButtonError>
+                      <Typography variant="subtitle2">
+                        {t('In Stock')}:{' '}
+                        <Typography component="span" color="text.primary" variant="h4">
+                          {product.stock}
                         </Typography>
-                      </Box>
-                    </Card>
-                  </Grid>
-                );
-              })}
+                      </Typography>
+                    </Box>
+                  </Card>
+                </Grid>
+              ))}
               <Grid item xs={12}>
                 <Card sx={{ p: 2 }}>
                   <TablePagination
@@ -305,119 +255,74 @@ const Results: FC<ResultsProps> = ({ products }) => {
         <>
           {paginatedProducts.length === 0 ? (
             <Grid item xs={12}>
-              <Typography
-                sx={{ py: 10 }}
-                variant="h3"
-                fontWeight="normal"
-                color="text.secondary"
-                align="center"
-              >
-                {t(
-                  "We couldn't find any products matching your search criteria"
-                )}
+              <Typography sx={{ py: 10 }} variant="h3" fontWeight="normal" color="text.secondary" align="center">
+                {t("We couldn't find any products matching your search criteria")}
               </Typography>
             </Grid>
           ) : (
             <>
-              {paginatedProducts.map((product) => {
-                return (
-                  <Grid key={product.id} item xs={12}>
-                    <Card
-                      sx={{
-                        p: 2,
-                        display: { md: 'flex' },
-                        alignItems: { md: 'center' }
-                      }}
-                    >
-                      <AvatarWrapper
-                        p={2}
-                        sx={{ justifyContent: { md: 'center' } }}
-                        display="flex"
-                        alignItems="center"
-                      >
-                        <Avatar
-                          component={Link}
-                          href={
-                            '/management/commerce/products/' + product.id
-                          }
-                          src={product.images[0]}
-                          variant="rounded"
-                        />
-                      </AvatarWrapper>
-                      <Hidden mdDown>
-                        <Divider
-                          sx={{ mr: 2 }}
-                          orientation="vertical"
-                          flexItem
-                        />
-                      </Hidden>
-                      <Box flex={1} p={2}>
-                        <Rating
-                          readOnly
-                          defaultValue={product.rating}
-                          precision={0.5}
-                        />
-                        <Typography variant="h3" sx={{ my: 1 }}>
-                          {product.name}
+              {paginatedProducts.map((product) => (
+                <Grid key={product.id} item xs={12}>
+                  <Card
+                    sx={{
+                      p: 2,
+                      display: { md: 'flex' },
+                      alignItems: { md: 'center' },
+                    }}>
+                    <AvatarWrapper p={2} sx={{ justifyContent: { md: 'center' } }} display="flex" alignItems="center">
+                      <Avatar
+                        component={Link}
+                        href={`/management/commerce/products/${product.id}`}
+                        src={product.images[0]}
+                        variant="rounded"
+                      />
+                    </AvatarWrapper>
+                    <Hidden mdDown>
+                      <Divider sx={{ mr: 2 }} orientation="vertical" flexItem />
+                    </Hidden>
+                    <Box flex={1} p={2}>
+                      <Rating readOnly defaultValue={product.rating} precision={0.5} />
+                      <Typography variant="h3" sx={{ my: 1 }}>
+                        {product.name}
+                      </Typography>
+                      <Typography variant="subtitle2">{product.summary}</Typography>
+                      <Box py={2}>
+                        <Typography
+                          component="span"
+                          variant={product.sale_price !== 0 ? 'h4' : 'h3'}
+                          sx={{
+                            pr: 2,
+                            textDecorationLine: product.sale_price !== 0 ? 'line-through' : '',
+                          }}>
+                          ${numeral(product.price).format(`0,0.00`)}
                         </Typography>
-                        <Typography variant="subtitle2">
-                          {product.summary}
-                        </Typography>
-                        <Box py={2}>
-                          <Typography
-                            component="span"
-                            variant={product.sale_price !== 0 ? 'h4' : 'h3'}
-                            sx={{
-                              pr: 2,
-                              textDecorationLine:
-                                product.sale_price !== 0 ? 'line-through' : ''
-                            }}
-                          >
-                            ${numeral(product.price).format(`0,0.00`)}
+                        {product.sale_price !== 0 && (
+                          <Typography component="span" variant="h3">
+                            <Text color="error">${numeral(product.sale_price).format(`0,0.00`)}</Text>
                           </Typography>
-                          {product.sale_price !== 0 && (
-                            <Typography component="span" variant="h3">
-                              <Text color="error">
-                                ${numeral(product.sale_price).format(`0,0.00`)}
-                              </Text>
-                            </Typography>
-                          )}
-                        </Box>
-                        <Box
-                          display="flex"
-                          alignItems="center"
-                          justifyContent="space-between"
-                        >
-                          <Box display="flex" alignItems="center">
-                            <Button
-                              sx={{ mr: 2 }}
-                              size="small"
-                              variant="outlined"
-                              onClick={handleCart}
-                            >
-                              {t('Add to cart')}
-                            </Button>
-                            <IconButtonError size="small">
-                              <FavoriteTwoToneIcon fontSize="small" />
-                            </IconButtonError>
-                          </Box>
-
-                          <Typography variant="subtitle2">
-                            {t('In Stock')}:{' '}
-                            <Typography
-                              component="span"
-                              color="text.primary"
-                              variant="h4"
-                            >
-                              {product.stock}
-                            </Typography>
-                          </Typography>
-                        </Box>
+                        )}
                       </Box>
-                    </Card>
-                  </Grid>
-                );
-              })}
+                      <Box display="flex" alignItems="center" justifyContent="space-between">
+                        <Box display="flex" alignItems="center">
+                          <Button sx={{ mr: 2 }} size="small" variant="outlined" onClick={handleCart}>
+                            {t('Add to cart')}
+                          </Button>
+                          <IconButtonError size="small">
+                            <FavoriteTwoToneIcon fontSize="small" />
+                          </IconButtonError>
+                        </Box>
+
+                        <Typography variant="subtitle2">
+                          {t('In Stock')}:{' '}
+                          <Typography component="span" color="text.primary" variant="h4">
+                            {product.stock}
+                          </Typography>
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Card>
+                </Grid>
+              ))}
               <Grid item xs={12}>
                 <Card sx={{ p: 2 }}>
                   <TablePagination
@@ -444,25 +349,22 @@ const Results: FC<ResultsProps> = ({ products }) => {
               fontWeight="normal"
               color="text.secondary"
               sx={{ my: 5 }}
-              gutterBottom
-            >
-              {t(
-                'Choose between table or grid views for displaying the projects list.'
-              )}
+              gutterBottom>
+              {t('Choose between table or grid views for displaying the projects list.')}
             </Typography>
           </Card>
         </Grid>
       )}
     </Grid>
-  );
-};
+  )
+}
 
 Results.propTypes = {
-  products: PropTypes.array.isRequired
-};
+  products: PropTypes.array.isRequired,
+}
 
 Results.defaultProps = {
-  products: []
-};
+  products: [],
+}
 
-export default Results;
+export default Results

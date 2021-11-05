@@ -1,13 +1,7 @@
-import {
-  Card,
-  Box,
-  Typography,
-  Avatar,
-  LinearProgress
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import DoNotStepTwoToneIcon from '@mui/icons-material/DoNotStepTwoTone';
+import { Card, Box, Typography, Avatar, LinearProgress } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import DoNotStepTwoToneIcon from '@mui/icons-material/DoNotStepTwoTone'
 
 const AvatarWrapperSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -18,10 +12,10 @@ const AvatarWrapperSuccess = styled(Avatar)(
       color:  ${theme.colors.success.main};
       margin-bottom: ${theme.spacing(3)};
 `
-);
+)
 
 function Steps() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Card sx={{ p: 3 }}>
@@ -31,25 +25,17 @@ function Steps() {
       <Typography variant="h3" sx={{ pb: 1 }}>
         {t('Steps')}
       </Typography>
-      <Typography
-        color="text.primary"
-        variant="h2"
-        sx={{ pr: 0.5, display: 'inline-flex' }}
-      >
+      <Typography color="text.primary" variant="h2" sx={{ pr: 0.5, display: 'inline-flex' }}>
         4500
       </Typography>
-      <Typography
-        color="text.secondary"
-        variant="h4"
-        sx={{ pr: 2, display: 'inline-flex' }}
-      >
+      <Typography color="text.secondary" variant="h4" sx={{ pr: 2, display: 'inline-flex' }}>
         /10000
       </Typography>
       <Box pt={3}>
         <LinearProgress value={45} color="primary" variant="determinate" />
       </Box>
     </Card>
-  );
+  )
 }
 
-export default Steps;
+export default Steps

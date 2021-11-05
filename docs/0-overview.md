@@ -1,11 +1,11 @@
 # Overview
 
-Bedrock is a standard [Next.js](https://nextjs.org) app with heavy usage of [file-system routing](https://nextjs.org/docs/routing/introduction) and [API routes](https://nextjs.org/docs/api-routes/introduction).
+Pancake Professor is a standard [Next.js](https://nextjs.org) app with heavy usage of [file-system routing](https://nextjs.org/docs/routing/introduction) and [API routes](https://nextjs.org/docs/api-routes/introduction).
 
 ## Folder structure
 
 ```sh
-bedrock
+pancake-professor
 │   # CI configuration (GitHub Actions)
 ├── .github
 │   # VSCode configuration (recommended extensions)
@@ -50,11 +50,11 @@ bedrock
         └── seed
 ```
 
-Bedrock explicitly separates client-side code from server-side code, as the pages folder tends to make it too easy to use and thus expose potentially sensitive server-side code (e.g. with secrets) on the client.
+Pancake Professor explicitly separates client-side code from server-side code, as the pages folder tends to make it too easy to use and thus expose potentially sensitive server-side code (e.g. with secrets) on the client.
 
 ## API routes
 
-To consistently manage the middlewares for API routes (e.g. authentication) Bedrock has a small abstraction on top of [next-connect](https://github.com/hoangvvo/next-connect) in `src/server/api-route.ts`.
+To consistently manage the middlewares for API routes (e.g. authentication) Pancake Professor has a small abstraction on top of [next-connect](https://github.com/hoangvvo/next-connect) in `src/server/api-route.ts`.
 
 Here is an example of a simplistic API route:
 

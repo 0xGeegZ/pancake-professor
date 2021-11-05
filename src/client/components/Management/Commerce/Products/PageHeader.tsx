@@ -1,11 +1,11 @@
-import { useTranslation } from 'react-i18next';
-import Link from 'src/client/components/Link';
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
 
-import { Grid, Typography, Button } from '@mui/material';
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
+import { Grid, Typography, Button } from '@mui/material'
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 
 function PageHeader() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Grid container justifyContent="space-between" alignItems="center">
@@ -23,13 +23,12 @@ function PageHeader() {
           component={Link}
           href="/management/commerce/products/create"
           variant="contained"
-          startIcon={<AddTwoToneIcon fontSize="small" />}
-        >
+          startIcon={<AddTwoToneIcon fontSize="small" />}>
           {t('Create product')}
         </Button>
       </Grid>
     </Grid>
-  );
+  )
 }
 
-export default PageHeader;
+export default PageHeader

@@ -1,20 +1,7 @@
-import {
-  Card,
-  CardHeader,
-  Box,
-  Typography,
-  Divider,
-  Tooltip,
-  useTheme
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import {
-  ComposableMap,
-  Geographies,
-  Geography,
-  Marker
-} from 'react-simple-maps';
+import { Card, CardHeader, Box, Typography, Divider, Tooltip, useTheme } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import { ComposableMap, Geographies, Geography, Marker } from 'react-simple-maps'
 
 const DotLegend = styled('span')(
   ({ theme }) => `
@@ -24,13 +11,12 @@ const DotLegend = styled('span')(
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 function DataCenters() {
-  const { t }: { t: any } = useTranslation();
-  const geoUrl =
-    'https://raw.githubusercontent.com/leakyMirror/map-of-europe/master/TopoJSON/europe.topojson';
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const geoUrl = 'https://raw.githubusercontent.com/leakyMirror/map-of-europe/master/TopoJSON/europe.topojson'
+  const theme = useTheme()
 
   return (
     <Card sx={{ display: 'flex', flexDirection: 'column', height: '100%' }}>
@@ -40,9 +26,8 @@ function DataCenters() {
         projection="geoAzimuthalEqualArea"
         projectionConfig={{
           rotate: [-10.0, -48.5, 0],
-          scale: 1350
-        }}
-      >
+          scale: 1350,
+        }}>
         <Geographies geography={geoUrl}>
           {({ geographies }) =>
             geographies.map((geo) => (
@@ -112,25 +97,17 @@ function DataCenters() {
         </Marker>
       </ComposableMap>
       <Box display="flex" alignItems="center" justifyContent="center" my={2}>
-        <Typography
-          variant="subtitle1"
-          color="text.primary"
-          sx={{ mx: 1, display: 'flex', alignItems: 'center' }}
-        >
+        <Typography variant="subtitle1" color="text.primary" sx={{ mx: 1, display: 'flex', alignItems: 'center' }}>
           <DotLegend style={{ background: theme.colors.error.main }} />
           {t('Highest downtime')}
         </Typography>
-        <Typography
-          variant="subtitle1"
-          color="text.primary"
-          sx={{ mx: 1, display: 'flex', alignItems: 'center' }}
-        >
+        <Typography variant="subtitle1" color="text.primary" sx={{ mx: 1, display: 'flex', alignItems: 'center' }}>
           <DotLegend style={{ background: theme.colors.success.main }} />
           {t('Best Uptime')}
         </Typography>
       </Box>
     </Card>
-  );
+  )
 }
 
-export default DataCenters;
+export default DataCenters

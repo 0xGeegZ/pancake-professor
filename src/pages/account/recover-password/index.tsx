@@ -1,39 +1,38 @@
-import { useState, forwardRef, Ref } from 'react';
-import * as Yup from 'yup';
-import { Formik } from 'formik';
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import CloseIcon from '@mui/icons-material/Close'
 import {
+  Alert,
+  Avatar,
   Box,
+  Button,
   Card,
+  Collapse,
+  Container,
+  Dialog,
+  IconButton,
   Link,
+  Slide,
   TextField,
   Typography,
-  Container,
-  Alert,
-  Slide,
-  Dialog,
-  Collapse,
-  Button,
-  Avatar,
-  IconButton
-} from '@mui/material';
-import Head from 'next/head';
-import type { ReactElement } from 'react';
-import BaseLayout from "src/client/layouts/BaseLayout";
-import { TransitionProps } from '@mui/material/transitions';
-import useRefMounted from 'src/client/hooks/useRefMounted';
-import CloseIcon from '@mui/icons-material/Close';
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { TransitionProps } from '@mui/material/transitions'
+import { Formik } from 'formik'
+import Head from 'next/head'
+import { forwardRef, Ref, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Logo from 'src/client/components/LogoSign'
+import useRefMounted from 'src/client/hooks/useRefMounted'
+import BaseLayout from 'src/client/layouts/BaseLayout'
+import * as Yup from 'yup'
 
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import Logo from 'src/client/components/LogoSign';
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
+import type { ReactElement } from 'react'
 
-const Transition = forwardRef(function Transition(
-  props: TransitionProps & { children?: ReactElement<any, any> },
-  ref: Ref<unknown>
-) {
-  return <Slide direction="down" ref={ref} {...props} />;
-});
+/* eslint-disable */
+const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
+  <Slide direction="down" ref={ref} {...props} />
+))
+/* eslint-enable */
 
 const MainContent = styled(Box)(
   () => `
@@ -42,7 +41,7 @@ const MainContent = styled(Box)(
     flex: 1;
     flex-direction: column;
 `
-);
+)
 
 const TopWrapper = styled(Box)(
   ({ theme }) => `
@@ -53,7 +52,7 @@ const TopWrapper = styled(Box)(
   justify-content: center;
   padding: ${theme.spacing(6)};
 `
-);
+)
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -61,7 +60,7 @@ const DialogWrapper = styled(Dialog)(
         overflow: visible;
       }
 `
-);
+)
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -79,23 +78,23 @@ const AvatarSuccess = styled(Avatar)(
         font-size: ${theme.typography.pxToRem(45)};
       }
 `
-);
+)
 
 function RecoverPasswordBasic() {
-  const { t }: { t: any } = useTranslation();
-  const isMountedRef = useRefMounted();
+  const { t }: { t: any } = useTranslation()
+  const isMountedRef = useRefMounted()
 
-  const [openAlert, setOpenAlert] = useState(true);
+  const [openAlert, setOpenAlert] = useState(true)
 
-  const [openDialog, setOpenDialog] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false)
 
   const handleOpenDialog = () => {
-    setOpenDialog(true);
-  };
+    setOpenDialog(true)
+  }
 
   const handleCloseDialog = () => {
-    setOpenDialog(false);
-  };
+    setOpenDialog(false)
+  }
 
   return (
     <>
@@ -111,58 +110,38 @@ function RecoverPasswordBasic() {
                 <Typography variant="h2" sx={{ mb: 1 }}>
                   {t('Recover Password')}
                 </Typography>
-                <Typography
-                  variant="h4"
-                  color="text.secondary"
-                  fontWeight="normal"
-                  sx={{ mb: 3 }}
-                >
-                  {t(
-                    'Enter the email used for registration to reset your password.'
-                  )}
+                <Typography variant="h4" color="text.secondary" fontWeight="normal" sx={{ mb: 3 }}>
+                  {t('Enter the email used for registration to reset your password.')}
                 </Typography>
               </Box>
 
               <Formik
                 initialValues={{
                   email: 'demo@example.com',
-                  submit: null
+                  submit: null,
                 }}
                 validationSchema={Yup.object().shape({
                   email: Yup.string()
-                    .email(
-                      t('The email provided should be a valid email address')
-                    )
+                    .email(t('The email provided should be a valid email address'))
                     .max(255)
-                    .required(t('The email field is required'))
+                    .required(t('The email field is required')),
                 })}
-                onSubmit={async (
-                  _values,
-                  { setErrors, setStatus, setSubmitting }
-                ) => {
+                onSubmit={async (_values, { setErrors, setStatus, setSubmitting }) => {
                   try {
                     if (isMountedRef.current) {
-                      setStatus({ success: true });
-                      setSubmitting(false);
+                      setStatus({ success: true })
+                      setSubmitting(false)
                     }
                   } catch (err) {
-                    console.error(err);
+                    console.error(err)
                     if (isMountedRef.current) {
-                      setStatus({ success: false });
-                      setErrors({ submit: err.message });
-                      setSubmitting(false);
+                      setStatus({ success: false })
+                      setErrors({ submit: err.message })
+                      setSubmitting(false)
                     }
                   }
-                }}
-              >
-                {({
-                  errors,
-                  handleBlur,
-                  handleChange,
-                  handleSubmit,
-                  touched,
-                  values
-                }) => (
+                }}>
+                {({ errors, handleBlur, handleChange, handleSubmit, touched, values }) => (
                   <form noValidate onSubmit={handleSubmit}>
                     <TextField
                       error={Boolean(touched.email && errors.email)}
@@ -186,8 +165,7 @@ function RecoverPasswordBasic() {
                       type="submit"
                       fullWidth
                       size="large"
-                      variant="contained"
-                    >
+                      variant="contained">
                       {t('Send me a new password')}
                     </Button>
                   </form>
@@ -195,12 +173,7 @@ function RecoverPasswordBasic() {
               </Formik>
             </Card>
             <Box mt={3} textAlign="right">
-              <Typography
-                component="span"
-                variant="subtitle2"
-                color="text.primary"
-                fontWeight="bold"
-              >
+              <Typography component="span" variant="subtitle2" color="text.primary" fontWeight="bold">
                 {t('Want to try to sign in again?')}
               </Typography>{' '}
               <Link underline="hover" href="/account/login-basic">
@@ -217,8 +190,7 @@ function RecoverPasswordBasic() {
         fullWidth
         TransitionComponent={Transition}
         keepMounted
-        onClose={handleCloseDialog}
-      >
+        onClose={handleCloseDialog}>
         <Box sx={{ px: 4, pb: 4, pt: 10 }}>
           <AvatarSuccess>
             <CheckTwoToneIcon />
@@ -232,17 +204,13 @@ function RecoverPasswordBasic() {
                   color="inherit"
                   size="small"
                   onClick={() => {
-                    setOpenAlert(false);
-                  }}
-                >
+                    setOpenAlert(false)
+                  }}>
                   <CloseIcon fontSize="inherit" />
                 </IconButton>
               }
-              severity="info"
-            >
-              {t(
-                'The password reset instructions have been sent to your email'
-              )}
+              severity="info">
+              {t('The password reset instructions have been sent to your email')}
             </Alert>
           </Collapse>
 
@@ -250,27 +218,17 @@ function RecoverPasswordBasic() {
             {t('Check your email for further instructions')}
           </Typography>
 
-          <Button
-            fullWidth
-            size="large"
-            variant="contained"
-            onClick={handleCloseDialog}
-            href="/account/login-basic"
-          >
+          <Button fullWidth size="large" variant="contained" onClick={handleCloseDialog} href="/account/login-basic">
             {t('Continue to login')}
           </Button>
         </Box>
       </DialogWrapper>
     </>
-  );
+  )
 }
 
-export default RecoverPasswordBasic;
+export default RecoverPasswordBasic
 
 RecoverPasswordBasic.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <BaseLayout>
-      {page}
-    </BaseLayout>
-  )
+  return <BaseLayout>{page}</BaseLayout>
 }

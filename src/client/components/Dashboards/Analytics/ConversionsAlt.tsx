@@ -1,18 +1,8 @@
-import {
-  Link,
-  CardContent,
-  Avatar,
-  Box,
-  Typography,
-  ListItemAvatar,
-  Card,
-  ListItemText,
-  ListItem
-} from '@mui/material';
+import { Link, CardContent, Avatar, Box, Typography, ListItemAvatar, Card, ListItemText, ListItem } from '@mui/material'
 
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import LocalConvenienceStoreTwoToneIcon from '@mui/icons-material/LocalConvenienceStoreTwoTone';
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import LocalConvenienceStoreTwoToneIcon from '@mui/icons-material/LocalConvenienceStoreTwoTone'
 
 const AvatarWarning = styled(Avatar)(
   ({ theme }) => `
@@ -22,7 +12,7 @@ const AvatarWarning = styled(Avatar)(
       height: ${theme.spacing(8)};
       box-shadow: ${theme.colors.shadows.warning};
 `
-);
+)
 
 const CardContentWrapper = styled(CardContent)(
   ({ theme }) => `
@@ -32,10 +22,10 @@ const CardContentWrapper = styled(CardContent)(
      padding-bottom: 0;
      }
 `
-);
+)
 
 function ConversionsAlt() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <Card>
@@ -56,7 +46,7 @@ function ConversionsAlt() {
             primaryTypographyProps={{
               variant: 'h1',
               sx: { ml: 2 },
-              noWrap: true
+              noWrap: true,
             }}
           />
         </ListItem>
@@ -64,7 +54,9 @@ function ConversionsAlt() {
           <ListItemText
             primary={
               <>
-                <Link href="#" underline="hover">{t('See products')}</Link>
+                <Link href="#" underline="hover">
+                  {t('See products')}
+                </Link>
                 <Box component="span" sx={{ pl: 0.5 }}>
                   {t('with the best conversion rates.')}
                 </Box>
@@ -75,7 +67,7 @@ function ConversionsAlt() {
         </ListItem>
       </CardContentWrapper>
     </Card>
-  );
+  )
 }
 
-export default ConversionsAlt;
+export default ConversionsAlt

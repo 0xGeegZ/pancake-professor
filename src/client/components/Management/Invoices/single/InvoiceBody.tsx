@@ -1,6 +1,6 @@
-import { FC, useState } from 'react';
-import PropTypes from 'prop-types';
-import type { Invoice } from 'src/client/models/invoice';
+import { FC, useState } from 'react'
+import PropTypes from 'prop-types'
+import type { Invoice } from 'src/client/models/invoice'
 import {
   Box,
   Typography,
@@ -16,23 +16,23 @@ import {
   TableCell,
   TableBody,
   TableFooter,
-  TableContainer
-} from '@mui/material';
-import { format } from 'date-fns';
-import numeral from 'numeral';
+  TableContainer,
+} from '@mui/material'
+import { format } from 'date-fns'
+import numeral from 'numeral'
 
-import Logo from 'src/client/components/LogoSign';
-import { styled } from '@mui/material/styles';
-import { useTranslation } from 'react-i18next';
-import DownloadTwoToneIcon from '@mui/icons-material/DownloadTwoTone';
-import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfTwoTone';
+import Logo from 'src/client/components/LogoSign'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import DownloadTwoToneIcon from '@mui/icons-material/DownloadTwoTone'
+import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfTwoTone'
 
 const BoxWrapper = styled(Box)(
   ({ theme }) => `
   border-radius: ${theme.general.borderRadius};
   background: ${theme.colors.alpha.black[5]};
 `
-);
+)
 
 const TableWrapper = styled(Box)(
   ({ theme }) => `
@@ -40,28 +40,28 @@ const TableWrapper = styled(Box)(
   border-bottom: 0;
   margin: ${theme.spacing(4)} 0;
 `
-);
+)
 
 const LogoWrapper = styled(Box)(
   () => `
     width: '52px'
 `
-);
+)
 
 interface InvoiceBodyProps {
-  invoice: Invoice;
+  invoice: Invoice
 }
 
 interface Item {
-  id: number;
-  name: string;
-  quantity: number;
-  price: number;
-  currency: string;
+  id: number
+  name: string
+  quantity: number
+  price: number
+  currency: string
 }
 
 const InvoiceBody: FC<InvoiceBodyProps> = ({ invoice }) => {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
   // const { user } = useAuth();
 
   const itemsList: Item[] = [
@@ -70,27 +70,23 @@ const InvoiceBody: FC<InvoiceBodyProps> = ({ invoice }) => {
       name: 'Design services for March',
       quantity: 1,
       price: 8945,
-      currency: '$'
+      currency: '$',
     },
     {
       id: 2,
       name: 'Website migration services',
       quantity: 3,
       price: 2367,
-      currency: '$'
-    }
-  ];
+      currency: '$',
+    },
+  ]
 
-  const [items] = useState<Item[]>(itemsList);
+  const [items] = useState<Item[]>(itemsList)
 
   return (
     <Container maxWidth="lg">
       <Card sx={{ p: 3, mb: 3 }}>
-        <Box
-          display="flex"
-          alignItems="flex-start"
-          justifyContent="space-between"
-        >
+        <Box display="flex" alignItems="flex-start" justifyContent="space-between">
           <Box>
             <Typography variant="h1" gutterBottom>
               {t('Invoice')}
@@ -137,11 +133,7 @@ const InvoiceBody: FC<InvoiceBodyProps> = ({ invoice }) => {
             </Typography>
           </Grid>
           <Grid item xs={12} sm={6}>
-            <Grid
-              container
-              spacing={4}
-              justifyContent={{ xs: 'flex-start', sm: 'flex-end' }}
-            >
+            <Grid container spacing={4} justifyContent={{ xs: 'flex-start', sm: 'flex-end' }}>
               <Grid item>
                 <Typography variant="subtitle2" gutterBottom>
                   {t('Issued on')}:
@@ -188,25 +180,16 @@ const InvoiceBody: FC<InvoiceBodyProps> = ({ invoice }) => {
                       <Typography noWrap>{item.name}</Typography>
                     </TableCell>
                     <TableCell>{item.quantity}</TableCell>
-                    <TableCell>
-                      {numeral(item.price).format(`${item.currency}0,0.00`)}
-                    </TableCell>
-                    <TableCell>
-                      {numeral(item.price).format(`${item.currency}0,0.00`)}
-                    </TableCell>
+                    <TableCell>{numeral(item.price).format(`${item.currency}0,0.00`)}</TableCell>
+                    <TableCell>{numeral(item.price).format(`${item.currency}0,0.00`)}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>
               <TableFooter>
                 <TableRow>
-                  <TableCell colSpan={0}></TableCell>
+                  <TableCell colSpan={0} />
                   <TableCell colSpan={4} align="right">
-                    <Typography
-                      gutterBottom
-                      variant="caption"
-                      color="text.secondary"
-                      fontWeight="bold"
-                    >
+                    <Typography gutterBottom variant="caption" color="text.secondary" fontWeight="bold">
                       {t('Total')}:
                     </Typography>
                     <Typography variant="h3" fontWeight="bold">
@@ -221,46 +204,25 @@ const InvoiceBody: FC<InvoiceBodyProps> = ({ invoice }) => {
         <Typography variant="subtitle2" gutterBottom>
           {t('Additional informations')}
         </Typography>
-        <Typography variant="body2">
-          These projects were completed between January and February of 2021.
-        </Typography>
-        <Tooltip
-          placement="top"
-          arrow
-          title="This functionality will be added in a future release!"
-        >
-          <Box
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            mt={4}
-          >
-            <Button
-              disabled
-              variant="contained"
-              sx={{ mx: 2 }}
-              startIcon={<DownloadTwoToneIcon />}
-            >
+        <Typography variant="body2">These projects were completed between January and February of 2021.</Typography>
+        <Tooltip placement="top" arrow title="This functionality will be added in a future release!">
+          <Box display="flex" alignItems="center" justifyContent="center" mt={4}>
+            <Button disabled variant="contained" sx={{ mx: 2 }} startIcon={<DownloadTwoToneIcon />}>
               {t('Download PDF')}
             </Button>
-            <Button
-              disabled
-              variant="outlined"
-              sx={{ mx: 2 }}
-              startIcon={<PictureAsPdfTwoToneIcon />}
-            >
+            <Button disabled variant="outlined" sx={{ mx: 2 }} startIcon={<PictureAsPdfTwoToneIcon />}>
               {t('Preview PDF')}
             </Button>
           </Box>
         </Tooltip>
       </Card>
     </Container>
-  );
-};
+  )
+}
 
 InvoiceBody.propTypes = {
   // @ts-ignore
-  invoice: PropTypes.object.isRequired
-};
+  invoice: PropTypes.object.isRequired,
+}
 
-export default InvoiceBody;
+export default InvoiceBody

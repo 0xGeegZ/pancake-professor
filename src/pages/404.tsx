@@ -1,22 +1,11 @@
-import {
-  Box,
-  Card,
-  Typography,
-  Container,
-  Divider,
-  Button,
-  FormControl,
-  OutlinedInput,
-  InputAdornment
-} from '@mui/material';
-import Head from 'next/head';
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone';
-import type { ReactElement } from 'react';
-import BaseLayout from "src/client/layouts/BaseLayout";
+import { Box, Button, Card, Container, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import Head from 'next/head'
+import Image from 'next/image'
+import { useTranslation } from 'react-i18next'
+import BaseLayout from 'src/client/layouts/BaseLayout'
 
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-
+import type { ReactElement } from 'react'
 
 const MainContent = styled(Box)(
   () => `
@@ -25,7 +14,7 @@ const MainContent = styled(Box)(
     flex: 1;
     flex-direction: column;
 `
-);
+)
 
 const TopWrapper = styled(Box)(
   ({ theme }) => `
@@ -36,22 +25,22 @@ const TopWrapper = styled(Box)(
   justify-content: center;
   padding: ${theme.spacing(6)};
 `
-);
+)
 
-const OutlinedInputWrapper = styled(OutlinedInput)(
-  ({ theme }) => `
-    background-color: ${theme.colors.alpha.white[100]};
-`
-);
+// const OutlinedInputWrapper = styled(OutlinedInput)(
+//   ({ theme }) => `
+//     background-color: ${theme.colors.alpha.white[100]};
+// `
+// )
 
-const ButtonSearch = styled(Button)(
-  ({ theme }) => `
-    margin-right: -${theme.spacing(1)};
-`
-);
+// const ButtonSearch = styled(Button)(
+//   ({ theme }) => `
+//     margin-right: -${theme.spacing(1)};
+// `
+// )
 
 function Status404() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <>
@@ -62,24 +51,19 @@ function Status404() {
         <TopWrapper>
           <Container maxWidth="md">
             <Box textAlign="center">
-              <img alt="404" height={180} src="/static/images/status/404.svg" />
+              {/* <img alt="404" height={180} src="/static/images/status/404.svg" /> */}
+              <Image alt="404" height={180} width={300} src="/static/images/status/404.svg" />
+
               <Typography variant="h2" sx={{ my: 2 }}>
                 {t("The page you were looking for doesn't exist.")}
               </Typography>
-              <Typography
-                variant="h4"
-                color="text.secondary"
-                fontWeight="normal"
-                sx={{ mb: 4 }}
-              >
-                {t(
-                  "It's on us, we moved the content to a different page. The search below should help!"
-                )}
+              <Typography variant="h4" color="text.secondary" fontWeight="normal" sx={{ mb: 4 }}>
+                {t("It's on us, we moved the content to a different page. The search below should help!")}
               </Typography>
             </Box>
             <Container maxWidth="sm">
               <Card sx={{ textAlign: 'center', mt: 3, p: 4 }}>
-                <FormControl variant="outlined" fullWidth>
+                {/* <FormControl variant="outlined" fullWidth>
                   <OutlinedInputWrapper
                     type="text"
                     placeholder={t('Search terms here...')}
@@ -96,8 +80,9 @@ function Status404() {
                       </InputAdornment>
                     }
                   />
-                </FormControl>
-                <Divider sx={{ my: 4 }}>OR</Divider>
+                </FormControl> */}
+                {/* <Divider sx={{ my: 4 }}></Divider> */}
+                {/* <Divider sx={{ my: 4 }}>OR</Divider> */}
                 <Button href="/" variant="outlined">
                   {t('Go to homepage')}
                 </Button>
@@ -107,15 +92,11 @@ function Status404() {
         </TopWrapper>
       </MainContent>
     </>
-  );
+  )
 }
 
-export default Status404;
+export default Status404
 
 Status404.getLayout = function getLayout(page: ReactElement) {
-  return (
-    <BaseLayout>
-      {page}
-    </BaseLayout>
-  )
+  return <BaseLayout>{page}</BaseLayout>
 }

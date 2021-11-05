@@ -1,34 +1,22 @@
-import { Button, Card, Box, Grid, Typography } from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import Label from 'src/client/components/Label';
+import { Button, Card, Box, Grid, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import Label from 'src/client/components/Label'
 
 function ActiveSubscriptions() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
 
   return (
     <>
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        sx={{ pb: 3 }}
-      >
+      <Box display="flex" alignItems="center" justifyContent="space-between" sx={{ pb: 3 }}>
         <Typography variant="h3">{t('Active Subscriptions')}</Typography>
         <Button size="small">{t('View all subscriptions')}</Button>
       </Box>
       <Grid container spacing={3}>
         <Grid item md={4} sm={6} xs={12}>
           <Card sx={{ p: 2 }}>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-            >
+            <Box display="flex" alignItems="center" justifyContent="space-between">
               <Box display="flex" alignItems="center">
-                <img
-                  alt="Spotify"
-                  src="/static/images/placeholders/logo/spotify.svg"
-                />
+                <img alt="Spotify" src="/static/images/placeholders/logo/spotify.svg" />
                 <Typography variant="h5" sx={{ pl: 1 }} noWrap>
                   Spotify
                 </Typography>
@@ -39,12 +27,7 @@ function ActiveSubscriptions() {
                 </Label>
               </Box>
             </Box>
-            <Box
-              sx={{ pt: 4 }}
-              display="flex"
-              alignItems="center"
-              justifyContent="flex-end"
-            >
+            <Box sx={{ pt: 4 }} display="flex" alignItems="center" justifyContent="flex-end">
               <Typography sx={{ pr: 1.5 }} variant="h3">
                 $32.00
               </Typography>
@@ -56,16 +39,9 @@ function ActiveSubscriptions() {
         </Grid>
         <Grid item md={4} sm={6} xs={12}>
           <Card sx={{ p: 2 }}>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-            >
+            <Box display="flex" alignItems="center" justifyContent="space-between">
               <Box display="flex" alignItems="center">
-                <img
-                  alt="Slack"
-                  src="/static/images/placeholders/logo/slack.svg"
-                />
+                <img alt="Slack" src="/static/images/placeholders/logo/slack.svg" />
                 <Typography variant="h5" sx={{ pl: 1 }} noWrap>
                   Slack
                 </Typography>
@@ -74,12 +50,7 @@ function ActiveSubscriptions() {
                 <Label color="success">{t('just paid')}</Label>
               </Box>
             </Box>
-            <Box
-              sx={{ pt: 4 }}
-              display="flex"
-              alignItems="center"
-              justifyContent="flex-end"
-            >
+            <Box sx={{ pt: 4 }} display="flex" alignItems="center" justifyContent="flex-end">
               <Typography sx={{ pr: 1.5 }} variant="h3">
                 $9.99
               </Typography>
@@ -91,17 +62,9 @@ function ActiveSubscriptions() {
         </Grid>
         <Grid item md={4} sm={6} xs={12}>
           <Card sx={{ p: 2 }}>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-            >
+            <Box display="flex" alignItems="center" justifyContent="space-between">
               <Box display="flex" alignItems="center">
-                <img
-                  height={28}
-                  alt="Google"
-                  src="/static/images/logo/google.svg"
-                />
+                <img height={28} alt="Google" src="/static/images/logo/google.svg" />
                 <Typography variant="h5" sx={{ pl: 1 }} noWrap>
                   Google
                 </Typography>
@@ -112,12 +75,7 @@ function ActiveSubscriptions() {
                 </Label>
               </Box>
             </Box>
-            <Box
-              sx={{ pt: 4 }}
-              display="flex"
-              alignItems="center"
-              justifyContent="flex-end"
-            >
+            <Box sx={{ pt: 4 }} display="flex" alignItems="center" justifyContent="flex-end">
               <Typography sx={{ pr: 1.5 }} variant="h3">
                 $8,695.00
               </Typography>
@@ -129,17 +87,9 @@ function ActiveSubscriptions() {
         </Grid>
         <Grid item md={4} sm={6} xs={12}>
           <Card sx={{ p: 2 }}>
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-            >
+            <Box display="flex" alignItems="center" justifyContent="space-between">
               <Box display="flex" alignItems="center">
-                <img
-                  height={28}
-                  alt="Airbnb"
-                  src="/static/images/placeholders/logo/airbnb.svg"
-                />
+                <img height={28} alt="Airbnb" src="/static/images/placeholders/logo/airbnb.svg" />
                 <Typography variant="h5" sx={{ pl: 1 }} noWrap>
                   Airbnb
                 </Typography>
@@ -150,12 +100,7 @@ function ActiveSubscriptions() {
                 </Label>
               </Box>
             </Box>
-            <Box
-              sx={{ pt: 4 }}
-              display="flex"
-              alignItems="center"
-              justifyContent="flex-end"
-            >
+            <Box sx={{ pt: 4 }} display="flex" alignItems="center" justifyContent="flex-end">
               <Typography sx={{ pr: 1.5 }} variant="h3">
                 $499.00
               </Typography>
@@ -167,7 +112,7 @@ function ActiveSubscriptions() {
         </Grid>
       </Grid>
     </>
-  );
+  )
 }
 
-export default ActiveSubscriptions;
+export default ActiveSubscriptions

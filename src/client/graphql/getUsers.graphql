@@ -1,0 +1,13 @@
+query getUsers {
+  getUsers {
+    # user {
+    id
+    name
+    address
+    generated
+    email
+    registeredAt
+    loginAt
+    # }
+  }
+}

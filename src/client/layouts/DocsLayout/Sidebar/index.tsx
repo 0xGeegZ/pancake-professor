@@ -1,15 +1,8 @@
-import {
-  Box,
-  Typography,
-  List,
-  ListItem,
-  ListItemText
-} from '@mui/material';
-import { styled } from '@mui/material/styles';
-import { Scrollbars } from 'react-custom-scrollbars-2';
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone';
-import Link from 'src/client/components/Link';
-
+import { Box, Typography, List, ListItem, ListItemText } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { Scrollbars } from 'react-custom-scrollbars-2'
+import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
+import Link from 'src/client/components/Link'
 
 const SidebarWrapper = styled(Box)(
   ({ theme }) => `
@@ -22,7 +15,7 @@ const SidebarWrapper = styled(Box)(
   position: relative;
   z-index: 5;
 `
-);
+)
 
 const ListWrapper = styled(List)(
   ({ theme }) => `
@@ -44,7 +37,7 @@ const ListWrapper = styled(List)(
     }
   }
 `
-);
+)
 
 const links = [
   { id: '1', title: 'Introduction', url: '/docs' },
@@ -53,27 +46,21 @@ const links = [
   {
     id: '13',
     title: 'Themes Customization',
-    url: '/docs/themes-customization'
+    url: '/docs/themes-customization',
   },
   { id: '9', title: 'Routing', url: '/docs/routing' },
   { id: '7', title: 'Internationalization', url: '/docs/internationalization' },
   { id: '10', title: 'RTL Layout', url: '/docs/rtl-layout' },
   { id: '11', title: 'Server Requests', url: '/docs/server-requests' },
   { id: '3', title: 'Changelog', url: '/docs/changelog' },
-  { id: '4', title: 'Contact Support', url: '/docs/contact-support' }
-];
+  { id: '4', title: 'Contact Support', url: '/docs/contact-support' },
+]
 
 function Sidebar() {
   return (
     <SidebarWrapper>
       <Scrollbars universal autoHide>
-        <Typography
-          component="div"
-          fontWeight="bold"
-          color="text.primary"
-          sx={{ pt: 2, px: 2 }}
-          variant="caption"
-        >
+        <Typography component="div" fontWeight="bold" color="text.primary" sx={{ pt: 2, px: 2 }} variant="caption">
           Documentation
         </Typography>
         <ListWrapper sx={{ p: 2 }}>
@@ -84,19 +71,15 @@ function Sidebar() {
               button
               activeClassName="Mui-selected"
               component={Link}
-              href={link.url}
-            >
-              <ListItemText
-                primaryTypographyProps={{ variant: 'h4' }}
-                primary={link.title}
-              />
+              href={link.url}>
+              <ListItemText primaryTypographyProps={{ variant: 'h4' }} primary={link.title} />
               <ChevronRightTwoToneIcon />
             </ListItem>
           ))}
         </ListWrapper>
       </Scrollbars>
     </SidebarWrapper>
-  );
+  )
 }
 
-export default Sidebar;
+export default Sidebar

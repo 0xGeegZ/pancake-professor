@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from 'react'
 import {
   Button,
   Card,
@@ -16,14 +16,14 @@ import {
   Box,
   Table,
   Badge,
-  useTheme
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone';
-import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone';
-import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone';
-import Text from 'src/client/components/Text';
+  useTheme,
+} from '@mui/material'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone'
+import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone'
+import Text from 'src/client/components/Text'
 
 const AvatarLight = styled(Avatar)(
   ({ theme }) => `
@@ -32,7 +32,7 @@ const AvatarLight = styled(Avatar)(
       font-weight: ${theme.typography.fontWeightBold};
       font-size: ${theme.typography.pxToRem(15)};
 `
-);
+)
 
 const DotLegend = styled('span')(
   ({ theme }) => `
@@ -42,34 +42,34 @@ const DotLegend = styled('span')(
     display: inline-block;
     border: ${theme.colors.alpha.white[100]} solid 2px;
 `
-);
+)
 
 function Leaderboard() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
-  const actionRef1 = useRef<any>(null);
-  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false);
-  const [period, setPeriod] = useState<string>('Select team...');
+  const actionRef1 = useRef<any>(null)
+  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false)
+  const [period, setPeriod] = useState<string>('Select team...')
 
   const periods = [
     {
       value: '1',
-      text: t('UX Designers')
+      text: t('UX Designers'),
     },
     {
       value: '2',
-      text: t('Frontend Developers')
+      text: t('Frontend Developers'),
     },
     {
       value: '3',
-      text: t('Team Leaders')
+      text: t('Team Leaders'),
     },
     {
       value: '4',
-      text: t('Project Managers')
-    }
-  ];
+      text: t('Project Managers'),
+    },
+  ]
 
   return (
     <Card>
@@ -81,32 +81,28 @@ function Leaderboard() {
               variant="outlined"
               ref={actionRef1}
               onClick={() => setOpenMenuPeriod(true)}
-              endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}
-            >
+              endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}>
               {period}
             </Button>
             <Menu
               anchorEl={actionRef1.current}
               onClose={() => setOpenMenuPeriod(false)}
               open={openPeriod}
-
               anchorOrigin={{
                 vertical: 'bottom',
-                horizontal: 'right'
+                horizontal: 'right',
               }}
               transformOrigin={{
                 vertical: 'top',
-                horizontal: 'right'
-              }}
-            >
+                horizontal: 'right',
+              }}>
               {periods.map((_period) => (
                 <MenuItem
                   key={_period.value}
                   onClick={() => {
-                    setPeriod(_period.text);
-                    setOpenMenuPeriod(false);
-                  }}
-                >
+                    setPeriod(_period.text)
+                    setOpenMenuPeriod(false)
+                  }}>
                   {_period.text}
                 </MenuItem>
               ))}
@@ -140,15 +136,10 @@ function Leaderboard() {
                   sx={{ mr: 1 }}
                   anchorOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'right'
+                    horizontal: 'right',
                   }}
                   overlap="circular"
-                  badgeContent={
-                    <DotLegend
-                      style={{ background: `${theme.colors.success.main}` }}
-                    />
-                  }
-                >
+                  badgeContent={<DotLegend style={{ background: `${theme.colors.success.main}` }} />}>
                   <Avatar src="/static/images/avatars/2.jpg" />
                 </Badge>
                 <Typography variant="h5">Brandon Jonas</Typography>
@@ -173,15 +164,10 @@ function Leaderboard() {
                   sx={{ mr: 1 }}
                   anchorOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'right'
+                    horizontal: 'right',
                   }}
                   overlap="circular"
-                  badgeContent={
-                    <DotLegend
-                      style={{ background: `${theme.colors.success.main}` }}
-                    />
-                  }
-                >
+                  badgeContent={<DotLegend style={{ background: `${theme.colors.success.main}` }} />}>
                   <Avatar src="/static/images/avatars/4.jpg" />
                 </Badge>
                 <Typography variant="h5">Erin Donin</Typography>
@@ -206,15 +192,10 @@ function Leaderboard() {
                   sx={{ mr: 1 }}
                   anchorOrigin={{
                     vertical: 'bottom',
-                    horizontal: 'right'
+                    horizontal: 'right',
                   }}
                   overlap="circular"
-                  badgeContent={
-                    <DotLegend
-                      style={{ background: `${theme.colors.warning.main}` }}
-                    />
-                  }
-                >
+                  badgeContent={<DotLegend style={{ background: `${theme.colors.warning.main}` }} />}>
                   <Avatar src="/static/images/avatars/5.jpg" />
                 </Badge>
                 <Typography variant="h5">Charlie Rhiel Madsen</Typography>
@@ -227,14 +208,11 @@ function Leaderboard() {
         </TableBody>
       </Table>
       <Divider />
-      <CardActions
-        disableSpacing
-        sx={{ p: 2, display: 'flex', justifyContent: 'center' }}
-      >
+      <CardActions disableSpacing sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
         <Button size="small">{t('View all rankings')}</Button>
       </CardActions>
     </Card>
-  );
+  )
 }
 
-export default Leaderboard;
+export default Leaderboard

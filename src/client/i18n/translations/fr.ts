@@ -61,8 +61,7 @@ const frJSON = {
   'Sign out': 'Déconnexion',
   'Change Theme': 'Change le thème',
   'View all notifications': 'Afficher toutes les notifications',
-  'Tokyo NextJS Admin Dashboard':
-    "Tableau de bord d'administration de Tokyo React",
+  'Pancake Professor': "Tableau de bord d'administration de Tokyo React",
   'High performance React template built with lots of powerful Material-UI components across multiple product niches for fast & perfect apps development processes':
     "Modèle React haute performance construit avec de nombreux composants Material-UI puissants dans plusieurs niches de produits pour des processus de développement d'applications rapides et parfaits",
   'Browse Live Preview': "Parcourir l'aperçu en direct",
@@ -79,7 +78,7 @@ const frJSON = {
   'Start working on your project directly from one of the included starter kits or use the Figma/Sketch files to create a prototype first':
     "Commencez à travailler sur votre projet directement à partir de l'un des kits de démarrage inclus ou utilisez les fichiers Figma / Sketch pour créer d'abord un prototype",
   'We only translated a small part of the template, for demonstration purposes':
-    "Nous n'avons traduit qu'une petite partie du modèle, à des fins de démonstration"
-};
+    "Nous n'avons traduit qu'une petite partie du modèle, à des fins de démonstration",
+}
 
-export default frJSON;
+export default frJSON

@@ -1,248 +1,175 @@
-import {
-  Button,
-  Card,
-  Box,
-  Grid,
-  Typography,
-  Hidden,
-  Avatar,
-  Divider,
-  ListItem,
-  ListItemText,
-  List,
-  ListItemAvatar
-} from '@mui/material';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import TrendingUp from '@mui/icons-material/TrendingUp';
-import AccountBalanceChart from './AccountBalanceChart';
-import Text from 'src/client/components/Text';
+import InfoIcon from '@mui/icons-material/Info'
+import { Box, Button, Card, Divider, Grid, IconButton, Tooltip, Typography } from '@mui/material'
+import { ethers } from 'ethers'
+import PropTypes from 'prop-types'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import AddFundsForm from 'src/client/components/Dashboards/Automation/AddFundsForm'
+import RemoveFundsForm from 'src/client/components/Dashboards/Automation/RemoveFundsForm'
 
-const AccountBalanceChartWrapper = styled(AccountBalanceChart)(
-  () => `
-      width: 100%;
-      height: 100%;
-`
-);
-const AvatarSuccess = styled(Avatar)(
-  ({ theme }) => `
-      background-color: ${theme.colors.success.main};
-      color: ${theme.palette.success.contrastText};
-      width: ${theme.spacing(8)};
-      height: ${theme.spacing(8)};
-      box-shadow: ${theme.colors.shadows.success};
-`
-);
+// const AccountBalanceChartWrapper = styled(AccountBalanceChart)(
+//   () => `
+//       width: 100%;
+//       height: 100%;
+// `
+// )
 
-function AccountBalance() {
-  const { t }: { t: any } = useTranslation();
+// const AvatarSuccess = styled(Avatar)(
+//   ({ theme }) => `
+//       background-color: ${theme.colors.success.main};
+//       color: ${theme.palette.success.contrastText};
+//       width: ${theme.spacing(8)};
+//       height: ${theme.spacing(8)};
+//       box-shadow: ${theme.colors.shadows.success};
+// `
+// )
 
-  const cryptoBalance = {
-    datasets: [
-      {
-        data: [20, 10, 40, 30],
-        backgroundColor: ['#ff9900', '#1c81c2', '#333', '#5c6ac0']
-      }
-    ],
-    labels: [t('Bitcoin'), t('Ripple'), t('Cardano'), t('Ethereum')]
-  };
+function AccountBalance({ user }) {
+  const { t }: { t: any } = useTranslation()
+
+  const [openAddForm, setOpenAddForm] = useState(false)
+  const [openRemoveForm, setOpenRemoveForm] = useState(false)
+  const [provider, setProvider] = useState<any>('')
+
+  const handleOpenAddForm = () => {
+    setOpenAddForm(true)
+  }
+
+  const handleCloseAddForm = () => {
+    setOpenAddForm(false)
+  }
+
+  const handleOpenRemoveForm = () => {
+    setOpenRemoveForm(true)
+  }
+
+  const handleCloseRemoveForm = () => {
+    setOpenRemoveForm(false)
+  }
+
+  useEffect(() => {
+    if (!window.ethereum?.request) return
+
+    const lprovider = new ethers.providers.Web3Provider(window.ethereum)
+
+    if (!lprovider) return
+
+    setProvider(lprovider)
+  }, [])
 
   return (
     <Card>
       <Grid spacing={0} container>
-        <Grid item xs={12} md={6}>
-          <Box p={4}>
-            <Typography sx={{ pb: 3 }} variant="h4">
-              {t('Account Balance')}
-            </Typography>
-            <Box>
-              <Typography variant="h1" gutterBottom>
-                $54,584.23
-              </Typography>
-              <Typography
-                variant="h4"
-                fontWeight="normal"
-                color="text.secondary"
-              >
-                1.0045983485234 BTC
-              </Typography>
-              <Box display="flex" sx={{ py: 4 }} alignItems="center">
-                <AvatarSuccess sx={{ mr: 2 }} variant="rounded">
-                  <TrendingUp fontSize="large" />
-                </AvatarSuccess>
-                <Box>
-                  <Typography variant="h4">+ $3,594.00</Typography>
-                  <Typography variant="subtitle2" noWrap>
-                    {t('this month')}
-                  </Typography>
+        <Grid item xs={12}>
+          {openAddForm ? (
+            <>
+              <Divider />
+              <AddFundsForm handleCloseForm={handleCloseAddForm} user={user} />
+            </>
+          ) : openRemoveForm ? (
+            <>
+              <Divider />
+              <RemoveFundsForm handleCloseForm={handleCloseRemoveForm} user={user} />
+            </>
+          ) : (
+            <>
+              <Box p={4}>
+                <Typography sx={{ pb: 1 }} variant="h4">
+                  {t('Account Balance')}
+                </Typography>
+                <Box sx={{ py: 2 }}>
+                  <Grid container display="flex" alignItems="center">
+                    <Grid item>
+                      <Typography variant="h2" gutterBottom>
+                        {parseFloat(user?.balance || 0).toFixed(4)} BNB
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Tooltip placement="right-end" title={t('Amount for main address')} arrow>
+                        <IconButton color="secondary" size="small">
+                          <InfoIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Grid>
+                  </Grid>
+                  <Grid container display="flex" alignItems="center">
+                    <Grid item>
+                      <Typography variant="h4" fontWeight="normal" color="text.secondary">
+                        {parseFloat(user?.generatedBalance || 0).toFixed(4)} BNB
+                      </Typography>
+                    </Grid>
+                    <Grid item>
+                      <Tooltip placement="right-end" title={t('Amount from secondary address')} arrow>
+                        <IconButton color="secondary" size="small">
+                          <InfoIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Grid>
+                  </Grid>
                 </Box>
+                <Grid container spacing={2}>
+                  <Grid sm item>
+                    {+user?.balance === 0 ? (
+                      <Tooltip
+                        placement="top"
+                        title={t('Need to have positive balance in main address to add funds')}
+                        arrow>
+                        <Button fullWidth variant="outlined" color="warning">
+                          {t('Add funds')}
+                        </Button>
+                      </Tooltip>
+                    ) : Object.keys(user || {}).length === 0 ? (
+                      <Tooltip placement="top" title={t('You need to be connected to add funds')} arrow>
+                        <Button fullWidth variant="outlined" color="warning">
+                          {t('Add funds')}
+                        </Button>
+                      </Tooltip>
+                    ) : (
+                      <Button disabled={!provider || !user} fullWidth variant="contained" onClick={handleOpenAddForm}>
+                        {t('Add funds')}
+                      </Button>
+                    )}
+                  </Grid>
+                  <Grid sm item>
+                    {+user?.generatedBalance === 0 ? (
+                      <Tooltip
+                        placement="top"
+                        title={t('Need to have positive balance in secondary address to remoove funds')}
+                        arrow>
+                        <Button fullWidth variant="outlined" color="warning">
+                          {t('Remove funds')}
+                        </Button>
+                      </Tooltip>
+                    ) : Object.keys(user || {}).length === 0 ? (
+                      <Tooltip placement="top" title={t('You need to be connected to remove funds')} arrow>
+                        <Button fullWidth variant="outlined" color="warning">
+                          {t('Remove funds')}
+                        </Button>
+                      </Tooltip>
+                    ) : (
+                      <Button disabled={!provider || !user} fullWidth variant="outlined" onClick={handleOpenRemoveForm}>
+                        {t('Remove funds')}
+                      </Button>
+                    )}
+                  </Grid>
+                </Grid>
               </Box>
-            </Box>
-            <Grid container spacing={3}>
-              <Grid sm item>
-                <Button fullWidth variant="outlined">
-                  {t('Send')}
-                </Button>
-              </Grid>
-              <Grid sm item>
-                <Button fullWidth variant="contained">
-                  {t('Receive')}
-                </Button>
-              </Grid>
-            </Grid>
-          </Box>
-        </Grid>
-        <Grid
-          sx={{ position: 'relative' }}
-          display="flex"
-          alignItems="center"
-          item
-          xs={12}
-          md={6}
-        >
-          <Hidden mdDown>
-            <Divider absolute orientation="vertical" />
-          </Hidden>
-          <Box p={4} flex={1}>
-            <Grid container spacing={0}>
-              <Grid
-                xs={12}
-                sm={5}
-                item
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-              >
-                <Box style={{ height: '160px' }}>
-                  <AccountBalanceChartWrapper data={cryptoBalance} />
-                </Box>
-              </Grid>
-              <Grid xs={12} sm={7} item display="flex" alignItems="center">
-                <List disablePadding sx={{ width: '100%' }}>
-                  <ListItem disableGutters>
-                    <ListItemAvatar
-                      sx={{
-                        minWidth: '46px',
-                        display: 'flex',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <img
-                        alt="BTC"
-                        src="/static/images/placeholders/logo/bitcoin.png"
-                      />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary="BTC"
-                      primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="Bitcoin"
-                      secondaryTypographyProps={{
-                        variant: 'subtitle2',
-                        noWrap: true
-                      }}
-                    />
-                    <Box>
-                      <Typography align="right" variant="h4" noWrap>
-                        20%
-                      </Typography>
-                      <Text color="success">+2.54%</Text>
-                    </Box>
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatar
-                      sx={{
-                        minWidth: '46px',
-                        display: 'flex',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <img
-                        alt="XRP"
-                        src="/static/images/placeholders/logo/ripple.png"
-                      />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary="XRP"
-                      primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="Ripple"
-                      secondaryTypographyProps={{
-                        variant: 'subtitle2',
-                        noWrap: true
-                      }}
-                    />
-                    <Box>
-                      <Typography align="right" variant="h4" noWrap>
-                        10%
-                      </Typography>
-                      <Text color="error">-1.22%</Text>
-                    </Box>
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatar
-                      sx={{
-                        minWidth: '46px',
-                        display: 'flex',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <img
-                        alt="ADA"
-                        src="/static/images/placeholders/logo/cardano.png"
-                      />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary="ADA"
-                      primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="Cardano"
-                      secondaryTypographyProps={{
-                        variant: 'subtitle2',
-                        noWrap: true
-                      }}
-                    />
-                    <Box>
-                      <Typography align="right" variant="h4" noWrap>
-                        40%
-                      </Typography>
-                      <Text color="success">+10.50%</Text>
-                    </Box>
-                  </ListItem>
-                  <ListItem disableGutters>
-                    <ListItemAvatar
-                      sx={{
-                        minWidth: '46px',
-                        display: 'flex',
-                        alignItems: 'center'
-                      }}
-                    >
-                      <img
-                        alt="ETH"
-                        src="/static/images/placeholders/logo/ethereum.png"
-                      />
-                    </ListItemAvatar>
-                    <ListItemText
-                      primary="ETH"
-                      primaryTypographyProps={{ variant: 'h5', noWrap: true }}
-                      secondary="Ethereum"
-                      secondaryTypographyProps={{
-                        variant: 'subtitle2',
-                        noWrap: true
-                      }}
-                    />
-                    <Box>
-                      <Typography align="right" variant="h4" noWrap>
-                        30%
-                      </Typography>
-                      <Text color="error">-12.38%</Text>
-                    </Box>
-                  </ListItem>
-                </List>
-              </Grid>
-            </Grid>
-          </Box>
+            </>
+          )}
         </Grid>
       </Grid>
     </Card>
-  );
+  )
 }
 
-export default AccountBalance;
+AccountBalance.propTypes = {
+  user: PropTypes.shape({
+    balance: PropTypes.string,
+  }),
+}
+
+AccountBalance.defaultProps = {
+  user: { balance: '0' },
+}
+
+export default AccountBalance

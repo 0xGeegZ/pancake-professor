@@ -1,31 +1,29 @@
-import { ChangeEvent, useState } from 'react';
-
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
+import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone'
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
 import {
-  ListItemText,
+  Alert,
   Avatar,
   Box,
-  Typography,
-  Checkbox,
-  FormControlLabel,
   Button,
-  Switch,
+  Card,
+  CardHeader,
+  Checkbox,
   Chip,
   Divider,
+  FormControlLabel,
   Grid,
-  ListItem,
   List,
-  CardHeader,
-  Alert,
-  Card
-} from '@mui/material';
-import { useDropzone } from 'react-dropzone';
-
-import { useTranslation } from 'react-i18next';
-import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone';
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone';
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone';
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
-import { styled, useTheme } from '@mui/material/styles';
+  ListItem,
+  ListItemText,
+  Switch,
+  Typography,
+} from '@mui/material'
+import { styled, useTheme } from '@mui/material/styles'
+import { ChangeEvent, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
+import { useTranslation } from 'react-i18next'
 
 const DotLegend = styled('span')(
   ({ theme }) => `
@@ -35,7 +33,7 @@ const DotLegend = styled('span')(
     display: inline-block;
     margin-right: ${theme.spacing(0.5)};
 `
-);
+)
 
 const BoxUploadWrapper = styled(Box)(
   ({ theme }) => `
@@ -55,7 +53,7 @@ const BoxUploadWrapper = styled(Box)(
       border-color: ${theme.colors.primary.main};
     }
 `
-);
+)
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -64,7 +62,7 @@ const AvatarWrapper = styled(Avatar)(
     width: ${theme.spacing(7)};
     height: ${theme.spacing(7)};
 `
-);
+)
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -72,7 +70,7 @@ const AvatarSuccess = styled(Avatar)(
     width: ${theme.spacing(7)};
     height: ${theme.spacing(7)};
 `
-);
+)
 
 const AvatarDanger = styled(Avatar)(
   ({ theme }) => `
@@ -80,27 +78,20 @@ const AvatarDanger = styled(Avatar)(
     width: ${theme.spacing(7)};
     height: ${theme.spacing(7)};
 `
-);
+)
 
 interface ProductTags {
-  key: number;
-  label: string;
+  key: number
+  label: string
 }
 
 function Sidebar() {
-  const { t }: { t: any } = useTranslation();
-  const theme = useTheme();
+  const { t }: { t: any } = useTranslation()
+  const theme = useTheme()
 
-  const {
-    acceptedFiles,
-    isDragActive,
-    isDragAccept,
-    isDragReject,
-    getRootProps,
-    getInputProps
-  } = useDropzone({
-    accept: 'image/jpeg, image/png'
-  });
+  const { acceptedFiles, isDragActive, isDragAccept, isDragReject, getRootProps, getInputProps } = useDropzone({
+    accept: 'image/jpeg, image/png',
+  })
 
   const files = acceptedFiles.map((file, index) => (
     <ListItem disableGutters component="div" key={index}>
@@ -108,61 +99,50 @@ function Sidebar() {
       <b>{file.size} bytes</b>
       <Divider />
     </ListItem>
-  ));
+  ))
 
-  const [checked, setChecked] = useState([true, false]);
+  const [checked, setChecked] = useState([true, false])
 
   const handleChange1 = (event: ChangeEvent<HTMLInputElement>) => {
-    setChecked([event.target.checked, event.target.checked]);
-  };
+    setChecked([event.target.checked, event.target.checked])
+  }
 
   const handleChange2 = (event: ChangeEvent<HTMLInputElement>) => {
-    setChecked([event.target.checked, checked[1]]);
-  };
+    setChecked([event.target.checked, checked[1]])
+  }
 
   const handleChange3 = (event: ChangeEvent<HTMLInputElement>) => {
-    setChecked([checked[0], event.target.checked]);
-  };
+    setChecked([checked[0], event.target.checked])
+  }
 
   const [productTags, setProductTags] = useState<ProductTags[]>([
     { key: 0, label: 'new' },
     { key: 1, label: 'fresh' },
     { key: 2, label: 'electronics' },
     { key: 3, label: 'computer' },
-    { key: 4, label: 'software' }
-  ]);
+    { key: 4, label: 'software' },
+  ])
 
   const handleDelete = (productTagToDelete: ProductTags) => () => {
-    setProductTags((productTags) =>
-      productTags.filter(
-        (productTag) => productTag.key !== productTagToDelete.key
-      )
-    );
-  };
+    setProductTags((pproductTags) => pproductTags.filter((productTag) => productTag.key !== productTagToDelete.key))
+  }
 
   const children = (
     <Box sx={{ display: 'flex', flexDirection: 'column', ml: 3 }}>
-      <FormControlLabel
-        label="Appliances"
-        control={<Checkbox checked={checked[0]} onChange={handleChange2} />}
-      />
+      <FormControlLabel label="Appliances" control={<Checkbox checked={checked[0]} onChange={handleChange2} />} />
       <FormControlLabel
         label="Outdoor equipment"
         control={<Checkbox checked={checked[1]} onChange={handleChange3} />}
       />
     </Box>
-  );
+  )
 
   return (
     <Box>
       <Card sx={{ m: 3 }}>
         <CardHeader
           action={
-            <Button
-              size="small"
-              variant="outlined"
-              startIcon={<EditTwoToneIcon />}
-            >
+            <Button size="small" variant="outlined" startIcon={<EditTwoToneIcon />}>
               {t('Edit')}
             </Button>
           }
@@ -170,25 +150,16 @@ function Sidebar() {
         />
         <Divider />
         <Box p={2}>
-          <FormControlLabel
-            control={<Switch color="primary" defaultChecked />}
-            label={t('Virtual Product')}
-          />
+          <FormControlLabel control={<Switch color="primary" defaultChecked />} label={t('Virtual Product')} />
         </Box>
         <Divider />
         <List dense sx={{ p: 2 }}>
           <ListItem disableGutters>
-            <ListItemText
-              sx={{ width: 110, flex: 'initial' }}
-              primary={t('Status')}
-            />
+            <ListItemText sx={{ width: 110, flex: 'initial' }} primary={t('Status')} />
             <b>Draft</b>
           </ListItem>
           <ListItem disableGutters>
-            <ListItemText
-              sx={{ width: 110, flex: 'initial' }}
-              primary={t('Visibility')}
-            />
+            <ListItemText sx={{ width: 110, flex: 'initial' }} primary={t('Visibility')} />
             <b>Visible</b>
           </ListItem>
           <ListItem disableGutters>
@@ -196,13 +167,8 @@ function Sidebar() {
               sx={{ width: 110, flex: 'initial' }}
               primary={
                 <>
-                  <Typography
-                    variant="body1"
-                    sx={{ pt: 0.5, display: 'flex', alignItems: 'center' }}
-                  >
-                    <DotLegend
-                      style={{ background: theme.colors.success.main }}
-                    />
+                  <Typography variant="body1" sx={{ pt: 0.5, display: 'flex', alignItems: 'center' }}>
+                    <DotLegend style={{ background: theme.colors.success.main }} />
                     {t('SEO Score')}
                   </Typography>
                 </>
@@ -220,12 +186,7 @@ function Sidebar() {
               </Button>
             </Grid>
             <Grid item xs={12} sm={6}>
-              <Button
-                fullWidth
-                variant="outlined"
-                size="small"
-                color="secondary"
-              >
+              <Button fullWidth variant="outlined" size="small" color="secondary">
                 {t('Save draft')}
               </Button>
             </Grid>
@@ -261,10 +222,7 @@ function Sidebar() {
           {children}
 
           <FormControlLabel control={<Checkbox />} label="Digital products" />
-          <FormControlLabel
-            control={<Checkbox />}
-            label="Software memberships"
-          />
+          <FormControlLabel control={<Checkbox />} label="Software memberships" />
         </Box>
       </Card>
       <Card sx={{ m: 3 }}>
@@ -278,9 +236,7 @@ function Sidebar() {
                 <AvatarSuccess variant="rounded">
                   <CheckTwoToneIcon />
                 </AvatarSuccess>
-                <Typography sx={{ mt: 2 }}>
-                  {t('Drop the files to start uploading')}
-                </Typography>
+                <Typography sx={{ mt: 2 }}>{t('Drop the files to start uploading')}</Typography>
               </>
             )}
             {isDragReject && (
@@ -288,9 +244,7 @@ function Sidebar() {
                 <AvatarDanger variant="rounded">
                   <CloseTwoToneIcon />
                 </AvatarDanger>
-                <Typography sx={{ mt: 2 }}>
-                  {t('You cannot upload these file types')}
-                </Typography>
+                <Typography sx={{ mt: 2 }}>{t('You cannot upload these file types')}</Typography>
               </>
             )}
             {!isDragActive && (
@@ -298,9 +252,7 @@ function Sidebar() {
                 <AvatarWrapper variant="rounded">
                   <CloudUploadTwoToneIcon />
                 </AvatarWrapper>
-                <Typography sx={{ mt: 2 }}>
-                  {t('Drag & drop files here')}
-                </Typography>
+                <Typography sx={{ mt: 2 }}>{t('Drag & drop files here')}</Typography>
               </>
             )}
           </BoxUploadWrapper>
@@ -324,17 +276,9 @@ function Sidebar() {
         <CardHeader title={t('Product Tags')} />
         <Divider />
         <Box p={2}>
-          {productTags.map((data) => {
-            return (
-              <Chip
-                sx={{ m: 1 }}
-                key={data.key}
-                variant="outlined"
-                label={data.label}
-                onDelete={handleDelete(data)}
-              />
-            );
-          })}
+          {productTags.map((data) => (
+            <Chip sx={{ m: 1 }} key={data.key} variant="outlined" label={data.label} onDelete={handleDelete(data)} />
+          ))}
           {productTags.length === 0 && (
             <Typography sx={{ py: 2 }} variant="subtitle2" textAlign="center">
               {t('There are no product tags')}
@@ -343,7 +287,7 @@ function Sidebar() {
         </Box>
       </Card>
     </Box>
-  );
+  )
 }
 
-export default Sidebar;
+export default Sidebar

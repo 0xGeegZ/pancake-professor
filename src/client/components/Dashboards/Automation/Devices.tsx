@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react';
+import { useRef, useState } from 'react'
 
 import {
   Box,
@@ -13,18 +13,18 @@ import {
   Menu,
   IconButton,
   Button,
-  Switch
-} from '@mui/material';
-import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone';
+  Switch,
+} from '@mui/material'
+import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
 
-import KitchenIcon from '@mui/icons-material/Kitchen';
-import LightbulbTwoToneIcon from '@mui/icons-material/LightbulbTwoTone';
-import RouterTwoToneIcon from '@mui/icons-material/RouterTwoTone';
-import WashTwoToneIcon from '@mui/icons-material/WashTwoTone';
-import { useTranslation } from 'react-i18next';
-import { styled } from '@mui/material/styles';
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
-import SmartButtonTwoToneIcon from '@mui/icons-material/SmartButtonTwoTone';
+import KitchenIcon from '@mui/icons-material/Kitchen'
+import LightbulbTwoToneIcon from '@mui/icons-material/LightbulbTwoTone'
+import RouterTwoToneIcon from '@mui/icons-material/RouterTwoTone'
+import WashTwoToneIcon from '@mui/icons-material/WashTwoTone'
+import { useTranslation } from 'react-i18next'
+import { styled } from '@mui/material/styles'
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
+import SmartButtonTwoToneIcon from '@mui/icons-material/SmartButtonTwoTone'
 
 const CardAddAction = styled(Card)(
   ({ theme }) => `
@@ -48,7 +48,7 @@ const CardAddAction = styled(Card)(
           opacity: .1;
         }
 `
-);
+)
 
 const AvatarAddWrapper = styled(Avatar)(
   ({ theme }) => `
@@ -57,7 +57,7 @@ const AvatarAddWrapper = styled(Avatar)(
         width: ${theme.spacing(8)};
         height: ${theme.spacing(8)};
 `
-);
+)
 
 const CardDevice = styled(Card)(
   ({ theme }) => `
@@ -127,7 +127,7 @@ const CardDevice = styled(Card)(
         opacity: .1;
       }
 `
-);
+)
 
 const IconWrapper = styled(Box)(
   ({ theme }) => `
@@ -135,73 +135,62 @@ const IconWrapper = styled(Box)(
       color: ${theme.colors.primary.main};
       margin-left: -7px;
 `
-);
+)
 
 function Devices() {
-  const { t }: { t: any } = useTranslation();
+  const { t }: { t: any } = useTranslation()
   // const { user } = useAuth();
 
   const locations = [
     {
       value: 'all',
-      text: 'Margaret Gale' + t('\'s Home')
+      text: `Margaret Gale${t("'s Home")}`,
     },
     {
       value: 'living_room',
-      text: t('Living room')
+      text: t('Living room'),
     },
     {
       value: 'garden_shed',
-      text: t('Garden shed')
+      text: t('Garden shed'),
     },
     {
       value: 'master_bedroom',
-      text: t('Master bedroom')
-    }
-  ];
+      text: t('Master bedroom'),
+    },
+  ]
 
-  const [location, setLocation] = useState<string>(locations[0].text);
-  const actionRef = useRef<any>(null);
-  const [openLocation, setOpenMenuLocation] = useState<boolean>(false);
+  const [location, setLocation] = useState<string>(locations[0].text)
+  const actionRef = useRef<any>(null)
+  const [openLocation, setOpenMenuLocation] = useState<boolean>(false)
 
   return (
     <Box>
-
       <Box mb={2} display="flex" alignItems="center" justifyContent="space-between">
         <Box display="flex" alignItems="center">
-          <Typography variant="h3">
-            {location}
-          </Typography>
-          <IconButton
-            sx={{ ml: 1 }}
-            color="primary"
-            ref={actionRef}
-            onClick={() => setOpenMenuLocation(true)}
-          >
+          <Typography variant="h3">{location}</Typography>
+          <IconButton sx={{ ml: 1 }} color="primary" ref={actionRef} onClick={() => setOpenMenuLocation(true)}>
             <UnfoldMoreTwoToneIcon />
           </IconButton>
           <Menu
             anchorEl={actionRef.current}
             onClose={() => setOpenMenuLocation(false)}
             open={openLocation}
-
             anchorOrigin={{
               vertical: 'center',
-              horizontal: 'center'
+              horizontal: 'center',
             }}
             transformOrigin={{
               vertical: 'center',
-              horizontal: 'center'
-            }}
-          >
+              horizontal: 'center',
+            }}>
             {locations.map((_location) => (
               <MenuItem
                 key={_location.value}
                 onClick={() => {
-                  setLocation(_location.text);
-                  setOpenMenuLocation(false);
-                }}
-              >
+                  setLocation(_location.text)
+                  setOpenMenuLocation(false)
+                }}>
                 {_location.text}
               </MenuItem>
             ))}
@@ -215,10 +204,7 @@ function Devices() {
         <Grid item xs={12} xl={3} md={4} sm={6}>
           <CardDevice>
             <CardActionArea>
-              <Switch
-                edge="end"
-                color="primary"
-              />
+              <Switch edge="end" color="primary" />
               <Typography fontWeight="bold" variant="caption" color="primary">
                 {t('off')}
               </Typography>
@@ -234,11 +220,7 @@ function Devices() {
         <Grid item xs={12} xl={3} md={4} sm={6}>
           <CardDevice className="Mui-active">
             <CardActionArea>
-              <Switch
-                edge="end"
-                defaultChecked
-                color="primary"
-              />
+              <Switch edge="end" defaultChecked color="primary" />
               <Typography fontWeight="bold" variant="caption" color="primary">
                 {t('on')}
               </Typography>
@@ -254,10 +236,7 @@ function Devices() {
         <Grid item xs={12} xl={3} md={4} sm={6}>
           <CardDevice>
             <CardActionArea>
-              <Switch
-                edge="end"
-                color="primary"
-              />
+              <Switch edge="end" color="primary" />
               <Typography fontWeight="bold" variant="caption" color="primary">
                 {t('off')}
               </Typography>
@@ -273,10 +252,7 @@ function Devices() {
         <Grid item xs={12} xl={3} md={4} sm={6}>
           <CardDevice>
             <CardActionArea>
-              <Switch
-                edge="end"
-                color="primary"
-              />
+              <Switch edge="end" color="primary" />
               <Typography fontWeight="bold" variant="caption" color="primary">
                 {t('off')}
               </Typography>
@@ -292,10 +268,7 @@ function Devices() {
         <Grid item xs={12} xl={3} md={4} sm={6}>
           <CardDevice>
             <CardActionArea>
-              <Switch
-                edge="end"
-                color="primary"
-              />
+              <Switch edge="end" color="primary" />
               <Typography fontWeight="bold" variant="caption" color="primary">
                 {t('off')}
               </Typography>
@@ -322,8 +295,8 @@ function Devices() {
           </Tooltip>
         </Grid>
       </Grid>
-    </Box >
-  );
+    </Box>
+  )
 }
 
-export default Devices;
+export default Devices
