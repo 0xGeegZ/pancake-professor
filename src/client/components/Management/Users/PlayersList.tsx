@@ -1,3 +1,6 @@
+/* eslint-disable import/order */
+import 'moment-timezone'
+
 import CloseIcon from '@mui/icons-material/Close'
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 import GamepadIcon from '@mui/icons-material/Gamepad'
@@ -35,17 +38,23 @@ import {
 } from '@mui/material'
 import { styled, useTheme } from '@mui/material/styles'
 import { TransitionProps } from '@mui/material/transitions'
+import { ethers } from 'ethers'
+import moment from 'moment'
 import { useSnackbar } from 'notistack'
-import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, useRef, useState } from 'react'
+import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import Moment from 'react-moment'
+import { PREDICTION_CONTRACT_ABI } from 'src/client/abis/pancake-prediction-abi-v3'
 import FollowPlayerForm from 'src/client/components/Dashboards/Automation/FollowPlayerForm'
+import { useGlobalStore } from 'src/client/store/swr'
+import loadPlayers from 'src/client/thegraph/loadPlayers'
 
 import SidebarPlayerDrawer from './SidebarPlayerDrawer'
 
 import type { ReactElement } from 'react'
 
 import type { Player } from 'src/client/models/player'
-// import type { Player, PlayerRole } from 'src/client/models/player'
+
 const DialogWrapper = styled(Dialog)(
   () => `
       .MuiDialog-paper {
@@ -64,25 +73,6 @@ const DotLegend = styled('span')(
 `
 )
 
-// const AvatarPrimary = styled(Avatar)(
-//   ({ theme }) => `
-//       background-color: ${theme.colors.primary.lighter};
-//       color: ${theme.colors.primary.main};
-//       width: ${theme.spacing(5)};
-//       height: ${theme.spacing(5)};
-// `
-// )
-
-// const AvatarWarning = styled(Avatar)(
-//   ({ theme }) => `
-//       background-color: ${theme.colors.warning.main};
-//       color:  ${theme.palette.primary.contrastText};
-//       width: ${theme.spacing(8)};
-//       height: ${theme.spacing(8)};
-//       box-shadow: ${theme.colors.shadows.warning};
-// `
-// )
-
 const AvatarError = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.error.lighter};
@@ -95,13 +85,6 @@ const AvatarError = styled(Avatar)(
       }
 `
 )
-
-// const AvatarWrapper = styled(Avatar)(
-//   ({ theme }) => `
-//     width: ${theme.spacing(8)};
-//     height: ${theme.spacing(8)};
-// `
-// )
 
 const CardWrapper = styled(Card)(
   ({ theme }) => `
@@ -138,21 +121,6 @@ const ButtonError = styled(Button)(
     `
 )
 
-// const TabsWrapper = styled(Tabs)(
-//   ({ theme }) => `
-
-//     @media (max-width: ${theme.breakpoints.values.md}px) {
-//       .MuiTabs-scrollableX {
-//         overflow-x: auto !important;
-//       }
-
-//       .MuiTabs-indicator {
-//           box-shadow: none;
-//       }
-//     }
-//     `
-// )
-
 const LinearProgressWrapper = styled(LinearProgress)(
   ({ theme }) => `
         flex-grow: 1;
@@ -170,95 +138,111 @@ const LinearProgressWrapper = styled(LinearProgress)(
 `
 )
 
-interface PlayersListProps {
-  user: {
-    strategies: [
-      {
-        player: string
-      }
-    ]
-  }
-  players: Player[]
-  fetching: boolean
-  refreshQuery: any
-  hasError: boolean
-}
-
-// interface Filters {
-//   role?: PlayerRole
-// }
-
 /* eslint-disable */
 const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
   <Slide direction="down" ref={ref} {...props} />
 ))
 /* eslint-enable */
 
-// const getPlayerRoleLabel = (playerRole: PlayerRole): JSX.Element => {
-//   const map = {
-//     admin: {
-//       text: 'Administrator',
-//       color: 'error',
-//     },
-//     customer: {
-//       text: 'Customer',
-//       color: 'info',
-//     },
-//     subscriber: {
-//       text: 'Waiting List',
-//       color: 'warning',
-//     },
-//   }
-
-//   const { text, color }: any = map[playerRole]
-
-//   return <Label color={color}>{text}</Label>
-// }
-
-// const applyFilters = (players: Player[], query: string, filters: Filters): Player[] =>
-//   players.filter((player) => {
-//     let matches = true
-
-//     if (query) {
-//       const properties = ['email', 'name', 'address', 'generated']
-//       // const properties = ['email', 'name', 'playername']
-//       let containsQuery = false
-
-//       properties.forEach((property) => {
-//         if (player[property].toLowerCase().includes(query.toLowerCase())) {
-//           containsQuery = true
-//         }
-//       })
-
-//       // if (filters.role && player.role !== filters.role) {
-//       //   matches = false
-//       // }
-
-//       if (!containsQuery) {
-//         matches = false
-//       }
-//     }
-
-//     Object.keys(filters).forEach((key) => {
-//       const value = filters[key]
-
-//       if (value && player[key] !== value) {
-//         matches = false
-//       }
-//     })
-
-//     return matches
-//   })
-
 const applyPagination = (players: Player[], page: number, limit: number): Player[] =>
   players.slice(page * limit, page * limit + limit)
 
-const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetching, hasError }) => {
+const PlayersList: FC = () => {
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
-  // const router = useRouter()
+  const { enqueueSnackbar } = useSnackbar()
 
-  // const [, createStrategie] = useCreateStrategieMutation()
+  const [fetching, setFetching] = useState<boolean>(false)
+  const [players, setPlayers] = useState<any[]>([])
+  const [hasError, setHasError] = useState<boolean>(false)
+  const [preditionContract, setPreditionContract] = useState<any>(null)
+
+  const { user, mutate, fetching: userFetching } = useGlobalStore()
+
+  const getPlayers = useCallback(
+    async (ppreditionContract) => {
+      if (fetching) return
+
+      console.log('getPlayers')
+
+      setFetching(true)
+      try {
+        const lisPaused = await ppreditionContract.paused()
+        if (lisPaused) {
+          enqueueSnackbar(t(`Contract is paused.`), {
+            variant: 'warning',
+            TransitionComponent: Zoom,
+          })
+          return
+        }
+        const epoch = await ppreditionContract.currentEpoch()
+
+        const lplayers = await loadPlayers({ epoch })
+        setPlayers(lplayers)
+        setFetching(false)
+      } catch (err) {
+        setHasError(true)
+      }
+    },
+    [fetching, enqueueSnackbar, t]
+  )
+
+  const refreshQuery = useCallback(
+    async ({ orderBy }) => {
+      console.log('refreshQuery')
+      const epoch = await preditionContract.currentEpoch()
+
+      setFetching(true)
+      setPlayers([])
+      players.length = 0
+
+      try {
+        const lplayers = await loadPlayers({ epoch, orderBy })
+        setPlayers(lplayers)
+        setFetching(false)
+      } catch (err) {
+        setHasError(true)
+      }
+    },
+    [players, preditionContract]
+  )
+
+  useEffect(() => {
+    if (preditionContract) return
+
+    // if (!user && !userFetching) {
+    //   enqueueSnackbar(t(`You need to be connected to have data fecthing for this view.`), {
+    //     variant: 'warning',
+    //     TransitionComponent: Zoom,
+    //   })
+    //   return
+    // }
+    if (!window.ethereum?.request) {
+      enqueueSnackbar(t(`You need to have metamask installed on your browser.`), {
+        variant: 'warning',
+        TransitionComponent: Zoom,
+      })
+      return
+    }
+
+    const lprovider = new ethers.providers.Web3Provider(window.ethereum)
+
+    const signer = lprovider.getSigner()
+
+    const lpreditionContract = new ethers.Contract(
+      process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+      PREDICTION_CONTRACT_ABI,
+      signer
+    )
+
+    setPreditionContract(lpreditionContract)
+
+    try {
+      getPlayers(lpreditionContract)
+    } catch (err) {
+      setHasError(true)
+    }
+  }, [getPlayers, user, preditionContract, enqueueSnackbar, t, userFetching])
 
   const ordersBy = [
     {
@@ -287,66 +271,8 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
   const [openOrderBy, setOpenMenuOrderBy] = useState<boolean>(false)
   const [orderBy, setOrderBy] = useState<string>(ordersBy[1].text)
 
-  // const [selectedItems, setSelectedPlayers] = useState<string[]>([])
-  const { enqueueSnackbar } = useSnackbar()
-
-  // const tabs = [
-  //   {
-  //     value: 'all',
-  //     label: t('All players'),
-  //   },
-  //   // {
-  //   //   value: 'customer',
-  //   //   label: t('Customers'),
-  //   // },
-  //   // {
-  //   //   value: 'admin',
-  //   //   label: t('Administrators'),
-  //   // },
-  //   // {
-  //   //   value: 'subscriber',
-  //   //   label: t('Waiting List'),
-  //   // },
-  // ]
-
   const [page, setPage] = useState<number>(0)
   const [limit, setLimit] = useState<number>(10)
-  // const [query, setQuery] = useState<string>('')
-  // const [filters, setFilters] = useState<Filters>({
-  //   role: null,
-  // })
-
-  // const handleTabsChange = (_event: SyntheticEvent, tabsValue: unknown) => {
-  //   let value = null
-
-  //   if (tabsValue !== 'all') {
-  //     value = tabsValue
-  //   }
-
-  //   setFilters((prevFilters) => ({
-  //     ...prevFilters,
-  //     role: value,
-  //   }))
-
-  //   setSelectedPlayers([])
-  // }
-
-  // const handleQueryChange = (event: ChangeEvent<HTMLInputElement>): void => {
-  //   event.persist()
-  //   setQuery(event.target.value)
-  // }
-
-  // const handleSelectAllPlayers = (event: ChangeEvent<HTMLInputElement>): void => {
-  //   setSelectedPlayers(event.target.checked ? players.map((player) => player.id) : [])
-  // }
-
-  // const handleSelectOnePlayer = (_event: ChangeEvent<HTMLInputElement>, playerId: string): void => {
-  //   if (!selectedItems.includes(playerId)) {
-  //     setSelectedPlayers((prevSelected) => [...prevSelected, playerId])
-  //   } else {
-  //     setSelectedPlayers((prevSelected) => prevSelected.filter((id) => id !== playerId))
-  //   }
-  // }
 
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage)
@@ -356,23 +282,8 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
     setLimit(+event.target.value)
   }
 
-  // const updateQuery = useCallback(async () => {
-  //   try {
-  //     await refreshQuery({ orderBy })
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }, [])
-
   // const filteredPlayers = applyFilters(players, query, filters)
   const paginatedPlayers = applyPagination(players, page, limit)
-  // const selectedBulkActions = selectedItems.length > 0
-  // const selectedSomePlayers = selectedItems.length > 0 && selectedItems.length < players.length
-  // const selectedAllPlayers = selectedItems.length === players.length
-
-  // useEffect(() => {
-  //   console.log('🚀 ~ Player list effect')
-  // })
 
   const [toggleView, setToggleView] = useState<string | null>('grid_view')
 
@@ -381,10 +292,6 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
   }
 
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
-
-  // const handleConfirmDelete = () => {
-  //   setOpenConfirmDelete(true)
-  // }
 
   const closeConfirmDelete = () => {
     setOpenConfirmDelete(false)
@@ -412,7 +319,6 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
   const [openCreateForm, setOpenCreateForm] = useState(false)
   const [activePlayer, setActivePlayer] = useState('')
 
-  // const handleOpenCreateForm = (pactivePlayer) => {
   const handleOpenCreateForm = (pactivePlayer: string) => () => {
     setOpenCreateForm(true)
     setActivePlayer(pactivePlayer)
@@ -420,6 +326,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
 
   const handleCloseCreateForm = () => {
     setOpenCreateForm(false)
+    mutate('currentUser')
   }
 
   return (
@@ -430,16 +337,6 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
         flexDirection={{ xs: 'column', sm: 'row' }}
         justifyContent={{ xs: 'center', sm: 'space-between' }}
         pb={3}>
-        {/* <TabsWrapper
-          onChange={handleTabsChange}
-          scrollButtons="auto"
-          textColor="secondary"
-          value={filters.role || 'all'}
-          variant="scrollable">
-          {tabs.map((tab) => (
-            <Tab key={tab.value} value={tab.value} label={tab.label} />
-          ))}
-        </TabsWrapper> */}
         <CardHeader
           action={
             <>
@@ -490,29 +387,6 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
       </Box>
       {toggleView === 'table_view' && (
         <Card>
-          {/* <Box p={2}>
-            {!selectedBulkActions && (
-              <TextField
-                sx={{ m: 0 }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchTwoToneIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                onChange={handleQueryChange}
-                placeholder={t('Search by name, email or address...')}
-                value={query}
-                size="small"
-                fullWidth
-                margin="normal"
-                variant="outlined"
-              />
-            )}
-            {selectedBulkActions && <BulkActions />}
-          </Box> */}
-
           <Divider />
 
           {paginatedPlayers.length === 0 ? (
@@ -577,7 +451,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                     }}
                                   />
                                   <Box>
-                                    {player.recentGames}/288 ({parseInt((+player.recentGames * 100) / 288)} %)
+                                    {player.recentGames}/288 ({parseInt(`${(+player.recentGames * 100) / 288}`, 10)} %)
                                   </Box>
                                 </Box>
                               </TableCell>
@@ -638,11 +512,23 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                           </TableCell>
                           <TableCell align="center">
                             <Typography noWrap>
-                              <Tooltip title={t('Copy')} arrow>
-                                <IconButton component={Link} onClick={handleOpenCreateForm(player.id)} color="primary">
-                                  <GamepadIcon fontSize="small" />
-                                </IconButton>
-                              </Tooltip>
+                              {!user ? (
+                                <Tooltip placement="top" title={t('You need to be connected to copy player.')} arrow>
+                                  <IconButton component={Link} color="warning">
+                                    <GamepadIcon fontSize="small" />
+                                  </IconButton>
+                                </Tooltip>
+                              ) : (
+                                <Tooltip title={t('Copy')} arrow>
+                                  <IconButton
+                                    disabled={!!user?.strategies.find((s) => s.player === player.id)}
+                                    component={Link}
+                                    onClick={handleOpenCreateForm(player.id)}
+                                    color="primary">
+                                    <GamepadIcon fontSize="small" />
+                                  </IconButton>
+                                </Tooltip>
+                              )}
                             </Typography>
                           </TableCell>
                         </TableRow>
@@ -668,51 +554,6 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
       )}
       {toggleView === 'grid_view' && (
         <>
-          {/* {!fetching && paginatedPlayers.length !== 0 ? (
-            <Card sx={{ p: 2, mb: 3 }}>
-              <Box display="flex" alignItems="center" justifyContent="space-between">
-                {/* {paginatedPlayers.length !== 0 && ( */}
-          {/* <>
-                  <Box display="flex" alignItems="center">
-                    <Tooltip arrow placement="top" title={t('Select all players')}>
-                      <Checkbox
-                        checked={selectedAllPlayers}
-                        indeterminate={selectedSomePlayers}
-                        onChange={handleSelectAllPlayers}
-                      />
-                    </Tooltip>
-                  </Box>
-                  {selectedBulkActions && (
-                    <Box flex={1} pl={2}>
-                      <BulkActions />
-                    </Box>
-                  )}
-                </> */}
-          {/* // )} */}
-          {/* {!selectedBulkActions && (
-                <TextField
-                  sx={{ my: 0, ml: paginatedPlayers.length !== 0 ? 2 : 0 }}
-                  fullWidth
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchTwoToneIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  onChange={handleQueryChange}
-                  placeholder={t('Search by name, email or address...')}
-                  value={query}
-                  size="small"
-                  margin="normal"
-                  variant="outlined"
-                />
-              )} */}
-          {/* </Box>
-            </Card>
-          ) : (
-            <></> 
-          )} */}
           {paginatedPlayers.length === 0 ? (
             fetching ? (
               <>
@@ -766,8 +607,6 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
             <>
               <Grid container spacing={3}>
                 {paginatedPlayers.map((player) => {
-                  // const isPlayerSelected = selectedItems.includes(player.id)
-
                   return (
                     <Grid item xs={12} sm={6} md={4} key={player.id}>
                       <CardWrapper>
@@ -800,6 +639,13 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                   <Typography variant="subtitle2" gutterBottom>
                                     {t('Net BNB won')} : {parseFloat(player.netBNB).toFixed(2)} BNB
                                   </Typography>
+                                  {player?.bets.length && (
+                                    <Typography sx={{ fontSize: `${theme.typography.pxToRem(10)}` }} variant="h6">
+                                      {t('Last Play')}
+                                      {' : '}
+                                      <Moment local>{moment(+player.bets[0].createdAt * 1000)}</Moment>
+                                    </Typography>
+                                  )}
                                 </Box>
                                 {player.recentGames ? (
                                   <>
@@ -825,7 +671,6 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                             </Typography>
                                             <LinearProgressWrapper
                                               value={+player.winRate}
-                                              // color="primary"
                                               color={
                                                 (+player.winRate * 100) / 100 >= 60
                                                   ? 'success'
@@ -842,8 +687,6 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                             {t('Total Bets')}
                                           </Typography>
                                           <Box display="flex" alignItems="center">
-                                            {/* <AvatarPrimary> */}
-                                            {/* <WorkTwoToneIcon /> */}
                                             <DotLegend
                                               style={{
                                                 background:
@@ -854,7 +697,6 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                                     : theme.colors.error.main,
                                               }}
                                             />
-                                            {/* </AvatarPrimary> */}
                                             <Typography variant="h3" sx={{ pl: 1 }} component="div">
                                               {player.totalBets}
                                             </Typography>
@@ -869,7 +711,7 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                               color="text.primary"
                                               variant="h2"
                                               sx={{ pr: 0.5, display: 'inline-flex' }}>
-                                              {parseInt((+player.recentGames * 100) / 288)}
+                                              {parseInt(`${(+player.recentGames * 100) / 288}`, 10)}
                                             </Typography>
                                             <Typography
                                               color="text.secondary"
@@ -879,7 +721,6 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                             </Typography>
                                             <LinearProgressWrapper
                                               value={(player.recentGames * 100) / 288}
-                                              // color="primary"
                                               color={
                                                 (player.recentGames * 100) / 288 >= 30
                                                   ? 'success'
@@ -918,7 +759,6 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                             </Typography>
                                             <LinearProgressWrapper
                                               value={+player.winRate}
-                                              // color="primary"
                                               color={
                                                 (+player.winRate * 100) / 100 >= 60
                                                   ? 'success'
@@ -935,8 +775,6 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                             {t('Total Bets')}
                                           </Typography>
                                           <Box display="flex" alignItems="center">
-                                            {/* <AvatarPrimary> */}
-                                            {/* <WorkTwoToneIcon /> */}
                                             <DotLegend
                                               style={{
                                                 background:
@@ -947,7 +785,6 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                                                     : theme.colors.error.main,
                                               }}
                                             />
-                                            {/* </AvatarPrimary> */}
                                             <Typography variant="h3" sx={{ pl: 1 }} component="div">
                                               {player.totalBets}
                                             </Typography>
@@ -963,15 +800,29 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
                               <Box px={3} py={2}>
                                 <Grid container spacing={3}>
                                   <Grid item md={6}>
-                                    {/* <Button size="small" fullWidth variant="contained"> */}
-                                    <Button
-                                      size="small"
-                                      fullWidth
-                                      disabled={!!user?.strategies.find((s) => s.player === player.id)}
-                                      variant="contained"
-                                      onClick={handleOpenCreateForm(player.id)}>
-                                      <b> {t('Copy')}</b>
-                                    </Button>
+                                    {!user ? (
+                                      <Tooltip
+                                        placement="top"
+                                        title={t('You need to be connected to copy player.')}
+                                        arrow>
+                                        <Button size="small" fullWidth variant="outlined" color="warning">
+                                          <b> {t('Copy')}</b>
+                                        </Button>
+                                      </Tooltip>
+                                    ) : (
+                                      <Button
+                                        size="small"
+                                        fullWidth
+                                        disabled={!!user?.strategies.find((s) => s.player === player.id)}
+                                        variant="contained"
+                                        onClick={handleOpenCreateForm(player.id)}>
+                                        <b>
+                                          {user?.strategies.find((s) => s.player === player.id)
+                                            ? t('Copied')
+                                            : t('Copy')}
+                                        </b>
+                                      </Button>
+                                    )}
                                   </Grid>
                                   <Grid item md={6}>
                                     <Button
@@ -1091,8 +942,15 @@ const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetchi
 // }
 
 // PlayersList.propTypes = {
-//   // eslint-disable-next-line react/forbid-prop-types
-//   players: PropTypes.array.isRequired,
+//   players: PropTypes.arrayOf(
+//     PropTypes.shape({
+//       bets: PropTypes.arrayOf(
+//         PropTypes.shape({
+//           createdAt: PropTypes.string.isRequired,
+//         })
+//       ),
+//     })
+//   ).isRequired,
 //   user: PropTypes.shape({
 //     strategies: PropTypes.arrayOf(
 //       PropTypes.shape({

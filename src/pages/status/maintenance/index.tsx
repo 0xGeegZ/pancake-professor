@@ -4,6 +4,7 @@ import TwitterIcon from '@mui/icons-material/Twitter'
 import { Box, Container, Divider, IconButton, Tooltip, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
+import Image from 'next/image'
 import { useTranslation } from 'react-i18next'
 import Logo from 'src/client/components/LogoSign'
 import BaseLayout from 'src/client/layouts/BaseLayout'
@@ -51,7 +52,8 @@ const StatusMaintenance = () => {
                   {t('We apologize for any inconveniences caused')}
                 </Typography>
               </Container>
-              <img alt="Maintenance" height={250} src="/static/images/status/maintenance.svg" />
+              {/* <img alt="Maintenance" height={250} src="/static/images/status/maintenance.svg" /> */}
+              <Image alt="Maintenance" height={250} width={350} src="/static/images/status/maintenance.svg" />
             </Box>
             <Divider sx={{ my: 4 }} />
             <Box display="flex" alignItems="center" justifyContent="space-between">

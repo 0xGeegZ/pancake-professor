@@ -1,42 +1,45 @@
 import 'moment-timezone'
 
-import ArrowDownwardTwoTone from '@mui/icons-material/ArrowDownwardTwoTone'
-import ArrowUpwardTwoTone from '@mui/icons-material/ArrowUpwardTwoTone'
 import { Box, Card, CardContent, CardHeader, Divider, Grid, Typography } from '@mui/material'
-import { styled } from '@mui/material/styles'
 import moment from 'moment'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
-const ArrowUpwardWrapper = styled(ArrowUpwardTwoTone)(
-  ({ theme }) => `
-      color:  ${theme.palette.success.main};
-`
-)
+// const ArrowUpwardWrapper = styled(ArrowUpwardTwoTone)(
+//   ({ theme }) => `
+//       color:  ${theme.palette.success.main};
+// `
+// )
 
-const ArrowDownwardWrapper = styled(ArrowDownwardTwoTone)(
-  ({ theme }) => `
-      color:  ${theme.palette.error.main};
-`
-)
+// const ArrowDownwardWrapper = styled(ArrowDownwardTwoTone)(
+//   ({ theme }) => `
+//       color:  ${theme.palette.error.main};
+// `
+// )
 
 function ActiveStrategiesOverview({ strategies }) {
   const { t }: { t: any } = useTranslation()
 
-  const getBankrollFromStrategies = (strategies) => {
-    if (!strategies.length) return 0
+  const getActivesStrategiesCount = () => {
+    console.log('🚀  ~ getActivesStrategiesCount', strategies.filter((s) => s.isActive).length)
 
-    return strategies
-      .map((s) => +s.currentAmount)
-      .reduce((acc, num) => acc + num, 0)
-      .toFixed(4)
+    if (!strategies.length) return 0
+    return `${strategies.filter((s) => s.isActive).length}`
   }
 
-  const getActiveSinceFromStrategies = (strategies) => {
+  const getBankrollFromStrategies = () => {
     if (!strategies.length) return 0
 
-    let dates = strategies.map((s) => +s.createdAt).sort((a, b) => a.getTime() - b.getTime())
-    console.log('🚀 ~ file: ActiveStrategiesOverview.tsx ~ line 36 ~ getActiveSinceFromStrategies ~ dates', dates)
+    return `${strategies
+      .map((s) => +s.currentAmount)
+      .reduce((acc, num) => acc + num, 0)
+      .toFixed(2)}BNB`
+  }
+
+  const getActiveSinceFromStrategies = () => {
+    if (!strategies.length) return 0
+
+    const dates = strategies.map((s) => new Date(s.createdAt)).sort((a, b) => a.getTime() - b.getTime())
 
     const lastDate = dates[0]
 
@@ -84,7 +87,7 @@ function ActiveStrategiesOverview({ strategies }) {
                 {t('Strategies')}
               </Typography>
               <Typography variant="h3" gutterBottom>
-                {strategies.length}
+                {getActivesStrategiesCount()}
               </Typography>
               {/* <Box
                 sx={{
@@ -103,7 +106,7 @@ function ActiveStrategiesOverview({ strategies }) {
                 {t('Bankroll')}
               </Typography>
               <Typography variant="h3" gutterBottom>
-                {getBankrollFromStrategies(strategies)}
+                {getBankrollFromStrategies()}
               </Typography>
               {/* <Box
                 sx={{
@@ -122,7 +125,7 @@ function ActiveStrategiesOverview({ strategies }) {
                 {t('Active since')}
               </Typography>
               <Typography variant="h3" gutterBottom>
-                {getActiveSinceFromStrategies(strategies)}
+                {getActiveSinceFromStrategies()}
               </Typography>
               {/* <Box
                 sx={{

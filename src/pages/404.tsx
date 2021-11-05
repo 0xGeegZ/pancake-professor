@@ -1,6 +1,7 @@
 import { Box, Button, Card, Container, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
+import Image from 'next/image'
 import { useTranslation } from 'react-i18next'
 import BaseLayout from 'src/client/layouts/BaseLayout'
 
@@ -50,7 +51,9 @@ function Status404() {
         <TopWrapper>
           <Container maxWidth="md">
             <Box textAlign="center">
-              <img alt="404" height={180} src="/static/images/status/404.svg" />
+              {/* <img alt="404" height={180} src="/static/images/status/404.svg" /> */}
+              <Image alt="404" height={180} width={300} src="/static/images/status/404.svg" />
+
               <Typography variant="h2" sx={{ my: 2 }}>
                 {t("The page you were looking for doesn't exist.")}
               </Typography>

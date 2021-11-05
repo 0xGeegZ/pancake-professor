@@ -71,7 +71,7 @@ const SidebarMenuItem: FC<SidebarMenuItemProps> = ({
   link,
   icon: Icon,
   badge,
-  open: openParent,
+  // open: openParent,
   active,
   name,
   ...rest

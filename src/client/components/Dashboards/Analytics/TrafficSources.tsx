@@ -1,25 +1,24 @@
-import { useRef, useState, ChangeEvent } from 'react'
-import { useTranslation } from 'react-i18next'
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
-
-import Divider from '@mui/material/Divider'
 import {
+  Box,
   Button,
   Card,
-  Box,
+  CardActions,
   CardContent,
   CardHeader,
+  Grid,
+  Hidden,
   Menu,
   MenuItem,
-  CardActions,
-  Grid,
-  Typography,
-  Hidden,
-  Tabs,
   Tab,
+  Tabs,
+  Typography,
 } from '@mui/material'
-
+import Divider from '@mui/material/Divider'
 import { styled } from '@mui/material/styles'
+import { ChangeEvent, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import TrafficSourcesChart from './TrafficSourcesChart'
 
 const CardActionsWrapper = styled(CardActions)(
@@ -99,7 +98,7 @@ function TrafficSources() {
     { value: 'social', label: t('Social') },
   ]
 
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
+  const handleTabsChange = (_event: ChangeEvent<any>, value: string): void => {
     setCurrentTab(value)
   }
 

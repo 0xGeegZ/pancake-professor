@@ -2,13 +2,12 @@
 import { Box } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { ethers } from 'ethers'
-import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import PropTypes from 'prop-types'
-import { FC, ReactNode, useCallback, useEffect, useState } from 'react'
+import { FC, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 import menuItems from 'src/client/layouts/MainLayout/Sidebar/SidebarMenu/items'
+import { useGlobalStore } from 'src/client/store/swr'
 
 import Banner from './Banner'
 import Header from './Header'
@@ -47,88 +46,28 @@ const MainContent = styled(Box)(
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const { t }: { t: any } = useTranslation()
-
+  const { user, fetching, mutate } = useGlobalStore()
   // const isMountedRef = useRefMounted()
 
-  // const [{ data, fetching, error }] = useGetCurrentUserQuery()
-  const [{ data, fetching }] = useGetCurrentUserQuery()
-
-  const router = useRouter()
-  const [networkId, setNetworkId] = useState<any>(0)
-  const [user, setUser] = useState<any>('')
-  // const [balance, setBalance] = useState<string>('')
-  const [allMenuItems, setAllMenuItems] = useState<any>(null)
-
-  // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
+  // const router = useRouter()
+  // const [user, setUser] = useState<any>()
+  // const [allMenuItems, setAllMenuItems] = useState<any>(null)
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const checkBalance = useCallback(async (puser) => {
-    const luser = puser
-    if (!window.ethereum?.request) return
+  // TODO to avoid rules of hooks error, need to manipulate user without useEffect.
+  // useEffect(() => {
+  //   if (!data) return
+  //   if (user) return
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum)
+  //   if (isMountedRef.current) {
+  //     console.log('updating data', data)
 
-    if (!provider) return
-
-    // setProvider(browserProvider)
-    const { chainId } = await provider.getNetwork()
-    setNetworkId(chainId)
-
-    const rawBalance = await provider.getBalance(luser.address)
-
-    const lbalance = ethers.utils.formatUnits(rawBalance)
-    luser.balance = lbalance
-    // setBalance(lbalance)
-
-    const generatedRawBalance = await provider.getBalance(luser.generated)
-    const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance)
-    luser.generatedBalance = lgeneratedBalance
-
-    setUser(luser)
-
-    // window.localStorage.setItem('balance', lbalance)
-  }, [])
-
-  useEffect(() => {
-    // if (!isMountedRef.current) {
-    //   return
-    // }
-
-    let isFinded = false
-
-    if (data && data.currentUser) {
-      isFinded = process.env.NEXT_PUBLIC_ADMIN_ADDRESS
-        ? process.env.NEXT_PUBLIC_ADMIN_ADDRESS.includes(data?.currentUser?.address)
-        : false
-
-      const luser = {
-        ...data.currentUser,
-        isAdmin: isFinded,
-      }
-      setUser(luser)
-
-      // if (!localStorage.getItem('user')) {
-      //   window.localStorage.setItem('user', JSON.stringify(luser))
-      // }
-
-      // if (window.localStorage.getItem('balance')) setBalance(window.localStorage.getItem('balance'))
-      // else
-      checkBalance(data.currentUser)
-    }
-
-    // let filtereds: Array<menuItems> = []
-    // let filtereds: MenuItem[] = []
-
-    const filtereds = isFinded ? menuItems : menuItems.filter((mi) => mi.heading !== 'Admin')
-    // if (isFinded) {
-    //   filtereds = menuItems
-    // } else {
-    //   filtereds = menuItems.filter((mi) => mi.heading !== 'Admin')
-    // }
-
-    setAllMenuItems(filtereds)
-  }, [data, checkBalance])
+  //     setUser(data)
+  //     const filtereds = data.isAdmin ? menuItems : menuItems.filter((mi) => mi.heading !== 'Admin')
+  //     setAllMenuItems(filtereds)
+  //   }
+  // }, [data, user, isMountedRef])
 
   const connect = async (evt) => {
     evt.preventDefault()
@@ -166,7 +105,8 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
           enqueueSnackbar(t('Wallet succesfully connected!'), {
             variant: 'success',
           })
-          router.replace(router.asPath)
+          mutate('currentUser')
+          // router.replace(router.asPath)
         } else {
           enqueueSnackbar(t('Unexpected error occurred during authentification'), {
             variant: 'error',
@@ -193,8 +133,13 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
             enqueueSnackbar(t('Wallet succesfully unconnected!'), {
               variant: 'success',
             })
-            setUser(null)
-            router.replace(router.asPath)
+            // setUser(null)
+            // mutate('currentUser')
+            // mutate('', null)
+            mutate(null)
+            // router.replace(router.asPath)
+
+            // cache.clear()
           } else {
             enqueueSnackbar(t('Unexpected error occurred'), {
               variant: 'error',
@@ -210,11 +155,13 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
 
   return (
     <>
-      {/* TODO FIX HEADER ON SCROLL */}
+      {/* FIX HEADER ON SCROLL */}
       {/* <Sidebar fetching={fetching} error={error} allMenuItems={allMenuItems} /> */}
-      <Banner networkId={networkId} />
-
-      <Sidebar fetching={fetching} allMenuItems={allMenuItems} />
+      {process.env.NODE_ENV === 'development' && <Banner networkId={user?.networkId} />}
+      <Sidebar
+        fetching={fetching}
+        allMenuItems={user?.isAdmin ? menuItems : menuItems.filter((mi) => mi.heading !== 'Admin')}
+      />
       <MainWrapper>
         <MainContent>
           {/* <Header connect={connect} logout={logout} user={user} balance={balance} fetching={fetching} error={error} /> */}

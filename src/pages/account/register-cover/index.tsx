@@ -1,34 +1,36 @@
+import 'swiper/components/navigation/navigation.min.css'
+import 'swiper/components/pagination/pagination.min.css'
+import 'swiper/swiper.min.css'
+
+import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone'
+import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
+import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
 import {
   Box,
   Card,
   Container,
   Divider,
-  Link,
-  ListItemText,
-  ListItem,
-  List,
-  ListItemIcon,
   Hidden,
   IconButton,
+  Link,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
   Typography,
 } from '@mui/material'
-import Head from 'next/head'
-import type { ReactElement } from 'react'
-import BaseLayout from 'src/client/layouts/BaseLayout'
-import RegisterForm from 'src/client/components/Account/RegisterForm'
-
-import { useTranslation } from 'react-i18next'
-import CheckCircleOutlineTwoToneIcon from '@mui/icons-material/CheckCircleOutlineTwoTone'
 import { styled } from '@mui/material/styles'
+import Head from 'next/head'
+import Image from 'next/image'
 import { Scrollbars } from 'react-custom-scrollbars-2'
+import { useTranslation } from 'react-i18next'
+import RegisterForm from 'src/client/components/Account/RegisterForm'
 import Logo from 'src/client/components/LogoSign'
+import BaseLayout from 'src/client/layouts/BaseLayout'
 import SwiperCore, { Navigation, Pagination } from 'swiper'
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
-import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import 'swiper/swiper.min.css'
-import 'swiper/components/navigation/navigation.min.css'
-import 'swiper/components/pagination/pagination.min.css'
+
+import type { ReactElement } from 'react'
 
 SwiperCore.use([Navigation, Pagination])
 
@@ -198,7 +200,8 @@ function RegisterCover() {
                     <SwiperSlide>
                       <Box textAlign="center">
                         <CardImg>
-                          <img height={80} alt="UiPath" src={icons.UiPath} />
+                          {/* <img height={80} alt="UiPath" src={icons.UiPath} /> */}
+                          <Image alt="UiPath" height={80} width={80} src={icons.UiPath} />
                         </CardImg>
                         <TypographyPrimary align="center" variant="h3" sx={{ mb: 2 }}>
                           UiPath
@@ -212,7 +215,8 @@ function RegisterCover() {
                     <SwiperSlide>
                       <Box textAlign="center">
                         <CardImg>
-                          <img height={80} alt="EA" src={icons.Ea} />
+                          {/* <img height={80} alt="EA" src={icons.Ea} /> */}
+                          <Image alt="EA" height={80} width={80} src={icons.Ea} />
                         </CardImg>
                         <TypographyPrimary align="center" variant="h3" sx={{ mb: 2 }}>
                           Electronic Arts
@@ -226,7 +230,8 @@ function RegisterCover() {
                     <SwiperSlide>
                       <Box textAlign="center">
                         <CardImg>
-                          <img height={80} alt="Autodesk" src={icons.Autodesk} />
+                          {/* <img height={80} alt="Autodesk" src={icons.Autodesk} /> */}
+                          <Image alt="Autodesk" height={80} width={80} src={icons.Autodesk} />
                         </CardImg>
                         <TypographyPrimary align="center" variant="h3" sx={{ mb: 2 }}>
                           Autodesk
@@ -240,7 +245,8 @@ function RegisterCover() {
                     <SwiperSlide>
                       <Box textAlign="center">
                         <CardImg>
-                          <img height={80} alt="Adobe" src={icons.Adobe} />
+                          {/* <img height={80} alt="Adobe" src={icons.Adobe} /> */}
+                          <Image alt="Adobe" height={80} width={80} src={icons.Adobe} />
                         </CardImg>
                         <TypographyPrimary align="center" variant="h3" sx={{ mb: 2 }}>
                           Adobe

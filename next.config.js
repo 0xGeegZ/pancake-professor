@@ -7,13 +7,13 @@ const { i18n } = require('./next-i18next.config')
 module.exports = withImages(
   withPrismaPlugin({
     // TMP test to speed up dev
-    webpack(pconfig, { dev }) {
-      const config = pconfig
-      if (dev) {
-        config.devtool = 'cheap-module-source-map'
-      }
-      return config
-    },
+    // webpack(pconfig, { dev }) {
+    //   const config = pconfig
+    //   if (dev) {
+    //     config.devtool = 'cheap-module-source-map'
+    //   }
+    //   return config
+    // },
     // next v12 feature
     swcMinify: true,
     i18n,
@@ -26,6 +26,9 @@ module.exports = withImages(
     experimental: {
       concurrentFeatures: true,
       // serverComponents: true,
+      // other plugins
+      optimizeImages: true,
+      optimizeCss: true,
     },
     // typescript: {
     //   // !! WARN !!

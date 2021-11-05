@@ -1,46 +1,46 @@
-import { useState, ChangeEvent, SyntheticEvent } from 'react'
-import {
-  ListItemIcon,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Avatar,
-  Box,
-  Typography,
-  Divider,
-  Button,
-  IconButton,
-  List,
-  ListItem,
-  ListItemText,
-  CardContent,
-  Tabs,
-  Tab,
-  Tooltip,
-  AvatarGroup,
-  Grid,
-  lighten,
-  ListSubheader,
-  ListItemAvatar,
-} from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import { formatDistance, subDays } from 'date-fns'
-import Link from 'src/client/components/Link'
+import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone'
+import ContentCopyTwoToneIcon from '@mui/icons-material/ContentCopyTwoTone'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import DownloadTwoToneIcon from '@mui/icons-material/DownloadTwoTone'
+import DriveFileRenameOutlineTwoToneIcon from '@mui/icons-material/DriveFileRenameOutlineTwoTone'
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import ContentCopyTwoToneIcon from '@mui/icons-material/ContentCopyTwoTone'
-import TextSnippetTwoToneIcon from '@mui/icons-material/TextSnippetTwoTone'
-import DriveFileRenameOutlineTwoToneIcon from '@mui/icons-material/DriveFileRenameOutlineTwoTone'
-import OpenInNewTwoToneIcon from '@mui/icons-material/OpenInNewTwoTone'
-import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone'
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
-import GradeTwoToneIcon from '@mui/icons-material/GradeTwoTone'
-import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
-import DownloadTwoToneIcon from '@mui/icons-material/DownloadTwoTone'
-import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfTwoTone'
-import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone'
 import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone'
+import GradeTwoToneIcon from '@mui/icons-material/GradeTwoTone'
+import OpenInNewTwoToneIcon from '@mui/icons-material/OpenInNewTwoTone'
+import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfTwoTone'
+import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
+import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone'
+import TextSnippetTwoToneIcon from '@mui/icons-material/TextSnippetTwoTone'
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionSummary,
+  Avatar,
+  AvatarGroup,
+  Box,
+  Button,
+  CardContent,
+  Divider,
+  Grid,
+  IconButton,
+  lighten,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemIcon,
+  ListItemText,
+  ListSubheader,
+  Tab,
+  Tabs,
+  Tooltip,
+  Typography,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { formatDistance, subDays } from 'date-fns'
+import { ChangeEvent, SyntheticEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `
@@ -142,7 +142,7 @@ function SidebarDrawer() {
     { value: 'activity', label: t('Activity') },
   ]
 
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
+  const handleTabsChange = (_event: ChangeEvent<any>, value: string): void => {
     setCurrentTab(value)
   }
 

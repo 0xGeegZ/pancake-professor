@@ -1,34 +1,33 @@
-import { useState, ChangeEvent } from 'react'
+import AlarmTwoToneIcon from '@mui/icons-material/AlarmTwoTone'
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone'
 import {
+  Avatar,
+  AvatarGroup,
   Box,
-  Typography,
+  Button,
+  Divider,
   FormControlLabel,
-  Switch,
-  Tabs,
-  Tab,
-  TextField,
   IconButton,
   InputAdornment,
-  Avatar,
-  List,
-  Button,
-  Tooltip,
-  Divider,
-  AvatarGroup,
-  ListItemButton,
-  ListItemAvatar,
-  ListItemText,
   lighten,
+  List,
+  ListItemAvatar,
+  ListItemButton,
+  ListItemText,
+  Switch,
+  Tab,
+  Tabs,
+  TextField,
+  Tooltip,
+  Typography,
 } from '@mui/material'
-
-import { useTranslation } from 'react-i18next'
 import { styled } from '@mui/material/styles'
-import { formatDistance, subMinutes, subHours } from 'date-fns'
-import SettingsTwoToneIcon from '@mui/icons-material/SettingsTwoTone'
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+import { formatDistance, subHours, subMinutes } from 'date-fns'
+import { ChangeEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Label from 'src/client/components/Label'
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
-import AlarmTwoToneIcon from '@mui/icons-material/AlarmTwoTone'
 import Link from 'src/client/components/Link'
 
 const AvatarSuccess = styled(Avatar)(
@@ -117,7 +116,7 @@ function SidebarContent() {
     { value: 'archived', label: t('Archived') },
   ]
 
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
+  const handleTabsChange = (_event: ChangeEvent<any>, value: string): void => {
     setCurrentTab(value)
   }
 

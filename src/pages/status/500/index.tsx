@@ -3,6 +3,7 @@ import LoadingButton from '@mui/lab/LoadingButton'
 import { Box, Button, Container, Grid, Hidden, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
+import Image from 'next/image'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import BaseLayout from 'src/client/layouts/BaseLayout'
@@ -58,7 +59,9 @@ function Status500() {
           <Grid xs={12} md={6} alignItems="center" display="flex" justifyContent="center" item>
             <Container maxWidth="sm">
               <Box textAlign="center">
-                <img alt="500" height={260} src="/static/images/status/500.svg" />
+                {/* <img alt="500" height={260} src="/static/images/status/500.svg" /> */}
+                <Image alt="500" height={260} width={350} src="/static/images/status/500.svg" />
+
                 <Typography variant="h2" sx={{ my: 2 }}>
                   {t('There was an error, please try again later')}
                 </Typography>
@@ -87,9 +90,7 @@ function Status500() {
                     {t('Pancake Professor')}
                   </TypographyPrimary>
                   <TypographySecondary variant="h4" fontWeight="normal" sx={{ mb: 4 }}>
-                    {t(
-                      'High performance React template built with lots of powerful Material-UI components across multiple product niches for fast & perfect apps development processes.'
-                    )}
+                    {t('Play to pancake prediction like the bests.')}
                   </TypographySecondary>
                   <Button href="/" size="large" variant="contained">
                     {t('Overview')}

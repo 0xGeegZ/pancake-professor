@@ -1,6 +1,4 @@
-import TrendingUp from '@mui/icons-material/TrendingUp'
-import { Avatar, Box, Button, Card, Grid, Typography } from '@mui/material'
-import { styled } from '@mui/material/styles'
+import { Box, Button, Card, Grid, Typography } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
@@ -11,17 +9,17 @@ import { useTranslation } from 'react-i18next'
 // `
 // )
 
-const AvatarSuccess = styled(Avatar)(
-  ({ theme }) => `
-      background-color: ${theme.colors.success.main};
-      color: ${theme.palette.success.contrastText};
-      width: ${theme.spacing(8)};
-      height: ${theme.spacing(8)};
-      box-shadow: ${theme.colors.shadows.success};
-`
-)
+// const AvatarSuccess = styled(Avatar)(
+//   ({ theme }) => `
+//       background-color: ${theme.colors.success.main};
+//       color: ${theme.palette.success.contrastText};
+//       width: ${theme.spacing(8)};
+//       height: ${theme.spacing(8)};
+//       box-shadow: ${theme.colors.shadows.success};
+// `
+// )
 
-function AccountCryptoBalance({ user }) {
+const AccountCryptoBalance = ({ user }) => {
   const { t }: { t: any } = useTranslation()
 
   // const cryptoBalance = {

@@ -1,34 +1,34 @@
-import { ChangeEvent, useState } from 'react'
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import LocalFireDepartmentTwoToneIcon from '@mui/icons-material/LocalFireDepartmentTwoTone'
+import PendingTwoToneIcon from '@mui/icons-material/PendingTwoTone'
+import TimerTwoToneIcon from '@mui/icons-material/TimerTwoTone'
 import {
-  Button,
-  Typography,
-  Card,
+  Avatar,
   Box,
+  Button,
+  Card,
+  CardActions,
   CardContent,
   CardHeader,
-  Link,
-  Divider,
-  Tabs,
-  Tab,
   Chip,
+  Divider,
+  IconButton,
+  Link,
   List,
   ListItem,
-  IconButton,
   ListItemAvatar,
   ListItemText,
-  Avatar,
-  useTheme,
   Pagination,
-  CardActions,
+  Tab,
+  Tabs,
+  Typography,
+  useTheme,
 } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 import { styled } from '@mui/material/styles'
 import { useSnackbar } from 'notistack'
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import { ChangeEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Text from 'src/client/components/Text'
-import PendingTwoToneIcon from '@mui/icons-material/PendingTwoTone'
-import LocalFireDepartmentTwoToneIcon from '@mui/icons-material/LocalFireDepartmentTwoTone'
-import TimerTwoToneIcon from '@mui/icons-material/TimerTwoTone'
 
 const TabsContainerWrapper = styled(CardContent)(
   ({ theme }) => `
@@ -102,7 +102,7 @@ function RecentCourses() {
     { value: 'upcoming', label: t('Upcoming') },
   ]
 
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
+  const handleTabsChange = (_event: ChangeEvent<any>, value: string): void => {
     setCurrentTab(value)
   }
 

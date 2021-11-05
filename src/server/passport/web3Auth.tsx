@@ -4,7 +4,7 @@ import { encrypt } from 'src/server/utils/crpyto'
 
 import prisma from '../db/prisma'
 
-const web3Atuh = new Web3Strategy(async (address, done) => {
+const web3Auth = new Web3Strategy(async (address, done) => {
   try {
     const finded = await prisma.user.findUnique({
       where: {
@@ -46,8 +46,9 @@ const web3Atuh = new Web3Strategy(async (address, done) => {
       id: user.id,
     })
   } catch (error) {
+    console.log('🚀 ~ file: web3Auth.tsx ~ line 49 ~ web3Auth ~ error', error)
     done(error, null)
   }
 })
 
-export default web3Atuh
+export default web3Auth

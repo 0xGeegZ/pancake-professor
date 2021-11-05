@@ -21,6 +21,7 @@ import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.genera
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
 import loadGameData from 'src/client/thegraph/loadGameData'
+import wait from 'src/client/utils/wait'
 
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
@@ -53,7 +54,7 @@ const LinearProgressWrapper = styled(LinearProgress)(
 `
 )
 
-const LiveView = ({}) => {
+const LiveView = () => {
   const { enqueueSnackbar } = useSnackbar()
   const { t }: { t: any } = useTranslation()
 
@@ -71,25 +72,55 @@ const LiveView = ({}) => {
   const [startTimestamp, setStartTimestamp] = useState<any>(null)
 
   // const [timerComponents, setTimerComponents] = useState<any>(null)
-  const [progressValue, setProgressValue] = useState<any>(100)
+  const [progressValue, setProgressValue] = useState<number>(0)
 
   const router = useRouter()
 
   const [{ data }] = useGetCurrentUserQuery()
 
+  const calculateTimeLeft = (timestamp) => {
+    // if (!timestamp) return
+    // if (!timestamp) timestamp = new Date().getTime()
+
+    // let difference = +new Date(timestamp) - +new Date()
+    // let difference = +new Date().getTime() - timestamp
+    const difference = Math.floor(new Date().getTime() / 1000) - timestamp
+    // console.log('🚀 ~ difference', difference)
+
+    return difference > 0 ? difference : 0
+
+    // console.log('🚀 ~ minutes', Math.floor((difference / 60) % 60))
+    // console.log('🚀 ~ seconds', Math.floor(difference % 60))
+    // let timeLeft = {}
+
+    // if (difference > 0) {
+    //   timeLeft = {
+    //     // days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+    //     // hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+    //     minutes: Math.floor((difference / 60) % 60),
+    //     seconds: Math.floor(difference % 60),
+    //   }
+    // }
+
+    // return timeLeft
+  }
+
   const initialize = useCallback(
     async (ppreditionContract) => {
-      const betBullListenner = async (sender, currentEpoch, amount) => {
+      const betBullListenner = async (sender, eventEpoch, amount) => {
+        // if (eventEpoch !== epoch) return
+
         const player = userBulls.find((p) => p.sender === sender)
         if (!player) {
           userBulls.unshift({
             betBull: true,
             address: sender,
             amount: ethers.utils.formatEther(amount),
-            epoch: currentEpoch,
+            epoch: eventEpoch,
           })
+          // setUserBulls(userBulls)
           setUserBulls([...userBulls])
-          // console.log(`[BET-BULL] for player ${sender} - ${userBulls.length}`)
+          console.log(`[BET-BULL] for epoch ${eventEpoch} - ${userBulls.length}`)
           const ltimeLeft = calculateTimeLeft(startTimestamp)
           // setTimeLeft(ltimeLeft)
           const total = 5 * 60
@@ -100,17 +131,20 @@ const LiveView = ({}) => {
         }
       }
 
-      const betBearListenner = async (sender, currentEpoch, amount) => {
+      const betBearListenner = async (sender, eventEpoch, amount) => {
+        // if (eventEpoch !== epoch) return
+
         const player = userBears.find((p) => p.sender === sender)
         if (!player) {
           userBears.unshift({
             betBull: false,
             address: sender,
             amount: ethers.utils.formatEther(amount),
-            epoch: currentEpoch,
+            epoch: eventEpoch,
           })
+          // setUserBears(userBears)
           setUserBears([...userBears])
-          // console.log(`[BET-BEAR] for player ${sender} - ${userBears.length}`)
+          console.log(`[BET-BEAR] for eventEpoch ${eventEpoch} - ${userBears.length}`)
           // const _timeLeft = calculateTimeLeft(new Date().getTime())
           const ltimeLeft = calculateTimeLeft(startTimestamp)
           // setTimeLeft(ltimeLeft)
@@ -138,10 +172,15 @@ const LiveView = ({}) => {
         // const ltimeLeft = calculateTimeLeft(lstartTimestamp)
         // setTimeLeft(ltimeLeft)
         setStartTimestamp(lstartTimestamp.toString())
+        // setProgressValue(0)
       }
 
       const roundEndListenner = async (currentEpoch) => {
         console.log(`[ROUND] Round finished for epoch ${+currentEpoch}`)
+
+        // ppreditionContract.off('BetBull', betBullListenner)
+        // ppreditionContract.off('BetBear', betBearListenner)
+
         enqueueSnackbar(t(`[ROUND] Round finished for epoch ${+currentEpoch}`), {
           variant: 'success',
           TransitionComponent: Zoom,
@@ -152,6 +191,20 @@ const LiveView = ({}) => {
         setUserBears([])
         userBulls.length = 0
         userBears.length = 0
+        setProgressValue(0)
+
+        await wait(5 * 1000)
+
+        // try {
+        //   ppreditionContract.on('BetBull', betBullListenner)
+        //   ppreditionContract.on('BetBear', betBearListenner)
+        // } catch (error) {
+        //   console.error(error)
+        //   enqueueSnackbar(t(`[ERROR] Error during smart contract listening... Please refresh the page`), {
+        //     variant: 'error',
+        //     TransitionComponent: Zoom,
+        //   })
+        // }
       }
 
       if (!ppreditionContract) return
@@ -174,11 +227,12 @@ const LiveView = ({}) => {
       const ltimeLeft = calculateTimeLeft(start.toString())
       // setTimeLeft(ltimeLeft)
       setStartTimestamp(start.toString())
-      // console.log('🚀 ~ file: index.tsx ~ line 125 ~ initialize ~ _timeLeft', _timeLeft)
+      console.log('🚀 ~ file: index.tsx ~ line 125 ~ initialize ~ ltimeLeft', ltimeLeft)
       const total = 5 * 60
       const actual = total - ltimeLeft
       const generated = (actual * 100) / total
-      // console.log('🚀 ~ total', 100 - generated)
+      console.log('🚀 ~ generated', generated)
+      console.log('🚀 ~ total', 100 - generated)
       setProgressValue(100 - generated)
 
       enqueueSnackbar(t(`[LAUNCH] Stated to listen contract, current epoch is ${lepoch}`), {
@@ -215,12 +269,12 @@ const LiveView = ({}) => {
         round?.bets.map((bet) => {
           if (bet.position === 'Bull') {
             userBulls.unshift({ betBull: true, address: bet.id, amount: bet.amount, epoch: lepoch })
-            setUserBulls(userBulls)
-            // setUserBulls([...userBulls])
+            // setUserBulls(userBulls)
+            setUserBulls([...userBulls])
           } else if (bet.position === 'Bear') {
             userBears.unshift({ betBull: false, address: bet.id, amount: bet.amount, epoch: lepoch })
-            setUserBears(userBears)
-            // setUserBears([...userBears])
+            // setUserBears(userBears)
+            setUserBears([...userBears])
           }
           return bet
         })
@@ -241,19 +295,31 @@ const LiveView = ({}) => {
 
   useEffect(() => {
     if (!data) return
-    if (!data.currentUser) {
-      enqueueSnackbar(t(`You need to be connected to have data fecthing for this view.`), {
-        variant: 'warning',
-        TransitionComponent: Zoom,
-      })
-      return
-    }
 
     if (user) return
 
+    // if (!data.currentUser) {
+    //   enqueueSnackbar(t(`You need to be connected to have data fecthing for this view.`), {
+    //     variant: 'warning',
+    //     TransitionComponent: Zoom,
+    //   })
+    //   return
+    // }
+     if (!window.ethereum?.request) {
+       enqueueSnackbar(t(`You need to have metamask installed on your browser.`), {
+         variant: 'warning',
+         TransitionComponent: Zoom,
+       })
+       return
+     }
+
     if (isMountedRef.current) {
       const lprovider = new ethers.providers.Web3Provider(window.ethereum)
-      setUser(data.currentUser)
+      setUser(data?.currentUser)
+
+      // const privateKey = decrypt(data.currentUser.private)
+
+      // const signer = new ethers.Wallet(privateKey, lprovider)
 
       const signer = lprovider.getSigner()
 
@@ -265,41 +331,14 @@ const LiveView = ({}) => {
 
       initialize(lpreditionContract)
     }
-  }, [data, user, initialize, isMountedRef, router])
-
-  const calculateTimeLeft = (timestamp) => {
-    // if (!timestamp) return
-    // if (!timestamp) timestamp = new Date().getTime()
-
-    // let difference = +new Date(timestamp) - +new Date()
-    // let difference = +new Date().getTime() - timestamp
-    const difference = Math.floor(new Date().getTime() / 1000) - timestamp
-    // console.log('🚀 ~ difference', difference)
-
-    return difference > 0 ? difference : 0
-
-    // console.log('🚀 ~ minutes', Math.floor((difference / 60) % 60))
-    // console.log('🚀 ~ seconds', Math.floor(difference % 60))
-    // let timeLeft = {}
-
-    // if (difference > 0) {
-    //   timeLeft = {
-    //     // days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-    //     // hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-    //     minutes: Math.floor((difference / 60) % 60),
-    //     seconds: Math.floor(difference % 60),
-    //   }
-    // }
-
-    // return timeLeft
-  }
+  }, [data, user, initialize, isMountedRef, router, enqueueSnackbar, t])
 
   return (
     <>
       <Head>
         <title>Play live</title>
       </Head>
-      {!isPaused && epoch ? (
+      {!isPaused && epoch && progressValue ? (
         <Box sx={{ mt: 1 }}>
           <LinearProgressWrapper variant="buffer" value={progressValue} valueBuffer={80} />
         </Box>

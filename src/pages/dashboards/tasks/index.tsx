@@ -27,7 +27,7 @@ function DashboardTasks() {
     { value: 'taskSearch', label: t('Task Search') },
   ]
 
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
+  const handleTabsChange = (_event: ChangeEvent<any>, value: string): void => {
     setCurrentTab(value)
   }
 

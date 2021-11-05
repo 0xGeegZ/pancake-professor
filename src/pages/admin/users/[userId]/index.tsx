@@ -1,104 +1,71 @@
-import { Box, Grid } from '@mui/material'
+import { Box, Grid, Zoom } from '@mui/material'
 import Head from 'next/head'
+import { useRouter } from 'next/router'
+import { useSnackbar } from 'notistack'
+import { useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Footer from 'src/client/components/Footer'
 import EditProfileTab from 'src/client/components/Management/Users/Single/EditProfileTab'
+import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
+import menuItems from 'src/client/layouts/MainLayout/Sidebar/SidebarMenu/items'
+import { useGlobalStore } from 'src/client/store/swr'
+
+// import { useGetUsersQuery } from 'src/client/graphql/getUsers.generated'
 
 import type { ReactElement } from 'react'
-// import type { User } from 'src/client/models/user'
-
-// const TabsWrapper = styled(Tabs)(
-//   () => `
-//     .MuiTabs-scrollableX {
-//       overflow-x: auto !important;
-//     }
-// `
-// )
 
 function UserView() {
-  // const isMountedRef = useRefMounted()
-  // const [user, setUser] = useState<User | null>(null)
-  // const router = useRouter()
-  // const { userId } = router.query
-  // const { t }: { t: any } = useTranslation()
+  const { t }: { t: any } = useTranslation()
+  const { enqueueSnackbar } = useSnackbar()
+  const router = useRouter()
+  const isMountedRef = useRefMounted()
 
-  // const [currentTab, setCurrentTab] = useState<string>('edit_profile')
+  const [allMenuItems, setAllMenuItems] = useState<any>(null)
 
-  // const tabs = [
-  //   { value: 'edit_profile', label: t('Edit Profile') },
-  //   // { value: 'notifications', label: t('Notifications') },
-  //   // { value: 'security', label: t('Passwords/Security') }
-  // ]
+  // user special query
+  // const [{ data, fetching }] = useGetUsersQuery()
+  const { user, fetching } = useGlobalStore()
 
-  // const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
-  //   setCurrentTab(value)
-  // }
+  useEffect(() => {
+    if (!user.isAdmin) {
+      enqueueSnackbar(t(`Only for admin.`), {
+        variant: 'error',
+        TransitionComponent: Zoom,
+      })
+      router.push('/')
 
-  // const getUser = useCallback(async () => {
-  //   try {
-  //     const response = await axios.get<{ user: User }>('/api/user', {
-  //       params: {
-  //         userId,
-  //       },
-  //     })
-  //     if (isMountedRef.current) {
-  //       setUser(response.data.user)
-  //     }
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }, [userId, isMountedRef])
+      return
+    }
 
-  // useEffect(() => {
-  //   getUser()
-  // }, [getUser])
+    if (!user && !fetching) {
+      enqueueSnackbar(t(`You need to be connected to have data fecthing for this view.`), {
+        variant: 'warning',
+        TransitionComponent: Zoom,
+      })
+      return
+    }
 
-  // if (!user) {
-  //   return null;
-  // }
+    if (!user) return
+
+    if (allMenuItems) return
+
+    if (isMountedRef.current) {
+      const filtereds = user.isAdmin ? menuItems : menuItems.filter((mi) => mi.heading !== 'Admin')
+      setAllMenuItems(filtereds)
+    }
+  }, [user, fetching, router, isMountedRef, allMenuItems, enqueueSnackbar, t])
 
   return (
     <>
       <Head>
-        <title>Profile Details</title>
-        {/* <title>{user.name} - Profile Details</title> */}
+        <title>{user.address} - Profil Details</title>
       </Head>
       <Box sx={{ mt: 3 }}>
         <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
-          {/* <Grid item xs={12}>
-            <TabsWrapper
-              onChange={handleTabsChange}
-              value={currentTab}
-              variant="scrollable"
-              scrollButtons="auto"
-              textColor="primary"
-              indicatorColor="primary"
-            >
-              {tabs.map((tab) => (
-                <Tab key={tab.value} label={tab.label} value={tab.value} />
-              ))}
-            </TabsWrapper>
-          </Grid> */}
           <Grid item xs={12}>
-            <EditProfileTab isAdmin />
-            {/* {currentTab === 'activity' && <ActivityTab />} */}
-            {/* {currentTab === 'edit_profile' && <EditProfileTab isAdmin />} */}
-            {/* {currentTab === 'notifications' && <NotificationsTab />}
-            {currentTab === 'security' && <SecurityTab />} */}
+            <EditProfileTab user={user} />
           </Grid>
-          {/* <Grid item xs={12} md={8}>
-            <ProfileCover user={user} />
-          </Grid> */}
-          {/* <Grid item xs={12} md={12}>
-            <MyCards />
-          </Grid> */}
-
-          {/* <Grid item xs={12} md={4}>
-            <RecentActivity />
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <AccountSecurity />
-          </Grid> */}
         </Grid>
       </Box>
       <Footer />

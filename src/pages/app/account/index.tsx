@@ -54,7 +54,7 @@ function UserView() {
   // ]
 
   // eslint-disable-next-line @typescript-eslint/ban-types
-  // const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
+  // const handleTabsChange = (_event: ChangeEvent<any>, value: string): void => {
   //   setCurrentTab(value)
   // }
 
@@ -120,7 +120,7 @@ function UserView() {
                   </Grid>
                 </Grid>
               ) : (
-                <EditProfileTab user={user} isAdmin={false} />
+                <EditProfileTab user={user} />
               )
             }
             {/* {currentTab === 'notifications' && <NotificationsTab />}

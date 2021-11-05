@@ -71,7 +71,7 @@ const NavigationMenuItem: FC<NavigationMenuItemProps> = ({
   link,
   icon: Icon,
   badge,
-  open: openParent,
+  // open: openParent,
   active,
   name,
   ...rest

@@ -1,4 +1,3 @@
-/* eslint-disable react/jsx-props-no-spreading */
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import {
   Autocomplete,
@@ -31,8 +30,9 @@ import PageHeader from 'src/client/components/ProjectsBoard/PageHeader'
 import Results from 'src/client/components/ProjectsBoard/Results'
 import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 import { getBoard, moveTask } from 'src/client/slices/projects_board'
-import { useDispatch, useSelector } from 'src/client/store'
+import { useDispatch, useSelector } from 'src/client/store/redux'
 
+/* eslint-disable react/jsx-props-no-spreading */
 import type { ReactElement } from 'react'
 
 import type { DropResult } from 'react-beautiful-dnd'
@@ -202,7 +202,7 @@ function ApplicationsProjectsBoard() {
   ]
 
   // eslint-disable-next-line @typescript-eslint/ban-types
-  const handleTabsChange = (_event: ChangeEvent<{}>, value: string): void => {
+  const handleTabsChange = (_event: ChangeEvent<any>, value: string): void => {
     setCurrentTab(value)
   }
 

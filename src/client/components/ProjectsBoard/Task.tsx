@@ -26,10 +26,10 @@ import { formatDistance } from 'date-fns'
 import PropTypes from 'prop-types'
 import { FC, forwardRef, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'src/client/store'
+import { useSelector } from 'src/client/store/redux'
 
-import type { RootState } from 'src/client/store'
 import type { Task as TaskType, List, Member } from 'src/client/models/projects_board'
+import type { RootState } from 'src/client/store/redux'
 
 interface TaskProps {
   taskId: string
@@ -84,7 +84,8 @@ const ButtonWrapper = styled(Button)(
 `
 )
 
-const Task: FC<TaskProps> = forwardRef(({ taskId, dragging, index, list, ...rest }, ref) => {
+const Task: FC<TaskProps> = forwardRef(({ taskId, dragging, ...rest }, ref) => {
+  // const Task: FC<TaskProps> = forwardRef(({ taskId, dragging, index, list, ...rest }, ref) => {
   const task = useSelector((state) => taskSelector(state, taskId))
   const { t }: { t: any } = useTranslation()
 
@@ -194,6 +195,8 @@ const Task: FC<TaskProps> = forwardRef(({ taskId, dragging, index, list, ...rest
     </>
   )
 })
+
+Task.displayName = 'Task'
 
 Task.propTypes = {
   taskId: PropTypes.string.isRequired,

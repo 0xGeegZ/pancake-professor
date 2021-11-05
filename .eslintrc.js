@@ -1,3 +1,5 @@
+// require('@rushstack/eslint-patch/modern-module-resolution')
+
 module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -30,10 +32,10 @@ module.exports = {
     'plugin:import/errors',
     'plugin:import/warnings',
     'plugin:import/typescript',
-    'prettier',
     'next',
     'next/core-web-vitals',
     'plugin:@next/next/recommended',
+    'prettier',
   ],
   rules: {
     // allow debugger during development
@@ -42,9 +44,11 @@ module.exports = {
     'import/extensions': [0, 'never'],
     'no-shadow': ['error', { allow: ['done', 'error', 'theme', 'value'] }],
     'react/jsx-filename-extension': [0, { extensions: ['.tsx', '.jsx'] }],
-    'no-unused-vars': 0,
+    // 'no-unused-vars': 2,
+    'no-unused-vars': 'off',
+    '@typescript-eslint/no-unused-vars': ['error'],
     'no-nested-ternary': 0,
-    'react/jsx-props-no-spreading': 1,
+    'react/jsx-props-no-spreading': 0,
     'jsx-a11y/anchor-is-valid': 1,
     '@typescript-eslint/ban-types': 1,
     /* START TMP : Need to be set to 0 before going to production */
@@ -57,18 +61,19 @@ module.exports = {
     'react/display-name': 1,
     'react/jsx-key': 1,
     'react/no-array-index-key': 1,
+    'import/no-anonymous-default-export': 0,
     /* END TMP : Need to be set to 0 before going to production */
     /* React Hooks rules */
     // Checks rules of Hooks
-    'react-hooks/rules-of-hooks': 'error',
+    'react-hooks/rules-of-hooks': 2,
     // Checks effect dependencies
-    'react-hooks/exhaustive-deps': 'error',
+    'react-hooks/exhaustive-deps': 2,
     /* Functions rules */
     'consistent-return': 0,
     'import/prefer-default-export': 0,
     /* Comments rules */
     'no-warning-comments': [1, { terms: ['todo', 'fixme', 'to do', 'fix me'], location: 'start' }],
-    'no-inline-comments': 'error',
+    'no-inline-comments': 2,
     /* Console rules */
     'no-console': 0,
     /* Typescript rules */
@@ -78,7 +83,7 @@ module.exports = {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     // "@typescript-eslint/no-var-requires": "off",
     /* Special chars rules */
-    'react/no-unescaped-entities': 1,
+    'react/no-unescaped-entities': 0,
     /* Disallow imports from src/server/ in src/pages/ except for src/pages/api */
     /* (see the "overrides" section for the exception) */
     'import/no-restricted-paths': [
@@ -104,6 +109,17 @@ module.exports = {
         paths: ['./'],
       },
     },
+    // 'import/parsers': {
+    //   [require.resolve('@typescript-eslint/parser')]: ['.ts', '.tsx', '.d.ts'],
+    // },
+    // 'import/resolver': {
+    //   [require.resolve('eslint-import-resolver-node')]: {
+    //     extensions: ['.js', '.jsx', '.ts', '.tsx'],
+    //   },
+    //   [require.resolve('eslint-import-resolver-typescript')]: {
+    //     alwaysTryTypes: true,
+    //   },
+    // },
   },
   overrides: [
     {
@@ -130,5 +146,5 @@ module.exports = {
       },
     },
   ],
-  ignorePatterns: ['src/client/components/formik-material-ui/*'],
+  // ignorePatterns: ['src/client/components/formik-material-ui/*', 'src/client/graphql/generated/', 'next.config.js'],
 }

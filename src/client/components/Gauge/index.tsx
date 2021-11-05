@@ -179,7 +179,7 @@ const GaugeWrapper = styled(CircularProgressbarWithChildren)(
 )
 
 const Gauge: FC<GaugeProps> = ({
-  className = '',
+  // className = '',
   color = 'primary',
   size = 'medium',
   circleRatio,
