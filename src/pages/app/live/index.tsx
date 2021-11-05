@@ -21,7 +21,6 @@ import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.genera
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
 import loadGameData from 'src/client/thegraph/loadGameData'
-import { decrypt } from 'src/server/utils/crpyto'
 
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
@@ -54,7 +53,7 @@ const LinearProgressWrapper = styled(LinearProgress)(
 `
 )
 
-const LiveView = () => {
+const LiveView = ({}) => {
   const { enqueueSnackbar } = useSnackbar()
   const { t }: { t: any } = useTranslation()
 
@@ -75,9 +74,7 @@ const LiveView = () => {
   const [progressValue, setProgressValue] = useState<any>(100)
 
   const router = useRouter()
-  // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
-  // const [{ data, fetching, error }] = useGetCurrentUserQuery()
   const [{ data }] = useGetCurrentUserQuery()
 
   const initialize = useCallback(
@@ -249,7 +246,6 @@ const LiveView = () => {
         variant: 'warning',
         TransitionComponent: Zoom,
       })
-      // router.push('/app')
       return
     }
 
@@ -257,20 +253,15 @@ const LiveView = () => {
 
     if (isMountedRef.current) {
       const lprovider = new ethers.providers.Web3Provider(window.ethereum)
-      // setProvider(lprovider)
       setUser(data.currentUser)
 
-      const privateKey = decrypt(data.currentUser.private)
-
-      const signer = new ethers.Wallet(privateKey, lprovider)
-      // const signer = lprovider.getSigner()
+      const signer = lprovider.getSigner()
 
       const lpreditionContract = new ethers.Contract(
         process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS,
         PREDICTION_CONTRACT_ABI,
         signer
       )
-      // setPreditionContract(lpreditionContract)
 
       initialize(lpreditionContract)
     }

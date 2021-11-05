@@ -35,7 +35,7 @@ passport.serializeUser(async (u: Express.User, done) => {
   //     address,
   //   },
   // });
-  console.log('🚀 ~ serializeUser', u)
+  // console.log('🚀 ~ serializeUser', u)
 
   done(null, {
     ...u,
@@ -44,7 +44,7 @@ passport.serializeUser(async (u: Express.User, done) => {
 })
 
 passport.deserializeUser(async (user: Express.User, done) => {
-  console.log('🚀 ~ deserializeUser', user)
+  // console.log('🚀 ~ deserializeUser', user)
 
   done(null, user)
 })

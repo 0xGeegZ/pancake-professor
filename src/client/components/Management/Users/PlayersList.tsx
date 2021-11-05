@@ -40,11 +40,11 @@ import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, useRef, useState } from '
 import { useTranslation } from 'react-i18next'
 import FollowPlayerForm from 'src/client/components/Dashboards/Automation/FollowPlayerForm'
 
+import SidebarPlayerDrawer from './SidebarPlayerDrawer'
 
 import type { ReactElement } from 'react'
 
 import type { Player } from 'src/client/models/player'
-import SidebarPlayerDrawer from './SidebarPlayerDrawer'
 // import type { Player, PlayerRole } from 'src/client/models/player'
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -256,6 +256,7 @@ const applyPagination = (players: Player[], page: number, limit: number): Player
 const PlayersList: FC<PlayersListProps> = ({ user, refreshQuery, players, fetching, hasError }) => {
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
+  // const router = useRouter()
 
   // const [, createStrategie] = useCreateStrategieMutation()
 

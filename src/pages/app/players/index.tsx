@@ -1,11 +1,9 @@
 import { Box, Grid, Zoom } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { ethers } from 'ethers'
-import nc from 'next-connect'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
-import passport from 'passport'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { PREDICTION_CONTRACT_ABI } from 'src/client/abis/pancake-prediction-abi-v3'
@@ -16,21 +14,18 @@ import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 import MainLayout from 'src/client/layouts/MainLayout'
 import loadPlayers from 'src/client/thegraph/loadPlayers'
-import { decrypt } from 'src/server/utils/crpyto'
 
 // import passport from 'src/server//passport'
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
-console.log('🚀 ~ OUTSIDE -  process.env.JSON_RPC_PROVIDER', process.env.JSON_RPC_PROVIDER)
 
 const MainContentWrapper = styled(Box)(
   ({ theme }) => `
     min-height: calc(100% - ${theme.spacing(20)});
 `
 )
+// function ManagementUsers({ isPaused, epoch }) {
 function ManagementUsers() {
-  console.log('🚀 ~ COMPONENT -  process.env.JSON_RPC_PROVIDER', process.env.JSON_RPC_PROVIDER)
-
   const router = useRouter()
   const { enqueueSnackbar } = useSnackbar()
   const { t }: { t: any } = useTranslation()
@@ -54,10 +49,14 @@ function ManagementUsers() {
       setFetching(true)
       try {
         const lisPaused = await ppreditionContract.paused()
-        console.log('🚀 ~ file: index.tsx ~ line 39 ~ lisPaused', lisPaused)
-
+        if (lisPaused) {
+          enqueueSnackbar(t(`Contract is paused.`), {
+            variant: 'warning',
+            TransitionComponent: Zoom,
+          })
+          return
+        }
         const epoch = await ppreditionContract.currentEpoch()
-        console.log('🚀 ~ file: index.tsx ~ line 39 ~ epoch', epoch)
 
         const lplayers = await loadPlayers({ epoch })
         setPlayers(lplayers)
@@ -96,7 +95,6 @@ function ManagementUsers() {
         variant: 'warning',
         TransitionComponent: Zoom,
       })
-      // router.push('/app')
       return
     }
     if (user) return
@@ -106,18 +104,14 @@ function ManagementUsers() {
 
     setUser(data.currentUser)
 
-    const privateKey = decrypt(data.currentUser.private)
-
-    const signer = new ethers.Wallet(privateKey, lprovider)
-    // const signer = lprovider.getSigner()
-
-    console.log('🚀 ~ file: index.tsx ~ line 92 ~ useEffect ~ signer', signer)
+    const signer = lprovider.getSigner()
 
     const lpreditionContract = new ethers.Contract(
       process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS,
       PREDICTION_CONTRACT_ABI,
       signer
     )
+
     setPreditionContract(lpreditionContract)
 
     try {
@@ -161,47 +155,25 @@ ManagementUsers.getLayout = function getLayout(page: ReactElement) {
 
 export default ManagementUsers
 
-export const getServerSideProps = async ({ req, res }) => {
-  // // const handler = nc().use(passport.initialize())
-  // try {
-  //   // await handler.run(req, res)
-  //   await handler.apply(req, res)
-  // } catch (e) {
-  //   console.log('🚀 ~ file: index.tsx ~ line 148 ~ getServerSideProps ~ e', e)
-  //   // handle the error
-  // }
-  // console.log('🚀 ~ req', req.isAuthenticated())
+//TODO use it to load epoch from default address
+// export const getServerSideProps = async ({ req, res }) => {
+//   await handler().run(req, res)
 
-  const handler = nc().use(passport.initialize())
-  try {
-    await handler.apply(req, res)
-  } catch (e) {
-    // handle the error
-  }
-  console.log('🚀 ~ req', req.user)
-  console.log('🚀 ~ PROPS -  process.env.JSON_RPC_PROVIDER', process.env.JSON_RPC_PROVIDER)
-  // await handler.apply(req, res)
-  // await middleware.apply(req, res)
-
-  // console.log('🚀 ~ file: index.tsx ~ line 142 ~ getServerSideProps ~ req', req.isAuthenticated())
-
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  // const [{ data }] = await useGetCurrentUserQuery()
-  return {
-    props: {},
-  }
-}
-
-// export const getStaticProps = async () => {
 //   const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
-//   // eslint-disable-next-line react-hooks/rules-of-hooks
-//   // const [{ data }] = await useGetCurrentUserQuery()
-//   // console.log('🚀 ~ file: index.tsx ~ line 144 ~ getStaticProps ~ data', data)
+//   const privateKey = decrypt(req.user.private)
+
+//   const signer = new ethers.Wallet(privateKey, provider)
+
+//   const preditionContract = new ethers.Contract(
+//     process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+//     PREDICTION_CONTRACT_ABI,
+//     signer
+//   )
+
+//   const isPaused = await preditionContract.paused()
+
+//   const epoch = await preditionContract.currentEpoch()
 //   return {
-//     props: {
-//       // hostname: process.env.HOSTNAME,
-//       // port: process.env.PORT,
-//       // host: process.env.HOST,
-//     },
+//     props: { isPaused, epoch: epoch.toString() },
 //   }
 // }
