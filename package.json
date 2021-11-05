@@ -22,7 +22,8 @@
     "lint:fix": "yarn run eslint . --fix",
     "lint:next": "next lint --fix",
     "typechain": "typechain --target ethers-v5 --outDir ./src/client/contracts/types './src/client/contracts/*.json'",
-    "generate": "yarn run generate:prisma && yarn run generate:nexus && yarn run generate:genql && yarn run generate:graphql-codegen",
+    "generate": "yarn run generate:prisma && yarn run generate:nexus && yarn run generate:graphql-codegen",
+    "generate:all": "yarn run generate:prisma && yarn run generate:nexus && yarn run generate:genql && yarn run generate:graphql-codegen",
     "generate:prisma": "prisma generate",
     "generate:nexus": "cross-env GENERATE=true cross-env DOTENV_CONFIG_PATH=.env ts-node --require dotenv/config --transpile-only -P nexus.tsconfig.json src/server/graphql/schema.ts",
     "generate:genql": "cross-env GENERATE=true cross-env DOTENV_CONFIG_PATH=.env genql --require dotenv/config --schema ./src/server/graphql/schema.graphql --output ./src/client/graphql/generated/genql  --watch 'src/server/graphql/schema.graphql'",
@@ -193,6 +194,9 @@
     "ts-node": "^10.4.0",
     "typechain": "^4.0.2",
     "typescript": "^4.2.4"
+  },
+  "resolutions": {
+    "graphql": "^15.5.0"
   },
   "husky": {
     "hooks": {
