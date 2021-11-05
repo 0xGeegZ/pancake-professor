@@ -512,11 +512,23 @@ const PlayersList: FC = () => {
                           </TableCell>
                           <TableCell align="center">
                             <Typography noWrap>
-                              <Tooltip title={t('Copy')} arrow>
-                                <IconButton component={Link} onClick={handleOpenCreateForm(player.id)} color="primary">
-                                  <GamepadIcon fontSize="small" />
-                                </IconButton>
-                              </Tooltip>
+                              {!user ? (
+                                <Tooltip placement="top" title={t('You need to be connected to copy player.')} arrow>
+                                  <IconButton component={Link} color="warning">
+                                    <GamepadIcon fontSize="small" />
+                                  </IconButton>
+                                </Tooltip>
+                              ) : (
+                                <Tooltip title={t('Copy')} arrow>
+                                  <IconButton
+                                    disabled={!!user?.strategies.find((s) => s.player === player.id)}
+                                    component={Link}
+                                    onClick={handleOpenCreateForm(player.id)}
+                                    color="primary">
+                                    <GamepadIcon fontSize="small" />
+                                  </IconButton>
+                                </Tooltip>
+                              )}
                             </Typography>
                           </TableCell>
                         </TableRow>
@@ -788,14 +800,29 @@ const PlayersList: FC = () => {
                               <Box px={3} py={2}>
                                 <Grid container spacing={3}>
                                   <Grid item md={6}>
-                                    <Button
-                                      size="small"
-                                      fullWidth
-                                      disabled={!!user?.strategies.find((s) => s.player === player.id)}
-                                      variant="contained"
-                                      onClick={handleOpenCreateForm(player.id)}>
-                                      <b> {t('Copy')}</b>
-                                    </Button>
+                                    {!user ? (
+                                      <Tooltip
+                                        placement="top"
+                                        title={t('You need to be connected to copy player.')}
+                                        arrow>
+                                        <Button size="small" fullWidth variant="outlined" color="warning">
+                                          <b> {t('Copy')}</b>
+                                        </Button>
+                                      </Tooltip>
+                                    ) : (
+                                      <Button
+                                        size="small"
+                                        fullWidth
+                                        disabled={!!user?.strategies.find((s) => s.player === player.id)}
+                                        variant="contained"
+                                        onClick={handleOpenCreateForm(player.id)}>
+                                        <b>
+                                          {user?.strategies.find((s) => s.player === player.id)
+                                            ? t('Copied')
+                                            : t('Copy')}
+                                        </b>
+                                      </Button>
+                                    )}
                                   </Grid>
                                   <Grid item md={6}>
                                     <Button
