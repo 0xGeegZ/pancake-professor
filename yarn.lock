@@ -3720,10 +3720,10 @@
   resolved "https://registry.yarnpkg.com/@types/sizzle/-/sizzle-2.3.3.tgz#ff5e2f1902969d305225a047c8a0fd5c915cebef"
   integrity sha512-JYM8x9EGF163bEyhdJBpR2QX1R5naCJHC8ucJylJ3w9/CVBaskdQ8WqBf8MmQrd1kRvp/a4TS8HJ+bxzR7ZJYQ==
 
-"@types/slug@^0.9.1":
-  version "0.9.1"
-  resolved "https://registry.yarnpkg.com/@types/slug/-/slug-0.9.1.tgz#16dbf8b77d73e0a09ce51a96400878f33806ab32"
-  integrity sha512-zR/u8WFQ4/6uCIikjI00a5uB084XjgEGNRAvM4a1BL39Bw9yEiDQFiPS2DgJ8lPDkR2Qd/vZ26dCR9XqlKbDqQ==
+"@types/slug@^5.0.2":
+  version "5.0.2"
+  resolved "https://registry.yarnpkg.com/@types/slug/-/slug-5.0.2.tgz#1461545e8c23484fbded34ae6ff647c55cc09f28"
+  integrity sha512-HFyrrOlpdLESwF4iuuoM0v66uo3Wm7R5rD6iZ5Odeej0dhcp1Crx0WaOzhmr19JtzUBr5NPH2JBTwxW4XUlkkg==
 
 "@types/stack-utils@^2.0.0":
   version "2.0.1"
