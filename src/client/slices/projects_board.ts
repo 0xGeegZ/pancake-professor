@@ -6,7 +6,7 @@ import objectArray from 'src/client/utils/objectArray'
 /* eslint-disable no-param-reassign */
 import type { PayloadAction } from '@reduxjs/toolkit'
 import type { Project, Task, List, Member } from 'src/client/models/projects_board'
-import type { AppThunk } from 'scr/client/store/redux'
+import type { AppThunk } from 'src/client/store/redux'
 
 interface ProjectsBoardState {
   isLoaded: boolean

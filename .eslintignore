@@ -1,3 +1,5 @@
 **/*.generated.*
 **/*.graphql.d.ts
 **/*.graphqls.d.ts
+**/*/formik-material-ui/*
+src/client/components/formik-material-ui/*

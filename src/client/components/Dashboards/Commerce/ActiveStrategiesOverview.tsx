@@ -20,6 +20,13 @@ import { useTranslation } from 'react-i18next'
 function ActiveStrategiesOverview({ strategies }) {
   const { t }: { t: any } = useTranslation()
 
+  const getActivesStrategiesCount = () => {
+    console.log('🚀  ~ getActivesStrategiesCount', strategies.filter((s) => s.isActive).length)
+
+    if (!strategies.length) return 0
+    return `${strategies.filter((s) => s.isActive).length}`
+  }
+
   const getBankrollFromStrategies = () => {
     if (!strategies.length) return 0
 
@@ -80,7 +87,7 @@ function ActiveStrategiesOverview({ strategies }) {
                 {t('Strategies')}
               </Typography>
               <Typography variant="h3" gutterBottom>
-                {strategies.length}
+                {getActivesStrategiesCount()}
               </Typography>
               {/* <Box
                 sx={{

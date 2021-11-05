@@ -24,6 +24,9 @@ type Props = {
 }
 
 // function localStorageProvider() {
+//   console.log('🚀 ~ file: index.tsx ~ line 27 ~ localStorageProvider ~ localStorageProvider')
+//   if (typeof window === 'undefined') return
+
 //   // When initializing, we restore the data from `localStorage` into a map.
 //   const map = new Map(JSON.parse(localStorage.getItem('app-cache') || '[]'))
 
@@ -56,7 +59,7 @@ export const GlobalStateProvider: FC = ({ children }: Props) => {
       },
     })
 
-  const { data, error, mutate } = useSWR('currentUser', fetcher)
+  const { data, error, mutate, isValidating } = useSWR('currentUser', fetcher)
 
   const checkBalance = useCallback(
     async (user) => {
@@ -79,9 +82,9 @@ export const GlobalStateProvider: FC = ({ children }: Props) => {
       const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance)
       luser.generatedBalance = lgeneratedBalance
 
-      setValue({ user, error, mutate, fetching: !error && !user })
+      setValue({ user, error, mutate, fetching: isValidating })
     },
-    [error, mutate]
+    [error, mutate, isValidating]
   )
 
   const currentUser = data?.currentUser ? data?.currentUser : null
@@ -93,12 +96,22 @@ export const GlobalStateProvider: FC = ({ children }: Props) => {
 
     const updated = { ...currentUser, isAdmin: isFinded }
     checkBalance(updated)
+  } else if (!isValidating && (value.fetching || value.user)) {
+    // fetching done but no user or user logout
+    setValue({ user: null, error, mutate, fetching: isValidating })
   }
+  // else if (!isValidating && value.fetching) {
+  //   //fetching done but no user
+  //   setValue({ user: null, error, mutate, fetching: isValidating })
+  // } else if (!isValidating && value.user) {
+  //   // logout
+  //   setValue({ user: null, error, mutate, fetching: isValidating })
+  // }
   // const value = useMemo(() => ({ user, error, mutate, fetching: !error && !user }), [user, error, mutate])
-  // console.log('🚀 ~ file: index.tsx ~ line 101 ~ value', value)
 
   return (
     <SWRConfig value={{ provider: () => new Map() }}>
+      {/* <SWRConfig value={{ provider: localStorageProvider }}> */}
       <GlobalStateContext.Provider value={value}> {children} </GlobalStateContext.Provider>
     </SWRConfig>
   )

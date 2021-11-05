@@ -22,7 +22,6 @@ import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
 import loadGameData from 'src/client/thegraph/loadGameData'
 import wait from 'src/client/utils/wait'
-import { decrypt } from 'src/server/utils/crpyto'
 
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
@@ -296,25 +295,33 @@ const LiveView = () => {
 
   useEffect(() => {
     if (!data) return
-    if (!data.currentUser) {
-      enqueueSnackbar(t(`You need to be connected to have data fecthing for this view.`), {
-        variant: 'warning',
-        TransitionComponent: Zoom,
-      })
-      return
-    }
 
     if (user) return
 
+    // if (!data.currentUser) {
+    //   enqueueSnackbar(t(`You need to be connected to have data fecthing for this view.`), {
+    //     variant: 'warning',
+    //     TransitionComponent: Zoom,
+    //   })
+    //   return
+    // }
+     if (!window.ethereum?.request) {
+       enqueueSnackbar(t(`You need to have metamask installed on your browser.`), {
+         variant: 'warning',
+         TransitionComponent: Zoom,
+       })
+       return
+     }
+
     if (isMountedRef.current) {
       const lprovider = new ethers.providers.Web3Provider(window.ethereum)
-      setUser(data.currentUser)
+      setUser(data?.currentUser)
 
-      const privateKey = decrypt(data.currentUser.private)
+      // const privateKey = decrypt(data.currentUser.private)
 
-      const signer = new ethers.Wallet(privateKey, lprovider)
+      // const signer = new ethers.Wallet(privateKey, lprovider)
 
-      // const signer = lprovider.getSigner()
+      const signer = lprovider.getSigner()
 
       const lpreditionContract = new ethers.Contract(
         process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS,

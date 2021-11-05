@@ -120,7 +120,7 @@ function UserView() {
                   </Grid>
                 </Grid>
               ) : (
-                <EditProfileTab user={user} isAdmin={false} />
+                <EditProfileTab user={user} />
               )
             }
             {/* {currentTab === 'notifications' && <NotificationsTab />}

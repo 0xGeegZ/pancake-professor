@@ -2,12 +2,10 @@
 import { Box } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { ethers } from 'ethers'
-import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import PropTypes from 'prop-types'
-import { FC, ReactNode, useEffect, useState } from 'react'
+import { FC, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
-import useRefMounted from 'src/client/hooks/useRefMounted'
 import menuItems from 'src/client/layouts/MainLayout/Sidebar/SidebarMenu/items'
 import { useGlobalStore } from 'src/client/store/swr'
 
@@ -48,31 +46,28 @@ const MainContent = styled(Box)(
 
 const MainLayout: FC<MainLayoutProps> = ({ children }) => {
   const { t }: { t: any } = useTranslation()
-  const { user: data, fetching } = useGlobalStore()
+  const { user, fetching, mutate } = useGlobalStore()
+  // const isMountedRef = useRefMounted()
 
-  const isMountedRef = useRefMounted()
-
-  // const [{ data, fetching, error }] = useGetCurrentUserQuery()
-  // const [{ data, fetching }] = useGetCurrentUserQuery()
-
-  const router = useRouter()
-  const [user, setUser] = useState<any>()
-  const [allMenuItems, setAllMenuItems] = useState<any>(null)
+  // const router = useRouter()
+  // const [user, setUser] = useState<any>()
+  // const [allMenuItems, setAllMenuItems] = useState<any>(null)
 
   const { enqueueSnackbar } = useSnackbar()
 
-  useEffect(() => {
-    if (!data) return
-    if (user) return
+  // TODO to avoid rules of hooks error, need to manipulate user without useEffect.
+  // useEffect(() => {
+  //   if (!data) return
+  //   if (user) return
 
-    if (isMountedRef.current) {
-      console.log('updating data', data)
+  //   if (isMountedRef.current) {
+  //     console.log('updating data', data)
 
-      setUser(data)
-      const filtereds = data.isAdmin ? menuItems : menuItems.filter((mi) => mi.heading !== 'Admin')
-      setAllMenuItems(filtereds)
-    }
-  }, [data, user, isMountedRef])
+  //     setUser(data)
+  //     const filtereds = data.isAdmin ? menuItems : menuItems.filter((mi) => mi.heading !== 'Admin')
+  //     setAllMenuItems(filtereds)
+  //   }
+  // }, [data, user, isMountedRef])
 
   const connect = async (evt) => {
     evt.preventDefault()
@@ -110,7 +105,8 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
           enqueueSnackbar(t('Wallet succesfully connected!'), {
             variant: 'success',
           })
-          router.replace(router.asPath)
+          mutate('currentUser')
+          // router.replace(router.asPath)
         } else {
           enqueueSnackbar(t('Unexpected error occurred during authentification'), {
             variant: 'error',
@@ -137,8 +133,13 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
             enqueueSnackbar(t('Wallet succesfully unconnected!'), {
               variant: 'success',
             })
-            setUser(null)
-            router.replace(router.asPath)
+            // setUser(null)
+            // mutate('currentUser')
+            // mutate('', null)
+            mutate(null)
+            // router.replace(router.asPath)
+
+            // cache.clear()
           } else {
             enqueueSnackbar(t('Unexpected error occurred'), {
               variant: 'error',
@@ -157,7 +158,10 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
       {/* FIX HEADER ON SCROLL */}
       {/* <Sidebar fetching={fetching} error={error} allMenuItems={allMenuItems} /> */}
       {process.env.NODE_ENV === 'development' && <Banner networkId={user?.networkId} />}
-      <Sidebar fetching={fetching} allMenuItems={allMenuItems} />
+      <Sidebar
+        fetching={fetching}
+        allMenuItems={user?.isAdmin ? menuItems : menuItems.filter((mi) => mi.heading !== 'Admin')}
+      />
       <MainWrapper>
         <MainContent>
           {/* <Header connect={connect} logout={logout} user={user} balance={balance} fetching={fetching} error={error} /> */}

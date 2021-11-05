@@ -146,5 +146,5 @@ module.exports = {
       },
     },
   ],
-  ignorePatterns: ['src/client/components/formik-material-ui/*'],
+  // ignorePatterns: ['src/client/components/formik-material-ui/*', 'src/client/graphql/generated/', 'next.config.js'],
 }

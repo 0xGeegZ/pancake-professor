@@ -70,7 +70,7 @@ const CardActiveStrategies = styled(Card)(
 
       &.Mui-active {
         background: ${theme.palette.secondary.light};
-        border: 2px solid ${theme.palette.primary.main};
+        border: 1px solid ${theme.palette.primary.main};
         color: ${theme.palette.primary.contrastText};
         box-shadow: ${theme.colors.shadows.primary};
 
@@ -171,6 +171,7 @@ const LinearProgressWrapper = styled(LinearProgress)(
 function ActiveStrategies({ strategies: pstrategies }) {
   const { t }: { t: any } = useTranslation()
   // const theme = useTheme()
+  // const { mutate } = useGlobalStore()
 
   const [, toogleActivateStrategie] = useToogleActivateStrategieMutation()
   const { enqueueSnackbar } = useSnackbar()
@@ -201,16 +202,6 @@ function ActiveStrategies({ strategies: pstrategies }) {
   const [openLocation, setOpenMenuLocation] = useState<boolean>(false)
 
   const handleChange = (strategie) => async () => {
-    const { error } = await toogleActivateStrategie({ id: strategie.id })
-
-    if (error) {
-      enqueueSnackbar(t(`Unexpected error during strategie ${strategie.isActive ? 'activation' : 'desactivation'}.`), {
-        variant: 'error',
-        TransitionComponent: Zoom,
-      })
-      return
-    }
-
     const updateds = strategies.map((s) => {
       const updated = s
       if (updated.id === strategie.id) updated.isActive = !updated.isActive
@@ -218,10 +209,32 @@ function ActiveStrategies({ strategies: pstrategies }) {
       return updated
     })
     setStrategies(updateds)
+
+    const { error } = await toogleActivateStrategie({ id: strategie.id })
+
+    if (error) {
+      enqueueSnackbar(t(`Unexpected error during strategie ${strategie.isActive ? 'activation' : 'desactivation'}.`), {
+        variant: 'error',
+        TransitionComponent: Zoom,
+      })
+      // need to rollback
+      return
+    }
+
+    // const updateds = strategies.map((s) => {
+    //   const updated = s
+    //   if (updated.id === strategie.id) updated.isActive = !updated.isActive
+
+    //   return updated
+    // })
+    // setStrategies(updateds)
     enqueueSnackbar(t(`Stratégie successfully ${strategie.isActive ? 'activated' : 'desactivated'}.`), {
       variant: 'success',
       TransitionComponent: Zoom,
     })
+    // mutate('currentUser', (user) => {
+    //   return { ...user, strategies: updateds }
+    // })
   }
 
   useEffect(() => {
@@ -230,7 +243,14 @@ function ActiveStrategies({ strategies: pstrategies }) {
       return
     }
 
-    setStrategies(pstrategies)
+    setStrategies(
+      pstrategies.sort((x, y) => {
+        // true values first
+        return x.isActive === y.isActive ? 0 : x.isActive ? -1 : 1
+        // false values first
+        // return (x.isActive === y.isActive)? 0 : x.isActive? 1 : -1;
+      })
+    )
   }, [pstrategies, strategies])
 
   const getStrategieDuraction = (strategie) => {

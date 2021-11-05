@@ -51,12 +51,10 @@ import loadPlayers from 'src/client/thegraph/loadPlayers'
 
 import SidebarPlayerDrawer from './SidebarPlayerDrawer'
 
-import type { User } from 'src/client/models/user'
-
 import type { ReactElement } from 'react'
 
 import type { Player } from 'src/client/models/player'
-// import type { Player, PlayerRole } from 'src/client/models/player'
+
 const DialogWrapper = styled(Dialog)(
   () => `
       .MuiDialog-paper {
@@ -75,25 +73,6 @@ const DotLegend = styled('span')(
 `
 )
 
-// const AvatarPrimary = styled(Avatar)(
-//   ({ theme }) => `
-//       background-color: ${theme.colors.primary.lighter};
-//       color: ${theme.colors.primary.main};
-//       width: ${theme.spacing(5)};
-//       height: ${theme.spacing(5)};
-// `
-// )
-
-// const AvatarWarning = styled(Avatar)(
-//   ({ theme }) => `
-//       background-color: ${theme.colors.warning.main};
-//       color:  ${theme.palette.primary.contrastText};
-//       width: ${theme.spacing(8)};
-//       height: ${theme.spacing(8)};
-//       box-shadow: ${theme.colors.shadows.warning};
-// `
-// )
-
 const AvatarError = styled(Avatar)(
   ({ theme }) => `
       background-color: ${theme.colors.error.lighter};
@@ -106,13 +85,6 @@ const AvatarError = styled(Avatar)(
       }
 `
 )
-
-// const AvatarWrapper = styled(Avatar)(
-//   ({ theme }) => `
-//     width: ${theme.spacing(8)};
-//     height: ${theme.spacing(8)};
-// `
-// )
 
 const CardWrapper = styled(Card)(
   ({ theme }) => `
@@ -149,21 +121,6 @@ const ButtonError = styled(Button)(
     `
 )
 
-// const TabsWrapper = styled(Tabs)(
-//   ({ theme }) => `
-
-//     @media (max-width: ${theme.breakpoints.values.md}px) {
-//       .MuiTabs-scrollableX {
-//         overflow-x: auto !important;
-//       }
-
-//       .MuiTabs-indicator {
-//           box-shadow: none;
-//       }
-//     }
-//     `
-// )
-
 const LinearProgressWrapper = styled(LinearProgress)(
   ({ theme }) => `
         flex-grow: 1;
@@ -181,108 +138,26 @@ const LinearProgressWrapper = styled(LinearProgress)(
 `
 )
 
-interface PlayersListProps {
-  user: {
-    strategies: [
-      {
-        player: string
-      }
-    ]
-  }
-  players: Player[]
-  fetching: boolean
-  refreshQuery: any
-  hasError: boolean
-}
-
-// interface Filters {
-//   role?: PlayerRole
-// }
-
 /* eslint-disable */
 const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
   <Slide direction="down" ref={ref} {...props} />
 ))
 /* eslint-enable */
 
-// const getPlayerRoleLabel = (playerRole: PlayerRole): JSX.Element => {
-//   const map = {
-//     admin: {
-//       text: 'Administrator',
-//       color: 'error',
-//     },
-//     customer: {
-//       text: 'Customer',
-//       color: 'info',
-//     },
-//     subscriber: {
-//       text: 'Waiting List',
-//       color: 'warning',
-//     },
-//   }
-
-//   const { text, color }: any = map[playerRole]
-
-//   return <Label color={color}>{text}</Label>
-// }
-
-// const applyFilters = (players: Player[], query: string, filters: Filters): Player[] =>
-//   players.filter((player) => {
-//     let matches = true
-
-//     if (query) {
-//       const properties = ['email', 'name', 'address', 'generated']
-//       // const properties = ['email', 'name', 'playername']
-//       let containsQuery = false
-
-//       properties.forEach((property) => {
-//         if (player[property].toLowerCase().includes(query.toLowerCase())) {
-//           containsQuery = true
-//         }
-//       })
-
-//       // if (filters.role && player.role !== filters.role) {
-//       //   matches = false
-//       // }
-
-//       if (!containsQuery) {
-//         matches = false
-//       }
-//     }
-
-//     Object.keys(filters).forEach((key) => {
-//       const value = filters[key]
-
-//       if (value && player[key] !== value) {
-//         matches = false
-//       }
-//     })
-
-//     return matches
-//   })
-
 const applyPagination = (players: Player[], page: number, limit: number): Player[] =>
   players.slice(page * limit, page * limit + limit)
 
-// const PlayersList: FC = ({ user, refreshQuery, players, fetching, hasError }) => {
-// const PlayersList: FC<PlayersListProps> = ({ user: tmp, refreshQuery, players, fetching, hasError }) => {
-const PlayersList: FC<PlayersListProps> = () => {
+const PlayersList: FC = () => {
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
-
   const { enqueueSnackbar } = useSnackbar()
 
   const [fetching, setFetching] = useState<boolean>(false)
   const [players, setPlayers] = useState<any[]>([])
   const [hasError, setHasError] = useState<boolean>(false)
-
-  // const [user, setUser] = useState<User | any>(null)
   const [preditionContract, setPreditionContract] = useState<any>(null)
-  const [provider, setProvider] = useState<ethers.providers.Web3Provider>(null)
 
   const { user, mutate, fetching: userFetching } = useGlobalStore()
-
-  // const [{ data }] = useGetCurrentUserQuery()
 
   const getPlayers = useCallback(
     async (ppreditionContract) => {
@@ -333,22 +208,24 @@ const PlayersList: FC<PlayersListProps> = () => {
   )
 
   useEffect(() => {
-    if (!user && !userFetching) {
-      // return
-      // if (!data?.currentUser) {
-      enqueueSnackbar(t(`You need to be connected to have data fecthing for this view.`), {
+    if (preditionContract) return
+
+    // if (!user && !userFetching) {
+    //   enqueueSnackbar(t(`You need to be connected to have data fecthing for this view.`), {
+    //     variant: 'warning',
+    //     TransitionComponent: Zoom,
+    //   })
+    //   return
+    // }
+    if (!window.ethereum?.request) {
+      enqueueSnackbar(t(`You need to have metamask installed on your browser.`), {
         variant: 'warning',
         TransitionComponent: Zoom,
       })
       return
     }
-    // if (user) return
-    if (provider) return
 
     const lprovider = new ethers.providers.Web3Provider(window.ethereum)
-    setProvider(lprovider)
-
-    // setUser(data)
 
     const signer = lprovider.getSigner()
 
@@ -365,11 +242,7 @@ const PlayersList: FC<PlayersListProps> = () => {
     } catch (err) {
       setHasError(true)
     }
-  }, [getPlayers, provider, user, preditionContract, enqueueSnackbar, t, userFetching])
-
-  // const router = useRouter()
-
-  // const [, createStrategie] = useCreateStrategieMutation()
+  }, [getPlayers, user, preditionContract, enqueueSnackbar, t, userFetching])
 
   const ordersBy = [
     {
@@ -398,65 +271,8 @@ const PlayersList: FC<PlayersListProps> = () => {
   const [openOrderBy, setOpenMenuOrderBy] = useState<boolean>(false)
   const [orderBy, setOrderBy] = useState<string>(ordersBy[1].text)
 
-  // const [selectedItems, setSelectedPlayers] = useState<string[]>([])
-
-  // const tabs = [
-  //   {
-  //     value: 'all',
-  //     label: t('All players'),
-  //   },
-  //   // {
-  //   //   value: 'customer',
-  //   //   label: t('Customers'),
-  //   // },
-  //   // {
-  //   //   value: 'admin',
-  //   //   label: t('Administrators'),
-  //   // },
-  //   // {
-  //   //   value: 'subscriber',
-  //   //   label: t('Waiting List'),
-  //   // },
-  // ]
-
   const [page, setPage] = useState<number>(0)
   const [limit, setLimit] = useState<number>(10)
-  // const [query, setQuery] = useState<string>('')
-  // const [filters, setFilters] = useState<Filters>({
-  //   role: null,
-  // })
-
-  // const handleTabsChange = (_event: SyntheticEvent, tabsValue: unknown) => {
-  //   let value = null
-
-  //   if (tabsValue !== 'all') {
-  //     value = tabsValue
-  //   }
-
-  //   setFilters((prevFilters) => ({
-  //     ...prevFilters,
-  //     role: value,
-  //   }))
-
-  //   setSelectedPlayers([])
-  // }
-
-  // const handleQueryChange = (event: ChangeEvent<HTMLInputElement>): void => {
-  //   event.persist()
-  //   setQuery(event.target.value)
-  // }
-
-  // const handleSelectAllPlayers = (event: ChangeEvent<HTMLInputElement>): void => {
-  //   setSelectedPlayers(event.target.checked ? players.map((player) => player.id) : [])
-  // }
-
-  // const handleSelectOnePlayer = (_event: ChangeEvent<HTMLInputElement>, playerId: string): void => {
-  //   if (!selectedItems.includes(playerId)) {
-  //     setSelectedPlayers((prevSelected) => [...prevSelected, playerId])
-  //   } else {
-  //     setSelectedPlayers((prevSelected) => prevSelected.filter((id) => id !== playerId))
-  //   }
-  // }
 
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage)
@@ -466,23 +282,8 @@ const PlayersList: FC<PlayersListProps> = () => {
     setLimit(+event.target.value)
   }
 
-  // const updateQuery = useCallback(async () => {
-  //   try {
-  //     await refreshQuery({ orderBy })
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }, [])
-
   // const filteredPlayers = applyFilters(players, query, filters)
   const paginatedPlayers = applyPagination(players, page, limit)
-  // const selectedBulkActions = selectedItems.length > 0
-  // const selectedSomePlayers = selectedItems.length > 0 && selectedItems.length < players.length
-  // const selectedAllPlayers = selectedItems.length === players.length
-
-  // useEffect(() => {
-  //   console.log('🚀 ~ Player list effect')
-  // })
 
   const [toggleView, setToggleView] = useState<string | null>('grid_view')
 
@@ -491,10 +292,6 @@ const PlayersList: FC<PlayersListProps> = () => {
   }
 
   const [openConfirmDelete, setOpenConfirmDelete] = useState(false)
-
-  // const handleConfirmDelete = () => {
-  //   setOpenConfirmDelete(true)
-  // }
 
   const closeConfirmDelete = () => {
     setOpenConfirmDelete(false)
@@ -522,7 +319,6 @@ const PlayersList: FC<PlayersListProps> = () => {
   const [openCreateForm, setOpenCreateForm] = useState(false)
   const [activePlayer, setActivePlayer] = useState('')
 
-  // const handleOpenCreateForm = (pactivePlayer) => {
   const handleOpenCreateForm = (pactivePlayer: string) => () => {
     setOpenCreateForm(true)
     setActivePlayer(pactivePlayer)
@@ -541,16 +337,6 @@ const PlayersList: FC<PlayersListProps> = () => {
         flexDirection={{ xs: 'column', sm: 'row' }}
         justifyContent={{ xs: 'center', sm: 'space-between' }}
         pb={3}>
-        {/* <TabsWrapper
-          onChange={handleTabsChange}
-          scrollButtons="auto"
-          textColor="secondary"
-          value={filters.role || 'all'}
-          variant="scrollable">
-          {tabs.map((tab) => (
-            <Tab key={tab.value} value={tab.value} label={tab.label} />
-          ))}
-        </TabsWrapper> */}
         <CardHeader
           action={
             <>
@@ -601,29 +387,6 @@ const PlayersList: FC<PlayersListProps> = () => {
       </Box>
       {toggleView === 'table_view' && (
         <Card>
-          {/* <Box p={2}>
-            {!selectedBulkActions && (
-              <TextField
-                sx={{ m: 0 }}
-                InputProps={{
-                  startAdornment: (
-                    <InputAdornment position="start">
-                      <SearchTwoToneIcon />
-                    </InputAdornment>
-                  ),
-                }}
-                onChange={handleQueryChange}
-                placeholder={t('Search by name, email or address...')}
-                value={query}
-                size="small"
-                fullWidth
-                margin="normal"
-                variant="outlined"
-              />
-            )}
-            {selectedBulkActions && <BulkActions />}
-          </Box> */}
-
           <Divider />
 
           {paginatedPlayers.length === 0 ? (
@@ -779,51 +542,6 @@ const PlayersList: FC<PlayersListProps> = () => {
       )}
       {toggleView === 'grid_view' && (
         <>
-          {/* {!fetching && paginatedPlayers.length !== 0 ? (
-            <Card sx={{ p: 2, mb: 3 }}>
-              <Box display="flex" alignItems="center" justifyContent="space-between">
-                {/* {paginatedPlayers.length !== 0 && ( */}
-          {/* <>
-                  <Box display="flex" alignItems="center">
-                    <Tooltip arrow placement="top" title={t('Select all players')}>
-                      <Checkbox
-                        checked={selectedAllPlayers}
-                        indeterminate={selectedSomePlayers}
-                        onChange={handleSelectAllPlayers}
-                      />
-                    </Tooltip>
-                  </Box>
-                  {selectedBulkActions && (
-                    <Box flex={1} pl={2}>
-                      <BulkActions />
-                    </Box>
-                  )}
-                </> */}
-          {/* // )} */}
-          {/* {!selectedBulkActions && (
-                <TextField
-                  sx={{ my: 0, ml: paginatedPlayers.length !== 0 ? 2 : 0 }}
-                  fullWidth
-                  InputProps={{
-                    startAdornment: (
-                      <InputAdornment position="start">
-                        <SearchTwoToneIcon />
-                      </InputAdornment>
-                    ),
-                  }}
-                  onChange={handleQueryChange}
-                  placeholder={t('Search by name, email or address...')}
-                  value={query}
-                  size="small"
-                  margin="normal"
-                  variant="outlined"
-                />
-              )} */}
-          {/* </Box>
-            </Card>
-          ) : (
-            <></> 
-          )} */}
           {paginatedPlayers.length === 0 ? (
             fetching ? (
               <>
@@ -877,8 +595,6 @@ const PlayersList: FC<PlayersListProps> = () => {
             <>
               <Grid container spacing={3}>
                 {paginatedPlayers.map((player) => {
-                  // const isPlayerSelected = selectedItems.includes(player.id)
-
                   return (
                     <Grid item xs={12} sm={6} md={4} key={player.id}>
                       <CardWrapper>
@@ -943,7 +659,6 @@ const PlayersList: FC<PlayersListProps> = () => {
                                             </Typography>
                                             <LinearProgressWrapper
                                               value={+player.winRate}
-                                              // color="primary"
                                               color={
                                                 (+player.winRate * 100) / 100 >= 60
                                                   ? 'success'
@@ -960,8 +675,6 @@ const PlayersList: FC<PlayersListProps> = () => {
                                             {t('Total Bets')}
                                           </Typography>
                                           <Box display="flex" alignItems="center">
-                                            {/* <AvatarPrimary> */}
-                                            {/* <WorkTwoToneIcon /> */}
                                             <DotLegend
                                               style={{
                                                 background:
@@ -972,7 +685,6 @@ const PlayersList: FC<PlayersListProps> = () => {
                                                     : theme.colors.error.main,
                                               }}
                                             />
-                                            {/* </AvatarPrimary> */}
                                             <Typography variant="h3" sx={{ pl: 1 }} component="div">
                                               {player.totalBets}
                                             </Typography>
@@ -997,7 +709,6 @@ const PlayersList: FC<PlayersListProps> = () => {
                                             </Typography>
                                             <LinearProgressWrapper
                                               value={(player.recentGames * 100) / 288}
-                                              // color="primary"
                                               color={
                                                 (player.recentGames * 100) / 288 >= 30
                                                   ? 'success'
@@ -1036,7 +747,6 @@ const PlayersList: FC<PlayersListProps> = () => {
                                             </Typography>
                                             <LinearProgressWrapper
                                               value={+player.winRate}
-                                              // color="primary"
                                               color={
                                                 (+player.winRate * 100) / 100 >= 60
                                                   ? 'success'
@@ -1053,8 +763,6 @@ const PlayersList: FC<PlayersListProps> = () => {
                                             {t('Total Bets')}
                                           </Typography>
                                           <Box display="flex" alignItems="center">
-                                            {/* <AvatarPrimary> */}
-                                            {/* <WorkTwoToneIcon /> */}
                                             <DotLegend
                                               style={{
                                                 background:
@@ -1065,7 +773,6 @@ const PlayersList: FC<PlayersListProps> = () => {
                                                     : theme.colors.error.main,
                                               }}
                                             />
-                                            {/* </AvatarPrimary> */}
                                             <Typography variant="h3" sx={{ pl: 1 }} component="div">
                                               {player.totalBets}
                                             </Typography>
@@ -1081,7 +788,6 @@ const PlayersList: FC<PlayersListProps> = () => {
                               <Box px={3} py={2}>
                                 <Grid container spacing={3}>
                                   <Grid item md={6}>
-                                    {/* <Button size="small" fullWidth variant="contained"> */}
                                     <Button
                                       size="small"
                                       fullWidth
