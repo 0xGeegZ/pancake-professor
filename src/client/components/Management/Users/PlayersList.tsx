@@ -1,6 +1,7 @@
 /* eslint-disable import/order */
 import 'moment-timezone'
 
+import { PREDICTION_CONTRACT_ABI } from '@/client/contracts/abis/pancake-prediction-abi-v3'
 import CloseIcon from '@mui/icons-material/Close'
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 import GamepadIcon from '@mui/icons-material/Gamepad'
@@ -47,7 +48,6 @@ import Moment from 'react-moment'
 import FollowPlayerForm from 'src/client/components/Dashboards/Automation/FollowPlayerForm'
 import { useGlobalStore } from 'src/client/store/swr'
 import loadPlayers from 'src/client/thegraph/loadPlayers'
-import { PREDICTION_CONTRACT_ABI } from 'src/contracts/abis/pancake-prediction-abi-v3'
 
 import SidebarPlayerDrawer from './SidebarPlayerDrawer'
 

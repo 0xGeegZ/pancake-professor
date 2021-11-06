@@ -16,12 +16,12 @@ import FollowPlayersPromotion from 'src/client/components/Dashboards/Healthcare/
 import ActiveLiveBets from 'src/client/components/Dashboards/Healthcare/hospital/ActiveLiveBets'
 import LiveActivePlayers from 'src/client/components/Dashboards/Learning/LiveActivePlayers'
 import Footer from 'src/client/components/Footer'
+import { PREDICTION_CONTRACT_ABI } from 'src/client/contracts/abis/pancake-prediction-abi-v3'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
 import loadGameData from 'src/client/thegraph/loadGameData'
 import wait from 'src/client/utils/wait'
-import { PREDICTION_CONTRACT_ABI } from 'src/contracts/abis/pancake-prediction-abi-v3'
 
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'

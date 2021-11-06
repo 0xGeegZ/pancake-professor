@@ -10,10 +10,6 @@
   "scripts": {
     "predev": "yarn run generate",
     "dev": "next dev",
-    "dev:queue:bkp": "concurrently 'next dev' 'node -e \"src/server/queues/launch-strategies.ts\"'",
-    "dev:queue:local:V0": "concurrently 'cross-env DOTENV_CONFIG_PATH=.env ts-node --require dotenv/config --transpile-only -P src/server/queues/launch-strategies/index.ts'",
-    "dev:queue:local:V1": "ts-node -e 'require(\"./src/server/queues/launch-strategies/index.ts\")'",
-    "dev:queue:local": "node --loader ts-node/esm ./src/server/queues/launch-strategies/index.ts",
     "dev:queue:quirrel": "concurrently 'next dev' 'quirrel'",
     "quirrel:ui": "quirrel ui",
     "prebuild": "yarn run generate",

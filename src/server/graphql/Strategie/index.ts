@@ -1,6 +1,7 @@
 import { booleanArg, extendType, intArg, nonNull, objectType, stringArg } from 'nexus'
-import { launchStrategie, launchStrategieQueue } from 'src/pages/api/queues/launch-strategie'
-import prisma from 'src/server/db/prisma'
+
+import { launchStrategie, launchStrategieQueue } from '../../../pages/api/queues/launch-strategie'
+import prisma from '../../db/prisma'
 
 const Strategie = objectType({
   name: 'Strategie',

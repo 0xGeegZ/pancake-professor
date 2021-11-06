@@ -2,11 +2,15 @@
 import BlocknativeSdk from 'bnc-sdk'
 import { ethers } from 'ethers'
 import { Queue } from 'quirrel/next'
-import { PREDICTION_CONTRACT_ABI } from 'src/contracts/abis/pancake-prediction-abi-v3'
-import { decrypt } from 'src/server/utils/crpyto'
-import logger from 'src/server/utils/logger'
 import WebSocket from 'ws'
 
+import { PREDICTION_CONTRACT_ABI } from '../../../../client/contracts/abis/pancake-prediction-abi-v3'
+import { decrypt } from '../../../../server/utils/crpyto'
+import logger from '../../../../server/utils/logger'
+
+// import { PREDICTION_CONTRACT_ABI } from 'src/contracts/abis/pancake-prediction-abi-v3'
+// import { decrypt } from 'src/server/utils/crpyto'
+// import logger from 'src/server/utils/logger'
 const BET_BULL_METHOD_ID = '0x57fb096f'
 const BET_BEAR_METHOD_ID = '0xaa6b873a'
 const CLAIM_BEAR_METHOD_ID = '0x6ba4c138'
