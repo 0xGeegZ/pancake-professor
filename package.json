@@ -1,17 +1,20 @@
 {
-  "name": "tokyo-nextjs-admin-dashboard",
+  "name": "pancake-professor",
   "version": "1.0.0",
   "title": "Pancake Professor",
-  "description": "Production-ready updated admin dashboard powered by React and Material-UI built on NextJS features hundreds of components and examples that will help you build faster and better apps.",
+  "description": "Play to pancake prediction like the best players",
   "author": {
-    "name": "BloomUI.com",
-    "url": "https://bloomui.com"
+    "name": "GeegZ"
   },
   "private": true,
   "scripts": {
     "predev": "yarn run generate",
     "dev": "next dev",
-    "dev:quirrel": "concurrently 'next dev' 'quirrel'",
+    "dev:queue:bkp": "concurrently 'next dev' 'node -e \"src/server/queues/launch-strategies.ts\"'",
+    "dev:queue:local:V0": "concurrently 'cross-env DOTENV_CONFIG_PATH=.env ts-node --require dotenv/config --transpile-only -P src/server/queues/launch-strategies/index.ts'",
+    "dev:queue:local:V1": "ts-node -e 'require(\"./src/server/queues/launch-strategies/index.ts\")'",
+    "dev:queue:local": "node --loader ts-node/esm ./src/server/queues/launch-strategies/index.ts",
+    "dev:queue:quirrel": "concurrently 'next dev' 'quirrel'",
     "quirrel:ui": "quirrel ui",
     "prebuild": "yarn run generate",
     "build": "next build",
@@ -62,6 +65,7 @@
     "apollo-server-micro": "^2.21.2",
     "axios": "0.23.0",
     "axios-mock-adapter": "1.20.0",
+    "bnc-sdk": "^3.7.0",
     "chart.js": "2.9.4",
     "cloudinary-react": "^1.7.0",
     "clsx": "1.1.1",
@@ -137,6 +141,7 @@
     "urql": "^2.0.3",
     "uuid": "8.3.2",
     "winston": "^3.3.3",
+    "ws": "^8.2.3",
     "yup": "0.32.11"
   },
   "devDependencies": {

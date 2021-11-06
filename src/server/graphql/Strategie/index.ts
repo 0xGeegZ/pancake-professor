@@ -1,8 +1,6 @@
-// src/server/graphql/Strategie/index.ts
 import { booleanArg, extendType, intArg, nonNull, objectType, stringArg } from 'nexus'
-import LaunchStrategieQueue from 'src/pages/api/queues/launch-strategie'
-
-import prisma from '../../db/prisma'
+import { launchStrategie, launchStrategieQueue } from 'src/pages/api/queues/launch-strategie'
+import prisma from 'src/server/db/prisma'
 
 const Strategie = objectType({
   name: 'Strategie',
@@ -82,19 +80,25 @@ const mutations = extendType({
           },
         })
 
-        console.log('Launching test Job with Quirrel')
-        await LaunchStrategieQueue.enqueue(strategie.id, {
-          id: strategie.id,
-          // make sure only one job is executed at once
-          exclusive: true,
-          // if another job with that ID already exists, override it
-          override: true,
-          // repeat every hour if strategie fail
-          repeat: {
-            every: '1d',
-            times: 24,
-          },
-        })
+        console.log('Launching test Job with Quirrel', process.env.NODE_ENV)
+        const payload = { user: ctx.user, strategie }
+        if (process.env.NODE_ENV === 'development') {
+          await launchStrategie(payload)
+        } else {
+          const options = {
+            id: strategie.id,
+            // make sure only one job is executed at once
+            exclusive: true,
+            // if another job with that ID already exists, override it
+            override: true,
+            // repeat every hour if strategie fail
+            repeat: {
+              every: '1d',
+              times: 24,
+            },
+          }
+          await launchStrategieQueue.enqueue(payload, options)
+        }
         return strategie
       },
     })
