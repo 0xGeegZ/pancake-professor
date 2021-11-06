@@ -55,6 +55,19 @@ const MyApp: FC<MyAppProps> = (props: MyAppProps) => {
   Router.events.on('routeChangeError', nProgress.done)
   Router.events.on('routeChangeComplete', nProgress.done)
 
+  // fetch(`/api/queues/launch-strategies`, {
+  //   method: `POST`,
+  //   headers: { 'Content-Type': 'application/json' },
+  // })
+  //   .then((res) => res.json())
+  //   .then((json) => {
+  //     if (json.success) {
+  //       console.log('Strategies successfully loaded locally!')
+  //     } else {
+  //       console.error('Unexpected error occurred during strategies launching')
+  //     }
+  //   })
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>

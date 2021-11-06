@@ -4,7 +4,8 @@ import { ethers } from 'ethers'
 import { Queue } from 'quirrel/next'
 import WebSocket from 'ws'
 
-import { PREDICTION_CONTRACT_ABI } from '../../../../client/contracts/abis/pancake-prediction-abi-v3'
+import { PREDICTION_CONTRACT_ABI } from '../../../../contracts/abis/pancake-prediction-abi-v3'
+import prisma from '../../../../server/db/prisma'
 import { decrypt } from '../../../../server/utils/crpyto'
 import logger from '../../../../server/utils/logger'
 
@@ -29,8 +30,6 @@ const options = {
   },
 }
 
-const blocknative = new BlocknativeSdk(options)
-
 // https://docs.quirrel.dev/api/queue
 
 export const launchStrategie = async (payload: any) => {
@@ -43,9 +42,17 @@ export const launchStrategie = async (payload: any) => {
 
   if (!user) throw new Error('No user given')
   if (!strategie) throw new Error('No strategie given')
+  if (strategie.running) throw new Error('Strategie is running')
 
+  await prisma.strategie.update({
+    where: { id: strategie.id },
+    data: {
+      isRunning: true,
+    },
+  })
   // TODO update user to isplaying True.
   logger.info(`[LAUNCHING] Job launching job for strategie ${strategie.id} and user ${user.id}`)
+  const blocknative = new BlocknativeSdk(options)
 
   // const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
   const betRound = async ({ epoch, betBull, betAmount }) => {
@@ -76,7 +83,8 @@ export const launchStrategie = async (payload: any) => {
 
     const gasPrice = await provider.getGasPrice()
 
-    if (+amount === 0) return logger.error('[PLAYING] Bet amount is 0')
+    // eslint-disable-next-line eqeqeq
+    if (!(+amount != 0)) return logger.error('[PLAYING] Bet amount is 0')
 
     try {
       const tx = await preditionContract[betBullOrBear](epoch.toString(), {
@@ -235,11 +243,20 @@ export const launchStrategie = async (payload: any) => {
 }
 
 // export default Queue('api/jobs/launch-strategie', launchStrategie, {
-export const launchStrategieQueue = Queue('api/jobs/launch-strategie', launchStrategie, {
-  // export default Queue('api/jobs/launch-strategie', launchStrategie, {
-  // if execution fails, it will be retried
-  // 10s, 1min and 2mins after the scheduled date
-  // retry: ['10s', '1min', '2min'],
-})
+export const launchStrategieQueue = Queue(
+  'api/jobs/launch-strategie',
+  async ({ json: payload }) => {
+    console.log('🚀 ~ file: index.ts ~ line 249 ~ payload', payload)
+
+    const { user, strategie } = payload
+    await launchStrategie({ user, strategie })
+  },
+  {
+    // export default Queue('api/jobs/launch-strategie', launchStrategie, {
+    // if execution fails, it will be retried
+    // 10s, 1min and 2mins after the scheduled date
+    // retry: ['10s', '1min', '2min'],
+  }
+)
 
 // export { launchStrategie, LaunchStrategieQueue }

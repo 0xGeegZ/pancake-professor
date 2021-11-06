@@ -44,6 +44,8 @@ yarn-error.log*
 **/*.generated.*
 **/*.graphql.d.ts
 **/*.graphqls.d.ts
+**/graphql/generated/*
+
 
 !.vscode
 
