@@ -1,4 +1,4 @@
-import crypto from 'crypto'
+const crypto = require('crypto')
 
 // Must be 256 bits (32 characters)
 const ENCRYPTION_KEY = process.env.NEXT_PUBLIC_ADDRESS_SECRET_KEY || process.env.ADDRESS_SECRET_KEY
@@ -27,4 +27,7 @@ const decrypt = (hash) => {
   return decrypted.toString()
 }
 
-export { encrypt, decrypt }
+module.exports = {
+  encrypt,
+  decrypt,
+}

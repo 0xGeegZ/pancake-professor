@@ -8,7 +8,6 @@ import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { PREDICTION_CONTRACT_ABI } from 'src/client/abis/pancake-prediction-abi-v3'
 import ActiveTotalAmount from 'src/client/components/Dashboards/Commerce/ActiveTotalAmount'
 import ActiveTotalBears from 'src/client/components/Dashboards/Commerce/ActiveTotalBears'
 import ActiveTotalBets from 'src/client/components/Dashboards/Commerce/ActiveTotalBets'
@@ -22,6 +21,7 @@ import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
 import loadGameData from 'src/client/thegraph/loadGameData'
 import wait from 'src/client/utils/wait'
+import { PREDICTION_CONTRACT_ABI } from 'src/contracts/abis/pancake-prediction-abi-v3'
 
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
@@ -305,13 +305,13 @@ const LiveView = () => {
     //   })
     //   return
     // }
-     if (!window.ethereum?.request) {
-       enqueueSnackbar(t(`You need to have metamask installed on your browser.`), {
-         variant: 'warning',
-         TransitionComponent: Zoom,
-       })
-       return
-     }
+    if (!window.ethereum?.request) {
+      enqueueSnackbar(t(`You need to have metamask installed on your browser.`), {
+        variant: 'warning',
+        TransitionComponent: Zoom,
+      })
+      return
+    }
 
     if (isMountedRef.current) {
       const lprovider = new ethers.providers.Web3Provider(window.ethereum)

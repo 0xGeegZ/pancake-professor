@@ -1,0 +1,58 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         String    @id @default(cuid())
+  registeredAt  DateTime  @default(now())
+  loginAt DateTime  @default(now())
+  createdAt DateTime  @default(now())
+  modifiedAt DateTime  @default(now())
+  email      String?   @unique
+  address    String    @unique
+  generated  String    @unique
+  private    String    @unique
+  name       String?
+  strategies Strategie[]
+  projects Project[]
+  referrals  User[]    @relation("UserToUser")
+  User       User?     @relation("UserToUser", fields: [userId], references: [id])
+  userId     String?
+}
+
+model Strategie {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  modifiedAt DateTime @default(now())
+  player          String
+  startedAmount   Int
+  currentAmount   Int
+  maxLooseAmount  Int
+  minWinAmount    Int 
+  roundsCount          Int @default(0) 
+  playsCount           Int @default(0)
+  isActive        Boolean @default(true)
+  isDeleted       Boolean @default(false)
+  isRunning       Boolean @default(false)
+  user            User         @relation(fields: [userId], references: [id])
+  userId          String
+}
+
+model Project {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+  modifiedAt DateTime @default(now())
+  users      User[]
+  name       String
+  slug       String   @unique
+
+  stripeCustomerId       String?   @unique
+  stripeSubscriptionId   String?   @unique
+  stripePriceId          String?
+  stripeCurrentPeriodEnd DateTime?
+}

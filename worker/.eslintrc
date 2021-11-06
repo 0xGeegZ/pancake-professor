@@ -1,0 +1,113 @@
+{
+  "rules": {
+    "indent": [
+      2,
+      2,
+      {
+        "SwitchCase": 1
+      }
+    ],
+    "space-before-function-paren": [
+      2,
+      {
+        "anonymous": "always",
+        "named": "never"
+      }
+    ],
+    "no-use-before-define": [
+      2,
+      "nofunc"
+    ],
+    // TODO: turn on later
+    "comma-dangle": [
+      0
+    ],
+    "import/no-extraneous-dependencies": [
+      "error",
+      {
+        "devDependencies": true
+      }
+    ],
+    "no-underscore-dangle": [
+      0
+    ],
+    "callback-return": "off",
+    // "callback-return:": [
+    //   "error",
+    //   [
+    //     "callback",
+    //     "next"
+    //   ]
+    // ],
+    "consistent-return": "off",
+    //   "consistent-return": [
+    //   "error",
+    //   {
+    //     "treatUndefinedAsUnspecified": true
+    //   }
+    // ],
+    "arrow-parens": [
+      "error",
+      "always"
+    ],
+    "no-mixed-operators": [
+      "error",
+      {
+        "allowSamePrecedence": true
+      }
+    ],
+    "no-shadow": "off",
+    // "no-shadow": [
+    //   "error",
+    //   {
+    //     "allow": [
+    //       "callback",
+    //       "next",
+    //       "data",
+    //       "error"
+    //     ]
+    //   }
+    // ],
+    "no-loop-func": "error",
+    "func-style": [
+      "error",
+      "declaration",
+      {
+        "allowArrowFunctions": true
+      }
+    ],
+    "no-param-reassign": "off",
+    "prefer-template": 1
+    // "no-param-reassign": [
+    //   "error",
+    //   {
+    //     "props": true,
+    //     "ignorePropertyModificationsFor": [
+    //       "results"
+    //     ]
+    //   }
+    // ],
+    // "no-console": 0,
+    // "no-unused-vars": [
+    //   "error",
+    //   {
+    //     "argsIgnorePattern": "next"
+    //   }
+    // ],
+    // "no-multi-str": 0
+  },
+  "env": {
+    "node": true,
+    "mocha": true,
+    "es6": true
+  },
+  "parserOptions": {
+    "ecmaVersion": 2018,
+    "sourceType": "module"
+  },
+  "extends": [
+    "eslint:recommended",
+    "airbnb-base",
+    "prettier"
+  ]
+}

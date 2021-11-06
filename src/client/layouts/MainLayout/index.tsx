@@ -1,4 +1,3 @@
-/* eslint-disable camelcase */
 import { Box } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { ethers } from 'ethers'
@@ -13,6 +12,7 @@ import Banner from './Banner'
 import Header from './Header'
 import Sidebar from './Sidebar'
 
+/* eslint-disable camelcase */
 // import ThemeSettings from 'src/client/components/ThemeSettings';
 
 interface MainLayoutProps {
@@ -100,7 +100,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
       headers: { 'Content-Type': 'application/json' },
     })
       .then((res) => res.json())
-      .then((json) => {
+      .then(async (json) => {
         if (json.success) {
           enqueueSnackbar(t('Wallet succesfully connected!'), {
             variant: 'success',

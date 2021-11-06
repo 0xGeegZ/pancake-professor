@@ -1,0 +1,37 @@
+{
+  "name": "pancakeswap-prediction-bot",
+  "version": "1.0.1",
+  "description": "This bot wins almost every 5 minute BNB-USD option on PancakeSwap",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon -e 'require(\"./scripts/launch-strategies/index.js\").launchStrategies()'",
+    "launch:strategies": "node -e 'require(\"./scripts/launch-strategies/index.js\").launchStrategies()'",
+    "stop:strategies": "node -e 'require(\"./scripts/stop-strategies/index.js\").stopStrategies()'",
+    "try": "node pm2.js",
+    "pm2:list": "pm2 list",
+    "pm2:logs": "pm2 logs",
+    "pm2:monit": "pm2 monit",
+    "pm2:stop:all": "pm2 stop all",
+    "pm2:stop:listen": "pm2 stop listen",
+    "lint": "eslint ./ --ignore-path .gitignore --ignore-pattern internals/scripts"
+  },
+  "dependencies": {
+    "@prisma/client": "^2.23.0",
+    "bnc-sdk": "^3.7.0",
+    "crypto": "^1.0.1",
+    "ethers": "^5.5.1",
+    "prisma": "^2.23.0",
+    "winston": "^3.3.3",
+    "ws": "^8.2.3"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.14",
+    "eslint-config-airbnb": "18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-prettier": "^4.0.0"
+  },
+  "packageManager": "yarn@3.1.0"
+}
