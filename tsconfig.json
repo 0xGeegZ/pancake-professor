@@ -29,6 +29,6 @@
     "noFallthroughCasesInSwitch": true,
     "incremental": true
   },
-  "exclude": ["node_modules", "cypress"],
-  "include": ["src", "next-env.d.ts", "**/*.ts", "**/*.tsx"]
+  "exclude": ["node_modules", "cypress", "worker"],
+  "include": ["src", "next-env.d.ts", "**/*.ts", "**/*.tsx", "worker/utils/crpyto.js", "worker/db/prisma.js"]
 }

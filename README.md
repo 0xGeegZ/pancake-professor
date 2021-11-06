@@ -80,3 +80,10 @@ All the others are used in CI or by those three main scripts, but you should onl
 ---
 
 For more information, check out [the in-depth docs](./docs/README.md)
+
+## Notes and usefuls links
+
+A simple way to clean up your git project branches
+<https://medium.com/@FlorentDestrema/a-simple-way-to-clean-up-your-git-project-branches-283b87478fbc>
+
+---

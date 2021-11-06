@@ -15,7 +15,12 @@
     "pm2:monit": "pm2 monit",
     "pm2:stop:all": "pm2 stop all",
     "pm2:stop:listen": "pm2 stop listen",
-    "lint": "eslint ./ --ignore-path .gitignore --ignore-pattern internals/scripts"
+    "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
+    "prettier:watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
+    "eslint": "eslint --cache --cache-location=node_modules/.cache/.eslintcache --fix",
+    "lint": "yarn run eslint . --ext .js,.jsx,.ts,.tsx --quiet",
+    "lint:fix": "yarn run eslint . --fix",
+    "lint:next": "next lint --fix"
   },
   "dependencies": {
     "@prisma/client": "^2.23.0",
