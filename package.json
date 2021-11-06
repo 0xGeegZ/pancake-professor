@@ -29,6 +29,8 @@
     "generate:genql": "cross-env GENERATE=true cross-env DOTENV_CONFIG_PATH=.env genql --require dotenv/config --schema ./src/server/graphql/schema.graphql --output ./src/client/graphql/generated/genql  --watch 'src/server/graphql/schema.graphql'",
     "generate:graphql-codegen": "graphql-codegen",
     "prisma:migrate": "yarn prisma migrate dev --preview-feature",
+    "prisma:generate:prod": "yarn prisma db push",
+    "prisma:migrate:prod": "DATABASE_URL=$MIGRATION_DATABASE_URL yarn prisma migrate dev --preview-feature",
     "prisma:studio": "prisma studio",
     "typecheck": "concurrently --raw yarn:typecheck:*",
     "typecheck:app": "tsc --noEmit",
