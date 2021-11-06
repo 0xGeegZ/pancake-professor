@@ -7,7 +7,6 @@ import { FC, ReactNode } from 'react'
 import { useTranslation } from 'react-i18next'
 import menuItems from 'src/client/layouts/MainLayout/Sidebar/SidebarMenu/items'
 import { useGlobalStore } from 'src/client/store/swr'
-import LaunchStrategieQueue from 'src/pages/api/queues/launch-strategie'
 
 import Banner from './Banner'
 import Header from './Header'
@@ -108,24 +107,6 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
           })
           mutate('currentUser')
           // router.replace(router.asPath)
-
-          console.log('Launching test Job with Quirrel')
-          await LaunchStrategieQueue.enqueue(
-            {
-              user: accounts[0],
-              player: 'todo',
-            },
-            {
-              // runAt: todo.scheduled_date,
-              // id: accounts[0],
-              // if another job with that ID already exists, override it
-              // override: true,
-              // repeat: {
-              //   every: '1d',
-              //   times: 3,
-              // },
-            }
-          )
         } else {
           enqueueSnackbar(t('Unexpected error occurred during authentification'), {
             variant: 'error',
