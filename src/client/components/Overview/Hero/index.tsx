@@ -23,7 +23,7 @@ const ImgWrapper = styled(Box)(
     overflow: hidden;
     border-radius: ${theme.general.borderRadiusLg};
     box-shadow: 0 0rem 14rem 0 rgb(255 255 255 / 20%), 0 0.8rem 2.3rem rgb(111 130 156 / 3%), 0 0.2rem 0.7rem rgb(17 29 57 / 15%);
-
+    
     img {
       display: block;
       width: 100%;
@@ -140,7 +140,7 @@ function Hero() {
     <Container maxWidth="lg">
       <Grid spacing={{ xs: 6, md: 10 }} justifyContent="center" alignItems="center" container>
         <Grid item md={6} pr={{ xs: 0, md: 3 }}>
-          <LabelWrapper color="success">{`${t('Version')} 1.0.0`}</LabelWrapper>
+          <LabelWrapper color="success">{`${t('Version')} 0.0.1`}</LabelWrapper>
           <TypographyH1 sx={{ mb: 2 }} variant="h1">
             {t('Pancake Professor')}
           </TypographyH1>
@@ -192,10 +192,11 @@ function Hero() {
             </Typography>
           </ListItemWrapper>
         </Grid>
-        <Grid item md={6}>
+        <Grid item md={6} sx={{ mt: 6 }}>
           <BoxContent>
             <ImgWrapper>
               <img alt="Tokyo" src="/static/images/overview/hero-screenshot.png" />
+              {/* <Image src="/static/images/overview/hero-screenshot.png" alt="Tokyo" layout="fill" /> */}
             </ImgWrapper>
             <BoxAccent sx={{ display: { xs: 'none', md: 'block' } }} />
           </BoxContent>

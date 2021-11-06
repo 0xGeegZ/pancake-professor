@@ -21,8 +21,6 @@ function ActiveStrategiesOverview({ strategies }) {
   const { t }: { t: any } = useTranslation()
 
   const getActivesStrategiesCount = () => {
-    console.log('🚀  ~ getActivesStrategiesCount', strategies.filter((s) => s.isActive).length)
-
     if (!strategies.length) return 0
     return `${strategies.filter((s) => s.isActive).length}`
   }

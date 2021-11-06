@@ -59,7 +59,8 @@ function UserView() {
   return (
     <>
       <Head>
-        <title>{user.address} - Profil Details</title>
+        <title>Profil Details</title>
+        {/* <title>{user?.address} - Profil Details</title> */}
       </Head>
       <Box sx={{ mt: 3 }}>
         <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
