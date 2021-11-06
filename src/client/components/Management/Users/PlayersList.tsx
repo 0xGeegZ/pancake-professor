@@ -1,7 +1,6 @@
 /* eslint-disable import/order */
 import 'moment-timezone'
 
-import { PREDICTION_CONTRACT_ABI } from '@/client/contracts/abis/pancake-prediction-abi-v3'
 import CloseIcon from '@mui/icons-material/Close'
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 import GamepadIcon from '@mui/icons-material/Gamepad'
@@ -46,6 +45,7 @@ import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, useCallback, useEffect, u
 import { useTranslation } from 'react-i18next'
 import Moment from 'react-moment'
 import FollowPlayerForm from 'src/client/components/Dashboards/Automation/FollowPlayerForm'
+import { PREDICTION_CONTRACT_ABI } from 'src/client/contracts/abis/pancake-prediction-abi-v3'
 import { useGlobalStore } from 'src/client/store/swr'
 import loadPlayers from 'src/client/thegraph/loadPlayers'
 
