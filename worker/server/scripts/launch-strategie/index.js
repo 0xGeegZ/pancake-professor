@@ -26,6 +26,8 @@ const options = {
   },
 }
 
+let range = (start, end) => Array.from(Array(end + 1).keys()).slice(start)
+
 const launchStrategie = async (payload) => {
   const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
 
@@ -80,8 +82,6 @@ const launchStrategie = async (payload) => {
     const amount = parseFloat(betAmount).toFixed(4)
     const betBullOrBear = betBull ? 'betBull' : 'betBear'
 
-    const gasPrice = await provider.getGasPrice()
-
     // eslint-disable-next-line eqeqeq
     if (!(+amount != 0)) {
       logger.error('[PLAYING] Bet amount is 0')
@@ -97,12 +97,14 @@ const launchStrategie = async (payload) => {
 
     let isError = false
     try {
+      const gasPrice = await provider.getGasPrice()
+
       const tx = await preditionContract[betBullOrBear](epoch.toString(), {
         value: ethers.utils.parseEther(amount),
         gasPrice,
         nonce: provider.getTransactionCount(user.generated, 'latest'),
         // gasPrice: ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString(),
-        // gasLimit: ethers.utils.hexlify(250000),
+        gasLimit: ethers.utils.hexlify(250000),
       })
 
       await tx.wait()
@@ -239,10 +241,76 @@ const launchStrategie = async (payload) => {
       },
     })
 
-    // if (playedEpochs.length >= 3) {
-    //   await claimPlayedEpochs(lastEpochs)
-    //   playedEpochs = []
-    // }
+    if (strategie.playedEpochs.length >= 3) {
+      await claimPlayedEpochs(strategie.lastEpochs)
+      strategie.playedEpochs = []
+    }
+  }
+
+  const checkIfClaimable = async (epoch) => {
+    try {
+      const [claimable, refundable, { claimed, amount }] = await Promise.all([
+        preditionContract.claimable(epoch, signer.address),
+        preditionContract.refundable(epoch, signer.address),
+        preditionContract.ledger(epoch, signer.address),
+      ])
+
+      return {
+        epoch,
+        isPlayed: amount.toString() !== '0',
+        isClaimable: (claimable || refundable) && !claimed && amount.toString() !== '0',
+        // isWon: claimable || refundable || (amount.toString() !== "0" && claimed)
+        isWon: claimable || refundable || claimed,
+      }
+    } catch (error) {
+      logger.error(`[CLAIM] checkIfClaimable error for user ${user.id} and epoch ${epoch}`)
+      return {
+        epoch,
+        isPlayed: false,
+        isClaimable: false,
+        isWon: false,
+      }
+    }
+  }
+
+  const claimPlayedEpochs = async (epochs) => {
+    logger.info(`[CLAIM] try to claim ${epochs.length} epochs : ${epochs}`)
+
+    const claimables = await Promise.all(epochs.map(checkIfClaimable))
+
+    const played = claimables.filter((c) => c.isPlayed)
+
+    const wins = played.filter((c) => c.isWon)?.length
+
+    const losss = played.filter((c) => !c.isWon)?.length
+
+    logger.info(
+      `[WIN/LOSS] Win/Loss ratio for last ${claimables.length} games : ${wins}W/${losss}L for ${
+        played.length
+      } played games (${parseFloat((wins * 100) / played.length).toFixed(2)}% Winrate) `
+    )
+
+    const claimablesEpochs = claimables.filter((c) => c.isClaimable).map((c) => c.epoch)
+
+    if (claimablesEpochs.length === 0) return logger.info('[CLAIM] Nothing to claim')
+
+    logger.info(`[CLAIM] claimables epochs : ${claimablesEpochs}`)
+
+    const gasPrice = await provider.getGasPrice()
+
+    const tx = await preditionContract.claim(claimablesEpochs, {
+      gasLimit: ethers.utils.hexlify(250000),
+      gasPrice,
+      // gasPrice: parseUnits(SAFE_GAS_PRICE.toString(), 'gwei').toString(),
+      nonce: provider.getTransactionCount(user.generated, 'latest'),
+    })
+
+    try {
+      await tx.wait()
+    } catch (error) {
+      logger.error(`[CLAIM] Claim Tx Error for user ${user.id} and epochs ${claimablesEpochs}`)
+      logger.error(error.message)
+    }
   }
 
   const listen = async () => {
@@ -294,6 +362,15 @@ const launchStrategie = async (payload) => {
 
     // logger.info(`[LISTEN] emitter is listenning to transaction from mempool`)
     preditionContract.on('EndRound', roundEndListenner)
+
+    try {
+      currentEpoch = await preditionContract.currentEpoch()
+
+      const lastEpochs = [...range(+currentEpoch - 12, +currentEpoch)]
+      await claimPlayedEpochs(lastEpochs)
+    } catch (error) {
+      logger.error(`[ERROR] Error during claiming for last epochs`)
+    }
   }
 
   try {
