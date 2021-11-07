@@ -19,8 +19,9 @@ const launchStrategies = async () => {
   const strategies = await prisma.strategie.findMany({
     where: {
       isActive: true,
-      isDeleted: false,
       isRunning: false,
+      isDeleted: false,
+      isError: false,
     },
   })
 

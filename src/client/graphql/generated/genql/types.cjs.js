@@ -120,6 +120,9 @@ module.exports = {
                     "isDeleted": [
                         4
                     ],
+                    "isError": [
+                        4
+                    ],
                     "isRunning": [
                         4
                     ],
@@ -265,6 +268,9 @@ module.exports = {
                 4
             ],
             "isDeleted": [
+                4
+            ],
+            "isError": [
                 4
             ],
             "isRunning": [

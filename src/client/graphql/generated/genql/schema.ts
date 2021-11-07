@@ -48,6 +48,7 @@ export interface Strategie {
     id: Scalars['String']
     isActive: Scalars['Boolean']
     isDeleted: Scalars['Boolean']
+    isError: Scalars['Boolean']
     isRunning: Scalars['Boolean']
     maxLooseAmount: Scalars['Float']
     minWinAmount: Scalars['Float']
@@ -85,7 +86,7 @@ export interface MutationRequest{
     deleteStrategie?: [{id: Scalars['String']},StrategieRequest]
     inviteToProject?: [{email: Scalars['String'],projectId: Scalars['String']}]
     toogleActivateStrategie?: [{id: Scalars['String']},StrategieRequest]
-    updateStrategie?: [{currentAmount: Scalars['Float'],id: Scalars['String'],isActive?: (Scalars['Boolean'] | null),isDeleted?: (Scalars['Boolean'] | null),isRunning?: (Scalars['Boolean'] | null),maxLooseAmount: Scalars['Float'],minWinAmount: Scalars['Float'],player: Scalars['String'],playsCount: Scalars['Int'],roundsCount: Scalars['Int'],startedAmount: Scalars['Float']},StrategieRequest]
+    updateStrategie?: [{currentAmount: Scalars['Float'],id: Scalars['String'],isActive?: (Scalars['Boolean'] | null),isDeleted?: (Scalars['Boolean'] | null),isError?: (Scalars['Boolean'] | null),isRunning?: (Scalars['Boolean'] | null),maxLooseAmount: Scalars['Float'],minWinAmount: Scalars['Float'],player: Scalars['String'],playsCount: Scalars['Int'],roundsCount: Scalars['Int'],startedAmount: Scalars['Float']},StrategieRequest]
     updateUser?: [{address: Scalars['String'],email?: (Scalars['String'] | null),id: Scalars['String'],name?: (Scalars['String'] | null)},UserRequest]
     __typename?: boolean | number
     __scalar?: boolean | number
@@ -117,6 +118,7 @@ export interface StrategieRequest{
     id?: boolean | number
     isActive?: boolean | number
     isDeleted?: boolean | number
+    isError?: boolean | number
     isRunning?: boolean | number
     maxLooseAmount?: boolean | number
     minWinAmount?: boolean | number
@@ -200,7 +202,7 @@ export interface MutationPromiseChain{
     deleteStrategie: ((args: {id: Scalars['String']}) => StrategiePromiseChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Promise<(FieldsSelection<Strategie, R> | undefined)>}),
     inviteToProject: ((args: {email: Scalars['String'],projectId: Scalars['String']}) => {get: (request?: boolean|number, defaultValue?: (Scalars['Boolean'] | undefined)) => Promise<(Scalars['Boolean'] | undefined)>}),
     toogleActivateStrategie: ((args: {id: Scalars['String']}) => StrategiePromiseChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Promise<(FieldsSelection<Strategie, R> | undefined)>}),
-    updateStrategie: ((args: {currentAmount: Scalars['Float'],id: Scalars['String'],isActive?: (Scalars['Boolean'] | null),isDeleted?: (Scalars['Boolean'] | null),isRunning?: (Scalars['Boolean'] | null),maxLooseAmount: Scalars['Float'],minWinAmount: Scalars['Float'],player: Scalars['String'],playsCount: Scalars['Int'],roundsCount: Scalars['Int'],startedAmount: Scalars['Float']}) => StrategiePromiseChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Promise<(FieldsSelection<Strategie, R> | undefined)>}),
+    updateStrategie: ((args: {currentAmount: Scalars['Float'],id: Scalars['String'],isActive?: (Scalars['Boolean'] | null),isDeleted?: (Scalars['Boolean'] | null),isError?: (Scalars['Boolean'] | null),isRunning?: (Scalars['Boolean'] | null),maxLooseAmount: Scalars['Float'],minWinAmount: Scalars['Float'],player: Scalars['String'],playsCount: Scalars['Int'],roundsCount: Scalars['Int'],startedAmount: Scalars['Float']}) => StrategiePromiseChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Promise<(FieldsSelection<Strategie, R> | undefined)>}),
     updateUser: ((args: {address: Scalars['String'],email?: (Scalars['String'] | null),id: Scalars['String'],name?: (Scalars['String'] | null)}) => UserPromiseChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Promise<(FieldsSelection<User, R> | undefined)>})
 }
 
@@ -213,7 +215,7 @@ export interface MutationObservableChain{
     deleteStrategie: ((args: {id: Scalars['String']}) => StrategieObservableChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Observable<(FieldsSelection<Strategie, R> | undefined)>}),
     inviteToProject: ((args: {email: Scalars['String'],projectId: Scalars['String']}) => {get: (request?: boolean|number, defaultValue?: (Scalars['Boolean'] | undefined)) => Observable<(Scalars['Boolean'] | undefined)>}),
     toogleActivateStrategie: ((args: {id: Scalars['String']}) => StrategieObservableChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Observable<(FieldsSelection<Strategie, R> | undefined)>}),
-    updateStrategie: ((args: {currentAmount: Scalars['Float'],id: Scalars['String'],isActive?: (Scalars['Boolean'] | null),isDeleted?: (Scalars['Boolean'] | null),isRunning?: (Scalars['Boolean'] | null),maxLooseAmount: Scalars['Float'],minWinAmount: Scalars['Float'],player: Scalars['String'],playsCount: Scalars['Int'],roundsCount: Scalars['Int'],startedAmount: Scalars['Float']}) => StrategieObservableChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Observable<(FieldsSelection<Strategie, R> | undefined)>}),
+    updateStrategie: ((args: {currentAmount: Scalars['Float'],id: Scalars['String'],isActive?: (Scalars['Boolean'] | null),isDeleted?: (Scalars['Boolean'] | null),isError?: (Scalars['Boolean'] | null),isRunning?: (Scalars['Boolean'] | null),maxLooseAmount: Scalars['Float'],minWinAmount: Scalars['Float'],player: Scalars['String'],playsCount: Scalars['Int'],roundsCount: Scalars['Int'],startedAmount: Scalars['Float']}) => StrategieObservableChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Observable<(FieldsSelection<Strategie, R> | undefined)>}),
     updateUser: ((args: {address: Scalars['String'],email?: (Scalars['String'] | null),id: Scalars['String'],name?: (Scalars['String'] | null)}) => UserObservableChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Observable<(FieldsSelection<User, R> | undefined)>})
 }
 
@@ -255,6 +257,7 @@ export interface StrategiePromiseChain{
     id: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Promise<Scalars['String']>}),
     isActive: ({get: (request?: boolean|number, defaultValue?: Scalars['Boolean']) => Promise<Scalars['Boolean']>}),
     isDeleted: ({get: (request?: boolean|number, defaultValue?: Scalars['Boolean']) => Promise<Scalars['Boolean']>}),
+    isError: ({get: (request?: boolean|number, defaultValue?: Scalars['Boolean']) => Promise<Scalars['Boolean']>}),
     isRunning: ({get: (request?: boolean|number, defaultValue?: Scalars['Boolean']) => Promise<Scalars['Boolean']>}),
     maxLooseAmount: ({get: (request?: boolean|number, defaultValue?: Scalars['Float']) => Promise<Scalars['Float']>}),
     minWinAmount: ({get: (request?: boolean|number, defaultValue?: Scalars['Float']) => Promise<Scalars['Float']>}),
@@ -272,6 +275,7 @@ export interface StrategieObservableChain{
     id: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Observable<Scalars['String']>}),
     isActive: ({get: (request?: boolean|number, defaultValue?: Scalars['Boolean']) => Observable<Scalars['Boolean']>}),
     isDeleted: ({get: (request?: boolean|number, defaultValue?: Scalars['Boolean']) => Observable<Scalars['Boolean']>}),
+    isError: ({get: (request?: boolean|number, defaultValue?: Scalars['Boolean']) => Observable<Scalars['Boolean']>}),
     isRunning: ({get: (request?: boolean|number, defaultValue?: Scalars['Boolean']) => Observable<Scalars['Boolean']>}),
     maxLooseAmount: ({get: (request?: boolean|number, defaultValue?: Scalars['Float']) => Observable<Scalars['Float']>}),
     minWinAmount: ({get: (request?: boolean|number, defaultValue?: Scalars['Float']) => Observable<Scalars['Float']>}),

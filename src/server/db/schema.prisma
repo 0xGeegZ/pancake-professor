@@ -38,6 +38,7 @@ model Strategie {
   playsCount           Int @default(0)
   isActive        Boolean @default(true)
   isDeleted       Boolean @default(false)
+  isError       Boolean @default(false)
   isRunning       Boolean @default(false)
   user            User         @relation(fields: [userId], references: [id])
   userId          String

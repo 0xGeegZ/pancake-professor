@@ -17,6 +17,7 @@ query GetCurrentUser {
       isActive
       isRunning
       isDeleted
+      isError
       maxLooseAmount
       minWinAmount
       createdAt

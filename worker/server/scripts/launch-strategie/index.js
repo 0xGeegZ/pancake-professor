@@ -46,8 +46,17 @@ const launchStrategie = async (payload) => {
 
   // const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
   const betRound = async ({ epoch, betBull, betAmount }) => {
-    if (strategie.balance === 0) return logger.error('[PLAYING] Not enought BNB')
-
+    if (strategie.currentAmount === 0) {
+      logger.error('[PLAYING] Not enought BNB')
+      await prisma.strategie.update({
+        where: { id: strategie.id },
+        data: {
+          isError: true,
+          isActive: false,
+        },
+      })
+      return
+    }
     // if (bankroll > countedBankroll * 1.5) {
     //   const newBetAmount = parseFloat(betAmount * 1.25).toFixed(4)
     //   logger.info(`[OPTIMIZE] Increasing bet amount from ${betAmount} to ${newBetAmount}`)
@@ -74,7 +83,17 @@ const launchStrategie = async (payload) => {
     const gasPrice = await provider.getGasPrice()
 
     // eslint-disable-next-line eqeqeq
-    if (!(+amount != 0)) return logger.error('[PLAYING] Bet amount is 0')
+    if (!(+amount != 0)) {
+      logger.error('[PLAYING] Bet amount is 0')
+      await prisma.strategie.update({
+        where: { id: strategie.id },
+        data: {
+          isError: true,
+          isActive: false,
+        },
+      })
+      return
+    }
 
     let isError = false
     try {
@@ -243,7 +262,13 @@ const launchStrategie = async (payload) => {
 
     if (strategie.betAmount <= MIN_BET_AMOUNT || strategie.betAmount > MAX_BET_AMOUNT) {
       logger.info(`[LISTEN] Bet amount error. Stopping strategie for now`)
-      // TODO add isError : true to database
+      await prisma.strategie.update({
+        where: { id: strategie.id },
+        data: {
+          isError: true,
+          isActive: false,
+        },
+      })
       return
     }
 

@@ -92,8 +92,18 @@ const CardActiveStrategies = styled(Card)(
               background-color: ${theme.colors.alpha.white[30]};
             }
           }
+        }
+      }
 
+      &.Mui-error {
+        border: 1px solid ${theme.palette.error.main};
+        color: ${theme.palette.error.contrastText};
+        box-shadow: ${theme.colors.shadows.error};
 
+        .MuiCardActionArea-root {
+          &:hover {
+            border-color: ${theme.colors.error.main};
+          }
         }
       }
 
@@ -312,17 +322,19 @@ function ActiveStrategies({ strategies: pstrategies }) {
           <>
             {strategies.map((strategie) => (
               <Grid item xs={12} xl={3} md={4} sm={6} key={strategie.id}>
-                <CardActiveStrategies className={strategie.isActive ? 'Mui-active' : ''}>
+                <CardActiveStrategies
+                  className={strategie.isError ? 'Mui-error' : strategie.isActive ? 'Mui-active' : ''}>
                   <CardActionArea>
                     <Switch
                       edge="end"
                       // defaultChecked={strategie?.isActive ? strategie.isActive : false}
                       checked={strategie.isActive}
                       color="primary"
+                      disabled={strategie.isError}
                       onChange={handleChange(strategie)}
                     />
                     <Typography fontWeight="bold" variant="caption" color="primary">
-                      {strategie.isActive ? t('Active') : t('Innactive')}
+                      {strategie.isError ? t('Error') : strategie.isActive ? t('Active') : t('Innactive')}
                     </Typography>
                     <Box sx={{ p: 1 }}>
                       <Grid spacing={2} container>
