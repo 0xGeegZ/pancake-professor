@@ -392,10 +392,10 @@ function ActiveStrategies({ strategies: pstrategies }) {
                       </Grid>
                     </Box>
 
-                    <Box sx={{ p: 1 }}>
+                    <Box sx={{ pt: 2, py: 1 }}>
                       <Grid spacing={2} container>
                         <Grid item xs={12} sm={7}>
-                          <Typography variant="caption" sx={{ pb: 1 }} component="div">
+                          <Typography variant="h5" sx={{ pb: 1 }} component="div">
                             {t('Rounds played')}(%)
                           </Typography>
                           <Box>
@@ -420,21 +420,29 @@ function ActiveStrategies({ strategies: pstrategies }) {
                           </Box>
                         </Grid>
                         <Grid item xs={12} sm={5}>
-                          <Typography variant="caption" component="div">
+                          <Typography variant="h5" component="div">
                             {t('Bankroll')}
                           </Typography>
                           <Box>
+                            <Typography color="text.primary" variant="h5" sx={{ pt: 2, display: 'inline-flex' }}>
+                              {`${strategie.currentAmount} BNB `}
+                            </Typography>
+                            <Typography color="text.secondary" variant="h6" sx={{ pt: 0.5, display: 'inline-flex' }}>
+                              ({100 - (+strategie.currentAmount * 100) / strategie.startedAmount}%)
+                            </Typography>
+                          </Box>
+                          {/* <Box>
                             <Typography
                               color="text.primary"
                               variant="h5"
                               sx={{ pr: 0.5, pt: 1, display: 'inline-flex' }}>
-                              {`${strategie.currentAmount}BNB `}{' '}
-                              <sup> ({100 - (+strategie.currentAmount * 100) / strategie.startedAmount}%) </sup>
+                              {`${strategie.currentAmount}BNB `}
+                              {'  '}
+                              <sup>
+                                {'  '}({100 - (+strategie.currentAmount * 100) / strategie.startedAmount}%)
+                              </sup>
                             </Typography>
-                            {/* <Typography color="text.secondary" variant="h5" sx={{ pr: 2, display: 'inline-flex' }}>
-                              ({100 - (+strategie.currentAmount * 100) / strategie.startedAmount}%)
-                            </Typography> */}
-                          </Box>
+                          </Box> */}
                         </Grid>
                         {/* <Grid item xs={6} sm={2}>
                           <Typography variant="caption" sx={{ pb: 1.5, fontSize: '10px' }} component="div">
@@ -451,7 +459,7 @@ function ActiveStrategies({ strategies: pstrategies }) {
                     <Box sx={{ p: 1 }}>
                       <Grid spacing={1} container>
                         <Grid item xs={6} sm={12}>
-                          <Typography variant="caption" sx={{ pb: 1.5, fontSize: '10px' }} component="div">
+                          <Typography variant="caption" sx={{ fontSize: '10px' }} component="div">
                             {t('Running since')} <b>{getStrategieDuraction(strategie)}</b>
                           </Typography>
                         </Grid>
