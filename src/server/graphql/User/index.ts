@@ -119,6 +119,7 @@ const mutations = extendType({
         name: stringArg(),
         email: stringArg(),
         address: nonNull(stringArg()),
+        // isActivated: boolArgs(),
       },
       resolve: async (_, { id, name, email, address }, ctx) => {
         if (!ctx.user?.id || id !== ctx.user.id) return null
@@ -177,10 +178,16 @@ const mutations = extendType({
         // TODO allow only admins
         if (!ctx.user?.id || id !== ctx.user.id) return null
 
+        const user = await prisma.user.findUnique({
+          where: {
+            id: ctx.user.id,
+          },
+        })
+
         return prisma.user.update({
           where: { id },
           data: {
-            isActivated: !ctx.user.isActivated,
+            isActivated: !user.isActivated,
           },
         })
       },
