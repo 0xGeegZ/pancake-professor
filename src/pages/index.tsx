@@ -41,6 +41,9 @@ const Overview = () => {
 
   const { t }: { t: any } = useTranslation()
 
+  // TMP waiting for landing page
+  router.push('/app')
+
   // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
   const connect = async (evt) => {

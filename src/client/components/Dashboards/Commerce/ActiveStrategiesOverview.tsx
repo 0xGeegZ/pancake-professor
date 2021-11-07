@@ -101,7 +101,7 @@ function ActiveStrategiesOverview({ strategies }) {
             <Divider orientation="vertical" flexItem />
             <Grid xs={12} sm item>
               <Typography variant="caption" gutterBottom>
-                {t('Bankroll')}
+                {t('Used bankroll')}
               </Typography>
               <Typography variant="h3" gutterBottom>
                 {getBankrollFromStrategies()}

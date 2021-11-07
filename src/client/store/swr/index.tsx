@@ -51,6 +51,7 @@ export const GlobalStateProvider: FC = ({ children }: Props) => {
         address: true,
         generated: true,
         email: true,
+        isActivated: true,
         registeredAt: true,
         loginAt: true,
         strategies: {

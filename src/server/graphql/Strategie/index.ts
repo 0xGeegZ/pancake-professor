@@ -1,6 +1,8 @@
+import { ethers } from 'ethers'
 import { booleanArg, extendType, floatArg, intArg, nonNull, objectType, stringArg } from 'nexus'
 
 import prisma from '../../db/prisma'
+import { decrypt, encrypt } from '../../utils/crpyto'
 
 const Strategie = objectType({
   name: 'Strategie',
@@ -9,6 +11,8 @@ const Strategie = objectType({
     t.model.createdAt()
     t.model.modifiedAt()
     t.model.player()
+    t.model.generated()
+    t.model.private()
     t.model.startedAmount()
     t.model.currentAmount()
     t.model.roundsCount()
@@ -67,9 +71,26 @@ const mutations = extendType({
       resolve: async (_, args, ctx) => {
         if (!ctx.user?.id) return null
 
-        return prisma.strategie.create({
+        const user = await prisma.user.findUnique({
+          where: {
+            id: ctx.user.id,
+          },
+        })
+
+        if (!user) return null
+
+        // TODO create address and send funds to adress
+        const walletInitial = ethers.Wallet.createRandom()
+        // console.log('address:', wallet.address)
+        // console.log('mnemonic:', wallet.mnemonic.phrase)
+        // console.log('privateKey:', wallet.privateKey)
+        // console.log('privateKey:', encrypt(wallet.privateKey))
+
+        const strategie = await prisma.strategie.create({
           data: {
             player: args.player,
+            generated: walletInitial.address.toLowerCase(),
+            private: encrypt(walletInitial.privateKey),
             startedAmount: args.startedAmount,
             currentAmount: args.startedAmount,
             maxLooseAmount: args.maxLooseAmount,
@@ -81,6 +102,32 @@ const mutations = extendType({
             },
           },
         })
+
+        const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
+
+        const privateKey = decrypt(user.private)
+
+        const wallet = new ethers.Wallet(privateKey)
+
+        const signer = wallet.connect(provider)
+
+        const gasPrice = await provider.getGasPrice()
+
+        const tx = {
+          to: strategie.generated,
+          value: ethers.utils.parseEther(`${strategie.startedAmount}`),
+          nonce: provider.getTransactionCount(user.generated, 'latest'),
+          gasPrice,
+          gasLimit: ethers.utils.hexlify(250000),
+        }
+
+        try {
+          await signer.sendTransaction(tx)
+        } catch (error) {
+          throw new Error(error)
+        }
+
+        return strategie
       },
     })
 
@@ -189,6 +236,14 @@ const mutations = extendType({
       resolve: async (_, { id }, ctx) => {
         if (!ctx.user?.id) return null
 
+        const user = await prisma.user.findUnique({
+          where: {
+            id: ctx.user.id,
+          },
+        })
+
+        if (!user) return null
+
         const hasAccess = await prisma.strategie.findFirst({
           where: {
             user: {
@@ -216,7 +271,7 @@ const mutations = extendType({
 
         // return strategie
 
-        return prisma.strategie.update({
+        const strategie = await prisma.strategie.update({
           where: { id },
           data: {
             isActive: false,
@@ -224,6 +279,52 @@ const mutations = extendType({
             isDeleted: true,
           },
         })
+
+        const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
+
+        const privateKey = decrypt(strategie.private)
+
+        const wallet = new ethers.Wallet(privateKey)
+
+        const signer = wallet.connect(provider)
+
+        const rawGasPrice = await provider.getGasPrice()
+        const rawBalance = await provider.getBalance(strategie.generated)
+
+        const balance = ethers.utils.formatUnits(rawBalance)
+        const gasPrice = ethers.utils.formatUnits(rawGasPrice)
+        const gasLimit = await provider.estimateGas({
+          to: user.generated,
+          value: ethers.utils.parseEther(balance),
+        })
+
+        const costs = +gasPrice * +gasLimit
+        const value = `${+balance - +costs}`
+
+        const tx = {
+          to: user.generated,
+          value: ethers.utils.parseEther(value),
+          nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+          gasPrice: rawGasPrice,
+          gasLimit: ethers.utils.hexlify(gasLimit),
+        }
+
+        try {
+          await signer.sendTransaction(tx)
+        } catch (error) {
+          await prisma.strategie.update({
+            where: { id },
+            data: {
+              isActive: hasAccess.isActive,
+              isRunning: hasAccess.isRunning,
+              isDeleted: hasAccess.isDeleted,
+            },
+          })
+          throw new Error(error)
+        }
+
+        // TODO take commission if strategie won
+        return strategie
       },
     })
   },

@@ -34,6 +34,7 @@ const launchStrategie = async (payload) => {
   const { user, strategie } = payload
   let preditionContract
   let signer
+  let emitter
 
   // TODO define interface to stabilise objecti params that we need in addition to default fields
   // TODO load player from TheGraph to have special data like amountBNB played
@@ -43,20 +44,26 @@ const launchStrategie = async (payload) => {
   if (strategie.running) throw new Error('Strategie is running')
 
   // TODO update user to isplaying True.
-  logger.info(`[LAUNCHING] Job launching job for strategie ${strategie.id} and user ${user.id}`)
+  logger.info(`[LAUNCHING] Job launching job for strategie ${strategie.id} and address ${strategie.generated}`)
   const blocknative = new BlocknativeSdk(options)
 
+  const stopStrategie = async () => {
+    logger.error(`[PLAYING] Stopping strategie ${strategie.id} for user ${user.id}`)
+
+    await prisma.strategie.update({
+      where: { id: strategie.id },
+      data: {
+        isError: true,
+        isActive: false,
+      },
+    })
+    if (emitter) emitter.off('txPool')
+  }
   // const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
   const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
     if (strategie.currentAmount === 0) {
       logger.error('[PLAYING] Not enought BNB')
-      await prisma.strategie.update({
-        where: { id: strategie.id },
-        data: {
-          isError: true,
-          isActive: false,
-        },
-      })
+      await stopStrategie()
       return
     }
     // if (bankroll > countedBankroll * 1.5) {
@@ -85,13 +92,8 @@ const launchStrategie = async (payload) => {
     // eslint-disable-next-line eqeqeq
     if (!(+amount != 0)) {
       logger.error('[PLAYING] Bet amount is 0')
-      await prisma.strategie.update({
-        where: { id: strategie.id },
-        data: {
-          isError: true,
-          isActive: false,
-        },
-      })
+      await stopStrategie()
+
       return
     }
 
@@ -221,8 +223,9 @@ const launchStrategie = async (payload) => {
   const roundEndListenner = async (epoch) => {
     strategie.roundsCount += 1
 
-    // const currentAmountBigInt = await provider.getBalance(signer.address)
-    // strategie.currentAmount = parseInt(ethers.utils.formatEther(currentAmountBigInt), 10)
+    const currentAmountBigInt = await provider.getBalance(signer.address)
+    strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
+    console.log('🚀 ~ file: index.js ~ line 228 ~ roundEndListenner ~ strategie.currentAmount', strategie.currentAmount)
 
     // TODO update currentAmount with user bet history
 
@@ -235,7 +238,7 @@ const launchStrategie = async (payload) => {
     await prisma.strategie.update({
       where: { id: strategie.id },
       data: {
-        // currentAmount: strategie.currentAmount,
+        currentAmount: strategie.currentAmount,
         playsCount: strategie.playsCount,
         roundsCount: strategie.roundsCount,
       },
@@ -314,29 +317,24 @@ const launchStrategie = async (payload) => {
   }
 
   const listen = async () => {
-    const privateKey = decrypt(user.private)
+    const privateKey = decrypt(strategie.private)
     signer = new ethers.Wallet(privateKey, provider)
 
     // const initialBankrollBigInt = await provider.getBalance(signer.address)
-    // strategie.initialBankroll = parseInt(ethers.utils.formatEther(initialBankrollBigInt), 10)
+    // strategie.initialBankroll = ethers.utils.formatEther(initialBankrollBigInt)
     // strategie.bankroll = strategie.initialBankroll
     // strategie.startedBalance = strategie.initialBankroll
 
-    strategie.bankroll = strategie.currentAmount
-    strategie.startedBalance = strategie.currentAmount
-    strategie.betAmount = +(strategie.bankroll / 15).toFixed(4)
+    const initialBankrollBigInt = await provider.getBalance(signer.address)
+    strategie.startedBalance = +ethers.utils.formatEther(initialBankrollBigInt)
+    strategie.betAmount = +(strategie.startedBalance / 15).toFixed(4)
     strategie.playedHashs = []
     strategie.playedEpochs = []
 
     if (strategie.betAmount <= MIN_BET_AMOUNT || strategie.betAmount > MAX_BET_AMOUNT) {
-      logger.info(`[LISTEN] Bet amount error. Stopping strategie for now`)
-      await prisma.strategie.update({
-        where: { id: strategie.id },
-        data: {
-          isError: true,
-          isActive: false,
-        },
-      })
+      logger.error(`[LISTEN] Bet amount error, value is ${strategie.betAmount} Stopping strategie for now`)
+      await stopStrategie()
+
       return
     }
 
@@ -357,7 +355,8 @@ const launchStrategie = async (payload) => {
     logger.info(`[LISTEN] Starting for user ${user.generated} copy betting player ${strategie.player}`)
 
     logger.info(`[LISTEN] Waiting for transaction for player ${strategie.player}`)
-    const { emitter } = blocknative.account(strategie.player)
+    const { emitter: emt } = blocknative.account(strategie.player)
+    emitter = emt
     emitter.on('txPool', processRound)
 
     // logger.info(`[LISTEN] emitter is listenning to transaction from mempool`)

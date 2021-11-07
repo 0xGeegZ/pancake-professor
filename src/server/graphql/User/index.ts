@@ -45,6 +45,7 @@ const User = objectType({
     t.model.address()
     t.model.generated()
     t.model.private()
+    t.model.isActivated()
     t.model.referrals()
     t.model.registeredAt()
     t.model.loginAt()
@@ -162,6 +163,24 @@ const mutations = extendType({
                 id: args.id,
               },
             },
+          },
+        })
+      },
+    })
+
+    t.nullable.field('toogleIsActivated', {
+      type: 'User',
+      args: {
+        id: nonNull(stringArg()),
+      },
+      resolve: async (_, { id }, ctx) => {
+        // TODO allow only admins
+        if (!ctx.user?.id || id !== ctx.user.id) return null
+
+        return prisma.user.update({
+          where: { id },
+          data: {
+            isActivated: !ctx.user.isActivated,
           },
         })
       },

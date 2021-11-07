@@ -31,6 +31,7 @@ import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDeleteStrategieMutation } from 'src/client/graphql/deleteStrategie.generated'
 import { useToogleActivateStrategieMutation } from 'src/client/graphql/toogleActivateStrategie.generated'
+import { useGlobalStore } from 'src/client/store/swr'
 
 const CardAddAction = styled(Card)(
   ({ theme }) => `
@@ -183,7 +184,7 @@ const LinearProgressWrapper = styled(LinearProgress)(
 function ActiveStrategies({ strategies: pstrategies }) {
   const { t }: { t: any } = useTranslation()
   // const theme = useTheme()
-  // const { mutate } = useGlobalStore()
+  const { mutate } = useGlobalStore()
 
   const [, toogleActivateStrategie] = useToogleActivateStrategieMutation()
   const [, deleteStrategieMutation] = useDeleteStrategieMutation()
@@ -216,14 +217,6 @@ function ActiveStrategies({ strategies: pstrategies }) {
   const [openLocation, setOpenMenuLocation] = useState<boolean>(false)
 
   const handleChange = (strategie) => async () => {
-    const updateds = strategies.map((s) => {
-      const updated = s
-      if (updated.id === strategie.id) updated.isActive = !updated.isActive
-
-      return updated
-    })
-    setStrategies(updateds)
-
     const { error } = await toogleActivateStrategie({ id: strategie.id })
 
     if (error) {
@@ -234,6 +227,13 @@ function ActiveStrategies({ strategies: pstrategies }) {
       // need to rollback
       return
     }
+    const updateds = strategies.map((s) => {
+      const updated = s
+      if (updated.id === strategie.id) updated.isActive = !updated.isActive
+
+      return updated
+    })
+    setStrategies(updateds)
 
     // const updateds = strategies.map((s) => {
     //   const updated = s
@@ -246,6 +246,7 @@ function ActiveStrategies({ strategies: pstrategies }) {
       variant: 'success',
       TransitionComponent: Zoom,
     })
+    mutate('currentUser')
     // mutate('currentUser', (user) => {
     //   return { ...user, strategies: updateds }
     // })
@@ -286,14 +287,6 @@ function ActiveStrategies({ strategies: pstrategies }) {
   }
 
   const deleteStrategie = (strategie) => async () => {
-    const updateds = strategies.map((s) => {
-      const updated = s
-      if (updated.id === strategie.id) updated.isDeleted = !updated.isDeleted
-
-      return updated
-    })
-    setStrategies(updateds)
-
     const { error } = await deleteStrategieMutation({ id: strategie.id })
 
     if (error) {
@@ -303,6 +296,13 @@ function ActiveStrategies({ strategies: pstrategies }) {
       })
       return
     }
+    const updateds = strategies.map((s) => {
+      const updated = s
+      if (updated.id === strategie.id) updated.isDeleted = !updated.isDeleted
+
+      return updated
+    })
+    setStrategies(updateds)
 
     enqueueSnackbar(t(`Stratégie successfully deleted.`), {
       variant: 'success',
@@ -379,13 +379,22 @@ function ActiveStrategies({ strategies: pstrategies }) {
                               {strategie.player.substring(0, 20)}
                             </Link>
                           </Typography>
+                          <Typography variant="h4" noWrap sx={{ pt: 1 }}>
+                            {t('Generated')}:{' '}
+                            <Link
+                              variant="h5"
+                              href={`https://bscscan.com/address/${strategie.generated}`}
+                              target="_blank">
+                              {strategie.generated.substring(0, 20)}
+                            </Link>
+                          </Typography>
                         </Grid>
                       </Grid>
                     </Box>
 
                     <Box sx={{ p: 1 }}>
                       <Grid spacing={2} container>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={7}>
                           <Typography variant="caption" sx={{ pb: 1 }} component="div">
                             {t('Rounds played')}(%)
                           </Typography>
@@ -410,31 +419,24 @@ function ActiveStrategies({ strategies: pstrategies }) {
                             />
                           </Box>
                         </Grid>
-                        <Grid item xs={6} sm={4}>
-                          <Typography variant="caption" sx={{ pb: 1 }} component="div">
-                            {t('% played')}
+                        <Grid item xs={12} sm={5}>
+                          <Typography variant="caption" component="div">
+                            {t('Bankroll')}
                           </Typography>
                           <Box>
                             <Typography
                               color="text.primary"
-                              variant="h2"
+                              variant="h5"
                               sx={{ pr: 0.5, pt: 1, display: 'inline-flex' }}>
-                              {parseInt(
-                                `${
-                                  strategie.roundsCount === 0
-                                    ? 0
-                                    : (+strategie.playsCount * 100) / strategie.roundsCount
-                                }`,
-                                10
-                              )}
-                              %
+                              {`${strategie.currentAmount}BNB `}{' '}
+                              <sup> ({100 - (+strategie.currentAmount * 100) / strategie.startedAmount}%) </sup>
                             </Typography>
-                            {/* <Typography color="text.secondary" variant="h4" sx={{ pr: 2, display: 'inline-flex' }}>
-                              /100
+                            {/* <Typography color="text.secondary" variant="h5" sx={{ pr: 2, display: 'inline-flex' }}>
+                              ({100 - (+strategie.currentAmount * 100) / strategie.startedAmount}%)
                             </Typography> */}
                           </Box>
                         </Grid>
-                        <Grid item xs={6} sm={2}>
+                        {/* <Grid item xs={6} sm={2}>
                           <Typography variant="caption" sx={{ pb: 1.5, fontSize: '10px' }} component="div">
                             {t('Running since')}
                           </Typography>
@@ -443,6 +445,15 @@ function ActiveStrategies({ strategies: pstrategies }) {
                               {getStrategieDuraction(strategie)}
                             </Typography>
                           </Box>
+                        </Grid> */}
+                      </Grid>
+                    </Box>
+                    <Box sx={{ p: 1 }}>
+                      <Grid spacing={1} container>
+                        <Grid item xs={6} sm={12}>
+                          <Typography variant="caption" sx={{ pb: 1.5, fontSize: '10px' }} component="div">
+                            {t('Running since')} <b>{getStrategieDuraction(strategie)}</b>
+                          </Typography>
                         </Grid>
                       </Grid>
                     </Box>

@@ -114,9 +114,17 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
         }
       })
       .catch(() => {
-        enqueueSnackbar(t('Unexpected error occurred'), {
-          variant: 'error',
-        })
+        // enqueueSnackbar(t('Unexpected error occurred'), {
+        //   variant: 'error',
+        // })
+        enqueueSnackbar(
+          t(
+            "Your account need to be activated by an admin. You'll recieve some pancake professor token when it will be validated :)"
+          ),
+          {
+            variant: 'error',
+          }
+        )
       })
   }
 
