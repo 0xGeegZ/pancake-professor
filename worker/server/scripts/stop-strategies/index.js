@@ -23,7 +23,7 @@ const stopStrategies = async () => {
   logger.info(`[STOPPING-LOCALLY] Stopping strategies locally`)
   const strategies = await prisma.strategie.findMany({
     where: {
-      isActive: true,
+      // isActive: true,
       isRunning: true,
     },
   })
