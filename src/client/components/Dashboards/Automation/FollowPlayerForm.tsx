@@ -134,7 +134,10 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
     let balance = user.generatedBalance
 
     if (user.strategies.length) {
-      const usedBankroll = user.strategies.map((s) => s.currentAmount).reduce((acc, num) => acc + num, 0)
+      const usedBankroll = user.strategies
+        .filter((s) => s.isActive)
+        .map((s) => s.currentAmount)
+        .reduce((acc, num) => acc + num, 0)
       // const usedBankroll = user.strategies.map((s) => s.startedAmount).reduce((acc, num) => acc + num, 0)
 
       console.log('🚀 ~ file: FollowPlayerForm.tsx ~ line 139 ~ sumbitCreateStrategie ~ usedBankroll', usedBankroll)

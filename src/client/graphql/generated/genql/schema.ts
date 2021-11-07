@@ -1,10 +1,10 @@
 import {FieldsSelection,Observable} from '@genql/runtime'
 
 export type Scalars = {
-    Boolean: boolean,
     DateTime: any,
     String: string,
     Float: number,
+    Boolean: boolean,
     Int: number,
 }
 
@@ -42,8 +42,6 @@ export interface Query {
     __typename: 'Query'
 }
 
-export type SortOrder = 'asc' | 'desc'
-
 export interface Strategie {
     createdAt: Scalars['DateTime']
     currentAmount: Scalars['Float']
@@ -79,8 +77,6 @@ export interface User {
     __typename: 'User'
 }
 
-export interface BoolFilter {equals?: (Scalars['Boolean'] | null),not?: (NestedBoolFilter | null)}
-
 export interface MutationRequest{
     createFriend?: [{id: Scalars['String']},UserRequest]
     createProject?: [{name: Scalars['String'],slug?: (Scalars['String'] | null)},ProjectRequest]
@@ -95,8 +91,6 @@ export interface MutationRequest{
     __typename?: boolean | number
     __scalar?: boolean | number
 }
-
-export interface NestedBoolFilter {equals?: (Scalars['Boolean'] | null),not?: (NestedBoolFilter | null)}
 
 export interface ProjectRequest{
     id?: boolean | number
@@ -138,8 +132,6 @@ export interface StrategieRequest{
     __scalar?: boolean | number
 }
 
-export interface StrategieOrderByInput {createdAt?: (SortOrder | null),currentAmount?: (SortOrder | null),id?: (SortOrder | null),isActive?: (SortOrder | null),isDeleted?: (SortOrder | null),isError?: (SortOrder | null),isRunning?: (SortOrder | null),maxLooseAmount?: (SortOrder | null),minWinAmount?: (SortOrder | null),modifiedAt?: (SortOrder | null),player?: (SortOrder | null),playsCount?: (SortOrder | null),roundsCount?: (SortOrder | null),startedAmount?: (SortOrder | null),userId?: (SortOrder | null)}
-
 export interface StrategieWhereUniqueInput {id?: (Scalars['String'] | null)}
 
 export interface UserRequest{
@@ -154,12 +146,10 @@ export interface UserRequest{
     private?: boolean | number
     referrals?: [{after?: (UserWhereUniqueInput | null),before?: (UserWhereUniqueInput | null),first?: (Scalars['Int'] | null),last?: (Scalars['Int'] | null)},UserRequest] | UserRequest
     registeredAt?: boolean | number
-    strategies?: [{after?: (StrategieWhereUniqueInput | null),before?: (StrategieWhereUniqueInput | null),first?: (Scalars['Int'] | null),last?: (Scalars['Int'] | null),orderBy?: (StrategieOrderByInput[] | null),where?: (UserStrategiesWhereInput | null)},StrategieRequest] | StrategieRequest
+    strategies?: [{after?: (StrategieWhereUniqueInput | null),before?: (StrategieWhereUniqueInput | null),first?: (Scalars['Int'] | null),last?: (Scalars['Int'] | null)},StrategieRequest] | StrategieRequest
     __typename?: boolean | number
     __scalar?: boolean | number
 }
-
-export interface UserStrategiesWhereInput {isActive?: (BoolFilter | null),isDeleted?: (BoolFilter | null),isRunning?: (BoolFilter | null)}
 
 export interface UserWhereUniqueInput {address?: (Scalars['String'] | null),email?: (Scalars['String'] | null),generated?: (Scalars['String'] | null),id?: (Scalars['String'] | null),private?: (Scalars['String'] | null)}
 
@@ -309,7 +299,7 @@ export interface UserPromiseChain{
     private: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Promise<Scalars['String']>}),
     referrals: ((args?: {after?: (UserWhereUniqueInput | null),before?: (UserWhereUniqueInput | null),first?: (Scalars['Int'] | null),last?: (Scalars['Int'] | null)}) => {get: <R extends UserRequest>(request: R, defaultValue?: FieldsSelection<User, R>[]) => Promise<FieldsSelection<User, R>[]>})&({get: <R extends UserRequest>(request: R, defaultValue?: FieldsSelection<User, R>[]) => Promise<FieldsSelection<User, R>[]>}),
     registeredAt: ({get: (request?: boolean|number, defaultValue?: Scalars['DateTime']) => Promise<Scalars['DateTime']>}),
-    strategies: ((args?: {after?: (StrategieWhereUniqueInput | null),before?: (StrategieWhereUniqueInput | null),first?: (Scalars['Int'] | null),last?: (Scalars['Int'] | null),orderBy?: (StrategieOrderByInput[] | null),where?: (UserStrategiesWhereInput | null)}) => {get: <R extends StrategieRequest>(request: R, defaultValue?: FieldsSelection<Strategie, R>[]) => Promise<FieldsSelection<Strategie, R>[]>})&({get: <R extends StrategieRequest>(request: R, defaultValue?: FieldsSelection<Strategie, R>[]) => Promise<FieldsSelection<Strategie, R>[]>})
+    strategies: ((args?: {after?: (StrategieWhereUniqueInput | null),before?: (StrategieWhereUniqueInput | null),first?: (Scalars['Int'] | null),last?: (Scalars['Int'] | null)}) => {get: <R extends StrategieRequest>(request: R, defaultValue?: FieldsSelection<Strategie, R>[]) => Promise<FieldsSelection<Strategie, R>[]>})&({get: <R extends StrategieRequest>(request: R, defaultValue?: FieldsSelection<Strategie, R>[]) => Promise<FieldsSelection<Strategie, R>[]>})
 }
 
 export interface UserObservableChain{
@@ -324,5 +314,5 @@ export interface UserObservableChain{
     private: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Observable<Scalars['String']>}),
     referrals: ((args?: {after?: (UserWhereUniqueInput | null),before?: (UserWhereUniqueInput | null),first?: (Scalars['Int'] | null),last?: (Scalars['Int'] | null)}) => {get: <R extends UserRequest>(request: R, defaultValue?: FieldsSelection<User, R>[]) => Observable<FieldsSelection<User, R>[]>})&({get: <R extends UserRequest>(request: R, defaultValue?: FieldsSelection<User, R>[]) => Observable<FieldsSelection<User, R>[]>}),
     registeredAt: ({get: (request?: boolean|number, defaultValue?: Scalars['DateTime']) => Observable<Scalars['DateTime']>}),
-    strategies: ((args?: {after?: (StrategieWhereUniqueInput | null),before?: (StrategieWhereUniqueInput | null),first?: (Scalars['Int'] | null),last?: (Scalars['Int'] | null),orderBy?: (StrategieOrderByInput[] | null),where?: (UserStrategiesWhereInput | null)}) => {get: <R extends StrategieRequest>(request: R, defaultValue?: FieldsSelection<Strategie, R>[]) => Observable<FieldsSelection<Strategie, R>[]>})&({get: <R extends StrategieRequest>(request: R, defaultValue?: FieldsSelection<Strategie, R>[]) => Observable<FieldsSelection<Strategie, R>[]>})
+    strategies: ((args?: {after?: (StrategieWhereUniqueInput | null),before?: (StrategieWhereUniqueInput | null),first?: (Scalars['Int'] | null),last?: (Scalars['Int'] | null)}) => {get: <R extends StrategieRequest>(request: R, defaultValue?: FieldsSelection<Strategie, R>[]) => Observable<FieldsSelection<Strategie, R>[]>})&({get: <R extends StrategieRequest>(request: R, defaultValue?: FieldsSelection<Strategie, R>[]) => Observable<FieldsSelection<Strategie, R>[]>})
 }

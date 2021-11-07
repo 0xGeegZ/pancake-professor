@@ -29,11 +29,6 @@ module.exports.enumPaidPlan = {
   pro: 'pro',
 }
 
-module.exports.enumSortOrder = {
-  asc: 'asc',
-  desc: 'desc',
-}
-
 module.exports.generateQueryOp = function(fields) {
   return generateGraphqlOperation('query', typeMap.Query, fields)
 }

@@ -385,7 +385,7 @@ function ActiveStrategies({ strategies: pstrategies }) {
 
                     <Box sx={{ p: 1 }}>
                       <Grid spacing={2} container>
-                        <Grid item xs={12} sm={8}>
+                        <Grid item xs={12} sm={6}>
                           <Typography variant="caption" sx={{ pb: 1 }} component="div">
                             {t('Rounds played')}(%)
                           </Typography>
@@ -410,7 +410,31 @@ function ActiveStrategies({ strategies: pstrategies }) {
                             />
                           </Box>
                         </Grid>
-                        <Grid item xs={12} sm={4}>
+                        <Grid item xs={6} sm={4}>
+                          <Typography variant="caption" sx={{ pb: 1 }} component="div">
+                            {t('% played')}
+                          </Typography>
+                          <Box>
+                            <Typography
+                              color="text.primary"
+                              variant="h2"
+                              sx={{ pr: 0.5, pt: 1, display: 'inline-flex' }}>
+                              {parseInt(
+                                `${
+                                  strategie.roundsCount === 0
+                                    ? 0
+                                    : (+strategie.playsCount * 100) / strategie.roundsCount
+                                }`,
+                                10
+                              )}
+                              %
+                            </Typography>
+                            {/* <Typography color="text.secondary" variant="h4" sx={{ pr: 2, display: 'inline-flex' }}>
+                              /100
+                            </Typography> */}
+                          </Box>
+                        </Grid>
+                        <Grid item xs={6} sm={2}>
                           <Typography variant="caption" sx={{ pb: 1.5, fontSize: '10px' }} component="div">
                             {t('Running since')}
                           </Typography>
@@ -436,13 +460,13 @@ function ActiveStrategies({ strategies: pstrategies }) {
                               variant="outlined"
                               color="error"
                               onClick={deleteStrategie(strategie)}>
-                              <b> {t('Delete strategie')}</b>
+                              <b> {t('Delete')}</b>
                             </Button>
                             {/* </Tooltip> */}
                           </Grid>
                           <Grid item md={6}>
                             <Button size="small" disabled fullWidth variant="outlined" color="secondary">
-                              {t('Strategie details')}
+                              {t('Details')}
                             </Button>
                           </Grid>
                         </Grid>

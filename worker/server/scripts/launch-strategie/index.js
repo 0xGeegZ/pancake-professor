@@ -47,7 +47,7 @@ const launchStrategie = async (payload) => {
   const blocknative = new BlocknativeSdk(options)
 
   // const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
-  const betRound = async ({ epoch, betBull, betAmount }) => {
+  const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
     if (strategie.currentAmount === 0) {
       logger.error('[PLAYING] Not enought BNB')
       await prisma.strategie.update({
@@ -116,22 +116,22 @@ const launchStrategie = async (payload) => {
       logger.error(error.message)
       isError = true
       // Try to reenter
-      // const { startTimestamp, lockTimestamp } = await preditionContract.rounds(currentEpoch)
+      const { startTimestamp, lockTimestamp } = await preditionContract.rounds(epoch)
 
-      // const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
+      const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
 
-      // const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
+      const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
-      // const minutesLeft = secondsLeftUntilNextEpoch < 60 ? 0 : Math.trunc(secondsLeftUntilNextEpoch / 60)
-      // const secondsLeft = secondsLeftUntilNextEpoch - minutesLeft * 60
+      const minutesLeft = secondsLeftUntilNextEpoch < 60 ? 0 : Math.trunc(secondsLeftUntilNextEpoch / 60)
+      const secondsLeft = secondsLeftUntilNextEpoch - minutesLeft * 60
 
-      // console.log('🚀  ~ secondsLeft', secondsLeft)
+      console.log('🚀  ~ secondsLeft', secondsLeft)
 
-      // if (secondsLeft >= 15 && isAlreadyRetried === false) await bet(epoch, betBull, betAmount, true)
-      // else {
-      //   playsCount++
-      //   playsCountForActualPlayer++
-      // }
+      if (secondsLeft >= 15 && isAlreadyRetried === false)
+        await betRound({ epoch, betBull, betAmount, isAlreadyRetried: true })
+      else {
+        strategie.playsCount += 1
+      }
     }
     logger.info('------------------------------------------------------------')
     logger.info('------------------------------------------------------------')
@@ -242,7 +242,7 @@ const launchStrategie = async (payload) => {
     })
 
     if (strategie.playedEpochs.length >= 3) {
-      await claimPlayedEpochs(strategie.lastEpochs)
+      await claimPlayedEpochs(strategie.playedEpochs)
       strategie.playedEpochs = []
     }
   }
@@ -324,7 +324,7 @@ const launchStrategie = async (payload) => {
 
     strategie.bankroll = strategie.currentAmount
     strategie.startedBalance = strategie.currentAmount
-    strategie.betAmount = +(strategie.bankroll / 10).toFixed(4)
+    strategie.betAmount = +(strategie.bankroll / 15).toFixed(4)
     strategie.playedHashs = []
     strategie.playedEpochs = []
 
