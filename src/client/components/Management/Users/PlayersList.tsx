@@ -809,6 +809,22 @@ const PlayersList: FC = () => {
                                           <b> {t('Copy')}</b>
                                         </Button>
                                       </Tooltip>
+                                    ) : +user?.generatedBalance === 0 ? (
+                                      <Tooltip
+                                        placement="top"
+                                        title={t('Need to have positive balance in secondary address to copy player')}
+                                        arrow>
+                                        {/* TODO : Remove handleClick for production */}
+                                        <Button
+                                          size="small"
+                                          fullWidth
+                                          variant="outlined"
+                                          color="warning"
+                                          // onClick={handleOpenCreateForm(player.id)}
+                                        >
+                                          <b> {t('Copy')}</b>
+                                        </Button>
+                                      </Tooltip>
                                     ) : (
                                       <Button
                                         size="small"

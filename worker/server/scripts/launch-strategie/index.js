@@ -42,13 +42,6 @@ const launchStrategie = async (payload) => {
   if (!strategie) throw new Error('No strategie given')
   if (strategie.running) throw new Error('Strategie is running')
 
-  await prisma.strategie.update({
-    where: { id: strategie.id },
-    data: {
-      isRunning: true,
-    },
-  })
-
   // TODO update user to isplaying True.
   logger.info(`[LAUNCHING] Job launching job for strategie ${strategie.id} and user ${user.id}`)
   const blocknative = new BlocknativeSdk(options)
@@ -208,14 +201,29 @@ const launchStrategie = async (payload) => {
     const privateKey = decrypt(user.private)
     signer = new ethers.Wallet(privateKey, provider)
 
-    const initialBankrollBigInt = await provider.getBalance(signer.address)
-    strategie.initialBankroll = parseInt(ethers.utils.formatEther(initialBankrollBigInt), 10)
-    strategie.bankroll = strategie.initialBankroll
-    strategie.startedBalance = strategie.initialBankroll
+    // const initialBankrollBigInt = await provider.getBalance(signer.address)
+    // strategie.initialBankroll = parseInt(ethers.utils.formatEther(initialBankrollBigInt), 10)
+    // strategie.bankroll = strategie.initialBankroll
+    // strategie.startedBalance = strategie.initialBankroll
 
-    strategie.betAmount = (strategie.bankroll / 15).toFixed(4)
-
+    strategie.bankroll = strategie.currentAmount
+    strategie.startedBalance = strategie.currentAmount
+    strategie.betAmount = (strategie.bankroll / 10).toFixed(4)
     strategie.playedHashs = []
+
+    if (strategie.betAmount <= MIN_BET_AMOUNT || betAmount > MAX_BET_AMOUNT) {
+      logger.info(`Bet amount error. Stopping strategie for now`)
+      // TODO add isError : true to database
+      return
+    }
+
+    await prisma.strategie.update({
+      where: { id: strategie.id },
+      data: {
+        isRunning: true,
+      },
+    })
+
     logger.info(`Stetting up bet amount to ${strategie.betAmount} for initial bankroll ${strategie.bankroll}.`)
 
     preditionContract = new ethers.Contract(

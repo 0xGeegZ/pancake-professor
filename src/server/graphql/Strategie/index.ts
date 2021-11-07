@@ -1,4 +1,4 @@
-import { booleanArg, extendType, intArg, nonNull, objectType, stringArg } from 'nexus'
+import { booleanArg, extendType, floatArg, intArg, nonNull, objectType, stringArg } from 'nexus'
 
 import prisma from '../../db/prisma'
 
@@ -58,9 +58,9 @@ const mutations = extendType({
       type: 'Strategie',
       args: {
         player: nonNull(stringArg()),
-        startedAmount: nonNull(intArg()),
-        maxLooseAmount: intArg(),
-        minWinAmount: intArg(),
+        startedAmount: nonNull(floatArg()),
+        maxLooseAmount: floatArg(),
+        minWinAmount: floatArg(),
       },
       resolve: async (_, args, ctx) => {
         if (!ctx.user?.id) return null
@@ -70,8 +70,8 @@ const mutations = extendType({
             player: args.player,
             startedAmount: args.startedAmount,
             currentAmount: args.startedAmount,
-            maxLooseAmount: args.maxLooseAmount || 0,
-            minWinAmount: args.minWinAmount || 0,
+            maxLooseAmount: args.maxLooseAmount,
+            minWinAmount: args.minWinAmount,
             user: {
               connect: {
                 id: ctx.user.id,
@@ -87,15 +87,15 @@ const mutations = extendType({
       args: {
         id: nonNull(stringArg()),
         player: nonNull(stringArg()),
-        startedAmount: nonNull(intArg()),
-        currentAmount: nonNull(intArg()),
+        startedAmount: nonNull(floatArg()),
+        currentAmount: nonNull(floatArg()),
         roundsCount: nonNull(intArg()),
         playsCount: nonNull(intArg()),
         isActive: booleanArg(),
         isRunning: booleanArg(),
         isDeleted: booleanArg(),
-        maxLooseAmount: nonNull(intArg()),
-        minWinAmount: nonNull(intArg()),
+        maxLooseAmount: nonNull(floatArg()),
+        minWinAmount: nonNull(floatArg()),
       },
       resolve: async (_, args, ctx) => {
         if (!ctx.user?.id) return null

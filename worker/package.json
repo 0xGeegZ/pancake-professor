@@ -6,9 +6,10 @@
   "author": "",
   "license": "MIT",
   "scripts": {
-    "dev": "nodemon -e 'require(\"./scripts/launch-strategies/index.js\").launchStrategies()'",
-    "launch:strategies": "node -e 'require(\"./scripts/launch-strategies/index.js\").launchStrategies()'",
-    "stop:strategies": "node -e 'require(\"./scripts/stop-strategies/index.js\").stopStrategies()'",
+    "dev": "nodemon -e 'require(\"./server/scripts/launch-strategies/index.js\").launchStrategies()'",
+    "launch:strategies": "node -e 'require(\"./server/scripts/launch-strategies/index.js\").launchStrategies()'",
+    "stop:strategies": "node -e 'require(\"./server/scripts/stop-strategies/index.js\").stopStrategies()'",
+    "generate": "prisma generate",
     "try": "node pm2.js",
     "pm2:list": "pm2 list",
     "pm2:logs": "pm2 logs",
@@ -38,5 +39,8 @@
     "eslint-plugin-import": "^2.25.2",
     "eslint-plugin-prettier": "^4.0.0"
   },
-  "packageManager": "yarn@3.1.0"
+  "packageManager": "yarn@3.1.0",
+  "prisma": {
+    "schema": "server/db/schema.prisma"
+  }
 }

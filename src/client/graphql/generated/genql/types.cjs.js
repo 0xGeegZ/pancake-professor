@@ -4,13 +4,14 @@ module.exports = {
         2,
         3,
         4,
-        5
+        5,
+        6
     ],
     "types": {
         "DateTime": {},
         "Mutation": {
             "createFriend": [
-                10,
+                11,
                 {
                     "id": [
                         2,
@@ -19,7 +20,7 @@ module.exports = {
                 }
             ],
             "createProject": [
-                6,
+                7,
                 {
                     "name": [
                         2,
@@ -31,7 +32,7 @@ module.exports = {
                 }
             ],
             "createStrategie": [
-                8,
+                9,
                 {
                     "maxLooseAmount": [
                         3
@@ -45,7 +46,7 @@ module.exports = {
                     ],
                     "startedAmount": [
                         3,
-                        "Int!"
+                        "Float!"
                     ]
                 }
             ],
@@ -62,7 +63,7 @@ module.exports = {
                 2,
                 {
                     "plan": [
-                        5,
+                        6,
                         "PaidPlan!"
                     ],
                     "projectId": [
@@ -72,7 +73,7 @@ module.exports = {
                 }
             ],
             "deleteStrategie": [
-                8,
+                9,
                 {
                     "id": [
                         2,
@@ -94,7 +95,7 @@ module.exports = {
                 }
             ],
             "toogleActivateStrategie": [
-                8,
+                9,
                 {
                     "id": [
                         2,
@@ -103,11 +104,11 @@ module.exports = {
                 }
             ],
             "updateStrategie": [
-                8,
+                9,
                 {
                     "currentAmount": [
                         3,
-                        "Int!"
+                        "Float!"
                     ],
                     "id": [
                         2,
@@ -124,32 +125,32 @@ module.exports = {
                     ],
                     "maxLooseAmount": [
                         3,
-                        "Int!"
+                        "Float!"
                     ],
                     "minWinAmount": [
                         3,
-                        "Int!"
+                        "Float!"
                     ],
                     "player": [
                         2,
                         "String!"
                     ],
                     "playsCount": [
-                        3,
+                        5,
                         "Int!"
                     ],
                     "roundsCount": [
-                        3,
+                        5,
                         "Int!"
                     ],
                     "startedAmount": [
                         3,
-                        "Int!"
+                        "Float!"
                     ]
                 }
             ],
             "updateUser": [
-                10,
+                11,
                 {
                     "address": [
                         2,
@@ -172,8 +173,9 @@ module.exports = {
             ]
         },
         "String": {},
-        "Int": {},
+        "Float": {},
         "Boolean": {},
+        "Int": {},
         "PaidPlan": {},
         "Project": {
             "id": [
@@ -183,25 +185,25 @@ module.exports = {
                 2
             ],
             "paidPlan": [
-                5
+                6
             ],
             "slug": [
                 2
             ],
             "users": [
-                10,
+                11,
                 {
                     "after": [
-                        11
+                        12
                     ],
                     "before": [
-                        11
+                        12
                     ],
                     "first": [
-                        3
+                        5
                     ],
                     "last": [
-                        3
+                        5
                     ]
                 }
             ],
@@ -211,13 +213,13 @@ module.exports = {
         },
         "Query": {
             "currentUser": [
-                10
+                11
             ],
             "getUsers": [
-                10
+                11
             ],
             "project": [
-                6,
+                7,
                 {
                     "id": [
                         2
@@ -228,7 +230,7 @@ module.exports = {
                 }
             ],
             "strategie": [
-                8,
+                9,
                 {
                     "id": [
                         2,
@@ -237,7 +239,7 @@ module.exports = {
                 }
             ],
             "user": [
-                10,
+                11,
                 {
                     "id": [
                         2,
@@ -281,16 +283,16 @@ module.exports = {
                 2
             ],
             "playsCount": [
-                3
+                5
             ],
             "roundsCount": [
-                3
+                5
             ],
             "startedAmount": [
                 3
             ],
             "user": [
-                10
+                11
             ],
             "__typename": [
                 2
@@ -333,19 +335,19 @@ module.exports = {
                 2
             ],
             "referrals": [
-                10,
+                11,
                 {
                     "after": [
-                        11
+                        12
                     ],
                     "before": [
-                        11
+                        12
                     ],
                     "first": [
-                        3
+                        5
                     ],
                     "last": [
-                        3
+                        5
                     ]
                 }
             ],
@@ -353,19 +355,19 @@ module.exports = {
                 0
             ],
             "strategies": [
-                8,
+                9,
                 {
                     "after": [
-                        9
+                        10
                     ],
                     "before": [
-                        9
+                        10
                     ],
                     "first": [
-                        3
+                        5
                     ],
                     "last": [
-                        3
+                        5
                     ]
                 }
             ],
