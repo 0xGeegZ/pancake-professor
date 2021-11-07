@@ -56,3 +56,8 @@ export declare const generateMutationOp: (
 export declare const enumPaidPlan = {
   pro: 'pro',
 } as const
+
+export declare const enumSortOrder = {
+  asc: 'asc',
+  desc: 'desc',
+} as const

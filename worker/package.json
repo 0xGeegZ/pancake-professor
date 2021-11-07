@@ -7,14 +7,15 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon -e 'require(\"./server/scripts/launch-strategies/index.js\").launchStrategies()'",
-    "launch:strategies": "node -e 'require(\"./server/scripts/launch-strategies/index.js\").launchStrategies()'",
-    "stop:strategies": "node -e 'require(\"./server/scripts/stop-strategies/index.js\").stopStrategies()'",
+    "launch:strategies": "cross-env node -e 'require(\"./server/scripts/launch-strategies/index.js\").launchStrategies()'",
+    "stop:strategies": "cross-env node -e 'require(\"./server/scripts/stop-strategies/index.js\").stopStrategies()'",
     "generate": "prisma generate",
     "try": "node pm2.js",
     "pm2:list": "pm2 list",
     "pm2:logs": "pm2 logs",
     "pm2:monit": "pm2 monit",
     "pm2:stop:all": "pm2 stop all",
+    "pm2:delete:all": "pm2 delete all",
     "pm2:stop:listen": "pm2 stop listen",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "prettier:watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
@@ -26,6 +27,7 @@
   "dependencies": {
     "@prisma/client": "^2.23.0",
     "bnc-sdk": "^3.7.0",
+    "cross-env": "^7.0.3",
     "crypto": "^1.0.1",
     "ethers": "^5.5.1",
     "prisma": "^2.23.0",
@@ -33,11 +35,11 @@
     "ws": "^8.2.3"
   },
   "devDependencies": {
-    "nodemon": "^2.0.14",
     "eslint-config-airbnb": "18.2.1",
     "eslint-config-prettier": "^8.3.0",
     "eslint-plugin-import": "^2.25.2",
-    "eslint-plugin-prettier": "^4.0.0"
+    "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.14"
   },
   "packageManager": "yarn@3.1.0",
   "prisma": {

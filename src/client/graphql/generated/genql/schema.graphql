@@ -1,3 +1,8 @@
+input BoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
+}
+
 scalar DateTime
 
 type Mutation {
@@ -9,8 +14,13 @@ type Mutation {
   deleteStrategie(id: String!): Strategie
   inviteToProject(email: String!, projectId: String!): Boolean
   toogleActivateStrategie(id: String!): Strategie
-  updateStrategie(currentAmount: Float!, id: String!, isActive: Boolean, isDeleted: Boolean, isRunning: Boolean, maxLooseAmount: Float!, minWinAmount: Float!, player: String!, playsCount: Int!, roundsCount: Int!, startedAmount: Float!): Strategie
+  updateStrategie(currentAmount: Float!, id: String!, isActive: Boolean, isDeleted: Boolean, isError: Boolean, isRunning: Boolean, maxLooseAmount: Float!, minWinAmount: Float!, player: String!, playsCount: Int!, roundsCount: Int!, startedAmount: Float!): Strategie
   updateUser(address: String!, email: String, id: String!, name: String): User
+}
+
+input NestedBoolFilter {
+  equals: Boolean
+  not: NestedBoolFilter
 }
 
 enum PaidPlan {
@@ -33,12 +43,18 @@ type Query {
   user(id: String!): User
 }
 
+enum SortOrder {
+  asc
+  desc
+}
+
 type Strategie {
   createdAt: DateTime!
   currentAmount: Float!
   id: String!
   isActive: Boolean!
   isDeleted: Boolean!
+  isError: Boolean!
   isRunning: Boolean!
   maxLooseAmount: Float!
   minWinAmount: Float!
@@ -48,6 +64,24 @@ type Strategie {
   roundsCount: Int!
   startedAmount: Float!
   user: User!
+}
+
+input StrategieOrderByInput {
+  createdAt: SortOrder
+  currentAmount: SortOrder
+  id: SortOrder
+  isActive: SortOrder
+  isDeleted: SortOrder
+  isError: SortOrder
+  isRunning: SortOrder
+  maxLooseAmount: SortOrder
+  minWinAmount: SortOrder
+  modifiedAt: SortOrder
+  player: SortOrder
+  playsCount: SortOrder
+  roundsCount: SortOrder
+  startedAmount: SortOrder
+  userId: SortOrder
 }
 
 input StrategieWhereUniqueInput {
@@ -66,7 +100,13 @@ type User {
   private: String!
   referrals(after: UserWhereUniqueInput, before: UserWhereUniqueInput, first: Int, last: Int): [User!]!
   registeredAt: DateTime!
-  strategies(after: StrategieWhereUniqueInput, before: StrategieWhereUniqueInput, first: Int, last: Int): [Strategie!]!
+  strategies(after: StrategieWhereUniqueInput, before: StrategieWhereUniqueInput, first: Int, last: Int, orderBy: [StrategieOrderByInput!], where: UserStrategiesWhereInput): [Strategie!]!
+}
+
+input UserStrategiesWhereInput {
+  isActive: BoolFilter
+  isDeleted: BoolFilter
+  isRunning: BoolFilter
 }
 
 input UserWhereUniqueInput {

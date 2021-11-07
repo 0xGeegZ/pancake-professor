@@ -1,398 +1,499 @@
 module.exports = {
     "scalars": [
-        0,
+        1,
         2,
-        3,
         4,
         5,
-        6
+        6,
+        8,
+        11
     ],
     "types": {
+        "BoolFilter": {
+            "equals": [
+                1
+            ],
+            "not": [
+                7
+            ],
+            "__typename": [
+                4
+            ]
+        },
+        "Boolean": {},
         "DateTime": {},
         "Mutation": {
             "createFriend": [
-                11,
+                15,
                 {
                     "id": [
-                        2,
+                        4,
                         "String!"
                     ]
                 }
             ],
             "createProject": [
-                7,
+                9,
                 {
                     "name": [
-                        2,
+                        4,
                         "String!"
                     ],
                     "slug": [
-                        2
+                        4
                     ]
                 }
             ],
             "createStrategie": [
-                9,
+                12,
                 {
                     "maxLooseAmount": [
-                        3
+                        5
                     ],
                     "minWinAmount": [
-                        3
+                        5
                     ],
                     "player": [
-                        2,
+                        4,
                         "String!"
                     ],
                     "startedAmount": [
-                        3,
+                        5,
                         "Float!"
                     ]
                 }
             ],
             "createStripeCheckoutBillingPortalUrl": [
-                2,
+                4,
                 {
                     "projectId": [
-                        2,
+                        4,
                         "String!"
                     ]
                 }
             ],
             "createStripeCheckoutSession": [
-                2,
+                4,
                 {
                     "plan": [
-                        6,
+                        8,
                         "PaidPlan!"
                     ],
                     "projectId": [
-                        2,
+                        4,
                         "String!"
                     ]
                 }
             ],
             "deleteStrategie": [
-                9,
+                12,
                 {
                     "id": [
-                        2,
+                        4,
                         "String!"
                     ]
                 }
             ],
             "inviteToProject": [
-                4,
+                1,
                 {
                     "email": [
-                        2,
+                        4,
                         "String!"
                     ],
                     "projectId": [
-                        2,
+                        4,
                         "String!"
                     ]
                 }
             ],
             "toogleActivateStrategie": [
-                9,
+                12,
                 {
                     "id": [
-                        2,
+                        4,
                         "String!"
                     ]
                 }
             ],
             "updateStrategie": [
-                9,
+                12,
                 {
                     "currentAmount": [
-                        3,
+                        5,
                         "Float!"
                     ],
                     "id": [
-                        2,
+                        4,
                         "String!"
                     ],
                     "isActive": [
-                        4
+                        1
                     ],
                     "isDeleted": [
-                        4
+                        1
+                    ],
+                    "isError": [
+                        1
                     ],
                     "isRunning": [
-                        4
+                        1
                     ],
                     "maxLooseAmount": [
-                        3,
+                        5,
                         "Float!"
                     ],
                     "minWinAmount": [
-                        3,
+                        5,
                         "Float!"
                     ],
                     "player": [
-                        2,
+                        4,
                         "String!"
                     ],
                     "playsCount": [
-                        5,
+                        6,
                         "Int!"
                     ],
                     "roundsCount": [
-                        5,
+                        6,
                         "Int!"
                     ],
                     "startedAmount": [
-                        3,
+                        5,
                         "Float!"
                     ]
                 }
             ],
             "updateUser": [
-                11,
+                15,
                 {
                     "address": [
-                        2,
+                        4,
                         "String!"
                     ],
                     "email": [
-                        2
+                        4
                     ],
                     "id": [
-                        2,
+                        4,
                         "String!"
                     ],
                     "name": [
-                        2
+                        4
                     ]
                 }
             ],
             "__typename": [
-                2
+                4
             ]
         },
         "String": {},
         "Float": {},
-        "Boolean": {},
         "Int": {},
+        "NestedBoolFilter": {
+            "equals": [
+                1
+            ],
+            "not": [
+                7
+            ],
+            "__typename": [
+                4
+            ]
+        },
         "PaidPlan": {},
         "Project": {
             "id": [
-                2
+                4
             ],
             "name": [
-                2
+                4
             ],
             "paidPlan": [
-                6
+                8
             ],
             "slug": [
-                2
+                4
             ],
             "users": [
-                11,
+                15,
                 {
                     "after": [
-                        12
+                        17
                     ],
                     "before": [
-                        12
+                        17
                     ],
                     "first": [
-                        5
+                        6
                     ],
                     "last": [
-                        5
+                        6
                     ]
                 }
             ],
             "__typename": [
-                2
+                4
             ]
         },
         "Query": {
             "currentUser": [
-                11
+                15
             ],
             "getUsers": [
-                11
+                15
             ],
             "project": [
-                7,
+                9,
                 {
                     "id": [
-                        2
+                        4
                     ],
                     "slug": [
-                        2
+                        4
                     ]
                 }
             ],
             "strategie": [
-                9,
+                12,
                 {
                     "id": [
-                        2,
+                        4,
                         "String!"
                     ]
                 }
             ],
             "user": [
-                11,
+                15,
                 {
                     "id": [
-                        2,
+                        4,
                         "String!"
                     ]
                 }
             ],
             "__typename": [
-                2
+                4
             ]
         },
+        "SortOrder": {},
         "Strategie": {
             "createdAt": [
-                0
+                2
             ],
             "currentAmount": [
-                3
+                5
             ],
             "id": [
-                2
+                4
             ],
             "isActive": [
-                4
+                1
             ],
             "isDeleted": [
-                4
+                1
+            ],
+            "isError": [
+                1
             ],
             "isRunning": [
-                4
+                1
             ],
             "maxLooseAmount": [
-                3
+                5
             ],
             "minWinAmount": [
-                3
+                5
             ],
             "modifiedAt": [
-                0
-            ],
-            "player": [
                 2
             ],
+            "player": [
+                4
+            ],
             "playsCount": [
-                5
+                6
             ],
             "roundsCount": [
-                5
+                6
             ],
             "startedAmount": [
-                3
+                5
             ],
             "user": [
+                15
+            ],
+            "__typename": [
+                4
+            ]
+        },
+        "StrategieOrderByInput": {
+            "createdAt": [
+                11
+            ],
+            "currentAmount": [
+                11
+            ],
+            "id": [
+                11
+            ],
+            "isActive": [
+                11
+            ],
+            "isDeleted": [
+                11
+            ],
+            "isError": [
+                11
+            ],
+            "isRunning": [
+                11
+            ],
+            "maxLooseAmount": [
+                11
+            ],
+            "minWinAmount": [
+                11
+            ],
+            "modifiedAt": [
+                11
+            ],
+            "player": [
+                11
+            ],
+            "playsCount": [
+                11
+            ],
+            "roundsCount": [
+                11
+            ],
+            "startedAmount": [
+                11
+            ],
+            "userId": [
                 11
             ],
             "__typename": [
-                2
+                4
             ]
         },
         "StrategieWhereUniqueInput": {
             "id": [
-                2
+                4
             ],
             "__typename": [
-                2
+                4
             ]
         },
         "User": {
             "address": [
-                2
+                4
             ],
             "createdAt": [
-                0
+                2
             ],
             "email": [
-                2
+                4
             ],
             "generated": [
-                2
+                4
             ],
             "id": [
-                2
+                4
             ],
             "loginAt": [
-                0
+                2
             ],
             "modifiedAt": [
-                0
+                2
             ],
             "name": [
-                2
+                4
             ],
             "private": [
-                2
+                4
             ],
             "referrals": [
-                11,
+                15,
                 {
                     "after": [
-                        12
+                        17
                     ],
                     "before": [
-                        12
+                        17
                     ],
                     "first": [
-                        5
+                        6
                     ],
                     "last": [
-                        5
+                        6
                     ]
                 }
             ],
             "registeredAt": [
-                0
+                2
             ],
             "strategies": [
-                9,
+                12,
                 {
                     "after": [
-                        10
+                        14
                     ],
                     "before": [
-                        10
+                        14
                     ],
                     "first": [
-                        5
+                        6
                     ],
                     "last": [
-                        5
+                        6
+                    ],
+                    "orderBy": [
+                        13,
+                        "[StrategieOrderByInput!]"
+                    ],
+                    "where": [
+                        16
                     ]
                 }
             ],
             "__typename": [
-                2
+                4
+            ]
+        },
+        "UserStrategiesWhereInput": {
+            "isActive": [
+                0
+            ],
+            "isDeleted": [
+                0
+            ],
+            "isRunning": [
+                0
+            ],
+            "__typename": [
+                4
             ]
         },
         "UserWhereUniqueInput": {
             "address": [
-                2
+                4
             ],
             "email": [
-                2
+                4
             ],
             "generated": [
-                2
+                4
             ],
             "id": [
-                2
+                4
             ],
             "private": [
-                2
+                4
             ],
             "__typename": [
-                2
+                4
             ]
         }
     }

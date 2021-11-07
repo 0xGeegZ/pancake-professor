@@ -8,6 +8,7 @@ mutation UpdateStrategie(
   $isActive: Boolean!
   $isRunning: Boolean!
   $isDeleted: Boolean!
+  $isError: Boolean!
   $maxLooseAmount: Float!
   $minWinAmount: Float!
 ) {
@@ -21,6 +22,7 @@ mutation UpdateStrategie(
     isActive: $isActive
     isRunning: $isRunning
     isDeleted: $isDeleted
+    isError: $isError
     maxLooseAmount: $maxLooseAmount
     minWinAmount: $minWinAmount
   ) {

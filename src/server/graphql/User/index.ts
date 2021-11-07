@@ -8,7 +8,39 @@ const User = objectType({
   definition(t) {
     t.model.id()
     t.model.name()
-    t.model.strategies()
+    t.model.strategies({
+      type: `Strategie`,
+      resolve: async (_, __, ctx) => {
+        if (!ctx.user?.id) return null
+
+        const strategies = await prisma.strategie.findMany({
+          where: {
+            isDeleted: false,
+            user: {
+              is: {
+                id: ctx.user.id,
+              },
+            },
+          },
+        })
+
+        return strategies
+      },
+    })
+    // t.model.strategies({
+    //   filtering: {
+    //     isActive: true,
+    //     isDeleted: true,
+    //     isRunning: true,
+    //   },
+    //   pagination: true,
+    //   ordering: true,
+    // })
+    // t.bool("isAdmin", {
+    //   resolve({ title }, args, ctx) {
+    //     return title.toUpperCase(),
+    //   }
+    // })
     t.model.email()
     t.model.address()
     t.model.generated()
@@ -26,7 +58,7 @@ const queries = extendType({
   definition: (t) => {
     t.field('currentUser', {
       type: 'User',
-      resolve: (_, __, ctx) => {
+      resolve: async (_, __, ctx) => {
         if (!ctx.user?.id) return null
 
         return prisma.user.findUnique({

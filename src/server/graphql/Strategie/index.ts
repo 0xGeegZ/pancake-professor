@@ -16,6 +16,7 @@ const Strategie = objectType({
     t.model.isActive()
     t.model.isRunning()
     t.model.isDeleted()
+    t.model.isError()
     t.model.maxLooseAmount()
     t.model.minWinAmount()
     t.model.user()
@@ -37,6 +38,7 @@ const queries = extendType({
 
         return prisma.strategie.findFirst({
           where: {
+            isDeleted: false,
             user: {
               is: {
                 // Everyone can fetch the strategie that is logged in needs to be added only public strategie
@@ -94,6 +96,7 @@ const mutations = extendType({
         isActive: booleanArg(),
         isRunning: booleanArg(),
         isDeleted: booleanArg(),
+        isError: booleanArg(),
         maxLooseAmount: nonNull(floatArg()),
         minWinAmount: nonNull(floatArg()),
       },
@@ -124,6 +127,7 @@ const mutations = extendType({
             isActive: args.isActive,
             isRunning: args.isRunning,
             isDeleted: args.isDeleted,
+            isError: args.isError,
             maxLooseAmount: args.maxLooseAmount,
             minWinAmount: args.minWinAmount,
           },
@@ -171,6 +175,7 @@ const mutations = extendType({
           data: {
             // isActive: false,
             isActive: !hasAccess.isActive,
+            isError: false,
           },
         })
       },
@@ -215,6 +220,7 @@ const mutations = extendType({
           where: { id },
           data: {
             isActive: false,
+            isRunning: false,
             isDeleted: true,
           },
         })
