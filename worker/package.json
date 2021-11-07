@@ -15,6 +15,7 @@
     "pm2:logs": "pm2 logs",
     "pm2:monit": "pm2 monit",
     "pm2:stop:all": "pm2 stop all",
+    "pm2:delete:all": "pm2 delete all",
     "pm2:stop:listen": "pm2 stop listen",
     "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
     "prettier:watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",

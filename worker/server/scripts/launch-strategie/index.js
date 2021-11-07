@@ -19,8 +19,6 @@ const CLAIM_BEAR_METHOD_ID = '0x6ba4c138'
 const MAX_BET_AMOUNT = 0.1
 const MIN_BET_AMOUNT = 0.001
 
-const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
-
 const options = {
   dappId: process.env.BLOCKNATIVE_API_KEY,
   networkId: 56,
@@ -31,6 +29,8 @@ const options = {
 }
 
 const launchStrategie = async (payload) => {
+  const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
+
   const { user, strategie } = payload
   let preditionContract
   let signer
@@ -78,6 +78,7 @@ const launchStrategie = async (payload) => {
     // eslint-disable-next-line eqeqeq
     if (!(+amount != 0)) return logger.error('[PLAYING] Bet amount is 0')
 
+    let isError = false
     try {
       const tx = await preditionContract[betBullOrBear](epoch.toString(), {
         value: ethers.utils.parseEther(amount),
@@ -94,7 +95,7 @@ const launchStrategie = async (payload) => {
     } catch (error) {
       logger.error(`[PLAYING] Betting Tx Error for user ${user.id} and epoch ${epoch}`)
       logger.error(error.message)
-
+      isError = true
       // Try to reenter
       // const { startTimestamp, lockTimestamp } = await preditionContract.rounds(currentEpoch)
 
@@ -113,9 +114,10 @@ const launchStrategie = async (payload) => {
       //   playsCountForActualPlayer++
       // }
     }
-
     logger.info('------------------------------------------------------------')
     logger.info('------------------------------------------------------------')
+    // TODO save bet to database
+    // const bet = { epoch, betBull, betAmount, isError, strategieId: strategie.id, userId : user.id, hash : strategie.playedHashs[strategie.playedHashs.lenght-1], isClaimed : false}
   }
 
   const processRound = async (transaction) => {
@@ -197,6 +199,35 @@ const launchStrategie = async (payload) => {
     await betRound({ epoch, betBull, betAmount })
   }
 
+  const roundEndListenner = async (epoch) => {
+    strategie.roundsCount += 1
+
+    // const currentAmountBigInt = await provider.getBalance(signer.address)
+    // strategie.currentAmount = parseInt(ethers.utils.formatEther(currentAmountBigInt), 10)
+
+    // TODO update currentAmount with user bet history
+
+    logger.info(
+      `[ROUND:${+epoch}:${strategie.player}:${strategie.roundsCount}] Round finished for epoch ${+epoch} : played ${
+        strategie.playsCount
+      }/${strategie.roundsCount} games. Current bankroll amount ${strategie.currentAmount}`
+    )
+
+    await prisma.strategie.update({
+      where: { id: strategie.id },
+      data: {
+        // currentAmount: strategie.currentAmount,
+        playsCount: strategie.playsCount,
+        roundsCount: strategie.roundsCount,
+      },
+    })
+
+    // if (playedEpochs.length >= 3) {
+    //   await claimPlayedEpochs(lastEpochs)
+    //   playedEpochs = []
+    // }
+  }
+
   const listen = async () => {
     const privateKey = decrypt(user.private)
     signer = new ethers.Wallet(privateKey, provider)
@@ -208,11 +239,12 @@ const launchStrategie = async (payload) => {
 
     strategie.bankroll = strategie.currentAmount
     strategie.startedBalance = strategie.currentAmount
-    strategie.betAmount = (strategie.bankroll / 10).toFixed(4)
+    strategie.betAmount = +(strategie.bankroll / 10).toFixed(4)
     strategie.playedHashs = []
+    strategie.playedEpochs = []
 
-    if (strategie.betAmount <= MIN_BET_AMOUNT || betAmount > MAX_BET_AMOUNT) {
-      logger.info(`Bet amount error. Stopping strategie for now`)
+    if (strategie.betAmount <= MIN_BET_AMOUNT || strategie.betAmount > MAX_BET_AMOUNT) {
+      logger.info(`[LISTEN] Bet amount error. Stopping strategie for now`)
       // TODO add isError : true to database
       return
     }
@@ -224,20 +256,21 @@ const launchStrategie = async (payload) => {
       },
     })
 
-    logger.info(`Stetting up bet amount to ${strategie.betAmount} for initial bankroll ${strategie.bankroll}.`)
+    logger.info(`[LISTEN] Stetting up bet amount to ${strategie.betAmount} for initial bankroll ${strategie.bankroll}.`)
 
     preditionContract = new ethers.Contract(
       process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
       PREDICTION_CONTRACT_ABI,
       signer
     )
-    logger.info(`Starting for user ${user.generated} copy betting  player ${strategie.player}`)
+    logger.info(`[LISTEN] Starting for user ${user.generated} copy betting player ${strategie.player}`)
 
     logger.info(`[LISTEN] Waiting for transaction for player ${strategie.player}`)
     const { emitter } = blocknative.account(strategie.player)
     emitter.on('txPool', processRound)
 
-    logger.info(`[LISTEN] emitter is listenning to transaction from mempool`)
+    // logger.info(`[LISTEN] emitter is listenning to transaction from mempool`)
+    preditionContract.on('EndRound', roundEndListenner)
   }
 
   try {

@@ -11,6 +11,7 @@ import {
   Grid,
   IconButton,
   Slide,
+  Tooltip,
   Typography,
   useTheme,
   Zoom,
@@ -98,7 +99,7 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
 
-  const [gauge, setGauge] = useState(20)
+  const [gauge, setGauge] = useState(50)
 
   const [openDialog, setOpenDialog] = useState(false)
 
@@ -129,10 +130,24 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
     setOpenDialog(false)
   }
 
+  const getAvailableBankroll = () => {
+    let balance = user.generatedBalance
+
+    if (user.strategies.length) {
+      const usedBankroll = user.strategies.map((s) => s.currentAmount).reduce((acc, num) => acc + num, 0)
+      // const usedBankroll = user.strategies.map((s) => s.startedAmount).reduce((acc, num) => acc + num, 0)
+
+      console.log('🚀 ~ file: FollowPlayerForm.tsx ~ line 139 ~ sumbitCreateStrategie ~ usedBankroll', usedBankroll)
+      balance -= usedBankroll
+    }
+    const amount = +((+gauge * balance) / 100).toFixed(4)
+
+    return amount > 0 ? amount : 0
+  }
   const sumbitCreateStrategie = async () => {
     console.log('🚀 ~ sumbitCreateStrategie', player, 'user', user, 'gauge', gauge)
 
-    const amount = (+gauge * user.generatedBalance) / 100
+    const amount = getAvailableBankroll()
 
     if (amount < 0.001) {
       enqueueSnackbar(t('Amount is too small. Please check you balance.'), {
@@ -202,8 +217,8 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
                     color="text.secondary">
                     Bankroll amount
                   </Typography>
-                  <Typography sx={{ mt: '-8px', fontSize: `${theme.typography.pxToRem(40)}`, pt: 1 }} variant="h1">
-                    {gauge}%
+                  <Typography sx={{ mt: '-6px', fontSize: `${theme.typography.pxToRem(20)}`, pt: 1 }} variant="h1">
+                    {getAvailableBankroll()}BNB <sup>({gauge}%) </sup>
                   </Typography>
                 </Box>
               </Gauge>
@@ -262,13 +277,18 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
             <Box px={3} py={2}>
               <Grid container spacing={3}>
                 <Grid item xs={8}>
-                  <Button size="small" fullWidth variant="contained" onClick={handleOpenDialog}>
+                  {/* <Button
+                    size="small"
+                    fullWidth
+                    variant="contained"
+                    disabled={getAvailableBankroll() === 0}
+                    onClick={handleOpenDialog}>
                     <b> {t('Copy')}</b>
-                  </Button>
-                  {/* {+user?.generatedBalance === 0 ? (
+                  </Button> */}
+                  {getAvailableBankroll() === 0 ? (
                     <Tooltip
                       placement="top"
-                      title={t('Need to have positive balance in secondary address to copy player')}
+                      title={t('Need to have available BNB in secondary address to copy player')}
                       arrow>
                       <Button size="small" fullWidth variant="outlined" color="warning">
                         <b> {t('Copy')}</b>
@@ -278,7 +298,7 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
                     <Button size="small" fullWidth variant="contained" onClick={handleOpenDialog}>
                       <b> {t('Copy')}</b>
                     </Button>
-                  )} */}
+                  )}
                 </Grid>
                 <Grid item xs={4}>
                   <Button size="small" fullWidth variant="outlined" color="secondary" onClick={handleCloseCreateForm}>
