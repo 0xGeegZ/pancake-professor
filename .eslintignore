@@ -3,3 +3,5 @@
 **/*.graphqls.d.ts
 **/*/formik-material-ui/*
 src/client/components/formik-material-ui/*
+cypress/*
+worker/*

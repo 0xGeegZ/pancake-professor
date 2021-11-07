@@ -8,11 +8,44 @@ const User = objectType({
   definition(t) {
     t.model.id()
     t.model.name()
-    t.model.strategies()
+    t.model.strategies({
+      type: `Strategie`,
+      resolve: async (_, __, ctx) => {
+        if (!ctx.user?.id) return null
+
+        const strategies = await prisma.strategie.findMany({
+          where: {
+            isDeleted: false,
+            user: {
+              is: {
+                id: ctx.user.id,
+              },
+            },
+          },
+        })
+
+        return strategies
+      },
+    })
+    // t.model.strategies({
+    //   filtering: {
+    //     isActive: true,
+    //     isDeleted: true,
+    //     isRunning: true,
+    //   },
+    //   pagination: true,
+    //   ordering: true,
+    // })
+    // t.bool("isAdmin", {
+    //   resolve({ title }, args, ctx) {
+    //     return title.toUpperCase(),
+    //   }
+    // })
     t.model.email()
     t.model.address()
     t.model.generated()
     t.model.private()
+    t.model.isActivated()
     t.model.referrals()
     t.model.registeredAt()
     t.model.loginAt()
@@ -26,7 +59,7 @@ const queries = extendType({
   definition: (t) => {
     t.field('currentUser', {
       type: 'User',
-      resolve: (_, __, ctx) => {
+      resolve: async (_, __, ctx) => {
         if (!ctx.user?.id) return null
 
         return prisma.user.findUnique({
@@ -130,6 +163,24 @@ const mutations = extendType({
                 id: args.id,
               },
             },
+          },
+        })
+      },
+    })
+
+    t.nullable.field('toogleIsActivated', {
+      type: 'User',
+      args: {
+        id: nonNull(stringArg()),
+      },
+      resolve: async (_, { id }, ctx) => {
+        // TODO allow only admins
+        if (!ctx.user?.id || id !== ctx.user.id) return null
+
+        return prisma.user.update({
+          where: { id },
+          data: {
+            isActivated: !ctx.user.isActivated,
           },
         })
       },

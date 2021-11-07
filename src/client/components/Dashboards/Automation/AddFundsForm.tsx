@@ -120,7 +120,7 @@ function AddFundsForm({ user, handleCloseForm }) {
     e.preventDefault()
     if (gauge === 100) return
 
-    const updated = gauge + 2
+    const updated = gauge + (gauge >= 80 || gauge <= 20 ? 1 : 2)
     setGauge(updated)
     setBnbValue(((user.balance * updated) / 100).toFixed(4))
   }
@@ -129,7 +129,7 @@ function AddFundsForm({ user, handleCloseForm }) {
     e.preventDefault()
     if (gauge === 0) return
 
-    const updated = gauge - 2
+    const updated = gauge - (gauge >= 80 || gauge <= 20 ? 1 : 2)
     setGauge(updated)
     setBnbValue(((user.balance * updated) / 100).toFixed(4))
   }
@@ -266,7 +266,7 @@ function AddFundsForm({ user, handleCloseForm }) {
           </Collapse>
 
           <Typography align="center" sx={{ py: 4, pt: 5, pb: 5, pl: 10, pr: 10 }} variant="h3">
-            {t('Are you sur to copy this player ? ')}
+            {t('Are you sure to add funds ? ')}
           </Typography>
           <Typography align="center" sx={{ py: 4, pt: 0, pb: 0, pr: 5, pl: 5 }} variant="body1">
             {t('We are listenning the adress directly from mempool to be as precise as possible.')}

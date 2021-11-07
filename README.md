@@ -1,4 +1,4 @@
-# Pancake Professor (early access)
+# Pancake Professor
 
 Welcome to Pancake Professor! 👋
 
@@ -9,7 +9,7 @@ Welcome to Pancake Professor! 👋
 You'll need certain environment variables to run Pancake Professor's functionality in local development. The first step is to:
 
 - OPTIONNAL : Sign up for [Stripe](https://stripe.com), used for payments
-- Sign up for [Postmark](https://postmarkapp.com), used for sending emails
+- OPTIONNAL : Sign up for [Postmark](https://postmarkapp.com), used for sending emails
 
 Then, copy `.env.example` to `.env` and fill out the `.env` file with your environment variables!
 
@@ -63,7 +63,7 @@ docker-compose up
 yarn dev
 ```
 
-That's it! Now you should have Pancake Professor running locally and should be able to visit http://localhost:3000 🎉
+That's it! Now you should have Pancake Professor running locally and should be able to visit <http://localhost:3000> 🎉
 
 #### Scripts
 
@@ -80,3 +80,10 @@ All the others are used in CI or by those three main scripts, but you should onl
 ---
 
 For more information, check out [the in-depth docs](./docs/README.md)
+
+## Notes and usefuls links
+
+A simple way to clean up your git project branches
+<https://medium.com/@FlorentDestrema/a-simple-way-to-clean-up-your-git-project-branches-283b87478fbc>
+
+---

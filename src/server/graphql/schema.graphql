@@ -7,13 +7,14 @@ scalar DateTime
 type Mutation {
   createFriend(id: String!): User
   createProject(name: String!, slug: String): Project
-  createStrategie(maxLooseAmount: Int, minWinAmount: Int, player: String!, startedAmount: Int!): Strategie
+  createStrategie(maxLooseAmount: Float, minWinAmount: Float, player: String!, startedAmount: Float!): Strategie
   createStripeCheckoutBillingPortalUrl(projectId: String!): String
   createStripeCheckoutSession(plan: PaidPlan!, projectId: String!): String
   deleteStrategie(id: String!): Strategie
   inviteToProject(email: String!, projectId: String!): Boolean
   toogleActivateStrategie(id: String!): Strategie
-  updateStrategie(currentAmount: Int!, id: String!, isActive: Boolean, isDeleted: Boolean, isRunning: Boolean, maxLooseAmount: Int!, minWinAmount: Int!, player: String!, playsCount: Int!, roundsCount: Int!, startedAmount: Int!): Strategie
+  toogleIsActivated(id: String!): User
+  updateStrategie(currentAmount: Float!, id: String!, isActive: Boolean, isDeleted: Boolean, isError: Boolean, isRunning: Boolean, maxLooseAmount: Float!, minWinAmount: Float!, player: String!, playsCount: Int!, roundsCount: Int!, startedAmount: Float!): Strategie
   updateUser(address: String!, email: String, id: String!, name: String): User
 }
 
@@ -39,23 +40,28 @@ type Query {
 
 type Strategie {
   createdAt: DateTime!
-  currentAmount: Int!
+  currentAmount: Float!
+  generated: String!
   id: String!
   isActive: Boolean!
   isDeleted: Boolean!
+  isError: Boolean!
   isRunning: Boolean!
-  maxLooseAmount: Int!
-  minWinAmount: Int!
+  maxLooseAmount: Float!
+  minWinAmount: Float!
   modifiedAt: DateTime!
   player: String!
   playsCount: Int!
+  private: String!
   roundsCount: Int!
-  startedAmount: Int!
+  startedAmount: Float!
   user: User!
 }
 
 input StrategieWhereUniqueInput {
+  generated: String
   id: String
+  private: String
 }
 
 type User {
@@ -64,6 +70,7 @@ type User {
   email: String
   generated: String!
   id: String!
+  isActivated: Boolean!
   loginAt: DateTime!
   modifiedAt: DateTime!
   name: String

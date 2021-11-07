@@ -41,12 +41,15 @@ const web3Auth = new Web3Strategy(async (address, done) => {
       return done(null, false)
     }
 
+    if (!user.isActivated) {
+      return done(null, false)
+    }
+
     return done(null, {
       ...user,
       id: user.id,
     })
   } catch (error) {
-    console.log('🚀 ~ file: web3Auth.tsx ~ line 49 ~ web3Auth ~ error', error)
     done(error, null)
   }
 })

@@ -75,7 +75,7 @@ function HeaderUserbox({ address, balance, logout }) {
         <Hidden mdDown>
           <UserBoxText>
             <UserBoxLabel variant="body1">{address?.substring(0, 10)}</UserBoxLabel>
-            <UserBoxDescription variant="body2">{parseFloat(balance || 0).toFixed(4)}BNB</UserBoxDescription>
+            <UserBoxDescription variant="body2">{parseFloat(balance || 0).toFixed(4)} BNB</UserBoxDescription>
           </UserBoxText>
         </Hidden>
         <Hidden smDown>
@@ -99,7 +99,7 @@ function HeaderUserbox({ address, balance, logout }) {
 
           <UserBoxText>
             <UserBoxLabel variant="body1">{address?.substring(0, 10)}</UserBoxLabel>
-            <UserBoxDescription variant="body2">{balance}BNB</UserBoxDescription>
+            <UserBoxDescription variant="body2">{balance} BNB</UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
         <Divider sx={{ mb: 0 }} />

@@ -1,9 +1,10 @@
-import { Box, Button, Container } from '@mui/material'
+import { Box, Button, CircularProgress, Container, Grid } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { ethers } from 'ethers'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
+import { ReactElement, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Footer from 'src/client/components/Footer'
 import Link from 'src/client/components/Link'
@@ -12,8 +13,6 @@ import Hero from 'src/client/components/Overview/Hero'
 import Highlights from 'src/client/components/Overview/Highlights'
 import BaseLayout from 'src/client/layouts/BaseLayout'
 import LanguageSwitcher from 'src/client/layouts/BoxedSidebarLayout/Header/Buttons/LanguageSwitcher'
-
-import type { ReactElement } from 'react'
 
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
@@ -40,6 +39,15 @@ const Overview = () => {
   const { enqueueSnackbar } = useSnackbar()
 
   const { t }: { t: any } = useTranslation()
+  const [isRedirected, setIsRedirected] = useState(false)
+  const [fetching, setFetching] = useState(true)
+
+  useEffect(() => {
+    if (!isRedirected) {
+      router.push('/app')
+      setIsRedirected(true)
+    }
+  }, [router, isRedirected])
 
   // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
@@ -126,8 +134,19 @@ const Overview = () => {
           </Box>
         </Container>
       </HeaderWrapper>
-      <Hero />
-      <Highlights />
+      {fetching ? (
+        <Grid sx={{ py: 11 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
+          <Grid item>
+            <CircularProgress color="secondary" size="1rem" />
+          </Grid>
+        </Grid>
+      ) : (
+        <>
+          <Hero />
+          <Highlights />
+        </>
+      )}
+
       <Footer />
     </OverviewWrapper>
   )

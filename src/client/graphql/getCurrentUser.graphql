@@ -5,11 +5,13 @@ query GetCurrentUser {
     address
     generated
     email
+    isActivated
     registeredAt
     loginAt
     strategies {
       id
       player
+      generated
       startedAmount
       currentAmount
       roundsCount
@@ -17,6 +19,7 @@ query GetCurrentUser {
       isActive
       isRunning
       isDeleted
+      isError
       maxLooseAmount
       minWinAmount
       createdAt

@@ -1,6 +1,7 @@
 /* eslint-disable import/order */
 import 'moment-timezone'
 
+import { PREDICTION_CONTRACT_ABI } from '@/contracts/abis/pancake-prediction-abi-v3'
 import CloseIcon from '@mui/icons-material/Close'
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 import GamepadIcon from '@mui/icons-material/Gamepad'
@@ -44,7 +45,6 @@ import { useSnackbar } from 'notistack'
 import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Moment from 'react-moment'
-import { PREDICTION_CONTRACT_ABI } from 'src/client/abis/pancake-prediction-abi-v3'
 import FollowPlayerForm from 'src/client/components/Dashboards/Automation/FollowPlayerForm'
 import { useGlobalStore } from 'src/client/store/swr'
 import loadPlayers from 'src/client/thegraph/loadPlayers'
@@ -806,6 +806,22 @@ const PlayersList: FC = () => {
                                         title={t('You need to be connected to copy player.')}
                                         arrow>
                                         <Button size="small" fullWidth variant="outlined" color="warning">
+                                          <b> {t('Copy')}</b>
+                                        </Button>
+                                      </Tooltip>
+                                    ) : +user?.generatedBalance === 0 ? (
+                                      <Tooltip
+                                        placement="top"
+                                        title={t('Need to have positive balance in secondary address to copy player')}
+                                        arrow>
+                                        {/* TODO : Remove handleClick for production */}
+                                        <Button
+                                          size="small"
+                                          fullWidth
+                                          variant="outlined"
+                                          color="warning"
+                                          // onClick={handleOpenCreateForm(player.id)}
+                                        >
                                           <b> {t('Copy')}</b>
                                         </Button>
                                       </Tooltip>

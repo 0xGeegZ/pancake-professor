@@ -1,0 +1,51 @@
+{
+  "name": "pancakeswap-prediction-bot",
+  "version": "1.0.1",
+  "description": "This bot wins almost every 5 minute BNB-USD option on PancakeSwap",
+  "main": "index.js",
+  "author": "",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon -e 'require(\"./server/scripts/launch-strategies/index.js\").launchStrategies()'",
+    "launch:strategies": "cross-env node -e 'require(\"./server/scripts/launch-strategies/index.js\").launchStrategies()'",
+    "stop:strategies": "cross-env node -e 'require(\"./server/scripts/stop-strategies/index.js\").stopStrategies()'",
+    "generate": "prisma generate",
+    "start": "yarn run 'stop:strategies' &&  (yarn run 'launch:strategies' &)",
+    "stop": "killall node",
+    "start:prod": "node pm2.js",
+    "pm2:list": "pm2 list",
+    "pm2:logs": "pm2 logs --lines 100",
+    "pm2:monit": "pm2 monit",
+    "pm2:stop:all": "pm2 stop all",
+    "pm2:delete:all": "pm2 delete all",
+    "pm2:stop:listen": "pm2 stop listen",
+    "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write",
+    "prettier:watch": "onchange 'src/**/*.ts' -- prettier --write {{changed}}",
+    "eslint": "eslint --cache --cache-location=node_modules/.cache/.eslintcache --fix",
+    "lint": "yarn run eslint . --ext .js,.jsx,.ts,.tsx --quiet",
+    "lint:fix": "yarn run eslint . --fix",
+    "lint:next": "next lint --fix"
+  },
+  "dependencies": {
+    "@prisma/client": "^2.23.0",
+    "bnc-sdk": "^3.7.0",
+    "cross-env": "^7.0.3",
+    "crypto": "^1.0.1",
+    "ethers": "^5.5.1",
+    "pm2": "^5.1.2",
+    "prisma": "^2.23.0",
+    "winston": "^3.3.3",
+    "ws": "^8.2.3"
+  },
+  "devDependencies": {
+    "eslint-config-airbnb": "18.2.1",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-prettier": "^4.0.0",
+    "nodemon": "^2.0.14"
+  },
+  "packageManager": "yarn@3.1.0",
+  "prisma": {
+    "schema": "server/db/schema.prisma"
+  }
+}

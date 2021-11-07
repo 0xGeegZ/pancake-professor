@@ -21,8 +21,6 @@ function ActiveStrategiesOverview({ strategies }) {
   const { t }: { t: any } = useTranslation()
 
   const getActivesStrategiesCount = () => {
-    console.log('🚀  ~ getActivesStrategiesCount', strategies.filter((s) => s.isActive).length)
-
     if (!strategies.length) return 0
     return `${strategies.filter((s) => s.isActive).length}`
   }
@@ -33,7 +31,7 @@ function ActiveStrategiesOverview({ strategies }) {
     return `${strategies
       .map((s) => +s.currentAmount)
       .reduce((acc, num) => acc + num, 0)
-      .toFixed(2)}BNB`
+      .toFixed(4)} BNB`
   }
 
   const getActiveSinceFromStrategies = () => {
@@ -103,7 +101,7 @@ function ActiveStrategiesOverview({ strategies }) {
             <Divider orientation="vertical" flexItem />
             <Grid xs={12} sm item>
               <Typography variant="caption" gutterBottom>
-                {t('Bankroll')}
+                {t('Used bankroll')}
               </Typography>
               <Typography variant="h3" gutterBottom>
                 {getBankrollFromStrategies()}

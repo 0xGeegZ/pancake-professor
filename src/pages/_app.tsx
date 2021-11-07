@@ -15,16 +15,15 @@ import { Router, useRouter } from 'next/router'
 import { SnackbarProvider } from 'notistack'
 import nProgress from 'nprogress'
 import { FC, useRef } from 'react'
+import { Provider as ReduxProvider } from 'react-redux'
 import { SidebarProvider } from 'src/client/contexts/SidebarContext'
 import createEmotionCache from 'src/client/createEmotionCache'
 import { client } from 'src/client/graphql/client'
 import useScrollTop from 'src/client/hooks/useScrollTop'
+import store from 'src/client/store/redux'
 import { GlobalStateProvider } from 'src/client/store/swr'
 import ThemeProvider from 'src/client/theme/ThemeProvider'
 import { Provider as GraphQLProvider } from 'urql'
-
-// import { Provider as ReduxProvider } from 'react-redux'
-// import store from 'src/client/store/redux'
 
 import type { ReactElement, ReactNode } from 'react'
 import type { NextPage } from 'next'
@@ -56,6 +55,19 @@ const MyApp: FC<MyAppProps> = (props: MyAppProps) => {
   Router.events.on('routeChangeError', nProgress.done)
   Router.events.on('routeChangeComplete', nProgress.done)
 
+  // fetch(`/api/queues/launch-strategies`, {
+  //   method: `POST`,
+  //   headers: { 'Content-Type': 'application/json' },
+  // })
+  //   .then((res) => res.json())
+  //   .then((json) => {
+  //     if (json.success) {
+  //       console.log('Strategies successfully loaded locally!')
+  //     } else {
+  //       console.error('Unexpected error occurred during strategies launching')
+  //     }
+  //   })
+
   return (
     <CacheProvider value={emotionCache}>
       <Head>
@@ -63,45 +75,45 @@ const MyApp: FC<MyAppProps> = (props: MyAppProps) => {
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
       </Head>
       <GraphQLProvider value={client}>
-        {/* <ReduxProvider store={store}> */}
-        <GlobalStateProvider>
-          <SidebarProvider>
-            <ThemeProvider>
-              <LocalizationProvider dateAdapter={AdapterDateFns}>
-                <SnackbarProvider
-                  maxSnack={6}
-                  anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'right',
-                  }}
-                  ref={notistackRef}
-                  action={(key) => (
-                    <IconButton
-                      size="small"
-                      onClick={() => notistackRef.current.closeSnackbar(key)}
-                      sx={{
-                        color: '#fff',
-                      }}>
-                      <CloseIcon fontSize="small" />
-                    </IconButton>
-                  )}>
-                  <CssBaseline />
-                  <PageTransition
-                    timeout={TIMEOUT}
-                    classNames="page-transition"
-                    loadingTimeout={{
-                      enter: TIMEOUT,
-                      exit: 500,
+        <ReduxProvider store={store}>
+          <GlobalStateProvider>
+            <SidebarProvider>
+              <ThemeProvider>
+                <LocalizationProvider dateAdapter={AdapterDateFns}>
+                  <SnackbarProvider
+                    maxSnack={6}
+                    anchorOrigin={{
+                      vertical: 'bottom',
+                      horizontal: 'right',
                     }}
-                    loadingClassNames="loading-indicator">
-                    {getLayout(<Component {...pageProps} key={router.route} />)}
-                  </PageTransition>
-                </SnackbarProvider>
-              </LocalizationProvider>
-            </ThemeProvider>
-          </SidebarProvider>
-        </GlobalStateProvider>
-        {/* </ReduxProvider> */}
+                    ref={notistackRef}
+                    action={(key) => (
+                      <IconButton
+                        size="small"
+                        onClick={() => notistackRef.current.closeSnackbar(key)}
+                        sx={{
+                          color: '#fff',
+                        }}>
+                        <CloseIcon fontSize="small" />
+                      </IconButton>
+                    )}>
+                    <CssBaseline />
+                    <PageTransition
+                      timeout={TIMEOUT}
+                      classNames="page-transition"
+                      loadingTimeout={{
+                        enter: TIMEOUT,
+                        exit: 500,
+                      }}
+                      loadingClassNames="loading-indicator">
+                      {getLayout(<Component {...pageProps} key={router.route} />)}
+                    </PageTransition>
+                  </SnackbarProvider>
+                </LocalizationProvider>
+              </ThemeProvider>
+            </SidebarProvider>
+          </GlobalStateProvider>
+        </ReduxProvider>
       </GraphQLProvider>
       <style jsx global>{`
         .page-transition-enter {

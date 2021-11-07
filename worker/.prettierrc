@@ -1,0 +1,15 @@
+{
+  "[typescript]": {
+    "editor.formatOnPaste": true,
+    "editor.formatOnSave": true
+  },
+  "editor.formatOnPaste": true,
+  "editor.formatOnSave": true,
+  "singleQuote": true,
+  "printWidth": 120,
+  "semi": false,
+  "trailingComma": "es5",
+  "bracketSameLine": true,
+  "arrowParens": "always",
+  "no-console": true
+}

@@ -11,6 +11,7 @@ import {
   CardActionArea,
   CardContent,
   CircularProgress,
+  Divider,
   Grid,
   IconButton,
   LinearProgress,
@@ -28,7 +29,9 @@ import { useSnackbar } from 'notistack'
 import PropTypes from 'prop-types'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDeleteStrategieMutation } from 'src/client/graphql/deleteStrategie.generated'
 import { useToogleActivateStrategieMutation } from 'src/client/graphql/toogleActivateStrategie.generated'
+import { useGlobalStore } from 'src/client/store/swr'
 
 const CardAddAction = styled(Card)(
   ({ theme }) => `
@@ -92,8 +95,18 @@ const CardActiveStrategies = styled(Card)(
               background-color: ${theme.colors.alpha.white[30]};
             }
           }
+        }
+      }
 
+      &.Mui-error {
+        border: 1px solid ${theme.palette.error.main};
+        color: ${theme.palette.error.contrastText};
+        box-shadow: ${theme.colors.shadows.error};
 
+        .MuiCardActionArea-root {
+          &:hover {
+            border-color: ${theme.colors.error.main};
+          }
         }
       }
 
@@ -171,9 +184,11 @@ const LinearProgressWrapper = styled(LinearProgress)(
 function ActiveStrategies({ strategies: pstrategies }) {
   const { t }: { t: any } = useTranslation()
   // const theme = useTheme()
-  // const { mutate } = useGlobalStore()
+  const { mutate } = useGlobalStore()
 
   const [, toogleActivateStrategie] = useToogleActivateStrategieMutation()
+  const [, deleteStrategieMutation] = useDeleteStrategieMutation()
+
   const { enqueueSnackbar } = useSnackbar()
 
   const locations = [
@@ -202,14 +217,6 @@ function ActiveStrategies({ strategies: pstrategies }) {
   const [openLocation, setOpenMenuLocation] = useState<boolean>(false)
 
   const handleChange = (strategie) => async () => {
-    const updateds = strategies.map((s) => {
-      const updated = s
-      if (updated.id === strategie.id) updated.isActive = !updated.isActive
-
-      return updated
-    })
-    setStrategies(updateds)
-
     const { error } = await toogleActivateStrategie({ id: strategie.id })
 
     if (error) {
@@ -220,6 +227,13 @@ function ActiveStrategies({ strategies: pstrategies }) {
       // need to rollback
       return
     }
+    const updateds = strategies.map((s) => {
+      const updated = s
+      if (updated.id === strategie.id) updated.isActive = !updated.isActive
+
+      return updated
+    })
+    setStrategies(updateds)
 
     // const updateds = strategies.map((s) => {
     //   const updated = s
@@ -232,6 +246,7 @@ function ActiveStrategies({ strategies: pstrategies }) {
       variant: 'success',
       TransitionComponent: Zoom,
     })
+    mutate('currentUser')
     // mutate('currentUser', (user) => {
     //   return { ...user, strategies: updateds }
     // })
@@ -269,6 +284,30 @@ function ActiveStrategies({ strategies: pstrategies }) {
     // const minutesFormatted = `${minutes}m`
 
     return [daysFormatted, hoursFormatted].join('')
+  }
+
+  const deleteStrategie = (strategie) => async () => {
+    const { error } = await deleteStrategieMutation({ id: strategie.id })
+
+    if (error) {
+      enqueueSnackbar(t(`Unexpected error during strategie deletion.`), {
+        variant: 'error',
+        TransitionComponent: Zoom,
+      })
+      return
+    }
+    const updateds = strategies.map((s) => {
+      const updated = s
+      if (updated.id === strategie.id) updated.isDeleted = !updated.isDeleted
+
+      return updated
+    })
+    setStrategies(updateds)
+
+    enqueueSnackbar(t(`Stratégie successfully deleted.`), {
+      variant: 'success',
+      TransitionComponent: Zoom,
+    })
   }
 
   return (
@@ -312,17 +351,19 @@ function ActiveStrategies({ strategies: pstrategies }) {
           <>
             {strategies.map((strategie) => (
               <Grid item xs={12} xl={3} md={4} sm={6} key={strategie.id}>
-                <CardActiveStrategies className={strategie.isActive ? 'Mui-active' : ''}>
+                <CardActiveStrategies
+                  className={strategie.isError ? 'Mui-error' : strategie.isActive ? 'Mui-active' : ''}>
                   <CardActionArea>
                     <Switch
                       edge="end"
                       // defaultChecked={strategie?.isActive ? strategie.isActive : false}
                       checked={strategie.isActive}
                       color="primary"
+                      disabled={strategie.isError}
                       onChange={handleChange(strategie)}
                     />
                     <Typography fontWeight="bold" variant="caption" color="primary">
-                      {strategie.isActive ? t('Active') : t('Innactive')}
+                      {strategie.isError ? t('Error') : strategie.isActive ? t('Active') : t('Innactive')}
                     </Typography>
                     <Box sx={{ p: 1 }}>
                       <Grid spacing={2} container>
@@ -338,14 +379,23 @@ function ActiveStrategies({ strategies: pstrategies }) {
                               {strategie.player.substring(0, 20)}
                             </Link>
                           </Typography>
+                          <Typography variant="h4" noWrap sx={{ pt: 1 }}>
+                            {t('Generated')}:{' '}
+                            <Link
+                              variant="h5"
+                              href={`https://bscscan.com/address/${strategie.generated}`}
+                              target="_blank">
+                              {strategie.generated.substring(0, 20)}
+                            </Link>
+                          </Typography>
                         </Grid>
                       </Grid>
                     </Box>
 
-                    <Box sx={{ p: 1 }}>
+                    <Box sx={{ pt: 2, py: 1 }}>
                       <Grid spacing={2} container>
-                        <Grid item xs={12} sm={8}>
-                          <Typography variant="caption" sx={{ pb: 1 }} component="div">
+                        <Grid item xs={12} sm={7}>
+                          <Typography variant="h5" sx={{ pb: 1 }} component="div">
                             {t('Rounds played')}(%)
                           </Typography>
                           <Box>
@@ -369,7 +419,32 @@ function ActiveStrategies({ strategies: pstrategies }) {
                             />
                           </Box>
                         </Grid>
-                        <Grid item xs={12} sm={4}>
+                        <Grid item xs={12} sm={5}>
+                          <Typography variant="h5" component="div">
+                            {t('Bankroll')}
+                          </Typography>
+                          <Box>
+                            <Typography color="text.primary" variant="h5" sx={{ pt: 2, display: 'inline-flex' }}>
+                              {`${strategie.currentAmount} BNB `}
+                            </Typography>
+                            <Typography color="text.secondary" variant="h6" sx={{ pt: 0.5, display: 'inline-flex' }}>
+                              ({100 - (+strategie.currentAmount * 100) / strategie.startedAmount}%)
+                            </Typography>
+                          </Box>
+                          {/* <Box>
+                            <Typography
+                              color="text.primary"
+                              variant="h5"
+                              sx={{ pr: 0.5, pt: 1, display: 'inline-flex' }}>
+                              {`${strategie.currentAmount} BNB `}
+                              {'  '}
+                              <sup>
+                                {'  '}({100 - (+strategie.currentAmount * 100) / strategie.startedAmount}%)
+                              </sup>
+                            </Typography>
+                          </Box> */}
+                        </Grid>
+                        {/* <Grid item xs={6} sm={2}>
                           <Typography variant="caption" sx={{ pb: 1.5, fontSize: '10px' }} component="div">
                             {t('Running since')}
                           </Typography>
@@ -378,10 +453,45 @@ function ActiveStrategies({ strategies: pstrategies }) {
                               {getStrategieDuraction(strategie)}
                             </Typography>
                           </Box>
+                        </Grid> */}
+                      </Grid>
+                    </Box>
+                    <Box sx={{ p: 1 }}>
+                      <Grid spacing={1} container>
+                        <Grid item xs={6} sm={12}>
+                          <Typography variant="caption" sx={{ fontSize: '10px' }} component="div">
+                            {t('Running since')} <b>{getStrategieDuraction(strategie)}</b>
+                          </Typography>
                         </Grid>
                       </Grid>
                     </Box>
                   </CardActionArea>
+                  {!strategie.isActive && (
+                    <>
+                      <Divider />
+                      <Box px={3} py={2}>
+                        <Grid container spacing={3}>
+                          <Grid item md={6}>
+                            {/* <Tooltip placement="top" title={t('You need to be connected to copy player.')} arrow> */}
+                            <Button
+                              size="small"
+                              fullWidth
+                              variant="outlined"
+                              color="error"
+                              onClick={deleteStrategie(strategie)}>
+                              <b> {t('Delete')}</b>
+                            </Button>
+                            {/* </Tooltip> */}
+                          </Grid>
+                          <Grid item md={6}>
+                            <Button size="small" disabled fullWidth variant="outlined" color="secondary">
+                              {t('Details')}
+                            </Button>
+                          </Grid>
+                        </Grid>
+                      </Box>
+                    </>
+                  )}
                 </CardActiveStrategies>
               </Grid>
             ))}
