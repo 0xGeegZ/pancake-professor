@@ -28,7 +28,7 @@ const launchStrategies = async () => {
   logger.info(`[LAUNCHING-LOCALLY] ${strategies.length} strategies will be launched`)
 
   await Promise.all(strategies.map(launch))
-  process.exit(0)
+  // process.exit(0)
 }
 
 module.exports = { launchStrategies }

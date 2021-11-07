@@ -5,7 +5,6 @@ import { useSnackbar } from 'notistack'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Footer from 'src/client/components/Footer'
-import EditProfileTab from 'src/client/components/Management/Users/Single/EditProfileTab'
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
 import menuItems from 'src/client/layouts/MainLayout/Sidebar/SidebarMenu/items'
@@ -28,7 +27,7 @@ function UserView() {
   const { user, fetching } = useGlobalStore()
 
   useEffect(() => {
-    if (!user.isAdmin) {
+    if (!user?.isAdmin) {
       enqueueSnackbar(t(`Only for admin.`), {
         variant: 'error',
         TransitionComponent: Zoom,
@@ -51,7 +50,7 @@ function UserView() {
     if (allMenuItems) return
 
     if (isMountedRef.current) {
-      const filtereds = user.isAdmin ? menuItems : menuItems.filter((mi) => mi.heading !== 'Admin')
+      const filtereds = user?.isAdmin ? menuItems : menuItems.filter((mi) => mi.heading !== 'Admin')
       setAllMenuItems(filtereds)
     }
   }, [user, fetching, router, isMountedRef, allMenuItems, enqueueSnackbar, t])
@@ -65,7 +64,7 @@ function UserView() {
       <Box sx={{ mt: 3 }}>
         <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
           <Grid item xs={12}>
-            <EditProfileTab user={user} />
+            {/* <EditProfileTab user={user} /> */}
           </Grid>
         </Grid>
       </Box>

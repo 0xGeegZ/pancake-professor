@@ -42,12 +42,11 @@ import PropTypes from 'prop-types'
 import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, SyntheticEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
+import BulkActions from './BulkActions'
 
 import type { ReactElement } from 'react'
 
 import type { User, UserRole } from 'src/client/models/user'
-import BulkActions from './BulkActions'
-
 const DialogWrapper = styled(Dialog)(
   () => `
       .MuiDialog-paper {
@@ -169,7 +168,7 @@ const applyFilters = (users: User[], query: string, filters: Filters): User[] =>
         }
       })
 
-      // if (filters.role && user.role !== filters.role) {
+      // if (filters.role && user?.role !== filters.role) {
       //   matches = false
       // }
 
@@ -243,7 +242,7 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
   }
 
   const handleSelectAllUsers = (event: ChangeEvent<HTMLInputElement>): void => {
-    setSelectedUsers(event.target.checked ? users.map((user) => user.id) : [])
+    setSelectedUsers(event.target.checked ? users.map((user) => user?.id) : [])
   }
 
   const handleSelectOneUser = (_event: ChangeEvent<HTMLInputElement>, userId: string): void => {
@@ -400,42 +399,42 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
                   </TableHead>
                   <TableBody>
                     {paginatedUsers.map((user) => {
-                      const isUserSelected = selectedItems.includes(user.id)
+                      const isUserSelected = selectedItems.includes(user?.id)
                       return (
-                        <TableRow hover key={user.id} selected={isUserSelected}>
+                        <TableRow hover key={user?.id} selected={isUserSelected}>
                           <TableCell padding="checkbox">
                             <Checkbox
                               checked={isUserSelected}
-                              onChange={(event) => handleSelectOneUser(event, user.id)}
+                              onChange={(event) => handleSelectOneUser(event, user?.id)}
                               value={isUserSelected}
                             />
                           </TableCell>
                           {/* <TableCell>
-                            <Typography variant="h5">{user.username}</Typography>
+                            <Typography variant="h5">{user?.username}</Typography>
                           </TableCell> */}
                           <TableCell>
                             <Box display="flex" alignItems="center">
                               {/* <Avatar sx={{ mr: 1 }} src="/static/images/avatars/1.jpg" /> */}
                               <Box>
-                                <Link underline="hover" variant="h5" href={`/admin/users/${user.id}`}>
-                                  {user.name}
+                                <Link underline="hover" variant="h5" href={`/admin/users/${user?.id}`}>
+                                  {user?.name}
                                 </Link>
                                 {/* <Typography noWrap variant="subtitle2">
-                                  {user.jobtitle}
+                                  {user?.jobtitle}
                                 </Typography> */}
                               </Box>
                             </Box>
                           </TableCell>
                           <TableCell>
-                            <Typography>{user.email}</Typography>
+                            <Typography>{user?.email}</Typography>
                           </TableCell>
                           <TableCell>
                             <Link
                               underline="hover"
                               variant="h5"
-                              href={`https://bscscan.com/address/${user.address}`}
+                              href={`https://bscscan.com/address/${user?.address}`}
                               target="_blank">
-                              <Typography fontWeight="bold">{user.address.substring(0, 15)}</Typography>
+                              <Typography fontWeight="bold">{user?.address.substring(0, 15)}</Typography>
                             </Link>
                           </TableCell>
                           <TableCell>
@@ -443,23 +442,23 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
                               <Link
                                 underline="hover"
                                 variant="h5"
-                                href={`https://bscscan.com/address/${user.generated}`}
+                                href={`https://bscscan.com/address/${user?.generated}`}
                                 target="_blank">
-                                <Typography fontWeight="bold">{user.generated.substring(0, 15)}</Typography>
+                                <Typography fontWeight="bold">{user?.generated.substring(0, 15)}</Typography>
                               </Link>
                             </TableCell>
                           </TableCell>
                           {/* <TableCell align="center">
-                            <Typography fontWeight="bold">{user.posts}</Typography>
+                            <Typography fontWeight="bold">{user?.posts}</Typography>
                           </TableCell>
                           <TableCell> */}
-                          {/* <Typography>{user.location}</Typography>
+                          {/* <Typography>{user?.location}</Typography>
                           </TableCell> */}
-                          {/* <TableCell>{getUserRoleLabel(user.role)}</TableCell> */}
+                          {/* <TableCell>{getUserRoleLabel(user?.role)}</TableCell> */}
                           <TableCell align="center">
                             <Typography noWrap>
                               <Tooltip title={t('View')} arrow>
-                                <IconButton disabled component={Link} href={`/admin/users/${user.id}`} color="primary">
+                                <IconButton disabled component={Link} href={`/admin/users/${user?.id}`} color="primary">
                                   <LaunchTwoToneIcon fontSize="small" />
                                 </IconButton>
                               </Tooltip>
@@ -558,17 +557,17 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
             <>
               <Grid container spacing={3}>
                 {paginatedUsers.map((user) => {
-                  const isUserSelected = selectedItems.includes(user.id)
+                  const isUserSelected = selectedItems.includes(user?.id)
 
                   return (
-                    <Grid item xs={12} sm={6} md={4} key={user.id}>
+                    <Grid item xs={12} sm={6} md={4} key={user?.id}>
                       <CardWrapper
                         className={clsx({
                           'Mui-selected': isUserSelected,
                         })}>
                         <Box sx={{ position: 'relative', zIndex: '2' }}>
                           {/* <Box px={2} pt={2} display="flex" alignItems="flex-start" justifyContent="space-between">
-                            {getUserRoleLabel(user.role)}
+                            {getUserRoleLabel(user?.role)}
                             <IconButton color="primary" sx={{ p: 0.5 }}>
                               <MoreVertTwoToneIcon />
                             </IconButton>
@@ -577,11 +576,11 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
                             {/* <Avatar sx={{ width: 50, height: 50, mr: 2 }} src="/static/images/avatars/1.jpg" /> */}
                             <Box>
                               <Box>
-                                <Link underline="hover" variant="h5" href={`/admin/users/${user.id}`}>
-                                  {user.name}
+                                <Link underline="hover" variant="h5" href={`/admin/users/${user?.id}`}>
+                                  {user?.name}
                                 </Link>{' '}
                                 <Typography sx={{ pt: 1 }} variant="h6">
-                                  {user.email}
+                                  {user?.email}
                                 </Typography>
                               </Box>
                               <Box>
@@ -590,9 +589,9 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
                                   <Link
                                     underline="hover"
                                     variant="h5"
-                                    href={`https://bscscan.com/address/${user.address}`}
+                                    href={`https://bscscan.com/address/${user?.address}`}
                                     target="_blank">
-                                    {user.address.substring(0, 15)}
+                                    {user?.address.substring(0, 15)}
                                   </Link>
                                 </Typography>
                               </Box>
@@ -602,29 +601,29 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
                                   <Link
                                     underline="hover"
                                     variant="h5"
-                                    href={`https://bscscan.com/address/${user.generated}`}
+                                    href={`https://bscscan.com/address/${user?.generated}`}
                                     target="_blank">
-                                    {user.generated.substring(0, 15)}
+                                    {user?.generated.substring(0, 15)}
                                   </Link>
                                 </Typography>
                                 {/* <Typography component="span" variant="body2" color="text.secondary">
-                                  ({user.username})
+                                  ({user?.username})
                                 </Typography> */}
                               </Box>
                               {/* <Typography sx={{ pt: 0.3 }} variant="subtitle2">
-                                {user.jobtitle}
+                                {user?.jobtitle}
                               </Typography> */}
                             </Box>
                           </Box>
                           <Divider />
                           <Box pl={2} py={1} pr={1} display="flex" alignItems="center" justifyContent="space-between">
                             <Typography>
-                              {/* <b>{user.posts}</b> {t('posts')} */}
+                              {/* <b>{user?.posts}</b> {t('posts')} */}
                               <b> {t('Select')}</b>
                             </Typography>
                             <Checkbox
                               checked={isUserSelected}
-                              onChange={(event) => handleSelectOneUser(event, user.id)}
+                              onChange={(event) => handleSelectOneUser(event, user?.id)}
                               value={isUserSelected}
                             />
                           </Box>

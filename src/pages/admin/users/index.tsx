@@ -11,7 +11,6 @@ import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
 
 import type { ReactElement } from 'react'
-// import type { User } from 'src/client/models/user'
 
 const MainContentWrapper = styled(Box)(
   ({ theme }) => `
@@ -21,21 +20,8 @@ const MainContentWrapper = styled(Box)(
 
 function ManagementUsers() {
   const isMountedRef = useRefMounted()
-  // const [users, setUsers] = useState<User[]>([])
   const [users, setUsers] = useState<any[]>([])
   const [{ data, fetching }] = useGetUsersQuery()
-
-  // const getUsers = useCallback(async () => {
-  //   try {
-  //     const response = await axios.get<{ users: User[] }>('/api/users')
-  //   } catch (err) {
-  //     console.error(err)
-  //   }
-  // }, [isMountedRef])
-
-  // useEffect(() => {
-  //   getUsers()
-  // }, [getUsers])
 
   useEffect(() => {
     if (isMountedRef.current && data) {
@@ -52,7 +38,6 @@ function ManagementUsers() {
         <PageTitleWrapper>
           <PageHeader />
         </PageTitleWrapper>
-
         <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
           <Grid item xs={12}>
             <AdminUsersList users={users} fetching={fetching} />

@@ -1,4 +1,4 @@
-mutation CreateStrategie($player: String!, $startedAmount: Int!, $maxLooseAmount: Int, $minWinAmount: Int) {
+mutation CreateStrategie($player: String!, $startedAmount: Float!, $maxLooseAmount: Float, $minWinAmount: Float) {
   createStrategie(
     player: $player
     startedAmount: $startedAmount

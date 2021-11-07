@@ -30,10 +30,10 @@ model Strategie {
   createdAt  DateTime @default(now())
   modifiedAt DateTime @default(now())
   player          String
-  startedAmount   Int
-  currentAmount   Int
-  maxLooseAmount  Int
-  minWinAmount    Int 
+  startedAmount   Float
+  currentAmount   Float
+  maxLooseAmount  Float @default(0.0)
+  minWinAmount    Float @default(0.0)
   roundsCount          Int @default(0) 
   playsCount           Int @default(0)
   isActive        Boolean @default(true)
