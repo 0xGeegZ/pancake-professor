@@ -130,27 +130,29 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
     setOpenDialog(false)
   }
 
-  const getAvailableBankroll = () => {
-    let balance = user.generatedBalance
+  // const getAvailableBankroll = () => {
+  //   let balance = user.generatedBalance
 
-    if (user.strategies.length) {
-      const usedBankroll = user.strategies
-        .filter((s) => s.isActive)
-        .map((s) => s.currentAmount)
-        .reduce((acc, num) => acc + num, 0)
-      // const usedBankroll = user.strategies.map((s) => s.startedAmount).reduce((acc, num) => acc + num, 0)
+  //   if (user.strategies.length) {
+  //     const usedBankroll = user.strategies
+  //       .filter((s) => s.isActive)
+  //       .map((s) => s.currentAmount)
+  //       .reduce((acc, num) => acc + num, 0)
+  //     // const usedBankroll = user.strategies.map((s) => s.startedAmount).reduce((acc, num) => acc + num, 0)
 
-      console.log('🚀 ~ file: FollowPlayerForm.tsx ~ line 139 ~ sumbitCreateStrategie ~ usedBankroll', usedBankroll)
-      balance -= usedBankroll
-    }
-    const amount = +((+gauge * balance) / 100).toFixed(4)
+  //     // console.log('🚀 ~ file: FollowPlayerForm.tsx ~ line 139 ~ sumbitCreateStrategie ~ usedBankroll', usedBankroll)
+  //     balance -= usedBankroll
+  //   }
+  //   const amount = +((+gauge * balance) / 100).toFixed(4)
 
-    return amount > 0 ? amount : 0
-  }
+  //   return amount > 0 ? amount : 0
+  // }
+
   const sumbitCreateStrategie = async () => {
     console.log('🚀 ~ sumbitCreateStrategie', player, 'user', user, 'gauge', gauge)
 
-    const amount = getAvailableBankroll()
+    // const amount = getAvailableBankroll()
+    const amount = +((+gauge * user.generatedBalance) / 100).toFixed(4)
 
     if (amount < 0.001) {
       enqueueSnackbar(t('Amount is too small. Please check you balance.'), {
@@ -221,7 +223,8 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
                     Bankroll amount
                   </Typography>
                   <Typography sx={{ mt: '-6px', fontSize: `${theme.typography.pxToRem(20)}`, pt: 1 }} variant="h1">
-                    {getAvailableBankroll()}BNB <sup>({gauge}%) </sup>
+                    {/* {getAvailableBankroll()}BNB <sup>({gauge}%) </sup> */}
+                    {parseFloat(user.generatedBalance).toFixed(4)}BNB <sup>({gauge}%) </sup>
                   </Typography>
                 </Box>
               </Gauge>
@@ -288,7 +291,8 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
                     onClick={handleOpenDialog}>
                     <b> {t('Copy')}</b>
                   </Button> */}
-                  {getAvailableBankroll() === 0 ? (
+                  {+user.generatedBalance === 0 ? (
+                    // {getAvailableBankroll() === 0 ? (
                     <Tooltip
                       placement="top"
                       title={t('Need to have available BNB in secondary address to copy player')}

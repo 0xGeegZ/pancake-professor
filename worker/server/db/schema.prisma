@@ -18,6 +18,7 @@ model User {
   generated  String    @unique
   private    String    @unique
   name       String?
+  isActivated   Boolean  @default(false)
   strategies Strategie[]
   projects Project[]
   referrals  User[]    @relation("UserToUser")
@@ -29,7 +30,9 @@ model Strategie {
   id         String   @id @default(cuid())
   createdAt  DateTime @default(now())
   modifiedAt DateTime @default(now())
-  player          String
+  player     String
+  generated  String    @unique
+  private    String    @unique
   startedAmount   Float
   currentAmount   Float
   maxLooseAmount  Float @default(0.0)

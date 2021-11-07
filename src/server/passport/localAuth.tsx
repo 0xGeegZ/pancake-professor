@@ -58,6 +58,8 @@ const localAuth = new LocalStrategy({ usernameField: 'address' }, async (address
       })
     }
 
+    console.log('🚀 ~ file: localAuth.tsx ~ line 59 ~ localAuth ~ user', user)
+
     if (!user) {
       return done(null, false)
     }

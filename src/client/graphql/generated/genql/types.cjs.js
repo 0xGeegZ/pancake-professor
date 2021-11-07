@@ -103,6 +103,15 @@ module.exports = {
                     ]
                 }
             ],
+            "toogleIsActivated": [
+                11,
+                {
+                    "id": [
+                        2,
+                        "String!"
+                    ]
+                }
+            ],
             "updateStrategie": [
                 9,
                 {
@@ -261,6 +270,9 @@ module.exports = {
             "currentAmount": [
                 3
             ],
+            "generated": [
+                2
+            ],
             "id": [
                 2
             ],
@@ -291,6 +303,9 @@ module.exports = {
             "playsCount": [
                 5
             ],
+            "private": [
+                2
+            ],
             "roundsCount": [
                 5
             ],
@@ -305,7 +320,13 @@ module.exports = {
             ]
         },
         "StrategieWhereUniqueInput": {
+            "generated": [
+                2
+            ],
             "id": [
+                2
+            ],
+            "private": [
                 2
             ],
             "__typename": [
@@ -327,6 +348,9 @@ module.exports = {
             ],
             "id": [
                 2
+            ],
+            "isActivated": [
+                4
             ],
             "loginAt": [
                 0
