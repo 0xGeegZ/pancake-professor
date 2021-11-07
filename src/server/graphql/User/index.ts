@@ -26,7 +26,7 @@ const queries = extendType({
   definition: (t) => {
     t.field('currentUser', {
       type: 'User',
-      resolve: (_, __, ctx) => {
+      resolve: async (_, __, ctx) => {
         if (!ctx.user?.id) return null
 
         return prisma.user.findUnique({
@@ -34,6 +34,24 @@ const queries = extendType({
             id: ctx.user.id,
           },
         })
+
+        // const user = await prisma.user.findUnique({
+        //   where: {
+        //     id: ctx.user.id,
+        //   },
+        // })
+        // const strategies = await prisma.strategie.findMany({
+        //   where: {
+        //     isDeleted: false,
+        //     user: {
+        //       is: {
+        //         id: ctx.user.id,
+        //       },
+        //     },
+        //   },
+        // })
+
+        // return { ...user, strategies }
       },
     })
 

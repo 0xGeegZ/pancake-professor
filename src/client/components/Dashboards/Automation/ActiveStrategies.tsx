@@ -11,6 +11,7 @@ import {
   CardActionArea,
   CardContent,
   CircularProgress,
+  Divider,
   Grid,
   IconButton,
   LinearProgress,
@@ -28,6 +29,7 @@ import { useSnackbar } from 'notistack'
 import PropTypes from 'prop-types'
 import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import { useDeleteStrategieMutation } from 'src/client/graphql/deleteStrategie.generated'
 import { useToogleActivateStrategieMutation } from 'src/client/graphql/toogleActivateStrategie.generated'
 
 const CardAddAction = styled(Card)(
@@ -184,6 +186,8 @@ function ActiveStrategies({ strategies: pstrategies }) {
   // const { mutate } = useGlobalStore()
 
   const [, toogleActivateStrategie] = useToogleActivateStrategieMutation()
+  const [, deleteStrategieMutation] = useDeleteStrategieMutation()
+
   const { enqueueSnackbar } = useSnackbar()
 
   const locations = [
@@ -281,6 +285,31 @@ function ActiveStrategies({ strategies: pstrategies }) {
     return [daysFormatted, hoursFormatted].join('')
   }
 
+  const deleteStrategie = (strategie) => async () => {
+    const updateds = strategies.map((s) => {
+      const updated = s
+      if (updated.id === strategie.id) updated.isDeleted = !updated.isDeleted
+
+      return updated
+    })
+    setStrategies(updateds)
+
+    const { error } = await deleteStrategieMutation({ id: strategie.id })
+
+    if (error) {
+      enqueueSnackbar(t(`Unexpected error during strategie deletion.`), {
+        variant: 'error',
+        TransitionComponent: Zoom,
+      })
+      return
+    }
+
+    enqueueSnackbar(t(`Stratégie successfully deleted.`), {
+      variant: 'success',
+      TransitionComponent: Zoom,
+    })
+  }
+
   return (
     <Box>
       <Box mb={2} display="flex" alignItems="center" justifyContent="space-between">
@@ -320,83 +349,117 @@ function ActiveStrategies({ strategies: pstrategies }) {
       <Grid container spacing={3}>
         {strategies?.length ? (
           <>
-            {strategies.map((strategie) => (
-              <Grid item xs={12} xl={3} md={4} sm={6} key={strategie.id}>
-                <CardActiveStrategies
-                  className={strategie.isError ? 'Mui-error' : strategie.isActive ? 'Mui-active' : ''}>
-                  <CardActionArea>
-                    <Switch
-                      edge="end"
-                      // defaultChecked={strategie?.isActive ? strategie.isActive : false}
-                      checked={strategie.isActive}
-                      color="primary"
-                      disabled={strategie.isError}
-                      onChange={handleChange(strategie)}
-                    />
-                    <Typography fontWeight="bold" variant="caption" color="primary">
-                      {strategie.isError ? t('Error') : strategie.isActive ? t('Active') : t('Innactive')}
-                    </Typography>
-                    <Box sx={{ p: 1 }}>
-                      <Grid spacing={2} container>
-                        <Grid item xs={12} sm={3} alignItems="left">
-                          <IconWrapper>
-                            <AccountCircleIcon fontSize="large" />
-                          </IconWrapper>
-                        </Grid>
-                        <Grid item xs={12} sm={9}>
-                          <Typography variant="h4" noWrap sx={{ pt: 3 }}>
-                            {t('Player')}:{' '}
-                            <Link variant="h5" href={`https://bscscan.com/address/${strategie.player}`} target="_blank">
-                              {strategie.player.substring(0, 20)}
-                            </Link>
-                          </Typography>
-                        </Grid>
-                      </Grid>
-                    </Box>
+            {
+              // TODO filter deleted in query
+              strategies
+                .filter((s) => !s.isDeleted)
+                .map((strategie) => (
+                  <Grid item xs={12} xl={3} md={4} sm={6} key={strategie.id}>
+                    <CardActiveStrategies
+                      className={strategie.isError ? 'Mui-error' : strategie.isActive ? 'Mui-active' : ''}>
+                      <CardActionArea>
+                        <Switch
+                          edge="end"
+                          // defaultChecked={strategie?.isActive ? strategie.isActive : false}
+                          checked={strategie.isActive}
+                          color="primary"
+                          disabled={strategie.isError}
+                          onChange={handleChange(strategie)}
+                        />
+                        <Typography fontWeight="bold" variant="caption" color="primary">
+                          {strategie.isError ? t('Error') : strategie.isActive ? t('Active') : t('Innactive')}
+                        </Typography>
+                        <Box sx={{ p: 1 }}>
+                          <Grid spacing={2} container>
+                            <Grid item xs={12} sm={3} alignItems="left">
+                              <IconWrapper>
+                                <AccountCircleIcon fontSize="large" />
+                              </IconWrapper>
+                            </Grid>
+                            <Grid item xs={12} sm={9}>
+                              <Typography variant="h4" noWrap sx={{ pt: 3 }}>
+                                {t('Player')}:{' '}
+                                <Link
+                                  variant="h5"
+                                  href={`https://bscscan.com/address/${strategie.player}`}
+                                  target="_blank">
+                                  {strategie.player.substring(0, 20)}
+                                </Link>
+                              </Typography>
+                            </Grid>
+                          </Grid>
+                        </Box>
 
-                    <Box sx={{ p: 1 }}>
-                      <Grid spacing={2} container>
-                        <Grid item xs={12} sm={8}>
-                          <Typography variant="caption" sx={{ pb: 1 }} component="div">
-                            {t('Rounds played')}(%)
-                          </Typography>
-                          <Box>
-                            <Typography color="text.primary" variant="h2" sx={{ pr: 0.5, display: 'inline-flex' }}>
-                              {strategie.playsCount}
-                            </Typography>
-                            <Typography color="text.secondary" variant="h4" sx={{ pr: 2, display: 'inline-flex' }}>
-                              / {strategie.roundsCount}
-                            </Typography>
-                            <LinearProgressWrapper
-                              value={+strategie.winRate}
-                              // color="primary"
-                              color={
-                                (+strategie.playsCount * 100) / strategie.roundsCount >= 30
-                                  ? 'success'
-                                  : (+strategie.playsCount * 100) / strategie.roundsCount >= 20
-                                  ? 'warning'
-                                  : 'error'
-                              }
-                              variant="determinate"
-                            />
+                        <Box sx={{ p: 1 }}>
+                          <Grid spacing={2} container>
+                            <Grid item xs={12} sm={8}>
+                              <Typography variant="caption" sx={{ pb: 1 }} component="div">
+                                {t('Rounds played')}(%)
+                              </Typography>
+                              <Box>
+                                <Typography color="text.primary" variant="h2" sx={{ pr: 0.5, display: 'inline-flex' }}>
+                                  {strategie.playsCount}
+                                </Typography>
+                                <Typography color="text.secondary" variant="h4" sx={{ pr: 2, display: 'inline-flex' }}>
+                                  / {strategie.roundsCount}
+                                </Typography>
+                                <LinearProgressWrapper
+                                  value={+strategie.winRate}
+                                  // color="primary"
+                                  color={
+                                    (+strategie.playsCount * 100) / strategie.roundsCount >= 30
+                                      ? 'success'
+                                      : (+strategie.playsCount * 100) / strategie.roundsCount >= 20
+                                      ? 'warning'
+                                      : 'error'
+                                  }
+                                  variant="determinate"
+                                />
+                              </Box>
+                            </Grid>
+                            <Grid item xs={12} sm={4}>
+                              <Typography variant="caption" sx={{ pb: 1.5, fontSize: '10px' }} component="div">
+                                {t('Running since')}
+                              </Typography>
+                              <Box display="flex" alignItems="center">
+                                <Typography variant="h5" component="div">
+                                  {getStrategieDuraction(strategie)}
+                                </Typography>
+                              </Box>
+                            </Grid>
+                          </Grid>
+                        </Box>
+                      </CardActionArea>
+                      {!strategie.isActive && (
+                        <>
+                          <Divider />
+                          <Box px={3} py={2}>
+                            <Grid container spacing={3}>
+                              <Grid item md={6}>
+                                {/* <Tooltip placement="top" title={t('You need to be connected to copy player.')} arrow> */}
+                                <Button
+                                  size="small"
+                                  fullWidth
+                                  variant="outlined"
+                                  color="error"
+                                  onClick={deleteStrategie(strategie)}>
+                                  <b> {t('Delete strategie')}</b>
+                                </Button>
+                                {/* </Tooltip> */}
+                              </Grid>
+                              <Grid item md={6}>
+                                <Button size="small" disabled fullWidth variant="outlined" color="secondary">
+                                  {t('Strategie details')}
+                                </Button>
+                              </Grid>
+                            </Grid>
                           </Box>
-                        </Grid>
-                        <Grid item xs={12} sm={4}>
-                          <Typography variant="caption" sx={{ pb: 1.5, fontSize: '10px' }} component="div">
-                            {t('Running since')}
-                          </Typography>
-                          <Box display="flex" alignItems="center">
-                            <Typography variant="h5" component="div">
-                              {getStrategieDuraction(strategie)}
-                            </Typography>
-                          </Box>
-                        </Grid>
-                      </Grid>
-                    </Box>
-                  </CardActionArea>
-                </CardActiveStrategies>
-              </Grid>
-            ))}
+                        </>
+                      )}
+                    </CardActiveStrategies>
+                  </Grid>
+                ))
+            }
           </>
         ) : strategies === null ? (
           <Grid sx={{ py: 11 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>

@@ -220,6 +220,7 @@ const mutations = extendType({
           where: { id },
           data: {
             isActive: false,
+            isRunning: false,
             isDeleted: true,
           },
         })
