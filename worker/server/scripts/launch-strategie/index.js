@@ -227,8 +227,6 @@ const launchStrategie = async (payload) => {
     strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
     console.log('🚀 ~ file: index.js ~ line 228 ~ roundEndListenner ~ strategie.currentAmount', strategie.currentAmount)
 
-    // TODO update currentAmount with user bet history
-
     logger.info(
       `[ROUND:${+epoch}:${strategie.player}:${strategie.roundsCount}] Round finished for epoch ${+epoch} : played ${
         strategie.playsCount
@@ -247,6 +245,18 @@ const launchStrategie = async (payload) => {
     if (strategie.playedEpochs.length >= 3) {
       await claimPlayedEpochs(strategie.playedEpochs)
       strategie.playedEpochs = []
+    }
+
+    const isUpdatedStrategie = await prisma.strategie.findUnique({
+      where: {
+        id: strategie.id,
+      },
+    })
+
+    if (!isUpdatedStrategie.isActive || isUpdatedStrategie.isError || isUpdatedStrategie.isDeleted) {
+      logger.error('[PLAYING] Strategie was updated by user (stopped or deleted) and need to be stoped.')
+      await stopStrategie()
+      return
     }
   }
 

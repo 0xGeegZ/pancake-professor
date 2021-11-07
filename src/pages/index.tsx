@@ -40,7 +40,7 @@ const Overview = () => {
 
   const { t }: { t: any } = useTranslation()
   const [isRedirected, setIsRedirected] = useState(false)
-  const [fetching, setFetching] = useState(true)
+  const [fetching] = useState(true)
 
   useEffect(() => {
     if (!isRedirected) {
