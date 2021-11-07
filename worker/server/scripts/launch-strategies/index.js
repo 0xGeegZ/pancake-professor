@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const prisma = require('../../db/prisma')
 const logger = require('../../utils/logger')
 const { launchStrategie } = require('../launch-strategie')

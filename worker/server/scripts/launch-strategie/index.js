@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
-/* eslint-disable no-param-reassign */
 const BlocknativeSdk = require('bnc-sdk')
 const { ethers } = require('ethers')
 const WebSocket = require('ws')
