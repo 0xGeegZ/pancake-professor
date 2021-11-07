@@ -223,8 +223,8 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
                     Bankroll amount
                   </Typography>
                   <Typography sx={{ mt: '-6px', fontSize: `${theme.typography.pxToRem(20)}`, pt: 1 }} variant="h1">
-                    {/* {getAvailableBankroll()}BNB <sup>({gauge}%) </sup> */}
-                    {parseFloat(user.generatedBalance).toFixed(4)}BNB <sup>({gauge}%) </sup>
+                    {/* {getAvailableBankroll()} BNB <sup>({gauge}%) </sup> */}
+                    {parseFloat(user.generatedBalance).toFixed(4)} BNB <sup>({gauge}%) </sup>
                   </Typography>
                 </Box>
               </Gauge>

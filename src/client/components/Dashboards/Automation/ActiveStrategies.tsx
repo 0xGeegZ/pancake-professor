@@ -436,7 +436,7 @@ function ActiveStrategies({ strategies: pstrategies }) {
                               color="text.primary"
                               variant="h5"
                               sx={{ pr: 0.5, pt: 1, display: 'inline-flex' }}>
-                              {`${strategie.currentAmount}BNB `}
+                              {`${strategie.currentAmount} BNB `}
                               {'  '}
                               <sup>
                                 {'  '}({100 - (+strategie.currentAmount * 100) / strategie.startedAmount}%)

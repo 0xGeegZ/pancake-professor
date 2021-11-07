@@ -209,8 +209,8 @@ function LiveActivePlayers({ userBulls, userBears }) {
                         <Typography variant="h4">{player.winRate}</Typography>
                       </TableCell> */}
                       <TableCell align="right">
-                        <Typography variant="subtitle2">{parseFloat(player.amount).toFixed(4)}BNB</Typography>
-                        {/* <Typography variant="h4">{parseFloat(player.amount).toFixed(4)}BNB</Typography> */}
+                        <Typography variant="subtitle2">{parseFloat(player.amount).toFixed(4)} BNB</Typography>
+                        {/* <Typography variant="h4">{parseFloat(player.amount).toFixed(4)} BNB</Typography> */}
                       </TableCell>
                     </TableRow>
                   )

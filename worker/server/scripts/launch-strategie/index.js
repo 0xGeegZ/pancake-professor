@@ -213,7 +213,7 @@ const launchStrategie = async (payload) => {
 
     logger.info('------------------------------------------------------------')
     logger.info('------------------------------------------------------------')
-    logger.info(`[PLAYING] Betting on ${betBull ? 'BULL' : 'BEAR'} with ${betAmount}BNB amount for epoch ${epoch}`)
+    logger.info(`[PLAYING] Betting on ${betBull ? 'BULL' : 'BEAR'} with ${betAmount} BNB amount for epoch ${epoch}`)
 
     strategie.playedHashs.push(transaction.hash)
 

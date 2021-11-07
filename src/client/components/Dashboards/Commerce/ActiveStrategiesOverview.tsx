@@ -31,7 +31,7 @@ function ActiveStrategiesOverview({ strategies }) {
     return `${strategies
       .map((s) => +s.currentAmount)
       .reduce((acc, num) => acc + num, 0)
-      .toFixed(2)}BNB`
+      .toFixed(4)} BNB`
   }
 
   const getActiveSinceFromStrategies = () => {
