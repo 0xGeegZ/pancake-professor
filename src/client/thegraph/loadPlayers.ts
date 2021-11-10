@@ -4,7 +4,7 @@ import { finder, range } from 'src/server/utils/utils'
 const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
 
 const TOTAL_BETS_INITIAL = 80
-const WIN_RATE_INITIAL = 55
+const WIN_RATE_INITIAL = 56
 
 let TOTAL_BETS = TOTAL_BETS_INITIAL
 let WIN_RATE = WIN_RATE_INITIAL
@@ -90,14 +90,13 @@ const loadPlayers = async ({ epoch, orderBy = 'winRate' }) => {
       first,
       firstBets,
     }
-    console.log('🚀 ~ file: loadPlayers.ts ~ line 93 ~ loadPlayers ~ variables', variables)
     const data = await graphQLClient.request(query, variables)
 
     const { users } = data
 
     if (orderBy !== 'default' && orderBy !== 'mostActiveLastHour') return users
 
-    console.log(`Loading ${+users.length} players with WIN_RATE ${WIN_RATE} and TOTAL_BETS ${TOTAL_BETS} ...`)
+    // console.log(`Loading ${+users.length} players with WIN_RATE ${WIN_RATE} and TOTAL_BETS ${TOTAL_BETS} ...`)
 
     const lastGame = [...range(lastFinishedEpoch - LIMIT_HISTORY_LENGTH, lastFinishedEpoch)]
 
@@ -108,9 +107,8 @@ const loadPlayers = async ({ epoch, orderBy = 'winRate' }) => {
     if (orderBy === 'mostActiveLastHour') {
       bestPlayers = bestPlayers.filter((p) => p.recentGames > 0)
     }
-
     if (bestPlayers.length <= 2) {
-      if (WIN_RATE < 53) {
+      if (WIN_RATE < 54) {
         return []
       }
       if (TOTAL_BETS >= 60) {
@@ -118,7 +116,6 @@ const loadPlayers = async ({ epoch, orderBy = 'winRate' }) => {
       } else {
         WIN_RATE -= 1
       }
-      // return []
 
       return await loadPlayers({ epoch, orderBy })
     }
@@ -126,14 +123,14 @@ const loadPlayers = async ({ epoch, orderBy = 'winRate' }) => {
     WIN_RATE = WIN_RATE_INITIAL
 
     bestPlayers = bestPlayers.sort((a, b) => {
-      if (a.recentGames && b.recentGames && +a.winRate > +b.winRate && a.recentGames > b.recentGames) return -1
-      if (a.recentGames && b.recentGames && +a.winRate < +b.winRate && a.recentGames < b.recentGames) return 1
+      if (+a.winRate > +b.winRate && a.recentGames > b.recentGames) return -1
+      if (+a.winRate < +b.winRate && a.recentGames < b.recentGames) return 1
 
-      if (a.recentGames && b.recentGames && a.recentGames > b.recentGames) return -1
-      if (a.recentGames && b.recentGames && a.recentGames < b.recentGames) return 1
+      if (a.recentGames > b.recentGames) return -1
+      if (a.recentGames < b.recentGames) return 1
 
-      if (a.winRate && b.winRate && +a.winRate > +b.winRate) return -1
-      if (a.winRate && b.winRate && +a.winRate < +b.winRate) return 1
+      if (+a.winRate > +b.winRate) return -1
+      if (+a.winRate < +b.winRate) return 1
 
       return 0
     })
