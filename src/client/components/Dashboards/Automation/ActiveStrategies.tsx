@@ -564,14 +564,14 @@ function ActiveStrategies({ strategies: pstrategies }) {
                         </Box>
                       </Box>
 
-                      <Box sx={{ p: 1 }}>
+                      <Box sx={{ py: 1 }}>
                         <Grid spacing={2} container>
-                          <Grid item xs={12} sm={3} alignItems="left">
+                          {/* <Grid item xs={12} sm={3} alignItems="left">
                             <IconWrapper>
                               <AccountCircleIcon fontSize="large" />
                             </IconWrapper>
-                          </Grid>
-                          <Grid item xs={12} sm={9}>
+                          </Grid> */}
+                          <Grid item xs={12}>
                             <Typography variant="h4" noWrap sx={{ pt: 3 }}>
                               {t('Player')}:{' '}
                               <Link
@@ -625,12 +625,7 @@ function ActiveStrategies({ strategies: pstrategies }) {
                             <Typography variant="h5" sx={{ pb: 1, pt: 0.5 }} component="div">
                               {t('Winrate')}
                             </Typography>
-
                             <Box>
-                              
-                              {/* <Typography variant="h3" sx={{ pl: 1 }} component="div">
-                                {strategie?.enriched?.winRate || '...'}%
-                              </Typography> */}
                               <Typography color="text.primary" variant="h3" sx={{ display: 'inline-flex' }}>
                                 {parseInt(`${strategie?.enriched?.winRate}`, 10) || '...'}%
                               </Typography>
@@ -644,56 +639,13 @@ function ActiveStrategies({ strategies: pstrategies }) {
                                       : theme.colors.error.main,
                                 }}
                               />
-                              {/* <Typography color="text.primary" variant="h5" sx={{ display: 'inline-flex' }}>
-                                {parseInt(`${strategie?.enriched?.winRate}`, 10) || '...'}%
-                              </Typography> */}
-                              {/* <Typography color="text.secondary" variant="h5" sx={{ pt: 0.5, display: 'inline-flex' }}>
-                                ({parseInt(`${(+strategie.currentAmount * 100) / strategie.startedAmount - 100}`, 10)}%)
-                              </Typography> */}
-                            </Box>
-                            {/* <Box display="flex" alignItems="center" sx={{ pt: 3 }}>
-                              <DotLegend
-                                style={{
-                                  background:
-                                    +strategie?.enriched?.winRate >= 60
-                                      ? theme.colors.success.main
-                                      : +strategie?.enriched?.winRate >= 55
-                                      ? theme.colors.warning.main
-                                      : theme.colors.error.main,
-                                }}
-                              />
-                              <Typography variant="h3" sx={{ pl: 1 }} component="div">
-                                {strategie?.enriched?.winRate || '...'}%
-                              </Typography>
-                            </Box> */}
-                            {/* <Box>
-                            <Typography
-                              color="text.primary"
-                              variant="h5"
-                              sx={{ pr: 0.5, pt: 1, display: 'inline-flex' }}>
-                              {`${strategie.currentAmount} BNB `}
-                              {'  '}
-                              <sup>
-                                {'  '}({100 - (+strategie.currentAmount * 100) / strategie.startedAmount}%)
-                              </sup>
-                            </Typography>
-                          </Box> */}
+                            </Box>   
                           </Grid>
-                          {/* <Grid item xs={6} sm={2}>
-                          <Typography variant="caption" sx={{ pb: 1.5, fontSize: '10px' }} component="div">
-                            {t('Running since')}
-                          </Typography>
-                          <Box display="flex" alignItems="center">
-                            <Typography variant="h5" component="div">
-                              {getStrategieDuraction(strategie)}
-                            </Typography>
-                          </Box>
-                        </Grid> */}
                         </Grid>
                       </Box>
                       <Divider />
 
-                      <Box sx={{ px: 1, pt: 1 }}>
+                      <Box sx={{ py: 1, pt: 1 }}>
                         <Grid spacing={1} container>
                           <Grid item xs={12}>
                             <Typography variant="h4" sx={{ fontSize: '13px' }} component="div">
@@ -703,10 +655,10 @@ function ActiveStrategies({ strategies: pstrategies }) {
                           </Grid>
                         </Grid>
                       </Box>
-                      <Box sx={{ px: 1 }}>
+                      <Box >
                         <Grid spacing={1} container>
                           <Grid item xs={12}>
-                            <Typography variant="caption" sx={{ fontSize: '11px' }} component="div">
+                            <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
                               {t('Running since')} <b>{getStrategieDuraction(strategie)}</b>
                             </Typography>
                           </Grid>
