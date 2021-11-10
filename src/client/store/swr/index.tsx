@@ -91,9 +91,10 @@ export const GlobalStateProvider: FC = ({ children }: Props) => {
   const currentUser = data?.currentUser ? data?.currentUser : null
 
   if (currentUser) {
-    const isFinded = process.env.NEXT_PUBLIC_ADMIN_ADDRESS
-      ? process.env.NEXT_PUBLIC_ADMIN_ADDRESS.includes(currentUser?.address)
-      : false
+    const isFinded =
+      process.env.NODE_ENV === 'development'
+        ? true
+        : process.env.NEXT_PUBLIC_ADMIN_ADDRESS.toLowerCase() === currentUser?.address.toLowerCase()
 
     const updated = { ...currentUser, isAdmin: isFinded }
     checkBalance(updated)

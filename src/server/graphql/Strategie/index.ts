@@ -21,6 +21,7 @@ const Strategie = objectType({
     t.model.isRunning()
     t.model.isDeleted()
     t.model.isError()
+    t.model.isNeedRestart()
     t.model.maxLooseAmount()
     t.model.minWinAmount()
     t.model.user()
@@ -135,19 +136,17 @@ const mutations = extendType({
       type: 'Strategie',
       args: {
         id: nonNull(stringArg()),
-        player: nonNull(stringArg()),
-        startedAmount: nonNull(floatArg()),
-        currentAmount: nonNull(floatArg()),
-        roundsCount: nonNull(intArg()),
-        playsCount: nonNull(intArg()),
+        player: stringArg(),
+        roundsCount: intArg(),
+        playsCount: intArg(),
         isActive: booleanArg(),
         isRunning: booleanArg(),
         isDeleted: booleanArg(),
         isError: booleanArg(),
-        maxLooseAmount: nonNull(floatArg()),
-        minWinAmount: nonNull(floatArg()),
+        maxLooseAmount: floatArg(),
+        minWinAmount: floatArg(),
       },
-      resolve: async (_, args, ctx) => {
+      resolve: async (_, { id, ...args }, ctx) => {
         if (!ctx.user?.id) return null
 
         const hasAccess = await prisma.strategie.findFirst({
@@ -157,26 +156,17 @@ const mutations = extendType({
                 id: ctx.user.id,
               },
             },
-            id: args.id,
+            id,
           },
         })
 
         if (!hasAccess) return null
 
         return prisma.strategie.update({
-          where: { id: args.id },
+          where: { id },
           data: {
-            player: args.player,
-            startedAmount: args.startedAmount,
-            currentAmount: args.currentAmount,
-            roundsCount: args.roundsCount,
-            playsCount: args.playsCount,
-            isActive: args.isActive,
-            isRunning: args.isRunning,
-            isDeleted: args.isDeleted,
-            isError: args.isError,
-            maxLooseAmount: args.maxLooseAmount,
-            minWinAmount: args.minWinAmount,
+            ...args,
+            isNeedRestart: true,
           },
         })
       },
@@ -220,7 +210,6 @@ const mutations = extendType({
         return prisma.strategie.update({
           where: { id },
           data: {
-            // isActive: false,
             isActive: !hasAccess.isActive,
             isError: false,
           },
@@ -276,6 +265,7 @@ const mutations = extendType({
           data: {
             isActive: false,
             isRunning: false,
+            isNeedRestart: false,
             isDeleted: true,
           },
         })
