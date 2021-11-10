@@ -3,11 +3,6 @@ import { Box, Grid } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
 import ActiveStrategies from 'src/client/components/Dashboards/Automation/ActiveStrategies'
-import TotalLockedValue from 'src/client/components/Dashboards/Automation/TotalLockedValue'
-import ActiveStrategiesCount from 'src/client/components/Dashboards/Commerce/ActiveStrategiesCount'
-import ActiveUsers from 'src/client/components/Dashboards/Commerce/ActiveUsers'
-import CountUsers from 'src/client/components/Dashboards/Commerce/CountUsers'
-import TotalWon from 'src/client/components/Dashboards/Commerce/TotalWon'
 import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance'
 import AllStrategiesResume from 'src/client/components/Dashboards/Finance/AllStrategiesResume'
 import Footer from 'src/client/components/Footer'
@@ -106,7 +101,7 @@ function Dashboard() {
       </Head>
       <MainContentWrapper sx={{ my: 3 }}>
         <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
-          {user?.isAdmin && (
+          {/* {user?.isAdmin && (
             <>
               <Grid item xs={12}>
                 <TotalLockedValue />
@@ -128,7 +123,7 @@ function Dashboard() {
                 </Grid>
               </Grid>
             </>
-          )}
+          )} */}
           <Grid item lg={4} xs={12}>
             <AccountBalance user={user} />
           </Grid>

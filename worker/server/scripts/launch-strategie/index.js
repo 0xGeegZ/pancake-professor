@@ -138,9 +138,9 @@ const launchStrategie = async (payload) => {
 
       if (secondsLeft >= 15 && isAlreadyRetried === false)
         await betRound({ epoch, betBull, betAmount, isAlreadyRetried: true })
-      else {
-        strategie.playsCount += 1
-      }
+      // else {
+      //   strategie.playsCount += 1
+      // }
     }
     logger.info('------------------------------------------------------------')
     logger.info('------------------------------------------------------------')
@@ -353,8 +353,8 @@ const launchStrategie = async (payload) => {
     // strategie.startedBalance = strategie.initialBankroll
 
     const initialBankrollBigInt = await provider.getBalance(signer.address)
-    strategie.startedBalance = +ethers.utils.formatEther(initialBankrollBigInt)
-    strategie.betAmount = +(strategie.startedBalance / 15).toFixed(4)
+    strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
+    strategie.betAmount = +(strategie.currentAmount / 10).toFixed(4)
     strategie.playedHashs = []
     strategie.playedEpochs = []
 
@@ -371,7 +371,9 @@ const launchStrategie = async (payload) => {
       },
     })
 
-    logger.info(`[LISTEN] Stetting up bet amount to ${strategie.betAmount} for initial bankroll ${strategie.bankroll}.`)
+    logger.info(
+      `[LISTEN] Stetting up bet amount to ${strategie.betAmount} for initial bankroll ${strategie.currentAmount}.`
+    )
 
     preditionContract = new ethers.Contract(
       process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
@@ -391,7 +393,7 @@ const launchStrategie = async (payload) => {
     try {
       currentEpoch = await preditionContract.currentEpoch()
 
-      const lastEpochs = [...range(+currentEpoch - 12, +currentEpoch)]
+      const lastEpochs = [...range(+currentEpoch - 24, +currentEpoch)]
       await claimPlayedEpochs(lastEpochs)
     } catch (error) {
       logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)

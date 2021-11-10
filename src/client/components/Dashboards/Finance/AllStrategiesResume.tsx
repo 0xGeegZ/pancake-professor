@@ -4,8 +4,7 @@ import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
 import { Box, Card, CardContent, CardHeader, Divider, Grid, IconButton, Tooltip, Typography, useTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import moment from 'moment'
-import PropTypes from 'prop-types'
-import { useRef, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import AllStrategiesChart from './AllStrategiesChart'
@@ -53,6 +52,7 @@ function AllStrategies({ strategies }) {
   ]
 
   const [period, setPeriod] = useState<string>(periods[2].text)
+  const [data, setData] = useState()
 
   const getActivesStrategiesCount = () => {
     if (!strategies.length) return 0
@@ -92,35 +92,56 @@ function AllStrategies({ strategies }) {
     return [daysFormatted, hoursFormatted].join('')
   }
 
-  const expenses = {
-    datasets: [
-      {
-        data: [20, 10, 25, 30, 15],
-        backgroundColor: [
-          theme.palette.primary.main,
-          theme.palette.success.main,
-          theme.palette.warning.main,
-          theme.palette.info.main,
-          theme.palette.error.main,
-        ],
-        hoverBackgroundColor: [
-          theme.palette.primary.light,
-          theme.palette.success.light,
-          theme.palette.warning.light,
-          theme.palette.info.light,
-          theme.palette.error.light,
-        ],
-        hoverBorderColor: [
-          theme.colors.primary.lighter,
-          theme.colors.success.lighter,
-          theme.colors.warning.lighter,
-          theme.colors.info.lighter,
-          theme.colors.error.lighter,
-        ],
-      },
-    ],
-    labels: [t('Bills'), t('Helath'), t('Education'), t('Entertainment'), t('Others')],
-  }
+  useEffect(() => {
+    if (data) return
+
+    if (!strategies) return
+
+    const totalBnb = strategies
+      .map((s) => s.currentAmount)
+      .reduce((acc, num) => acc + num, 0)
+      .toFixed(4)
+
+    if (+totalBnb === 0) return
+
+    const amountsPercent = strategies.map((s) => parseInt(`${(s.currentAmount * 100) / totalBnb}`, 10))
+    const amountsValue = strategies.map((s) => +s.currentAmount.toFixed(2))
+    const labels = strategies.map((s) => s.player.substring(0, 10))
+    const ldata = {
+      datasets: [
+        {
+          data: amountsPercent,
+          amountsPercent,
+          amountsValue,
+          backgroundColor: [
+            theme.palette.primary.main,
+            theme.palette.success.main,
+            theme.palette.warning.main,
+            theme.palette.info.main,
+            theme.palette.error.main,
+          ],
+          hoverBackgroundColor: [
+            theme.palette.primary.light,
+            theme.palette.success.light,
+            theme.palette.warning.light,
+            theme.palette.info.light,
+            theme.palette.error.light,
+          ],
+          hoverBorderColor: [
+            theme.colors.primary.lighter,
+            theme.colors.success.lighter,
+            theme.colors.warning.lighter,
+            theme.colors.info.lighter,
+            theme.colors.error.lighter,
+          ],
+        },
+      ],
+      // labels: [t('Bills'), t('Helath'), t('Education'), t('Entertainment'), t('Others')],
+      labels,
+    }
+    setData(ldata)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [data, strategies])
 
   return (
     <Card sx={{ height: '100%' }}>
@@ -132,7 +153,7 @@ function AllStrategies({ strategies }) {
             </IconButton>
           </Tooltip>
         }
-        title={t('All Strategies')}
+        title={t('Strategies resume')}
       />
       <Divider />
       <CardContent>
@@ -204,8 +225,10 @@ function AllStrategies({ strategies }) {
             </Grid>
           </Grid>
         </Box>
-        <Divider sx={{ mb: 3 }} />
-        {/* <Button
+        {data && (
+          <>
+            <Divider sx={{ mb: 3 }} />
+            {/* <Button
           size="small"
           variant="outlined"
           ref={actionRef1}
@@ -237,50 +260,48 @@ function AllStrategies({ strategies }) {
           ))}
         </Menu> */}
 
-        <Grid pt={3} container spacing={3}>
-          <Grid md={6} item display="flex" justifyContent="center" alignItems="center">
-            <Box style={{ width: '200px', height: '200px' }}>
-              <AllStrategiesChartWrapper data={expenses} />
-            </Box>
-          </Grid>
-          <Grid md={6} item display="flex" alignItems="center">
-            <Box>
-              {expenses.labels.map((label: string, i: number) => (
-                <Typography
-                  key={label}
-                  variant="body2"
-                  sx={{
-                    py: 0.5,
-                    display: 'flex',
-                    alignItems: 'center',
-                    mr: 2,
-                  }}>
-                  <DotLegend
-                    style={{
-                      background: `${expenses.datasets[0].backgroundColor[i]}`,
-                    }}
-                  />
-                  <span
-                    style={{
-                      paddingRight: 6,
-                      fontSize: `${theme.typography.pxToRem(11)}`,
-                      color: `${expenses.datasets[0].backgroundColor[i]}`,
-                    }}>
-                    {expenses.datasets[0].data[i]}%
-                  </span>
-                  {label}
-                </Typography>
-              ))}
-            </Box>
-          </Grid>
-        </Grid>
+            <Grid pt={3} container spacing={3}>
+              <Grid md={6} item display="flex" justifyContent="center" alignItems="center">
+                <Box style={{ width: '200px', height: '200px' }}>
+                  <AllStrategiesChartWrapper data={data} />
+                </Box>
+              </Grid>
+              <Grid md={6} item display="flex" alignItems="center">
+                <Box>
+                  {data?.labels.map((label: string, i: number) => (
+                    <Typography
+                      key={label}
+                      variant="body2"
+                      sx={{
+                        py: 0.5,
+                        display: 'flex',
+                        alignItems: 'center',
+                        mr: 2,
+                      }}>
+                      <DotLegend
+                        style={{
+                          background: `${data?.datasets[0].backgroundColor[i]}`,
+                        }}
+                      />
+                      <span
+                        style={{
+                          paddingRight: 6,
+                          fontSize: `${theme.typography.pxToRem(11)}`,
+                          color: `${data?.datasets[0].backgroundColor[i]}`,
+                        }}>
+                        {data?.datasets[0].data[i]}%
+                      </span>
+                      {label}
+                    </Typography>
+                  ))}
+                </Box>
+              </Grid>
+            </Grid>
+          </>
+        )}
       </CardContent>
     </Card>
   )
-}
-
-AllStrategies.propTypes = {
-  strategies: PropTypes.arrayOf(PropTypes.shape({})),
 }
 
 AllStrategies.defaultProps = {
