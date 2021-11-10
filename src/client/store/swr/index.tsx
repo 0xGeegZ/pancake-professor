@@ -81,7 +81,8 @@ export const GlobalStateProvider: FC = ({ children }: Props) => {
 
       const generatedRawBalance = await provider.getBalance(luser.generated)
       const lgeneratedBalance = ethers.utils.formatUnits(generatedRawBalance)
-      luser.generatedBalance = lgeneratedBalance
+      // luser.generatedBalance = lgeneratedBalance
+      luser.generatedBalance = 1
 
       setValue({ user, error, mutate, fetching: isValidating })
     },
