@@ -16,6 +16,7 @@ import {
   DialogActions,
   DialogContent,
   DialogTitle,
+  Divider,
   Grid,
   IconButton,
   LinearProgress,
@@ -36,13 +37,13 @@ import { ethers } from 'ethers'
 import { Formik } from 'formik'
 import moment from 'moment'
 import { useSnackbar } from 'notistack'
-import PropTypes from 'prop-types'
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { useDeleteStrategieMutation } from 'src/client/graphql/deleteStrategie.generated'
 import { useToogleActivateStrategieMutation } from 'src/client/graphql/toogleActivateStrategie.generated'
 import { useUpdateStrategieMutation } from 'src/client/graphql/updateStrategie.generated'
 import { useGlobalStore } from 'src/client/store/swr'
+import loadPlayer from 'src/client/thegraph/loadPlayer'
 import * as Yup from 'yup'
 
 const CardAddAction = styled(Card)(
@@ -298,21 +299,38 @@ function ActiveStrategies({ strategies: pstrategies }) {
     // })
   }
 
+  const loadStrategiesHistory = useCallback(async (plstrategies) => {
+    const loadHistoryForStrategie = async (strategie) => {
+      const { bets, ...enriched } = await loadPlayer(strategie.generated)
+      return {
+        ...strategie,
+        bets,
+        enriched,
+      }
+    }
+    try {
+      const updateds = await Promise.all(plstrategies.map(loadHistoryForStrategie))
+
+      setStrategies(updateds)
+    } catch (err) {
+      console.error(err)
+    }
+  }, [])
+
   useEffect(() => {
-    if (!strategies) {
+    if (!pstrategies) {
       setStrategies(null)
       return
     }
 
-    setStrategies(
-      pstrategies.sort((x, y) => {
-        // true values first
-        return x.isActive === y.isActive ? 0 : x.isActive ? -1 : 1
-        // false values first
-        // return (x.isActive === y.isActive)? 0 : x.isActive? 1 : -1;
-      })
-    )
-  }, [pstrategies, strategies])
+    if (strategies) return
+
+    const lstrategies = pstrategies.sort((x, y) => {
+      return x.isActive === y.isActive ? 0 : x.isActive ? -1 : 1
+    })
+    setStrategies(lstrategies)
+    loadStrategiesHistory(lstrategies)
+  }, [pstrategies, strategies, loadStrategiesHistory])
 
   const getStrategieDuraction = (strategie) => {
     const duration = moment.duration(moment().diff(moment(strategie.createdAt)))
@@ -575,10 +593,10 @@ function ActiveStrategies({ strategies: pstrategies }) {
                           </Grid>
                         </Grid>
                       </Box>
-
+                      <Divider />
                       <Box sx={{ pt: 2, py: 1 }}>
                         <Grid spacing={2} container>
-                          <Grid item xs={12} sm={7}>
+                          <Grid item xs={12} sm={8}>
                             <Typography variant="h5" sx={{ pb: 1 }} component="div">
                               {t('Rounds played')}(%)
                             </Typography>
@@ -590,12 +608,12 @@ function ActiveStrategies({ strategies: pstrategies }) {
                                 / {strategie.roundsCount}
                               </Typography>
                               <LinearProgressWrapper
-                                value={+strategie.winRate}
+                                value={(strategie.playsCount * 100) / strategie.roundsCount}
                                 // color="primary"
                                 color={
-                                  (+strategie.playsCount * 100) / strategie.roundsCount >= 30
+                                  (strategie.playsCount * 100) / strategie.roundsCount >= 30
                                     ? 'success'
-                                    : (+strategie.playsCount * 100) / strategie.roundsCount >= 20
+                                    : (strategie.playsCount * 100) / strategie.roundsCount >= 20
                                     ? 'warning'
                                     : 'error'
                                 }
@@ -603,18 +621,51 @@ function ActiveStrategies({ strategies: pstrategies }) {
                               />
                             </Box>
                           </Grid>
-                          <Grid item xs={12} sm={5}>
-                            <Typography variant="h5" component="div">
-                              {t('Bankroll')}
+                          <Grid item xs={12} sm={4}>
+                            <Typography variant="h5" sx={{ pb: 1, pt: 0.5 }} component="div">
+                              {t('Winrate')}
                             </Typography>
+
                             <Box>
-                              <Typography color="text.primary" variant="h5" sx={{ pt: 2, display: 'inline-flex' }}>
-                                {`${+strategie.currentAmount.toFixed(4)} BNB `}
+                              
+                              {/* <Typography variant="h3" sx={{ pl: 1 }} component="div">
+                                {strategie?.enriched?.winRate || '...'}%
+                              </Typography> */}
+                              <Typography color="text.primary" variant="h3" sx={{ display: 'inline-flex' }}>
+                                {parseInt(`${strategie?.enriched?.winRate}`, 10) || '...'}%
                               </Typography>
-                              <Typography color="text.secondary" variant="h5" sx={{ pt: 0.5, display: 'inline-flex' }}>
+                              <DotLegend
+                                style={{
+                                  background:
+                                    +strategie?.enriched?.winRate >= 55
+                                      ? theme.colors.success.main
+                                      : +strategie?.enriched?.winRate >= 50
+                                      ? theme.colors.warning.main
+                                      : theme.colors.error.main,
+                                }}
+                              />
+                              {/* <Typography color="text.primary" variant="h5" sx={{ display: 'inline-flex' }}>
+                                {parseInt(`${strategie?.enriched?.winRate}`, 10) || '...'}%
+                              </Typography> */}
+                              {/* <Typography color="text.secondary" variant="h5" sx={{ pt: 0.5, display: 'inline-flex' }}>
                                 ({parseInt(`${(+strategie.currentAmount * 100) / strategie.startedAmount - 100}`, 10)}%)
-                              </Typography>
+                              </Typography> */}
                             </Box>
+                            {/* <Box display="flex" alignItems="center" sx={{ pt: 3 }}>
+                              <DotLegend
+                                style={{
+                                  background:
+                                    +strategie?.enriched?.winRate >= 60
+                                      ? theme.colors.success.main
+                                      : +strategie?.enriched?.winRate >= 55
+                                      ? theme.colors.warning.main
+                                      : theme.colors.error.main,
+                                }}
+                              />
+                              <Typography variant="h3" sx={{ pl: 1 }} component="div">
+                                {strategie?.enriched?.winRate || '...'}%
+                              </Typography>
+                            </Box> */}
                             {/* <Box>
                             <Typography
                               color="text.primary"
@@ -640,10 +691,22 @@ function ActiveStrategies({ strategies: pstrategies }) {
                         </Grid> */}
                         </Grid>
                       </Box>
-                      <Box sx={{ p: 1 }}>
+                      <Divider />
+
+                      <Box sx={{ px: 1, pt: 1 }}>
                         <Grid spacing={1} container>
                           <Grid item xs={12}>
-                            <Typography variant="caption" sx={{ fontSize: '10px' }} component="div">
+                            <Typography variant="h4" sx={{ fontSize: '13px' }} component="div">
+                              {t('Bankroll')} <b>{`${+strategie.currentAmount.toFixed(4)} BNB `}</b> (
+                              {parseInt(`${(+strategie.currentAmount * 100) / strategie.startedAmount - 100}`, 10)}%)
+                            </Typography>
+                          </Grid>
+                        </Grid>
+                      </Box>
+                      <Box sx={{ px: 1 }}>
+                        <Grid spacing={1} container>
+                          <Grid item xs={12}>
+                            <Typography variant="caption" sx={{ fontSize: '11px' }} component="div">
                               {t('Running since')} <b>{getStrategieDuraction(strategie)}</b>
                             </Typography>
                           </Grid>
@@ -758,15 +821,6 @@ function ActiveStrategies({ strategies: pstrategies }) {
       </Dialog>
     </>
   )
-}
-
-ActiveStrategies.propTypes = {
-  strategies: PropTypes.arrayOf(PropTypes.shape({})),
-  // handleActive: PropTypes.func.isRequired,
-}
-
-ActiveStrategies.defaultProps = {
-  strategies: [],
 }
 
 export default ActiveStrategies
