@@ -51,6 +51,7 @@ import loadPlayers from 'src/client/thegraph/loadPlayers'
 
 import SidebarPlayerDrawer from './SidebarPlayerDrawer'
 
+// import loadAllPlayers from 'src/client/thegraph/loadAllPlayers'
 import type { ReactElement } from 'react'
 
 import type { Player } from 'src/client/models/player'
@@ -156,6 +157,7 @@ const PlayersList: FC = () => {
   const [players, setPlayers] = useState<any[]>([])
   const [hasError, setHasError] = useState<boolean>(false)
   const [preditionContract, setPreditionContract] = useState<any>(null)
+  const [denominatorValue, setDenominatorValue] = useState<number>(0)
 
   const { user, mutate, fetching: userFetching } = useGlobalStore()
 
@@ -178,6 +180,8 @@ const PlayersList: FC = () => {
         const epoch = await ppreditionContract.currentEpoch()
 
         const lplayers = await loadPlayers({ epoch })
+        // const lplayers = await loadAllPlayers({ epoch })
+
         setPlayers(lplayers)
         setFetching(false)
       } catch (err) {
@@ -198,10 +202,16 @@ const PlayersList: FC = () => {
 
       try {
         const lplayers = await loadPlayers({ epoch, orderBy })
+        // const lplayers = await loadAllPlayers({ epoch, orderBy })
+        console.log('🚀 ~ file: PlayersList.tsx ~ line 205 ~ lplayers', lplayers.length)
+
+        setDenominatorValue(orderBy === 'default' ? 288 : orderBy === 'mostActiveLastHour' ? 12 : 0)
         setPlayers(lplayers)
+
         setFetching(false)
       } catch (err) {
         setHasError(true)
+        setFetching(false)
       }
     },
     [players, preditionContract]
@@ -250,6 +260,10 @@ const PlayersList: FC = () => {
       text: t('Most actives from last 24 hours'),
     },
     {
+      value: 'mostActiveLastHour',
+      text: t('Most actives from last hour'),
+    },
+    {
       value: 'winRate',
       text: t('Best Winrate'),
     },
@@ -269,7 +283,7 @@ const PlayersList: FC = () => {
 
   const actionRef1 = useRef<any>(null)
   const [openOrderBy, setOpenMenuOrderBy] = useState<boolean>(false)
-  const [orderBy, setOrderBy] = useState<string>(ordersBy[1].text)
+  const [orderBy, setOrderBy] = useState<string>(ordersBy[2].text)
 
   const [page, setPage] = useState<number>(0)
   const [limit, setLimit] = useState<number>(10)
@@ -423,7 +437,9 @@ const PlayersList: FC = () => {
                 <Table>
                   <TableHead>
                     <TableRow>
-                      {paginatedPlayers[0]?.recentGames ? <TableCell>{t('Last 24h')}</TableCell> : <></>}
+                      {paginatedPlayers[0]?.recentGames && (
+                        <TableCell> {t(`Last ${denominatorValue / 12}`)}(%)</TableCell>
+                      )}
                       <TableCell>{t('WinRate')}</TableCell>
                       <TableCell>{t('TotalBets')}</TableCell>
                       <TableCell>{t('NetBNB')}</TableCell>
@@ -436,28 +452,27 @@ const PlayersList: FC = () => {
                       // const isPlayerSelected = selectedItems.includes(player.id)
                       return (
                         <TableRow hover key={player.id}>
-                          {player.recentGames ? (
+                          {player.recentGames && (
                             <>
                               <TableCell>
                                 <Box display="flex" alignItems="center">
                                   <DotLegend
                                     style={{
                                       background:
-                                        (+player.recentGames * 100) / 288 >= 30
+                                        (+player.recentGames * 100) / denominatorValue >= 30
                                           ? theme.colors.success.main
-                                          : (+player.recentGames * 100) / 288 >= 20
+                                          : (+player.recentGames * 100) / denominatorValue >= 20
                                           ? theme.colors.warning.main
                                           : theme.colors.error.main,
                                     }}
                                   />
                                   <Box>
-                                    {player.recentGames}/288 ({parseInt(`${(+player.recentGames * 100) / 288}`, 10)} %)
+                                    {player.recentGames}/{denominatorValue} (
+                                    {parseInt(`${(+player.recentGames * 100) / denominatorValue}`, 10)} %)
                                   </Box>
                                 </Box>
                               </TableCell>
                             </>
-                          ) : (
-                            <></>
                           )}
                           <TableCell>
                             <Box display="flex" alignItems="center">
@@ -704,14 +719,14 @@ const PlayersList: FC = () => {
                                         </Grid>
                                         <Grid item xs={12} sm={4}>
                                           <Typography variant="caption" sx={{ pb: 1 }} component="div">
-                                            {t('Last 24h')}(%)
+                                            {t(`Last ${denominatorValue / 12}`)}(%)
                                           </Typography>
                                           <Box>
                                             <Typography
                                               color="text.primary"
                                               variant="h2"
                                               sx={{ pr: 0.5, display: 'inline-flex' }}>
-                                              {parseInt(`${(+player.recentGames * 100) / 288}`, 10)}
+                                              {parseInt(`${(+player.recentGames * 100) / denominatorValue}`, 10)}
                                             </Typography>
                                             <Typography
                                               color="text.secondary"
@@ -720,11 +735,11 @@ const PlayersList: FC = () => {
                                               /100
                                             </Typography>
                                             <LinearProgressWrapper
-                                              value={(player.recentGames * 100) / 288}
+                                              value={(player.recentGames * 100) / denominatorValue}
                                               color={
-                                                (player.recentGames * 100) / 288 >= 30
+                                                (player.recentGames * 100) / denominatorValue >= 30
                                                   ? 'success'
-                                                  : (player.recentGames * 100) / 288 >= 20
+                                                  : (player.recentGames * 100) / denominatorValue >= 20
                                                   ? 'warning'
                                                   : 'error'
                                               }

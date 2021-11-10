@@ -10,7 +10,7 @@ type Mutation {
   inviteToProject(email: String!, projectId: String!): Boolean
   toogleActivateStrategie(id: String!): Strategie
   toogleIsActivated(id: String!): User
-  updateStrategie(currentAmount: Float!, id: String!, isActive: Boolean, isDeleted: Boolean, isError: Boolean, isRunning: Boolean, maxLooseAmount: Float!, minWinAmount: Float!, player: String!, playsCount: Int!, roundsCount: Int!, startedAmount: Float!): Strategie
+  updateStrategie(id: String!, isActive: Boolean, isDeleted: Boolean, isError: Boolean, isRunning: Boolean, maxLooseAmount: Float, minWinAmount: Float, player: String, playsCount: Int, roundsCount: Int): Strategie
   updateUser(address: String!, email: String, id: String!, name: String): User
 }
 
@@ -42,6 +42,7 @@ type Strategie {
   isActive: Boolean!
   isDeleted: Boolean!
   isError: Boolean!
+  isNeedRestart: Boolean!
   isRunning: Boolean!
   maxLooseAmount: Float!
   minWinAmount: Float!

@@ -49,11 +49,11 @@ const checkIfPlaying = (pplayer, lastGame) => {
 
 const loadPlayers = async ({ epoch, orderBy = 'winRate' }) => {
   try {
-    const orderByFilter = orderBy === 'default' ? 'winRate' : orderBy
-    const LIMIT_HISTORY_LENGTH = 12 * 24
+    const orderByFilter = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 'winRate' : orderBy
+    const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12
 
-    const first = orderBy === 'default' ? 500 : 100
-    const firstBets = orderBy === 'default' ? 300 : 1
+    const first = orderBy === 'default' ? 500 : orderBy === 'mostActiveLastHour' ? 1000 : 50
+    const firstBets = orderBy === 'default' ? 12 * 24 : orderBy === 'mostActiveLastHour' ? 12 : 1
     const query = gql`
       query getUsers($totalBets: String!, $winRate: String!, $orderBy: String!, $first: Int!, $firstBets: Int!) {
         users(
@@ -94,7 +94,7 @@ const loadPlayers = async ({ epoch, orderBy = 'winRate' }) => {
 
     const { users } = data
 
-    if (orderBy !== 'default') return users
+    if (orderBy !== 'default' && orderBy !== 'mostActiveLastHour') return users
 
     // console.log(`Loading ${+users.length} players with WIN_RATE ${WIN_RATE} and TOTAL_BETS ${TOTAL_BETS} ...`)
 
@@ -104,6 +104,9 @@ const loadPlayers = async ({ epoch, orderBy = 'winRate' }) => {
 
     bestPlayers = bestPlayers.filter(Boolean)
 
+    if (orderBy === 'mostActiveLastHour') {
+      bestPlayers = bestPlayers.filter((p) => p.recentGames > 0)
+    }
     if (bestPlayers.length <= 2) {
       if (WIN_RATE < 54) {
         return []
@@ -114,7 +117,7 @@ const loadPlayers = async ({ epoch, orderBy = 'winRate' }) => {
         WIN_RATE -= 1
       }
 
-      return await loadPlayers({ epoch })
+      return await loadPlayers({ epoch, orderBy })
     }
     TOTAL_BETS = TOTAL_BETS_INITIAL
     WIN_RATE = WIN_RATE_INITIAL

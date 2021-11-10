@@ -20,6 +20,7 @@ query GetCurrentUser {
       isRunning
       isDeleted
       isError
+      isNeedRestart
       maxLooseAmount
       minWinAmount
       createdAt

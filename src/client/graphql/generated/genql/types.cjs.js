@@ -115,10 +115,6 @@ module.exports = {
             "updateStrategie": [
                 9,
                 {
-                    "currentAmount": [
-                        3,
-                        "Float!"
-                    ],
                     "id": [
                         2,
                         "String!"
@@ -136,28 +132,19 @@ module.exports = {
                         4
                     ],
                     "maxLooseAmount": [
-                        3,
-                        "Float!"
+                        3
                     ],
                     "minWinAmount": [
-                        3,
-                        "Float!"
+                        3
                     ],
                     "player": [
-                        2,
-                        "String!"
+                        2
                     ],
                     "playsCount": [
-                        5,
-                        "Int!"
+                        5
                     ],
                     "roundsCount": [
-                        5,
-                        "Int!"
-                    ],
-                    "startedAmount": [
-                        3,
-                        "Float!"
+                        5
                     ]
                 }
             ],
@@ -283,6 +270,9 @@ module.exports = {
                 4
             ],
             "isError": [
+                4
+            ],
+            "isNeedRestart": [
                 4
             ],
             "isRunning": [

@@ -3,17 +3,17 @@ import { Box, Grid } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
 import ActiveStrategies from 'src/client/components/Dashboards/Automation/ActiveStrategies'
-import ActiveStrategiesOverview from 'src/client/components/Dashboards/Commerce/ActiveStrategiesOverview'
+import TotalLockedValue from 'src/client/components/Dashboards/Automation/TotalLockedValue'
+import ActiveStrategiesCount from 'src/client/components/Dashboards/Commerce/ActiveStrategiesCount'
+import ActiveUsers from 'src/client/components/Dashboards/Commerce/ActiveUsers'
+import CountUsers from 'src/client/components/Dashboards/Commerce/CountUsers'
+import TotalWon from 'src/client/components/Dashboards/Commerce/TotalWon'
 import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance'
+import AllStrategiesResume from 'src/client/components/Dashboards/Finance/AllStrategiesResume'
 import Footer from 'src/client/components/Footer'
 import MainLayout from 'src/client/layouts/MainLayout'
 import { useGlobalStore } from 'src/client/store/swr'
 
-// import TotalLockedValue from 'src/client/components/Dashboards/Automation/TotalLockedValue'
-// import ActiveStrategiesCount from 'src/client/components/Dashboards/Commerce/ActiveStrategiesCount'
-// import ActiveUsers from 'src/client/components/Dashboards/Commerce/ActiveUsers'
-// import CountUsers from 'src/client/components/Dashboards/Commerce/CountUsers'
-// import TotalWon from 'src/client/components/Dashboards/Commerce/TotalWon'
 // import BalanceHistory from 'src/client/components/Dashboards/Healthcare/hospital/BalanceHistory'
 import type { ReactElement } from 'react'
 
@@ -67,9 +67,9 @@ function Dashboard() {
   //   let isFinded = false
 
   //   if (data && data.currentUser) {
-  //     isFinded = process.env.NEXT_PUBLIC_ADMIN_ADDRESS
-  //       ? process.env.NEXT_PUBLIC_ADMIN_ADDRESS.includes(data?.currentUser?.address)
-  //       : false
+  //    const isFinded = process.env.NEXT_PUBLIC_ADMIN_ADDRESS
+  // ? process.env.NEXT_PUBLIC_ADMIN_ADDRESS.toLowerCase() === currentUser?.address.toLowerCase()
+  // : false
 
   //     const luser = {
   //       ...data.currentUser,
@@ -104,41 +104,52 @@ function Dashboard() {
       <Head>
         <title>Dashboard</title>
       </Head>
-      <MainContentWrapper sx={{ mt: 3 }}>
+      <MainContentWrapper sx={{ my: 3 }}>
         <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
-          {/* <Grid item xs={12}>
-            <TotalLockedValue />
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
-              <Grid item lg={3} sm={6} xs={12}>
-                <CountUsers />
+          {user?.isAdmin && (
+            <>
+              <Grid item xs={12}>
+                <TotalLockedValue />
               </Grid>
-              <Grid item lg={3} sm={6} xs={12}>
-                <ActiveUsers />
+              <Grid item xs={12}>
+                <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
+                  <Grid item lg={3} sm={6} xs={12}>
+                    <CountUsers />
+                  </Grid>
+                  <Grid item lg={3} sm={6} xs={12}>
+                    <ActiveUsers />
+                  </Grid>
+                  <Grid item lg={3} sm={6} xs={12}>
+                    <ActiveStrategiesCount />
+                  </Grid>
+                  <Grid item lg={3} sm={6} xs={12}>
+                    <TotalWon />
+                  </Grid>
+                </Grid>
               </Grid>
-              <Grid item lg={3} sm={6} xs={12}>
-                <ActiveStrategiesCount />
-              </Grid>
-              <Grid item lg={3} sm={6} xs={12}>
-                <TotalWon />
-              </Grid>
-            </Grid>
-          </Grid>
-          */}
+            </>
+          )}
           <Grid item lg={4} xs={12}>
             <AccountBalance user={user} />
           </Grid>
           {/* <Grid item lg={8} xs={12}>
             <BalanceHistory />
           </Grid> */}
-
           <Grid item md={6} lg={8} xs={12}>
-            <ActiveStrategiesOverview strategies={user?.strategies} />
+            <AllStrategiesResume strategies={user?.strategies} />
           </Grid>
+          {/* <Grid item md={6} lg={8} xs={12}>
+            <ActiveStrategiesOverview strategies={user?.strategies} />
+          </Grid> */}
           <Grid item xs={12}>
             <ActiveStrategies strategies={user?.strategies} />
           </Grid>
+          {/* <Grid item md={6} xs={12}>
+            <AllStrategiesResume />
+          </Grid>
+          <Grid item md={6} xs={12}>
+            <RecentBetsForStrategies />
+          </Grid> */}
         </Grid>
       </MainContentWrapper>
       <Footer />

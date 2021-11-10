@@ -43,7 +43,6 @@ const launchStrategie = async (payload) => {
   if (!strategie) throw new Error('No strategie given')
   if (strategie.running) throw new Error('Strategie is running')
 
-  // TODO update user to isplaying True.
   logger.info(`[LAUNCHING] Job launching job for strategie ${strategie.id} and address ${strategie.generated}`)
   const blocknative = new BlocknativeSdk(options)
 
@@ -55,22 +54,26 @@ const launchStrategie = async (payload) => {
       data: {
         isError: true,
         isActive: false,
+        isRunning: false,
       },
     })
     if (emitter) emitter.off('txPool')
+
+    process.exit(0)
   }
   // const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
   const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
+    logger.info('[DEBUG-DEBUG-DEBUG] betRound')
     if (strategie.currentAmount === 0) {
       logger.error('[PLAYING] Not enought BNB')
       await stopStrategie()
-      return
     }
+
     // if (bankroll > countedBankroll * 1.5) {
     //   const newBetAmount = parseFloat(betAmount * 1.25).toFixed(4)
     //   logger.info(`[OPTIMIZE] Increasing bet amount from ${betAmount} to ${newBetAmount}`)
     //   betAmount = newBetAmount
-    //   BET_AMOUNT = newBetAmount
+    //   strategie.betAmount = newBetAmount
     //   countedBankroll = bankroll
     // }
 
@@ -78,7 +81,7 @@ const launchStrategie = async (payload) => {
     //   const newBetAmount = parseFloat(betAmount / 1.25).toFixed(4)
     //   logger.info(`[OPTIMIZE] Decreasing bet amount from ${betAmount} to ${newBetAmount}`)
     //   betAmount = newBetAmount
-    //   BET_AMOUNT = newBetAmount
+    //   strategie.betAmount = newBetAmount
     //   countedBankroll = bankroll
     // }
 
@@ -89,22 +92,24 @@ const launchStrategie = async (payload) => {
     const amount = parseFloat(betAmount).toFixed(4)
     const betBullOrBear = betBull ? 'betBull' : 'betBear'
 
-    // eslint-disable-next-line eqeqeq
+    logger.info('[DEBUG-DEBUG-DEBUG] amount')
+
     if (!(+amount != 0)) {
       logger.error('[PLAYING] Bet amount is 0')
       await stopStrategie()
-
-      return
     }
 
     let isError = false
     try {
+      logger.info('[DEBUG-DEBUG-DEBUG] getGasPrice')
+
       const gasPrice = await provider.getGasPrice()
+      logger.info('[DEBUG-DEBUG-DEBUG] tx')
 
       const tx = await preditionContract[betBullOrBear](epoch.toString(), {
         value: ethers.utils.parseEther(amount),
         gasPrice,
-        nonce: provider.getTransactionCount(user.generated, 'latest'),
+        nonce: provider.getTransactionCount(strategie.generated, 'latest'),
         // gasPrice: ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString(),
         gasLimit: ethers.utils.hexlify(250000),
       })
@@ -113,6 +118,8 @@ const launchStrategie = async (payload) => {
 
       strategie.playedEpochs.push(epoch.toString())
       strategie.playsCount += 1
+
+      logger.info('[DEBUG-DEBUG-DEBUG] done,', tx)
     } catch (error) {
       logger.error(`[PLAYING] Betting Tx Error for user ${user.id} and epoch ${epoch}`)
       logger.error(error.message)
@@ -225,7 +232,6 @@ const launchStrategie = async (payload) => {
 
     const currentAmountBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
-    console.log('🚀 ~ file: index.js ~ line 228 ~ roundEndListenner ~ strategie.currentAmount', strategie.currentAmount)
 
     logger.info(
       `[ROUND:${+epoch}:${strategie.player}:${strategie.roundsCount}] Round finished for epoch ${+epoch} : played ${
@@ -253,10 +259,21 @@ const launchStrategie = async (payload) => {
       },
     })
 
+    if (isUpdatedStrategie.isNeedRestart) {
+      logger.error('[PLAYING] Strategie need to be restarted.')
+      await prisma.strategie.update({
+        where: { id: strategie.id },
+        data: {
+          isNeedRestart: false,
+        },
+      })
+      logger.error('[PLAYING] RESTARTING STRATEGIE')
+      process.exit(0)
+    }
+
     if (!isUpdatedStrategie.isActive || isUpdatedStrategie.isError || isUpdatedStrategie.isDeleted) {
       logger.error('[PLAYING] Strategie was updated by user (stopped or deleted) and need to be stoped.')
       await stopStrategie()
-      return
     }
   }
 
@@ -315,7 +332,7 @@ const launchStrategie = async (payload) => {
       gasLimit: ethers.utils.hexlify(250000),
       gasPrice,
       // gasPrice: parseUnits(SAFE_GAS_PRICE.toString(), 'gwei').toString(),
-      nonce: provider.getTransactionCount(user.generated, 'latest'),
+      nonce: provider.getTransactionCount(strategie.generated, 'latest'),
     })
 
     try {
@@ -344,7 +361,6 @@ const launchStrategie = async (payload) => {
     if (strategie.betAmount <= MIN_BET_AMOUNT || strategie.betAmount > MAX_BET_AMOUNT) {
       logger.error(`[LISTEN] Bet amount error, value is ${strategie.betAmount} Stopping strategie for now`)
       await stopStrategie()
-
       return
     }
 
@@ -362,7 +378,7 @@ const launchStrategie = async (payload) => {
       PREDICTION_CONTRACT_ABI,
       signer
     )
-    logger.info(`[LISTEN] Starting for user ${user.generated} copy betting player ${strategie.player}`)
+    logger.info(`[LISTEN] Starting for user ${strategie.generated} copy betting player ${strategie.player}`)
 
     logger.info(`[LISTEN] Waiting for transaction for player ${strategie.player}`)
     const { emitter: emt } = blocknative.account(strategie.player)
@@ -378,16 +394,18 @@ const launchStrategie = async (payload) => {
       const lastEpochs = [...range(+currentEpoch - 12, +currentEpoch)]
       await claimPlayedEpochs(lastEpochs)
     } catch (error) {
-      logger.error(`[ERROR] Error during claiming for last epochs`)
+      logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)
     }
   }
 
   try {
     await listen()
   } catch (error) {
-    console.log('🚀 ~ file: index.ts ~ line 199 ~ listen ~ error', error)
+    logger.error(
+      `[ERROR] Stopping strategie for user ${strategie.generated} copy betting player ${strategie.player}: ${error.message}`
+    )
+    await stopStrategie()
     throw new Error(error)
-    // TODO update user to isplaying false.
   }
 }
 
