@@ -391,7 +391,7 @@ const launchStrategie = async (payload) => {
     try {
       currentEpoch = await preditionContract.currentEpoch()
 
-      const lastEpochs = [...range(+currentEpoch - 12, +currentEpoch)]
+      const lastEpochs = [...range(+currentEpoch - 24, +currentEpoch)]
       await claimPlayedEpochs(lastEpochs)
     } catch (error) {
       logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)

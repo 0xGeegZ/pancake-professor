@@ -609,10 +609,10 @@ function ActiveStrategies({ strategies: pstrategies }) {
                             </Typography>
                             <Box>
                               <Typography color="text.primary" variant="h5" sx={{ pt: 2, display: 'inline-flex' }}>
-                                {`${strategie.currentAmount} BNB `}
+                                {`${+strategie.currentAmount.toFixed(4)} BNB `}
                               </Typography>
-                              <Typography color="text.secondary" variant="h6" sx={{ pt: 0.5, display: 'inline-flex' }}>
-                                ({100 - (+strategie.currentAmount * 100) / strategie.startedAmount}%)
+                              <Typography color="text.secondary" variant="h5" sx={{ pt: 0.5, display: 'inline-flex' }}>
+                                ({parseInt(`${(+strategie.currentAmount * 100) / strategie.startedAmount - 100}`, 10)}%)
                               </Typography>
                             </Box>
                             {/* <Box>
