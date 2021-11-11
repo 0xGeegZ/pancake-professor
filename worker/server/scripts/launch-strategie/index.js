@@ -29,7 +29,7 @@ const options = {
 let range = (start, end) => Array.from(Array(end + 1).keys()).slice(start)
 
 const launchStrategie = async (payload) => {
-  const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
+        const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
 
   const { user, strategie } = payload
   let preditionContract
@@ -43,8 +43,11 @@ const launchStrategie = async (payload) => {
   if (!strategie) throw new Error('No strategie given')
   if (strategie.running) throw new Error('Strategie is running')
 
+  console.log(strategie )
+
   logger.info(`[LAUNCHING] Job launching job for strategie ${strategie.id} and address ${strategie.generated}`)
   const blocknative = new BlocknativeSdk(options)
+
 
   const stopStrategie = async () => {
     logger.error(`[PLAYING] Stopping strategie ${strategie.id} for user ${user.id}`)
@@ -354,7 +357,7 @@ const launchStrategie = async (payload) => {
 
     const initialBankrollBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
-    strategie.betAmount = +(strategie.currentAmount / 10).toFixed(4)
+    strategie.betAmount = +(strategie.currentAmount / 8).toFixed(4)
     strategie.playedHashs = []
     strategie.playedEpochs = []
 
@@ -401,10 +404,11 @@ const launchStrategie = async (payload) => {
   }
 
   try {
+
     await listen()
   } catch (error) {
     logger.error(
-      `[ERROR] Stopping strategie for user ${strategie.generated} copy betting player ${strategie.player}: ${error.message}`
+      `[ERROR] Stopping strategie for user ${strategie.generated} copy betting player ${strategie.player}: ${error}`
     )
     await stopStrategie()
     throw new Error(error)
