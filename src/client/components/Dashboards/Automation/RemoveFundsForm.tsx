@@ -144,7 +144,7 @@ function RemoveFundsForm({ user, handleCloseForm }) {
     setOpenDialog(false)
   }
 
-  const sumbitAddFunds = async () => {
+  const sumbitRemoveFunds = async () => {
     if (!window.ethereum?.request) return
 
     const provider = new ethers.providers.Web3Provider(window.ethereum)
@@ -284,7 +284,7 @@ function RemoveFundsForm({ user, handleCloseForm }) {
             )}
           </Typography>
 
-          <Button fullWidth size="large" variant="contained" color="error" onClick={sumbitAddFunds}>
+          <Button fullWidth size="large" variant="contained" color="error" onClick={sumbitRemoveFunds}>
             {t('Remove funds')}
           </Button>
         </Box>

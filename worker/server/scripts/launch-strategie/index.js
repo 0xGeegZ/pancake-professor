@@ -364,7 +364,7 @@ const launchStrategie = async (payload) => {
 
     const initialBankrollBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
-    strategie.betAmount = +(strategie.currentAmount / 11).toFixed(4)
+    strategie.betAmount = +(strategie.currentAmount / 15).toFixed(4)
     strategie.playedHashs = []
     strategie.playedEpochs = []
 
