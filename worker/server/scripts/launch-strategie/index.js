@@ -17,6 +17,9 @@ const CLAIM_BEAR_METHOD_ID = '0x6ba4c138'
 const MAX_BET_AMOUNT = 0.1
 const MIN_BET_AMOUNT = 0.001
 
+const SAFE_GAS_PRICE = 5
+const FAST_GAS_PRICE = 6
+
 const options = {
   dappId: process.env.BLOCKNATIVE_API_KEY,
   networkId: 56,
@@ -102,9 +105,9 @@ const launchStrategie = async (payload) => {
 
       const tx = await preditionContract[betBullOrBear](epoch.toString(), {
         value: ethers.utils.parseEther(amount),
-        gasPrice,
         nonce: provider.getTransactionCount(strategie.generated, 'latest'),
-        // gasPrice: ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString(),
+        // gasPrice,
+        gasPrice: ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString(),
         gasLimit: ethers.utils.hexlify(250000),
       })
 
