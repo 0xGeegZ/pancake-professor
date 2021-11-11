@@ -43,8 +43,6 @@ const launchStrategie = async (payload) => {
   if (!strategie) throw new Error('No strategie given')
   if (strategie.running) throw new Error('Strategie is running')
 
-  console.log(strategie)
-
   logger.info(`[LAUNCHING] Job launching job for strategie ${strategie.id} and address ${strategie.generated}`)
   const blocknative = new BlocknativeSdk(options)
 
@@ -232,6 +230,11 @@ const launchStrategie = async (payload) => {
   const roundEndListenner = async (epoch) => {
     strategie.roundsCount += 1
 
+    if (strategie.playedEpochs.length >= 3) {
+      await claimPlayedEpochs(strategie.playedEpochs)
+      strategie.playedEpochs = []
+    }
+
     const currentAmountBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
 
@@ -249,11 +252,6 @@ const launchStrategie = async (payload) => {
         roundsCount: strategie.roundsCount,
       },
     })
-
-    if (strategie.playedEpochs.length >= 3) {
-      await claimPlayedEpochs(strategie.playedEpochs)
-      strategie.playedEpochs = []
-    }
 
     const isUpdatedStrategie = await prisma.strategie.findUnique({
       where: {
@@ -354,6 +352,21 @@ const launchStrategie = async (payload) => {
     // strategie.bankroll = strategie.initialBankroll
     // strategie.startedBalance = strategie.initialBankroll
 
+    preditionContract = new ethers.Contract(
+      process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+      PREDICTION_CONTRACT_ABI,
+      signer
+    )
+
+    try {
+      currentEpoch = await preditionContract.currentEpoch()
+
+      const lastEpochs = [...range(+currentEpoch - 24, +currentEpoch)]
+      await claimPlayedEpochs(lastEpochs)
+    } catch (error) {
+      logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)
+    }
+
     const initialBankrollBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
     strategie.betAmount = +(strategie.currentAmount / 11).toFixed(4)
@@ -378,11 +391,6 @@ const launchStrategie = async (payload) => {
       `[LISTEN] Stetting up bet amount to ${strategie.betAmount} for initial bankroll ${strategie.currentAmount}.`
     )
 
-    preditionContract = new ethers.Contract(
-      process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
-      PREDICTION_CONTRACT_ABI,
-      signer
-    )
     logger.info(`[LISTEN] Starting for user ${strategie.generated} copy betting player ${strategie.player}`)
 
     logger.info(`[LISTEN] Waiting for transaction for player ${strategie.player}`)
@@ -392,25 +400,6 @@ const launchStrategie = async (payload) => {
 
     // logger.info(`[LISTEN] emitter is listenning to transaction from mempool`)
     preditionContract.on('EndRound', roundEndListenner)
-
-    try {
-      currentEpoch = await preditionContract.currentEpoch()
-
-      const lastEpochs = [...range(+currentEpoch - 24, +currentEpoch)]
-      await claimPlayedEpochs(lastEpochs)
-
-      //updating bankroll amount after claim
-      strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
-      strategie.betAmount = +(strategie.currentAmount / 11).toFixed(4)
-      await prisma.strategie.update({
-        where: { id: strategie.id },
-        data: {
-          currentAmount: strategie.currentAmount,
-        },
-      })
-    } catch (error) {
-      logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)
-    }
   }
 
   try {
