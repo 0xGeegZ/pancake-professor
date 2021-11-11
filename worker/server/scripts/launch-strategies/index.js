@@ -18,6 +18,10 @@ const launch = async (strategie) => {
 
 const launchStrategies = async () => {
   logger.info(`[LAUNCHING] Launching strategies locally`)
+
+  // const condition = {isActive: true,}
+
+  // if()
   const strategies = await prisma.strategie.findMany({
     where: {
       isActive: true,

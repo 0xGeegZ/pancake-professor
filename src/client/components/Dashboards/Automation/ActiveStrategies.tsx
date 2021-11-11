@@ -1,6 +1,5 @@
 import 'moment-timezone'
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
 import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
@@ -42,7 +41,6 @@ import { useTranslation } from 'react-i18next'
 import { useDeleteStrategieMutation } from 'src/client/graphql/deleteStrategie.generated'
 import { useToogleActivateStrategieMutation } from 'src/client/graphql/toogleActivateStrategie.generated'
 import { useUpdateStrategieMutation } from 'src/client/graphql/updateStrategie.generated'
-import { useGlobalStore } from 'src/client/store/swr'
 import loadPlayer from 'src/client/thegraph/loadPlayer'
 import * as Yup from 'yup'
 
@@ -160,13 +158,13 @@ const CardActiveStrategies = styled(Card)(
 `
 )
 
-const IconWrapper = styled(Box)(
-  ({ theme }) => `
-      padding: ${theme.spacing(2, 0)};
-      color: ${theme.colors.primary.main};
-      margin-left: -7px;
-`
-)
+// const IconWrapper = styled(Box)(
+//   ({ theme }) => `
+//       padding: ${theme.spacing(2, 0)};
+//       color: ${theme.colors.primary.main};
+//       margin-left: -7px;
+// `
+// )
 
 const MenuIconWrapper = styled(Box)(
   ({ theme }) => `
@@ -207,7 +205,7 @@ function ActiveStrategies({ strategies: pstrategies }) {
   const theme = useTheme()
   const [, updateStrategie] = useUpdateStrategieMutation()
 
-  const [onMenuOpen, menuOpen] = useState<boolean>(false)
+  // const [onMenuOpen, menuOpen] = useState<boolean>(false)
 
   const moreRef = useRef<HTMLButtonElement | null>(null)
   const [anchorEl, setAnchorEl] = useState(null)
@@ -220,16 +218,16 @@ function ActiveStrategies({ strategies: pstrategies }) {
     setAnchorEl(null)
   }
 
-  const openMenu = (): void => {
-    menuOpen(true)
-  }
+  // const openMenu = (): void => {
+  //   menuOpen(true)
+  // }
 
-  const closeMenu = (): void => {
-    menuOpen(false)
-  }
+  // const closeMenu = (): void => {
+  //   menuOpen(false)
+  // }
 
   // const theme = useTheme()
-  const { mutate } = useGlobalStore()
+  // const { mutate } = useGlobalStore()
 
   const [, toogleActivateStrategie] = useToogleActivateStrategieMutation()
   const [, deleteStrategieMutation] = useDeleteStrategieMutation()
@@ -377,13 +375,13 @@ function ActiveStrategies({ strategies: pstrategies }) {
   const handleUpdateUserForStrategieOpen = (strategie) => () => {
     setActiveStrategie(strategie)
     setOpen(true)
-    closeMenu()
+    // closeMenu()
     setAnchorEl(null)
   }
 
   const handleUpdateUserForStrategieClose = () => {
     setOpen(false)
-    closeMenu()
+    // closeMenu()
     setAnchorEl(null)
   }
 
@@ -564,14 +562,14 @@ function ActiveStrategies({ strategies: pstrategies }) {
                         </Box>
                       </Box>
 
-                      <Box sx={{ p: 1 }}>
+                      <Box sx={{ py: 1 }}>
                         <Grid spacing={2} container>
-                          <Grid item xs={12} sm={3} alignItems="left">
+                          {/* <Grid item xs={12} sm={3} alignItems="left">
                             <IconWrapper>
                               <AccountCircleIcon fontSize="large" />
                             </IconWrapper>
-                          </Grid>
-                          <Grid item xs={12} sm={9}>
+                          </Grid> */}
+                          <Grid item xs={12}>
                             <Typography variant="h4" noWrap sx={{ pt: 3 }}>
                               {t('Player')}:{' '}
                               <Link
@@ -622,15 +620,10 @@ function ActiveStrategies({ strategies: pstrategies }) {
                             </Box>
                           </Grid>
                           <Grid item xs={12} sm={4}>
-                            <Typography variant="h5" sx={{ pb: 1, pt: 0.5 }} component="div">
+                            <Typography variant="h5" sx={{ pb: 1 }} component="div">
                               {t('Winrate')}
                             </Typography>
-
                             <Box>
-                              
-                              {/* <Typography variant="h3" sx={{ pl: 1 }} component="div">
-                                {strategie?.enriched?.winRate || '...'}%
-                              </Typography> */}
                               <Typography color="text.primary" variant="h3" sx={{ display: 'inline-flex' }}>
                                 {parseInt(`${strategie?.enriched?.winRate}`, 10) || '...'}%
                               </Typography>
@@ -644,56 +637,13 @@ function ActiveStrategies({ strategies: pstrategies }) {
                                       : theme.colors.error.main,
                                 }}
                               />
-                              {/* <Typography color="text.primary" variant="h5" sx={{ display: 'inline-flex' }}>
-                                {parseInt(`${strategie?.enriched?.winRate}`, 10) || '...'}%
-                              </Typography> */}
-                              {/* <Typography color="text.secondary" variant="h5" sx={{ pt: 0.5, display: 'inline-flex' }}>
-                                ({parseInt(`${(+strategie.currentAmount * 100) / strategie.startedAmount - 100}`, 10)}%)
-                              </Typography> */}
                             </Box>
-                            {/* <Box display="flex" alignItems="center" sx={{ pt: 3 }}>
-                              <DotLegend
-                                style={{
-                                  background:
-                                    +strategie?.enriched?.winRate >= 60
-                                      ? theme.colors.success.main
-                                      : +strategie?.enriched?.winRate >= 55
-                                      ? theme.colors.warning.main
-                                      : theme.colors.error.main,
-                                }}
-                              />
-                              <Typography variant="h3" sx={{ pl: 1 }} component="div">
-                                {strategie?.enriched?.winRate || '...'}%
-                              </Typography>
-                            </Box> */}
-                            {/* <Box>
-                            <Typography
-                              color="text.primary"
-                              variant="h5"
-                              sx={{ pr: 0.5, pt: 1, display: 'inline-flex' }}>
-                              {`${strategie.currentAmount} BNB `}
-                              {'  '}
-                              <sup>
-                                {'  '}({100 - (+strategie.currentAmount * 100) / strategie.startedAmount}%)
-                              </sup>
-                            </Typography>
-                          </Box> */}
                           </Grid>
-                          {/* <Grid item xs={6} sm={2}>
-                          <Typography variant="caption" sx={{ pb: 1.5, fontSize: '10px' }} component="div">
-                            {t('Running since')}
-                          </Typography>
-                          <Box display="flex" alignItems="center">
-                            <Typography variant="h5" component="div">
-                              {getStrategieDuraction(strategie)}
-                            </Typography>
-                          </Box>
-                        </Grid> */}
                         </Grid>
                       </Box>
                       <Divider />
 
-                      <Box sx={{ px: 1, pt: 1 }}>
+                      <Box sx={{ py: 1, pt: 1 }}>
                         <Grid spacing={1} container>
                           <Grid item xs={12}>
                             <Typography variant="h4" sx={{ fontSize: '13px' }} component="div">
@@ -703,10 +653,10 @@ function ActiveStrategies({ strategies: pstrategies }) {
                           </Grid>
                         </Grid>
                       </Box>
-                      <Box sx={{ px: 1 }}>
+                      <Box>
                         <Grid spacing={1} container>
                           <Grid item xs={12}>
-                            <Typography variant="caption" sx={{ fontSize: '11px' }} component="div">
+                            <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
                               {t('Running since')} <b>{getStrategieDuraction(strategie)}</b>
                             </Typography>
                           </Grid>
