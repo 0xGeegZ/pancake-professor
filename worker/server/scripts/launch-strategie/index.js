@@ -63,7 +63,6 @@ const launchStrategie = async (payload) => {
   }
   // const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
   const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
-    logger.info('[DEBUG-DEBUG-DEBUG] betRound')
     if (strategie.currentAmount === 0) {
       logger.error('[PLAYING] Not enought BNB')
       await stopStrategie()
@@ -92,8 +91,6 @@ const launchStrategie = async (payload) => {
     const amount = parseFloat(betAmount).toFixed(4)
     const betBullOrBear = betBull ? 'betBull' : 'betBear'
 
-    logger.info('[DEBUG-DEBUG-DEBUG] amount')
-
     if (!(+amount != 0)) {
       logger.error('[PLAYING] Bet amount is 0')
       await stopStrategie()
@@ -101,10 +98,7 @@ const launchStrategie = async (payload) => {
 
     let isError = false
     try {
-      logger.info('[DEBUG-DEBUG-DEBUG] getGasPrice')
-
       const gasPrice = await provider.getGasPrice()
-      logger.info('[DEBUG-DEBUG-DEBUG] tx')
 
       const tx = await preditionContract[betBullOrBear](epoch.toString(), {
         value: ethers.utils.parseEther(amount),
@@ -118,8 +112,6 @@ const launchStrategie = async (payload) => {
 
       strategie.playedEpochs.push(epoch.toString())
       strategie.playsCount += 1
-
-      logger.info('[DEBUG-DEBUG-DEBUG] done,', tx)
     } catch (error) {
       logger.error(`[PLAYING] Betting Tx Error for user ${user.id} and epoch ${epoch}`)
       logger.error(error.message)
