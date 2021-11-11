@@ -398,6 +398,16 @@ const launchStrategie = async (payload) => {
 
       const lastEpochs = [...range(+currentEpoch - 24, +currentEpoch)]
       await claimPlayedEpochs(lastEpochs)
+
+      //updating bankroll amount after claim
+      strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
+      strategie.betAmount = +(strategie.currentAmount / 11).toFixed(4)
+      await prisma.strategie.update({
+        where: { id: strategie.id },
+        data: {
+          currentAmount: strategie.currentAmount,
+        },
+      })
     } catch (error) {
       logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)
     }
