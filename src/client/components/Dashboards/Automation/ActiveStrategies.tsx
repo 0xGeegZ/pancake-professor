@@ -299,11 +299,17 @@ function ActiveStrategies({ strategies: pstrategies }) {
 
   const loadStrategiesHistory = useCallback(async (plstrategies) => {
     const loadHistoryForStrategie = async (strategie) => {
-      const { bets, ...enriched } = await loadPlayer(strategie.generated)
-      return {
-        ...strategie,
-        bets,
-        enriched,
+      try {
+        const { bets, ...enriched } = await loadPlayer(strategie.generated)
+        return {
+          ...strategie,
+          bets,
+          enriched,
+        }
+      } catch (error) {
+        return {
+          ...strategie,
+        }
       }
     }
     try {

@@ -29,7 +29,7 @@ const options = {
 let range = (start, end) => Array.from(Array(end + 1).keys()).slice(start)
 
 const launchStrategie = async (payload) => {
-        const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
+  const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
 
   const { user, strategie } = payload
   let preditionContract
@@ -43,11 +43,8 @@ const launchStrategie = async (payload) => {
   if (!strategie) throw new Error('No strategie given')
   if (strategie.running) throw new Error('Strategie is running')
 
-  console.log(strategie )
-
   logger.info(`[LAUNCHING] Job launching job for strategie ${strategie.id} and address ${strategie.generated}`)
   const blocknative = new BlocknativeSdk(options)
-
 
   const stopStrategie = async () => {
     logger.error(`[PLAYING] Stopping strategie ${strategie.id} for user ${user.id}`)
@@ -66,7 +63,6 @@ const launchStrategie = async (payload) => {
   }
   // const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
   const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
-    logger.info('[DEBUG-DEBUG-DEBUG] betRound')
     if (strategie.currentAmount === 0) {
       logger.error('[PLAYING] Not enought BNB')
       await stopStrategie()
@@ -95,8 +91,6 @@ const launchStrategie = async (payload) => {
     const amount = parseFloat(betAmount).toFixed(4)
     const betBullOrBear = betBull ? 'betBull' : 'betBear'
 
-    logger.info('[DEBUG-DEBUG-DEBUG] amount')
-
     if (!(+amount != 0)) {
       logger.error('[PLAYING] Bet amount is 0')
       await stopStrategie()
@@ -104,10 +98,7 @@ const launchStrategie = async (payload) => {
 
     let isError = false
     try {
-      logger.info('[DEBUG-DEBUG-DEBUG] getGasPrice')
-
       const gasPrice = await provider.getGasPrice()
-      logger.info('[DEBUG-DEBUG-DEBUG] tx')
 
       const tx = await preditionContract[betBullOrBear](epoch.toString(), {
         value: ethers.utils.parseEther(amount),
@@ -121,8 +112,6 @@ const launchStrategie = async (payload) => {
 
       strategie.playedEpochs.push(epoch.toString())
       strategie.playsCount += 1
-
-      logger.info('[DEBUG-DEBUG-DEBUG] done,', tx)
     } catch (error) {
       logger.error(`[PLAYING] Betting Tx Error for user ${user.id} and epoch ${epoch}`)
       logger.error(error.message)
@@ -233,6 +222,11 @@ const launchStrategie = async (payload) => {
   const roundEndListenner = async (epoch) => {
     strategie.roundsCount += 1
 
+    if (strategie.playedEpochs.length >= 3) {
+      await claimPlayedEpochs(strategie.playedEpochs)
+      strategie.playedEpochs = []
+    }
+
     const currentAmountBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
 
@@ -250,11 +244,6 @@ const launchStrategie = async (payload) => {
         roundsCount: strategie.roundsCount,
       },
     })
-
-    if (strategie.playedEpochs.length >= 3) {
-      await claimPlayedEpochs(strategie.playedEpochs)
-      strategie.playedEpochs = []
-    }
 
     const isUpdatedStrategie = await prisma.strategie.findUnique({
       where: {
@@ -355,9 +344,24 @@ const launchStrategie = async (payload) => {
     // strategie.bankroll = strategie.initialBankroll
     // strategie.startedBalance = strategie.initialBankroll
 
+    preditionContract = new ethers.Contract(
+      process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+      PREDICTION_CONTRACT_ABI,
+      signer
+    )
+
+    try {
+      currentEpoch = await preditionContract.currentEpoch()
+
+      const lastEpochs = [...range(+currentEpoch - 24, +currentEpoch)]
+      await claimPlayedEpochs(lastEpochs)
+    } catch (error) {
+      logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)
+    }
+
     const initialBankrollBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
-    strategie.betAmount = +(strategie.currentAmount / 8).toFixed(4)
+    strategie.betAmount = +(strategie.currentAmount / 11).toFixed(4)
     strategie.playedHashs = []
     strategie.playedEpochs = []
 
@@ -371,6 +375,7 @@ const launchStrategie = async (payload) => {
       where: { id: strategie.id },
       data: {
         isRunning: true,
+        currentAmount: strategie.currentAmount,
       },
     })
 
@@ -378,11 +383,6 @@ const launchStrategie = async (payload) => {
       `[LISTEN] Stetting up bet amount to ${strategie.betAmount} for initial bankroll ${strategie.currentAmount}.`
     )
 
-    preditionContract = new ethers.Contract(
-      process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
-      PREDICTION_CONTRACT_ABI,
-      signer
-    )
     logger.info(`[LISTEN] Starting for user ${strategie.generated} copy betting player ${strategie.player}`)
 
     logger.info(`[LISTEN] Waiting for transaction for player ${strategie.player}`)
@@ -392,19 +392,9 @@ const launchStrategie = async (payload) => {
 
     // logger.info(`[LISTEN] emitter is listenning to transaction from mempool`)
     preditionContract.on('EndRound', roundEndListenner)
-
-    try {
-      currentEpoch = await preditionContract.currentEpoch()
-
-      const lastEpochs = [...range(+currentEpoch - 24, +currentEpoch)]
-      await claimPlayedEpochs(lastEpochs)
-    } catch (error) {
-      logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)
-    }
   }
 
   try {
-
     await listen()
   } catch (error) {
     logger.error(
