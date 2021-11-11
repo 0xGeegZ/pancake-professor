@@ -4,7 +4,7 @@ import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
 import { Box, Card, CardContent, CardHeader, Divider, Grid, IconButton, Tooltip, Typography, useTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import moment from 'moment'
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 import AllStrategiesChart from './AllStrategiesChart'
@@ -28,31 +28,31 @@ const DotLegend = styled('span')(
 
 function AllStrategies({ strategies }) {
   const { t }: { t: any } = useTranslation()
-  const actionRef1 = useRef<any>(null)
-  const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false)
+  // const actionRef1 = useRef<any>(null)
+  // const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false)
   const theme = useTheme()
 
-  const periods = [
-    {
-      value: 'today',
-      text: t('Today'),
-    },
-    {
-      value: 'yesterday',
-      text: t('Yesterday'),
-    },
-    {
-      value: 'last_month',
-      text: t('Last month'),
-    },
-    {
-      value: 'last_year',
-      text: t('Last year'),
-    },
-  ]
+  // const periods = [
+  //   {
+  //     value: 'today',
+  //     text: t('Today'),
+  //   },
+  //   {
+  //     value: 'yesterday',
+  //     text: t('Yesterday'),
+  //   },
+  //   {
+  //     value: 'last_month',
+  //     text: t('Last month'),
+  //   },
+  //   {
+  //     value: 'last_year',
+  //     text: t('Last year'),
+  //   },
+  // ]
 
-  const [period, setPeriod] = useState<string>(periods[2].text)
-  const [data, setData] = useState()
+  // const [period, setPeriod] = useState<string>(periods[2].text)
+  const [data, setData] = useState<any>()
 
   const getActivesStrategiesCount = () => {
     if (!strategies.length) return 0

@@ -1,6 +1,5 @@
 import 'moment-timezone'
 
-import AccountCircleIcon from '@mui/icons-material/AccountCircle'
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
 import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
@@ -42,7 +41,6 @@ import { useTranslation } from 'react-i18next'
 import { useDeleteStrategieMutation } from 'src/client/graphql/deleteStrategie.generated'
 import { useToogleActivateStrategieMutation } from 'src/client/graphql/toogleActivateStrategie.generated'
 import { useUpdateStrategieMutation } from 'src/client/graphql/updateStrategie.generated'
-import { useGlobalStore } from 'src/client/store/swr'
 import loadPlayer from 'src/client/thegraph/loadPlayer'
 import * as Yup from 'yup'
 
@@ -160,13 +158,13 @@ const CardActiveStrategies = styled(Card)(
 `
 )
 
-const IconWrapper = styled(Box)(
-  ({ theme }) => `
-      padding: ${theme.spacing(2, 0)};
-      color: ${theme.colors.primary.main};
-      margin-left: -7px;
-`
-)
+// const IconWrapper = styled(Box)(
+//   ({ theme }) => `
+//       padding: ${theme.spacing(2, 0)};
+//       color: ${theme.colors.primary.main};
+//       margin-left: -7px;
+// `
+// )
 
 const MenuIconWrapper = styled(Box)(
   ({ theme }) => `
@@ -207,7 +205,7 @@ function ActiveStrategies({ strategies: pstrategies }) {
   const theme = useTheme()
   const [, updateStrategie] = useUpdateStrategieMutation()
 
-  const [onMenuOpen, menuOpen] = useState<boolean>(false)
+  // const [onMenuOpen, menuOpen] = useState<boolean>(false)
 
   const moreRef = useRef<HTMLButtonElement | null>(null)
   const [anchorEl, setAnchorEl] = useState(null)
@@ -220,16 +218,16 @@ function ActiveStrategies({ strategies: pstrategies }) {
     setAnchorEl(null)
   }
 
-  const openMenu = (): void => {
-    menuOpen(true)
-  }
+  // const openMenu = (): void => {
+  //   menuOpen(true)
+  // }
 
-  const closeMenu = (): void => {
-    menuOpen(false)
-  }
+  // const closeMenu = (): void => {
+  //   menuOpen(false)
+  // }
 
   // const theme = useTheme()
-  const { mutate } = useGlobalStore()
+  // const { mutate } = useGlobalStore()
 
   const [, toogleActivateStrategie] = useToogleActivateStrategieMutation()
   const [, deleteStrategieMutation] = useDeleteStrategieMutation()
@@ -377,13 +375,13 @@ function ActiveStrategies({ strategies: pstrategies }) {
   const handleUpdateUserForStrategieOpen = (strategie) => () => {
     setActiveStrategie(strategie)
     setOpen(true)
-    closeMenu()
+    // closeMenu()
     setAnchorEl(null)
   }
 
   const handleUpdateUserForStrategieClose = () => {
     setOpen(false)
-    closeMenu()
+    // closeMenu()
     setAnchorEl(null)
   }
 
@@ -622,7 +620,7 @@ function ActiveStrategies({ strategies: pstrategies }) {
                             </Box>
                           </Grid>
                           <Grid item xs={12} sm={4}>
-                            <Typography variant="h5" sx={{ pb: 1, pt: 0.5 }} component="div">
+                            <Typography variant="h5" sx={{ pb: 1 }} component="div">
                               {t('Winrate')}
                             </Typography>
                             <Box>
@@ -639,7 +637,7 @@ function ActiveStrategies({ strategies: pstrategies }) {
                                       : theme.colors.error.main,
                                 }}
                               />
-                            </Box>   
+                            </Box>
                           </Grid>
                         </Grid>
                       </Box>
@@ -655,7 +653,7 @@ function ActiveStrategies({ strategies: pstrategies }) {
                           </Grid>
                         </Grid>
                       </Box>
-                      <Box >
+                      <Box>
                         <Grid spacing={1} container>
                           <Grid item xs={12}>
                             <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
