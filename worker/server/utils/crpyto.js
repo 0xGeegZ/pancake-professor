@@ -1,7 +1,10 @@
 const crypto = require('crypto')
+const dotenv = require('dotenv')
+dotenv.config()
 
 // Must be 256 bits (32 characters)
 const ENCRYPTION_KEY = process.env.NEXT_PUBLIC_ADDRESS_SECRET_KEY || process.env.ADDRESS_SECRET_KEY
+console.log('🚀 ~ file: crpyto.js ~ line 7 ~ ENCRYPTION_KEY', ENCRYPTION_KEY)
 // For AES, this is always 16
 const IV_LENGTH = 16
 

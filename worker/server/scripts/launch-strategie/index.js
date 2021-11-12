@@ -1,6 +1,7 @@
 const BlocknativeSdk = require('bnc-sdk')
 const { ethers } = require('ethers')
 const WebSocket = require('ws')
+const { sleep } = require('../../utils/utils')
 
 const { PREDICTION_CONTRACT_ABI } = require('../../../../src/contracts/abis/pancake-prediction-abi-v3')
 
@@ -254,6 +255,11 @@ const launchStrategie = async (payload) => {
       },
     })
 
+    console.log(
+      '🚀 ~ file: index.js ~ line 258 ~ roundEndListenner ~ isUpdatedStrategie.isNeedRestart',
+      isUpdatedStrategie.isNeedRestart
+    )
+
     if (isUpdatedStrategie.isNeedRestart) {
       logger.error('[PLAYING] Strategie need to be restarted.')
       await prisma.strategie.update({
@@ -332,6 +338,8 @@ const launchStrategie = async (payload) => {
 
     try {
       await tx.wait()
+      //Wait for last transaction to be proceed.
+      await sleep(10 * 1000)
     } catch (error) {
       logger.error(`[CLAIM] Claim Tx Error for user ${user.id} and epochs ${claimablesEpochs}`)
       logger.error(error.message)

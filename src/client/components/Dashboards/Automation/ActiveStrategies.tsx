@@ -38,6 +38,7 @@ import moment from 'moment'
 import { useSnackbar } from 'notistack'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+import Moment from 'react-moment'
 import { useDeleteStrategieMutation } from 'src/client/graphql/deleteStrategie.generated'
 import { useToogleActivateStrategieMutation } from 'src/client/graphql/toogleActivateStrategie.generated'
 import { useUpdateStrategieMutation } from 'src/client/graphql/updateStrategie.generated'
@@ -326,8 +327,11 @@ function ActiveStrategies({ strategies: pstrategies }) {
       setStrategies(null)
       return
     }
+    console.log('useEffect')
 
     if (strategies) return
+
+    console.log('useEffect -> updating strategies')
 
     const lstrategies = pstrategies.sort((x, y) => {
       return x.isActive === y.isActive ? 0 : x.isActive ? -1 : 1
@@ -355,6 +359,8 @@ function ActiveStrategies({ strategies: pstrategies }) {
   }
 
   const deleteStrategie = (strategie) => async () => {
+    setAnchorEl(null)
+
     const { error } = await deleteStrategieMutation({ id: strategie.id })
 
     if (error) {
@@ -446,6 +452,17 @@ function ActiveStrategies({ strategies: pstrategies }) {
     }
   }
 
+  const getWinrateForStrategie = (strategie) => {
+    if (!strategie) return '... '
+    if (!strategie.bets) return '... '
+
+    const winsCount = strategie.bets.map((b) => b.position === b.round?.position).filter(Boolean)
+
+    const winRate = ((winsCount.length * 100) / strategie.bets.length).toFixed(0)
+
+    return `${winRate}% `
+  }
+
   return (
     <>
       <Box>
@@ -528,7 +545,10 @@ function ActiveStrategies({ strategies: pstrategies }) {
                               />
                             </ListItem>
                             <ListItem button disabled>
-                              <ListItemText primary={t('Update balance')} />
+                              <ListItemText primary={t('Edit strategie')} />
+                            </ListItem>
+                            <ListItem button disabled>
+                              <ListItemText primary={t('View strategie history')} />
                             </ListItem>
                             <ListItem button color="danger">
                               <ListItemText onClick={deleteStrategie(strategie)} primary={t('Delete strategie')} />
@@ -631,7 +651,8 @@ function ActiveStrategies({ strategies: pstrategies }) {
                             </Typography>
                             <Box>
                               <Typography color="text.primary" variant="h3" sx={{ display: 'inline-flex' }}>
-                                {parseInt(`${strategie?.enriched?.winRate}`, 10) || '...'}%
+                                {/* {parseInt(`${strategie?.enriched?.winRate}`, 10) || '...'}% */}
+                                {getWinrateForStrategie(strategie)}
                               </Typography>
                               <DotLegend
                                 style={{
@@ -659,12 +680,19 @@ function ActiveStrategies({ strategies: pstrategies }) {
                           </Grid>
                         </Grid>
                       </Box>
-                      <Box>
+                      <Box sx={{ py: 1, pt: 0.5 }}>
                         <Grid spacing={1} container>
                           <Grid item xs={12}>
                             <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
                               {t('Running since')} <b>{getStrategieDuraction(strategie)}</b>
                             </Typography>
+                            {strategie?.bets?.length && (
+                              <Typography sx={{ fontSize: `${theme.typography.pxToRem(10)}`, pt: 0.5 }} variant="h6">
+                                {t('Last Play')}
+                                {' : '}
+                                <Moment local>{moment(+strategie?.bets[0]?.createdAt * 1000)}</Moment>
+                              </Typography>
+                            )}
                           </Grid>
                         </Grid>
                       </Box>
