@@ -260,6 +260,17 @@ const launchStrategie = async (payload) => {
       isUpdatedStrategie.isNeedRestart
     )
 
+    // Check if stop loss or take profit
+    if (strategie.currentAmount <= isUpdatedStrategie.maxLooseAmount) {
+      logger.info('[PLAYING] Stop Loss activated.')
+      await stopStrategie()
+    }
+
+    if (strategie.currentAmount > isUpdatedStrategie.minWinAmount) {
+      logger.info('[PLAYING] Take Profit activated.')
+      await stopStrategie()
+    }
+
     if (isUpdatedStrategie.isNeedRestart) {
       logger.error('[PLAYING] Strategie need to be restarted.')
       await prisma.strategie.update({
