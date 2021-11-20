@@ -1,6 +1,7 @@
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import CloseIcon from '@mui/icons-material/Close'
 import RemoveTwoToneIcon from '@mui/icons-material/RemoveTwoTone'
+import LoadingButton from '@mui/lab/LoadingButton'
 import {
   Alert,
   Box,
@@ -11,11 +12,11 @@ import {
   Grid,
   IconButton,
   Slide,
+  Slider,
   Typography,
   useTheme,
   Zoom,
 } from '@mui/material'
-import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress'
 import { styled } from '@mui/material/styles'
 import { TransitionProps } from '@mui/material/transitions'
 import { ethers } from 'ethers'
@@ -23,7 +24,7 @@ import { useSnackbar } from 'notistack'
 import PropTypes from 'prop-types'
 import { forwardRef, ReactElement, Ref, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { decrypt } from 'src/server/utils/crpyto'
+import { useRemoveFundsMutation } from 'src/client/graphql/removeFunds.generated'
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -46,35 +47,35 @@ const BoxButtons = styled(Box)(
 `
 )
 
-const LinearProgressWithLabel = (props: LinearProgressProps & { value: number }) => {
-  const { value } = props
+// const LinearProgressWithLabel = (props: LinearProgressProps & { value: number }) => {
+//   const { value } = props
 
-  return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Box sx={{ width: '100%', mr: 0 }}>
-        <LinearProgress variant="determinate" {...props} />
-      </Box>
-      <Box sx={{ minWidth: 35 }}>
-        <Typography variant="body2" color="text.secondary">{`${Math.round(value)}%`}</Typography>
-      </Box>
-    </Box>
-  )
-}
+//   return (
+//     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+//       <Box sx={{ width: '100%', mr: 0 }}>
+//         <LinearProgress variant="determinate" {...props} />
+//       </Box>
+//       <Box sx={{ minWidth: 35 }}>
+//         <Typography variant="body2" color="text.secondary">{`${Math.round(value)}%`}</Typography>
+//       </Box>
+//     </Box>
+//   )
+// }
 
-const LinearProgressWrapper = styled(LinearProgressWithLabel)(
-  ({ theme }) => `
-    flex-grow: 1;
-    margin-right: ${theme.spacing(3)};
-    margin-left: ${theme.spacing(3)};
-    height: 15px;
+// const LinearProgressWrapper = styled(LinearProgressWithLabel)(
+//   ({ theme }) => `
+//     flex-grow: 1;
+//     margin-right: ${theme.spacing(3)};
+//     margin-left: ${theme.spacing(3)};
+//     height: 15px;
 
-    .MuiLinearProgress-barColorPrimary {
-      background-color: ${theme.colors.primary.main};
-      border-top-right-radius: ${theme.general.borderRadius};
-      border-bottom-right-radius: ${theme.general.borderRadius};
-    }
-`
-)
+//     .MuiLinearProgress-barColorPrimary {
+//       background-color: ${theme.colors.primary.main};
+//       border-top-right-radius: ${theme.general.borderRadius};
+//       border-bottom-right-radius: ${theme.general.borderRadius};
+//     }
+// `
+// )
 
 const IconButtonIncrement = styled(IconButton)(
   ({ theme }) => `
@@ -99,6 +100,45 @@ const IconButtonIncrement = styled(IconButton)(
 `
 )
 
+const SliderWrapper = styled(Slider)(({ theme }) => ({
+  color: theme.colors.primary.main,
+  height: 10,
+  '& .MuiSlider-track': {
+    border: 'none',
+  },
+  '& .MuiSlider-thumb': {
+    height: 24,
+    width: 24,
+    backgroundColor: theme.colors.alpha.trueWhite,
+    border: '2px solid currentColor',
+    '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
+      boxShadow: 'inherit',
+    },
+    '&:before': {
+      display: 'none',
+    },
+  },
+  '& .MuiSlider-valueLabel': {
+    lineHeight: 1.2,
+    fontSize: 12,
+    background: 'unset',
+    padding: 0,
+    width: 32,
+    height: 32,
+    borderRadius: '50% 50% 50% 0',
+    backgroundColor: theme.colors.primary.main,
+    transformOrigin: 'bottom left',
+    transform: 'translate(50%, -100%) rotate(-45deg) scale(0)',
+    '&:before': { display: 'none' },
+    '&.MuiSlider-valueLabelOpen': {
+      transform: 'translate(50%, -100%) rotate(-45deg) scale(1)',
+    },
+    '& > *': {
+      transform: 'rotate(45deg)',
+    },
+  },
+}))
+
 /* eslint-disable */
 const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
   <Slide direction="down" ref={ref} {...props} />
@@ -109,31 +149,48 @@ function RemoveFundsForm({ user, handleCloseForm }) {
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
 
+  const [pending, setPending] = useState(false)
+
   const [gauge, setGauge] = useState(20)
-  const [bnbValue, setBnbValue] = useState(((user.generatedBalance * 20) / 100).toFixed(4))
+  const [bnbValue, setBnbValue] = useState((user.generatedBalance * 20) / 100)
 
   const [openDialog, setOpenDialog] = useState(false)
 
   const [openAlert, setOpenAlert] = useState(true)
 
+  const [, removeFunds] = useRemoveFundsMutation()
+
   const { enqueueSnackbar } = useSnackbar()
 
-  const handleGaugeIncrease = (e: { preventDefault: () => void }) => {
+  const handleGaugeIncrease = (e: { preventDefault: () => void }, newValue: number | null) => {
     e.preventDefault()
     if (gauge === 100) return
 
-    const updated = gauge + (gauge >= 80 || gauge <= 20 ? 1 : 2)
+    // const updated = newValue || gauge + (gauge >= 80 || gauge <= 20 ? 1 : 2)
+    const updated = newValue || gauge + 1
     setGauge(updated)
-    setBnbValue(((user.generatedBalance * updated) / 100).toFixed(4))
+    setBnbValue((user.generatedBalance * updated) / 100)
+  }
+  const handleGaugeIncreaseEvent = (e: { preventDefault: () => void }) => {
+    handleGaugeIncrease(e, null)
   }
 
-  const handleGaugeDecrease = (e: { preventDefault: () => void }) => {
+  const handleGaugeDecrease = (e: { preventDefault: () => void }, newValue: number | null) => {
     e.preventDefault()
     if (gauge === 0) return
 
-    const updated = gauge - (gauge >= 80 || gauge <= 20 ? 1 : 2)
+    // const updated = newValue || gauge - (gauge >= 80 || gauge <= 20 ? 1 : 2)
+    const updated = newValue || gauge - 1
     setGauge(updated)
-    setBnbValue(((user.generatedBalance * updated) / 100).toFixed(4))
+    setBnbValue((user.generatedBalance * updated) / 100)
+  }
+  const handleGaugeDecreaseEvent = (e: { preventDefault: () => void }) => {
+    handleGaugeIncrease(e, null)
+  }
+
+  const handleChange = (_event: Event, newValue: number) => {
+    if (newValue > gauge) handleGaugeIncrease(_event, newValue)
+    else handleGaugeDecrease(_event, newValue)
   }
 
   const handleOpenDialog = () => {
@@ -142,6 +199,7 @@ function RemoveFundsForm({ user, handleCloseForm }) {
 
   const handleCloseDialog = () => {
     setOpenDialog(false)
+    setPending(false)
   }
 
   const sumbitRemoveFunds = async () => {
@@ -153,31 +211,24 @@ function RemoveFundsForm({ user, handleCloseForm }) {
 
     if (+bnbValue === 0) return
 
-    // make this on server side to hide private key
-    const privateKey = decrypt(user.private)
-
-    const wallet = new ethers.Wallet(privateKey)
-
-    const signer = wallet.connect(provider)
-
-    const gasPrice = await provider.getGasPrice()
-
-    const tx = {
-      to: user.address,
-      value: ethers.utils.parseEther(bnbValue),
-      nonce: provider.getTransactionCount(user.generated, 'latest'),
-      gasPrice,
-    }
-
+    setPending(true)
     try {
-      await signer.sendTransaction(tx)
+      const { error } = await removeFunds({ id: user.id, value: bnbValue.toString() })
+      console.log('🚀 ~ file: RemoveFundsForm.tsx ~ line 212 ~ sumbitRemoveFunds ~ error', error)
 
-      enqueueSnackbar(t('Funds succefully sended.'), {
-        variant: 'success',
-        TransitionComponent: Zoom,
-      })
+      if (error) {
+        enqueueSnackbar(t('Unexpected error during transaction. Please contact an administrator.'), {
+          variant: 'error',
+          TransitionComponent: Zoom,
+        })
+      } else {
+        enqueueSnackbar(t('Funds succefully sended.'), {
+          variant: 'success',
+          TransitionComponent: Zoom,
+        })
+      }
     } catch (error) {
-      enqueueSnackbar(t('Unexpected error during transaction.'), {
+      enqueueSnackbar(t('Unexpected error during transaction. Please verify your MetaMask account and retry.'), {
         variant: 'error',
         TransitionComponent: Zoom,
       })
@@ -185,6 +236,50 @@ function RemoveFundsForm({ user, handleCloseForm }) {
 
     handleCloseDialog()
     handleCloseForm()
+
+    // OLD VERSION
+    // make this on server side to hide private key
+    // const privateKey = decrypt(user.private)
+
+    // const wallet = new ethers.Wallet(privateKey)
+
+    // const signer = wallet.connect(provider)
+
+    // const gasPrice = await provider.getGasPrice()
+
+    // const gasLimit = await provider.estimateGas({
+    //   to: user.generated,
+    //   value: ethers.utils.parseEther(bnbValue),
+    // })
+
+    // const costs = +gasPrice * +gasLimit
+    // const value = `${+bnbValue - +costs}`
+
+    // const tx = {
+    //   to: user.address,
+    //   // value: ethers.utils.parseEther(bnbValue),
+    //   value: ethers.utils.parseEther(value),
+    //   nonce: provider.getTransactionCount(user.generated, 'latest'),
+    //   gasPrice,
+    //   gasLimit: ethers.utils.hexlify(gasLimit),
+    // }
+
+    // try {
+    //   await signer.sendTransaction(tx)
+
+    //   enqueueSnackbar(t('Funds succefully sended.'), {
+    //     variant: 'success',
+    //     TransitionComponent: Zoom,
+    //   })
+    // } catch (error) {
+    //   enqueueSnackbar(t('Unexpected error during transaction. Please verify your MetaMask account and retry.'), {
+    //     variant: 'error',
+    //     TransitionComponent: Zoom,
+    //   })
+    // }
+
+    // handleCloseDialog()
+    // handleCloseForm()
   }
 
   return (
@@ -208,15 +303,28 @@ function RemoveFundsForm({ user, handleCloseForm }) {
             <Box px={3} py={2}>
               <Box sx={{ mb: 2, textAlign: 'center' }}>
                 <Typography sx={{ fontSize: `${theme.typography.pxToRem(20)}`, pt: 1 }} variant="h1">
-                  {bnbValue} BNB
+                  {+bnbValue.toFixed(6)} BNB
                 </Typography>
               </Box>
-              <LinearProgressWrapper value={gauge} color="primary" variant="determinate" />
+              {/* <LinearProgressWrapper value={gauge} color="primary" variant="determinate" /> */}
+              <Box px={1}>
+                <SliderWrapper
+                  aria-label="Amount"
+                  defaultValue={30}
+                  value={gauge}
+                  valueLabelDisplay="auto"
+                  // step={5}
+                  // marks
+                  min={0}
+                  max={100}
+                  onChange={handleChange}
+                />
+              </Box>
               <BoxButtons px={3} py={2}>
-                <IconButtonIncrement onClick={handleGaugeDecrease}>
+                <IconButtonIncrement onClick={handleGaugeDecreaseEvent}>
                   <RemoveTwoToneIcon fontSize="medium" />
                 </IconButtonIncrement>
-                <IconButtonIncrement onClick={handleGaugeIncrease}>
+                <IconButtonIncrement onClick={handleGaugeIncreaseEvent}>
                   <AddTwoToneIcon fontSize="medium" />
                 </IconButtonIncrement>
               </BoxButtons>
@@ -284,9 +392,12 @@ function RemoveFundsForm({ user, handleCloseForm }) {
             )}
           </Typography>
 
-          <Button fullWidth size="large" variant="contained" color="error" onClick={sumbitRemoveFunds}>
+          {/* <Button fullWidth size="large" variant="contained" color="error" onClick={sumbitRemoveFunds}>
             {t('Remove funds')}
-          </Button>
+          </Button> */}
+          <LoadingButton fullWidth onClick={sumbitRemoveFunds} loading={pending} variant="contained" color="error">
+            {t('Remove funds')}
+          </LoadingButton>
         </Box>
       </DialogWrapper>
     </>

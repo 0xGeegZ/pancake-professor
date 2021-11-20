@@ -20,7 +20,9 @@ const Banner = ({ networkId }) => {
       <Box display="flex" alignItems="center" justifyContent="space-between">
         <Typography align="center" component="span" variant="h6" color="text.secondary" fontWeight="bold">
           {t(
-            `Please choose Network id 56 for production (mainnet) and 97 for developpement (testnet) - current : ${networkId}`
+            `Please choose Network id 56 for production (mainnet) and 97 for developpement (testnet) - current : ${
+              networkId ? `${networkId}` : '...'
+            } `
           )}
         </Typography>
       </Box>

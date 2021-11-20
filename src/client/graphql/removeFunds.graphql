@@ -1,0 +1,5 @@
+mutation removeFunds($id: String!, $value: String!) {
+  removeFunds(id: $id, value: $value) {
+    id
+  }
+}

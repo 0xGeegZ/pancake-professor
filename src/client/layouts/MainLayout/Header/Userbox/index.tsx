@@ -98,8 +98,10 @@ function HeaderUserbox({ address, balance, logout }) {
           <AccountCircleIcon />
 
           <UserBoxText>
-            <UserBoxLabel variant="body1">{address?.substring(0, 10)}</UserBoxLabel>
-            <UserBoxDescription variant="body2">{balance} BNB</UserBoxDescription>
+            <Link variant="h5" href={`https://bscscan.com/address/${address}`} target="_blank">
+              <UserBoxLabel variant="body1">{address?.substring(0, 15)}</UserBoxLabel>
+            </Link>
+            <UserBoxDescription variant="body2">{parseFloat(balance).toFixed(6)} BNB</UserBoxDescription>
           </UserBoxText>
         </MenuUserBox>
         <Divider sx={{ mb: 0 }} />

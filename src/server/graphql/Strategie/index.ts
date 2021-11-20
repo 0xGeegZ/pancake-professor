@@ -284,23 +284,26 @@ const mutations = extendType({
           const rawBalance = await provider.getBalance(strategie.generated)
 
           const balance = ethers.utils.formatUnits(rawBalance)
-          const gasPrice = ethers.utils.formatUnits(rawGasPrice)
-          const gasLimit = await provider.estimateGas({
-            to: user.generated,
-            value: ethers.utils.parseEther(balance),
-          })
 
-          const costs = +gasPrice * +gasLimit
-          const value = `${+balance - +costs}`
-          const tx = {
-            to: user.generated,
-            value: ethers.utils.parseEther(value),
-            nonce: provider.getTransactionCount(strategie.generated, 'latest'),
-            gasPrice: rawGasPrice,
-            gasLimit: ethers.utils.hexlify(gasLimit),
+          if (balance !== '0.0') {
+            const gasPrice = ethers.utils.formatUnits(rawGasPrice)
+            const gasLimit = await provider.estimateGas({
+              to: user.generated,
+              value: ethers.utils.parseEther(balance),
+            })
+
+            const costs = +gasPrice * +gasLimit
+            const value = `${+balance - +costs}`
+            const tx = {
+              to: user.generated,
+              value: ethers.utils.parseEther(value),
+              nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+              gasPrice: rawGasPrice,
+              gasLimit: ethers.utils.hexlify(gasLimit),
+            }
+
+            await signer.sendTransaction(tx)
           }
-
-          await signer.sendTransaction(tx)
         } catch (error) {
           await prisma.strategie.update({
             where: { id },

@@ -1,6 +1,7 @@
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import CloseIcon from '@mui/icons-material/Close'
 import RemoveTwoToneIcon from '@mui/icons-material/RemoveTwoTone'
+import LoadingButton from '@mui/lab/LoadingButton'
 import {
   Alert,
   Box,
@@ -11,11 +12,11 @@ import {
   Grid,
   IconButton,
   Slide,
+  Slider,
   Typography,
   useTheme,
   Zoom,
 } from '@mui/material'
-import LinearProgress, { LinearProgressProps } from '@mui/material/LinearProgress'
 import { styled } from '@mui/material/styles'
 import { TransitionProps } from '@mui/material/transitions'
 import { ethers } from 'ethers'
@@ -45,34 +46,73 @@ const BoxButtons = styled(Box)(
 `
 )
 
-const LinearProgressWithLabel = (props: LinearProgressProps & { value: number }) => {
-  const { value } = props
-  return (
-    <Box sx={{ display: 'flex', alignItems: 'center' }}>
-      <Box sx={{ width: '100%', mr: 0 }}>
-        <LinearProgress variant="determinate" {...props} />
-      </Box>
-      <Box sx={{ minWidth: 35 }}>
-        <Typography variant="body2" color="text.secondary">{`${Math.round(value)}%`}</Typography>
-      </Box>
-    </Box>
-  )
-}
+// const LinearProgressWithLabel = (props: LinearProgressProps & { value: number }) => {
+//   const { value } = props
+//   return (
+//     <Box sx={{ display: 'flex', alignItems: 'center' }}>
+//       <Box sx={{ width: '100%', mr: 0 }}>
+//         <LinearProgress variant="determinate" {...props} />
+//       </Box>
+//       <Box sx={{ minWidth: 35 }}>
+//         <Typography variant="body2" color="text.secondary">{`${Math.round(value)}%`}</Typography>
+//       </Box>
+//     </Box>
+//   )
+// }
 
-const LinearProgressWrapper = styled(LinearProgressWithLabel)(
-  ({ theme }) => `
-    flex-grow: 1;
-    margin-right: ${theme.spacing(3)};
-    margin-left: ${theme.spacing(3)};
-    height: 15px;
+// const LinearProgressWrapper = styled(LinearProgressWithLabel)(
+//   ({ theme }) => `
+//     flex-grow: 1;
+//     margin-right: ${theme.spacing(3)};
+//     margin-left: ${theme.spacing(3)};
+//     height: 15px;
 
-    .MuiLinearProgress-barColorPrimary {
-      background-color: ${theme.colors.primary.main};
-      border-top-right-radius: ${theme.general.borderRadius};
-      border-bottom-right-radius: ${theme.general.borderRadius};
-    }
-`
-)
+//     .MuiLinearProgress-barColorPrimary {
+//       background-color: ${theme.colors.primary.main};
+//       border-top-right-radius: ${theme.general.borderRadius};
+//       border-bottom-right-radius: ${theme.general.borderRadius};
+//     }
+// `
+// )
+
+const SliderWrapper = styled(Slider)(({ theme }) => ({
+  color: theme.colors.primary.main,
+  height: 10,
+  '& .MuiSlider-track': {
+    border: 'none',
+  },
+  '& .MuiSlider-thumb': {
+    height: 24,
+    width: 24,
+    backgroundColor: theme.colors.alpha.trueWhite,
+    border: '2px solid currentColor',
+    '&:focus, &:hover, &.Mui-active, &.Mui-focusVisible': {
+      boxShadow: 'inherit',
+    },
+    '&:before': {
+      display: 'none',
+    },
+  },
+  '& .MuiSlider-valueLabel': {
+    lineHeight: 1.2,
+    fontSize: 12,
+    background: 'unset',
+    padding: 0,
+    width: 32,
+    height: 32,
+    borderRadius: '50% 50% 50% 0',
+    backgroundColor: theme.colors.primary.main,
+    transformOrigin: 'bottom left',
+    transform: 'translate(50%, -100%) rotate(-45deg) scale(0)',
+    '&:before': { display: 'none' },
+    '&.MuiSlider-valueLabelOpen': {
+      transform: 'translate(50%, -100%) rotate(-45deg) scale(1)',
+    },
+    '& > *': {
+      transform: 'rotate(45deg)',
+    },
+  },
+}))
 
 const IconButtonIncrement = styled(IconButton)(
   ({ theme }) => `
@@ -107,8 +147,10 @@ function AddFundsForm({ user, handleCloseForm }) {
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
 
+  const [pending, setPending] = useState(false)
+
   const [gauge, setGauge] = useState(20)
-  const [bnbValue, setBnbValue] = useState(((user.balance * 20) / 100).toFixed(4))
+  const [bnbValue, setBnbValue] = useState(((user.balance * 20) / 100).toFixed(6))
 
   const [openDialog, setOpenDialog] = useState(false)
 
@@ -116,22 +158,35 @@ function AddFundsForm({ user, handleCloseForm }) {
 
   const { enqueueSnackbar } = useSnackbar()
 
-  const handleGaugeIncrease = (e: { preventDefault: () => void }) => {
+  const handleGaugeIncrease = (e: { preventDefault: () => void }, newValue: number | null) => {
     e.preventDefault()
     if (gauge === 100) return
 
-    const updated = gauge + (gauge >= 80 || gauge <= 20 ? 1 : 2)
+    // const updated = newValue || gauge + (gauge >= 80 || gauge <= 20 ? 1 : 2)
+    const updated = newValue || gauge + 1
     setGauge(updated)
-    setBnbValue(((user.balance * updated) / 100).toFixed(4))
+    setBnbValue(((user.balance * updated) / 100).toFixed(6))
+  }
+  const handleGaugeIncreaseEvent = (e: { preventDefault: () => void }) => {
+    handleGaugeIncrease(e, null)
   }
 
-  const handleGaugeDecrease = (e: { preventDefault: () => void }) => {
+  const handleGaugeDecrease = (e: { preventDefault: () => void }, newValue: number | null) => {
     e.preventDefault()
     if (gauge === 0) return
 
-    const updated = gauge - (gauge >= 80 || gauge <= 20 ? 1 : 2)
+    // const updated = newValue || gauge - (gauge >= 80 || gauge <= 20 ? 1 : 2)
+    const updated = newValue || gauge - 1
     setGauge(updated)
-    setBnbValue(((user.balance * updated) / 100).toFixed(4))
+    setBnbValue(((user.balance * updated) / 100).toFixed(6))
+  }
+  const handleGaugeDecreaseEvent = (e: { preventDefault: () => void }) => {
+    handleGaugeIncrease(e, null)
+  }
+
+  const handleChange = (_event: Event, newValue: number) => {
+    if (newValue > gauge) handleGaugeIncrease(_event, newValue)
+    else handleGaugeDecrease(_event, newValue)
   }
 
   const handleOpenDialog = () => {
@@ -140,6 +195,7 @@ function AddFundsForm({ user, handleCloseForm }) {
 
   const handleCloseDialog = () => {
     setOpenDialog(false)
+    setPending(false)
   }
 
   const sumbitAddFunds = async () => {
@@ -150,6 +206,8 @@ function AddFundsForm({ user, handleCloseForm }) {
     if (!provider) return
 
     if (+bnbValue === 0) return
+
+    setPending(true)
 
     const signer = provider.getSigner()
 
@@ -170,7 +228,7 @@ function AddFundsForm({ user, handleCloseForm }) {
         TransitionComponent: Zoom,
       })
     } catch (error) {
-      enqueueSnackbar(t('Unexpected error during transaction.'), {
+      enqueueSnackbar(t('Unexpected error during transaction. Please verify your MetaMask account and retry.'), {
         variant: 'error',
         TransitionComponent: Zoom,
       })
@@ -204,12 +262,27 @@ function AddFundsForm({ user, handleCloseForm }) {
                   {bnbValue} BNB
                 </Typography>
               </Box>
-              <LinearProgressWrapper value={gauge} color="primary" variant="determinate" />
+              {/* <LinearProgressWrapper value={gauge} color="primary" variant="determinate" /> */}
+
+              <Box px={1}>
+                <SliderWrapper
+                  aria-label="Amount"
+                  defaultValue={30}
+                  value={gauge}
+                  valueLabelDisplay="auto"
+                  // step={5}
+                  // marks
+                  min={0}
+                  max={100}
+                  onChange={handleChange}
+                />
+              </Box>
+
               <BoxButtons px={3} py={2}>
-                <IconButtonIncrement onClick={handleGaugeDecrease}>
+                <IconButtonIncrement onClick={handleGaugeDecreaseEvent}>
                   <RemoveTwoToneIcon fontSize="medium" />
                 </IconButtonIncrement>
-                <IconButtonIncrement onClick={handleGaugeIncrease}>
+                <IconButtonIncrement onClick={handleGaugeIncreaseEvent}>
                   <AddTwoToneIcon fontSize="medium" />
                 </IconButtonIncrement>
               </BoxButtons>
@@ -277,9 +350,12 @@ function AddFundsForm({ user, handleCloseForm }) {
             )}
           </Typography>
 
-          <Button fullWidth size="large" variant="contained" onClick={sumbitAddFunds}>
+          {/* <Button fullWidth size="large" variant="contained" onClick={sumbitAddFunds}>
             {t('Add funds')}
-          </Button>
+          </Button> */}
+          <LoadingButton fullWidth onClick={sumbitAddFunds} loading={pending} variant="contained" color="primary">
+            {t('Add funds')}
+          </LoadingButton>
         </Box>
       </DialogWrapper>
     </>

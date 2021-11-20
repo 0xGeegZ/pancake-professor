@@ -166,6 +166,7 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
       {/* FIX HEADER ON SCROLL */}
       {/* <Sidebar fetching={fetching} error={error} allMenuItems={allMenuItems} /> */}
       {/* {process.env.NODE_ENV === 'development' && <Banner networkId={user?.networkId} />} */}
+      {/* {user?.networkId && <Banner networkId={user?.networkId} />} */}
       <Banner networkId={user?.networkId} />
       <Sidebar
         fetching={fetching}
