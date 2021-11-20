@@ -16,6 +16,7 @@ export interface Mutation {
     createStripeCheckoutSession?: Scalars['String']
     deleteStrategie?: Strategie
     inviteToProject?: Scalars['Boolean']
+    removeFunds?: User
     toogleActivateStrategie?: Strategie
     toogleIsActivated?: User
     updateStrategie?: Strategie
@@ -90,6 +91,7 @@ export interface MutationRequest{
     createStripeCheckoutSession?: [{plan: PaidPlan,projectId: Scalars['String']}]
     deleteStrategie?: [{id: Scalars['String']},StrategieRequest]
     inviteToProject?: [{email: Scalars['String'],projectId: Scalars['String']}]
+    removeFunds?: [{id: Scalars['String'],value: Scalars['String']},UserRequest]
     toogleActivateStrategie?: [{id: Scalars['String']},StrategieRequest]
     toogleIsActivated?: [{id: Scalars['String']},UserRequest]
     updateStrategie?: [{id: Scalars['String'],isActive?: (Scalars['Boolean'] | null),isDeleted?: (Scalars['Boolean'] | null),isError?: (Scalars['Boolean'] | null),isRunning?: (Scalars['Boolean'] | null),maxLooseAmount?: (Scalars['Float'] | null),minWinAmount?: (Scalars['Float'] | null),player?: (Scalars['String'] | null),playsCount?: (Scalars['Int'] | null),roundsCount?: (Scalars['Int'] | null)},StrategieRequest]
@@ -211,6 +213,7 @@ export interface MutationPromiseChain{
     createStripeCheckoutSession: ((args: {plan: PaidPlan,projectId: Scalars['String']}) => {get: (request?: boolean|number, defaultValue?: (Scalars['String'] | undefined)) => Promise<(Scalars['String'] | undefined)>}),
     deleteStrategie: ((args: {id: Scalars['String']}) => StrategiePromiseChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Promise<(FieldsSelection<Strategie, R> | undefined)>}),
     inviteToProject: ((args: {email: Scalars['String'],projectId: Scalars['String']}) => {get: (request?: boolean|number, defaultValue?: (Scalars['Boolean'] | undefined)) => Promise<(Scalars['Boolean'] | undefined)>}),
+    removeFunds: ((args: {id: Scalars['String'],value: Scalars['String']}) => UserPromiseChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Promise<(FieldsSelection<User, R> | undefined)>}),
     toogleActivateStrategie: ((args: {id: Scalars['String']}) => StrategiePromiseChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Promise<(FieldsSelection<Strategie, R> | undefined)>}),
     toogleIsActivated: ((args: {id: Scalars['String']}) => UserPromiseChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Promise<(FieldsSelection<User, R> | undefined)>}),
     updateStrategie: ((args: {id: Scalars['String'],isActive?: (Scalars['Boolean'] | null),isDeleted?: (Scalars['Boolean'] | null),isError?: (Scalars['Boolean'] | null),isRunning?: (Scalars['Boolean'] | null),maxLooseAmount?: (Scalars['Float'] | null),minWinAmount?: (Scalars['Float'] | null),player?: (Scalars['String'] | null),playsCount?: (Scalars['Int'] | null),roundsCount?: (Scalars['Int'] | null)}) => StrategiePromiseChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Promise<(FieldsSelection<Strategie, R> | undefined)>}),
@@ -225,6 +228,7 @@ export interface MutationObservableChain{
     createStripeCheckoutSession: ((args: {plan: PaidPlan,projectId: Scalars['String']}) => {get: (request?: boolean|number, defaultValue?: (Scalars['String'] | undefined)) => Observable<(Scalars['String'] | undefined)>}),
     deleteStrategie: ((args: {id: Scalars['String']}) => StrategieObservableChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Observable<(FieldsSelection<Strategie, R> | undefined)>}),
     inviteToProject: ((args: {email: Scalars['String'],projectId: Scalars['String']}) => {get: (request?: boolean|number, defaultValue?: (Scalars['Boolean'] | undefined)) => Observable<(Scalars['Boolean'] | undefined)>}),
+    removeFunds: ((args: {id: Scalars['String'],value: Scalars['String']}) => UserObservableChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Observable<(FieldsSelection<User, R> | undefined)>}),
     toogleActivateStrategie: ((args: {id: Scalars['String']}) => StrategieObservableChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Observable<(FieldsSelection<Strategie, R> | undefined)>}),
     toogleIsActivated: ((args: {id: Scalars['String']}) => UserObservableChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Observable<(FieldsSelection<User, R> | undefined)>}),
     updateStrategie: ((args: {id: Scalars['String'],isActive?: (Scalars['Boolean'] | null),isDeleted?: (Scalars['Boolean'] | null),isError?: (Scalars['Boolean'] | null),isRunning?: (Scalars['Boolean'] | null),maxLooseAmount?: (Scalars['Float'] | null),minWinAmount?: (Scalars['Float'] | null),player?: (Scalars['String'] | null),playsCount?: (Scalars['Int'] | null),roundsCount?: (Scalars['Int'] | null)}) => StrategieObservableChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Observable<(FieldsSelection<Strategie, R> | undefined)>}),

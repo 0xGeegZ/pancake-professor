@@ -94,6 +94,19 @@ module.exports = {
                     ]
                 }
             ],
+            "removeFunds": [
+                11,
+                {
+                    "id": [
+                        2,
+                        "String!"
+                    ],
+                    "value": [
+                        2,
+                        "String!"
+                    ]
+                }
+            ],
             "toogleActivateStrategie": [
                 9,
                 {

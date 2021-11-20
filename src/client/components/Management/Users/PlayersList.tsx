@@ -171,11 +171,12 @@ const PlayersList: FC = () => {
       try {
         const lisPaused = await ppreditionContract.paused()
         if (lisPaused) {
-          enqueueSnackbar(t(`Contract is paused.`), {
-            variant: 'warning',
+          enqueueSnackbar(t(`Contract is actually paused`), {
+            variant: 'error',
             TransitionComponent: Zoom,
           })
-          return
+          // setFetching(false)
+          // return
         }
         const epoch = await ppreditionContract.currentEpoch()
 
@@ -186,6 +187,7 @@ const PlayersList: FC = () => {
         setFetching(false)
       } catch (err) {
         setHasError(true)
+        setFetching(false)
       }
     },
     [fetching, enqueueSnackbar, t]
@@ -642,7 +644,7 @@ const PlayersList: FC = () => {
                           ) : (
                             <>
                               <Box>
-                                <Box sx={{ p: 4 }}>
+                                <Box sx={{ px: 4, pt: 4, pb: 2 }}>
                                   <Typography variant="h3">
                                     <Link
                                       underline="hover"
@@ -662,64 +664,65 @@ const PlayersList: FC = () => {
                                     </Typography>
                                   )}
                                 </Box>
-                                {player.recentGames ? (
-                                  <>
-                                    <Divider />
-                                    <Box sx={{ pr: 2, pl: 2, pt: 1, pb: 1 }}>
-                                      <Grid spacing={2} container>
-                                        <Grid item xs={12} sm={4}>
+                                <Divider />
+                                <Box sx={{ px: 4, py: 2 }}>
+                                  <Grid spacing={2} container>
+                                    <Grid item xs={12} sm={7}>
+                                      <Typography variant="caption" sx={{ pb: 1 }} component="div">
+                                        {t('WinRate')}(%)
+                                      </Typography>
+                                      <Box>
+                                        <Typography
+                                          color="text.primary"
+                                          variant="h2"
+                                          sx={{ pr: 0.5, display: 'inline-flex' }}>
+                                          {parseInt(player.winRate.toString(), 10)}
+                                        </Typography>
+                                        <Typography
+                                          color="text.secondary"
+                                          variant="h4"
+                                          sx={{ pr: 2, display: 'inline-flex' }}>
+                                          /100
+                                        </Typography>
+                                        <LinearProgressWrapper
+                                          value={+player.winRate}
+                                          color={
+                                            (+player.winRate * 100) / 100 >= 60
+                                              ? 'success'
+                                              : (+player.winRate * 100) / 100 >= 55
+                                              ? 'warning'
+                                              : 'error'
+                                          }
+                                          variant="determinate"
+                                        />
+                                      </Box>
+                                    </Grid>
+                                    <Grid item xs={12} sm={5}>
+                                      <Typography variant="caption" sx={{ pb: 1.5 }} component="div">
+                                        {t('Total Bets')}
+                                      </Typography>
+                                      <Box display="flex" alignItems="center">
+                                        <DotLegend
+                                          style={{
+                                            background:
+                                              +player.totalBets >= 250
+                                                ? theme.colors.success.main
+                                                : +player.totalBets >= 100
+                                                ? theme.colors.warning.main
+                                                : theme.colors.error.main,
+                                          }}
+                                        />
+                                        <Typography variant="h3" sx={{ pl: 1 }} component="div">
+                                          {player.totalBets}
+                                        </Typography>
+                                      </Box>
+                                    </Grid>
+
+                                    {player.recentGames && (
+                                      <>
+                                        <Grid item xs={12} sm={7}>
                                           <Typography variant="caption" sx={{ pb: 1 }} component="div">
-                                            {t('WinRate')}(%)
-                                          </Typography>
-                                          <Box>
-                                            <Typography
-                                              color="text.primary"
-                                              variant="h2"
-                                              sx={{ pr: 0.5, display: 'inline-flex' }}>
-                                              {parseInt(player.winRate.toString(), 10)}
-                                            </Typography>
-                                            <Typography
-                                              color="text.secondary"
-                                              variant="h4"
-                                              sx={{ pr: 2, display: 'inline-flex' }}>
-                                              /100
-                                            </Typography>
-                                            <LinearProgressWrapper
-                                              value={+player.winRate}
-                                              color={
-                                                (+player.winRate * 100) / 100 >= 60
-                                                  ? 'success'
-                                                  : (+player.winRate * 100) / 100 >= 55
-                                                  ? 'warning'
-                                                  : 'error'
-                                              }
-                                              variant="determinate"
-                                            />
-                                          </Box>
-                                        </Grid>
-                                        <Grid item xs={12} sm={4}>
-                                          <Typography variant="caption" sx={{ pb: 1.5 }} component="div">
-                                            {t('Total Bets')}
-                                          </Typography>
-                                          <Box display="flex" alignItems="center">
-                                            <DotLegend
-                                              style={{
-                                                background:
-                                                  +player.totalBets > 250
-                                                    ? theme.colors.success.main
-                                                    : +player.totalBets > 100
-                                                    ? theme.colors.warning.main
-                                                    : theme.colors.error.main,
-                                              }}
-                                            />
-                                            <Typography variant="h3" sx={{ pl: 1 }} component="div">
-                                              {player.totalBets}
-                                            </Typography>
-                                          </Box>
-                                        </Grid>
-                                        <Grid item xs={12} sm={4}>
-                                          <Typography variant="caption" sx={{ pb: 1 }} component="div">
-                                            {t(`Last ${denominatorValue / 12}`)}(%)
+                                            {t(`Last ${denominatorValue / 12}H`)}(%)
                                           </Typography>
                                           <Box>
                                             <Typography
@@ -747,68 +750,33 @@ const PlayersList: FC = () => {
                                             />
                                           </Box>
                                         </Grid>
-                                      </Grid>
-                                    </Box>
-                                  </>
-                                ) : (
-                                  <>
-                                    <Divider />
-                                    <Box sx={{ p: 2 }}>
-                                      <Grid spacing={2} container>
-                                        <Grid item xs={12} sm={7}>
-                                          <Typography variant="caption" sx={{ pb: 1 }} component="div">
-                                            {t('WinRate')}(%)
-                                          </Typography>
-                                          <Box>
-                                            <Typography
-                                              color="text.primary"
-                                              variant="h2"
-                                              sx={{ pr: 0.5, display: 'inline-flex' }}>
-                                              {parseInt(player.winRate.toString(), 10)}
-                                            </Typography>
-                                            <Typography
-                                              color="text.secondary"
-                                              variant="h4"
-                                              sx={{ pr: 2, display: 'inline-flex' }}>
-                                              /100
-                                            </Typography>
-                                            <LinearProgressWrapper
-                                              value={+player.winRate}
-                                              color={
-                                                (+player.winRate * 100) / 100 >= 60
-                                                  ? 'success'
-                                                  : (+player.winRate * 100) / 100 >= 55
-                                                  ? 'warning'
-                                                  : 'error'
-                                              }
-                                              variant="determinate"
-                                            />
-                                          </Box>
-                                        </Grid>
                                         <Grid item xs={12} sm={5}>
                                           <Typography variant="caption" sx={{ pb: 1.5 }} component="div">
-                                            {t('Total Bets')}
+                                            {t(`Last ${denominatorValue / 12}H Bets`)}
                                           </Typography>
                                           <Box display="flex" alignItems="center">
-                                            <DotLegend
+                                            {/* <DotLegend
                                               style={{
                                                 background:
-                                                  +player.totalBets >= 250
+                                                  +player.recentGames >= 250
                                                     ? theme.colors.success.main
                                                     : +player.totalBets >= 100
                                                     ? theme.colors.warning.main
                                                     : theme.colors.error.main,
                                               }}
-                                            />
-                                            <Typography variant="h3" sx={{ pl: 1 }} component="div">
-                                              {player.totalBets}
+                                            /> */}
+                                            <Typography variant="h4" sx={{ pl: 1 }} component="div">
+                                              {+player.recentGames}/{denominatorValue}{' '}
+                                              <sup>
+                                                ({parseInt(`${(+player.recentGames * 100) / denominatorValue}`, 10)}%)
+                                              </sup>
                                             </Typography>
                                           </Box>
                                         </Grid>
-                                      </Grid>
-                                    </Box>
-                                  </>
-                                )}
+                                      </>
+                                    )}
+                                  </Grid>
+                                </Box>
                               </Box>
 
                               <Divider />

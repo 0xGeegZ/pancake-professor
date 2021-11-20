@@ -71,7 +71,11 @@ function AllStrategies({ strategies }) {
   const getActiveSinceFromStrategies = () => {
     if (!strategies.length) return 0
 
-    const dates = strategies.map((s) => new Date(s.createdAt)).sort((a, b) => a.getTime() - b.getTime())
+    const filtereds = strategies.filter((s) => s.isActive)
+
+    if (!filtereds.length) return 0
+
+    const dates = filtereds.map((s) => new Date(s.createdAt)).sort((a, b) => a.getTime() - b.getTime())
 
     const lastDate = dates[0]
 
@@ -97,16 +101,17 @@ function AllStrategies({ strategies }) {
 
     if (!strategies) return
 
-    const totalBnb = strategies
+    const filtereds = strategies.filter((s) => !s.isDeleted)
+    const totalBnb = filtereds
       .map((s) => s.currentAmount)
       .reduce((acc, num) => acc + num, 0)
       .toFixed(4)
 
     if (+totalBnb === 0) return
 
-    const amountsPercent = strategies.map((s) => parseInt(`${(s.currentAmount * 100) / totalBnb}`, 10))
-    const amountsValue = strategies.map((s) => +s.currentAmount.toFixed(2))
-    const labels = strategies.map((s) => s.player.substring(0, 10))
+    const amountsPercent = filtereds.map((s) => parseInt(`${(s.currentAmount * 100) / totalBnb}`, 10))
+    const amountsValue = filtereds.map((s) => +s.currentAmount.toFixed(2))
+    const labels = filtereds.map((s) => s.player.substring(0, 10))
     const ldata = {
       datasets: [
         {
@@ -169,7 +174,7 @@ function AllStrategies({ strategies }) {
           <Grid spacing={3} container>
             <Grid xs={12} sm item>
               <Typography variant="caption" gutterBottom>
-                {t('Strategies')}
+                {t('Actives strategies')}
               </Typography>
               <Typography variant="h3" gutterBottom>
                 {getActivesStrategiesCount()}
