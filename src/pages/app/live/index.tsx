@@ -216,7 +216,7 @@ const LiveView = () => {
           variant: 'error',
           TransitionComponent: Zoom,
         })
-        return
+        // return
       }
 
       const lepoch = await ppreditionContract.currentEpoch()

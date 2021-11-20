@@ -24,7 +24,7 @@ function Dashboard() {
 
   // const [{ data, fetching, error }] = useGetCurrentUserQuery()
   // const [{ data }] = useGetCurrentUserQuery()
-  const { user } = useGlobalStore()
+  const { user, fetching } = useGlobalStore()
 
   // const router = useRouter()
   // const [user, setUser] = useState<any>(null)
@@ -137,7 +137,7 @@ function Dashboard() {
             <ActiveStrategiesOverview strategies={user?.strategies} />
           </Grid> */}
           <Grid item xs={12}>
-            <ActiveStrategies strategies={user?.strategies} />
+            <ActiveStrategies strategies={user?.strategies} fetching={fetching} />
           </Grid>
           {/* <Grid item md={6} xs={12}>
             <AllStrategiesResume />

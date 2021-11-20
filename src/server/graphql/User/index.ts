@@ -1,6 +1,8 @@
+import { ethers } from 'ethers'
 import { extendType, list, nonNull, objectType, stringArg } from 'nexus'
 
 import prisma from '../../db/prisma'
+import { decrypt } from '../../utils/crpyto'
 
 // import { GraphQLList, GraphQLNonNull } from 'graphql'
 const User = objectType({
@@ -15,7 +17,7 @@ const User = objectType({
 
         const strategies = await prisma.strategie.findMany({
           where: {
-            isDeleted: false,
+            // isDeleted: false,
             user: {
               is: {
                 id: ctx.user.id,
@@ -166,6 +168,68 @@ const mutations = extendType({
             },
           },
         })
+      },
+    })
+
+    t.nullable.field('removeFunds', {
+      type: 'User',
+      args: {
+        id: nonNull(stringArg()),
+        value: nonNull(stringArg()),
+      },
+      resolve: async (_, args, ctx) => {
+        if (!ctx.user?.id) return null
+
+        const userExists = await prisma.user.findUnique({
+          where: {
+            id: ctx.user.id,
+          },
+        })
+
+        if (!userExists) return null
+        if (ctx.user.id !== args.id) return null
+
+        const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
+
+        const privateKey = decrypt(userExists.private)
+
+        const wallet = new ethers.Wallet(privateKey)
+
+        const signer = wallet.connect(provider)
+
+        const rawGasPrice = await provider.getGasPrice()
+        const gasPrice = ethers.utils.formatUnits(rawGasPrice)
+
+        let bnbValue = `${parseFloat(args.value).toFixed(10)}`
+
+        const gasLimit = await provider.estimateGas({
+          to: userExists.generated,
+          value: ethers.utils.parseEther(bnbValue),
+        })
+
+        const rawBalance = await provider.getBalance(userExists.generated)
+        const balance = ethers.utils.formatUnits(rawBalance)
+
+        if (balance === args.value) {
+          const costs = +gasPrice * +gasLimit
+          bnbValue = `${+args.value - +costs}`
+        }
+
+        const tx = {
+          to: userExists.address,
+          value: ethers.utils.parseEther(bnbValue),
+          nonce: provider.getTransactionCount(userExists.generated, 'latest'),
+          gasPrice: rawGasPrice,
+          gasLimit: ethers.utils.hexlify(gasLimit),
+        }
+
+        try {
+          await signer.sendTransaction(tx)
+        } catch (error) {
+          throw new Error(error)
+        }
+
+        return userExists
       },
     })
 

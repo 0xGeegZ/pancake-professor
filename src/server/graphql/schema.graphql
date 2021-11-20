@@ -12,6 +12,7 @@ type Mutation {
   createStripeCheckoutSession(plan: PaidPlan!, projectId: String!): String
   deleteStrategie(id: String!): Strategie
   inviteToProject(email: String!, projectId: String!): Boolean
+  removeFunds(id: String!, value: String!): User
   toogleActivateStrategie(id: String!): Strategie
   toogleIsActivated(id: String!): User
   updateStrategie(id: String!, isActive: Boolean, isDeleted: Boolean, isError: Boolean, isRunning: Boolean, maxLooseAmount: Float, minWinAmount: Float, player: String, playsCount: Int, roundsCount: Int): Strategie

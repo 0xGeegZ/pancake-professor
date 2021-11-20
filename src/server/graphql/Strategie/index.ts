@@ -267,44 +267,48 @@ const mutations = extendType({
             isRunning: false,
             isNeedRestart: false,
             isDeleted: true,
+            currentAmount: 0.0,
           },
         })
 
-        const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
-
-        const privateKey = decrypt(strategie.private)
-
-        const wallet = new ethers.Wallet(privateKey)
-
-        const signer = wallet.connect(provider)
-
-        const rawGasPrice = await provider.getGasPrice()
-        const rawBalance = await provider.getBalance(strategie.generated)
-
-        const balance = ethers.utils.formatUnits(rawBalance)
-        const gasPrice = ethers.utils.formatUnits(rawGasPrice)
-        const gasLimit = await provider.estimateGas({
-          to: user.generated,
-          value: ethers.utils.parseEther(balance),
-        })
-
-        const costs = +gasPrice * +gasLimit
-        const value = `${+balance - +costs}`
-
-        const tx = {
-          to: user.generated,
-          value: ethers.utils.parseEther(value),
-          nonce: provider.getTransactionCount(strategie.generated, 'latest'),
-          gasPrice: rawGasPrice,
-          gasLimit: ethers.utils.hexlify(gasLimit),
-        }
-
         try {
-          await signer.sendTransaction(tx)
+          const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
+
+          const privateKey = decrypt(strategie.private)
+
+          const wallet = new ethers.Wallet(privateKey)
+
+          const signer = wallet.connect(provider)
+
+          const rawGasPrice = await provider.getGasPrice()
+          const rawBalance = await provider.getBalance(strategie.generated)
+
+          const balance = ethers.utils.formatUnits(rawBalance)
+
+          if (balance !== '0.0') {
+            const gasPrice = ethers.utils.formatUnits(rawGasPrice)
+            const gasLimit = await provider.estimateGas({
+              to: user.generated,
+              value: ethers.utils.parseEther(balance),
+            })
+
+            const costs = +gasPrice * +gasLimit
+            const value = `${+balance - +costs}`
+            const tx = {
+              to: user.generated,
+              value: ethers.utils.parseEther(value),
+              nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+              gasPrice: rawGasPrice,
+              gasLimit: ethers.utils.hexlify(gasLimit),
+            }
+
+            await signer.sendTransaction(tx)
+          }
         } catch (error) {
           await prisma.strategie.update({
             where: { id },
             data: {
+              currentAmount: hasAccess.currentAmount,
               isActive: hasAccess.isActive,
               isRunning: hasAccess.isRunning,
               isDeleted: hasAccess.isDeleted,

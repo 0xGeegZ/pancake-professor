@@ -1,5 +1,5 @@
 import InfoIcon from '@mui/icons-material/Info'
-import { Box, Button, Card, Divider, Grid, IconButton, Tooltip, Typography } from '@mui/material'
+import { Box, Button, Card, Divider, Grid, IconButton, Link, Tooltip, Typography } from '@mui/material'
 import { ethers } from 'ethers'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
@@ -80,9 +80,15 @@ function AccountBalance({ user }) {
                 <Box sx={{ py: 2 }}>
                   <Grid container display="flex" alignItems="center">
                     <Grid item>
-                      <Typography variant="h2" gutterBottom>
-                        {parseFloat(user?.balance || 0).toFixed(4)} BNB
-                      </Typography>
+                      <Link
+                        variant="h5"
+                        href={`https://bscscan.com/address/${user?.address}`}
+                        target="_blank"
+                        underline="hover">
+                        <Typography variant="h2" gutterBottom>
+                          {parseFloat(user?.balance || 0).toFixed(4)} BNB
+                        </Typography>
+                      </Link>
                     </Grid>
                     <Grid item>
                       <Tooltip placement="right-end" title={t('Amount for main address')} arrow>
@@ -94,9 +100,15 @@ function AccountBalance({ user }) {
                   </Grid>
                   <Grid container display="flex" alignItems="center">
                     <Grid item>
-                      <Typography variant="h4" fontWeight="normal" color="text.secondary">
-                        {parseFloat(user?.generatedBalance || 0).toFixed(4)} BNB
-                      </Typography>
+                      <Link
+                        variant="h5"
+                        href={`https://bscscan.com/address/${user?.generated}`}
+                        target="_blank"
+                        underline="hover">
+                        <Typography variant="h4" fontWeight="normal" color="text.secondary">
+                          {parseFloat(user?.generatedBalance || 0).toFixed(4)} BNB
+                        </Typography>
+                      </Link>
                     </Grid>
                     <Grid item>
                       <Tooltip placement="right-end" title={t('Amount from secondary address')} arrow>
@@ -164,12 +176,15 @@ function AccountBalance({ user }) {
 
 AccountBalance.propTypes = {
   user: PropTypes.shape({
+    address: PropTypes.string,
+    generatedBalance: PropTypes.string,
     balance: PropTypes.string,
+    generated: PropTypes.string,
   }),
 }
 
 AccountBalance.defaultProps = {
-  user: { balance: '0' },
+  user: { balance: '0', generatedBalance: '0', address: '', generated: '' },
 }
 
 export default AccountBalance

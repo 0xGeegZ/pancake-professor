@@ -1,6 +1,7 @@
 const BlocknativeSdk = require('bnc-sdk')
 const { ethers } = require('ethers')
 const WebSocket = require('ws')
+const { sleep } = require('../../utils/utils')
 
 const { PREDICTION_CONTRACT_ABI } = require('../../../../src/contracts/abis/pancake-prediction-abi-v3')
 
@@ -16,6 +17,9 @@ const CLAIM_BEAR_METHOD_ID = '0x6ba4c138'
 
 const MAX_BET_AMOUNT = 0.1
 const MIN_BET_AMOUNT = 0.001
+
+const SAFE_GAS_PRICE = 5
+const FAST_GAS_PRICE = 6
 
 const options = {
   dappId: process.env.BLOCKNATIVE_API_KEY,
@@ -102,9 +106,9 @@ const launchStrategie = async (payload) => {
 
       const tx = await preditionContract[betBullOrBear](epoch.toString(), {
         value: ethers.utils.parseEther(amount),
-        gasPrice,
         nonce: provider.getTransactionCount(strategie.generated, 'latest'),
-        // gasPrice: ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString(),
+        // gasPrice,
+        gasPrice: ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString(),
         gasLimit: ethers.utils.hexlify(250000),
       })
 
@@ -251,6 +255,11 @@ const launchStrategie = async (payload) => {
       },
     })
 
+    console.log(
+      '🚀 ~ file: index.js ~ line 258 ~ roundEndListenner ~ isUpdatedStrategie.isNeedRestart',
+      isUpdatedStrategie.isNeedRestart
+    )
+
     if (isUpdatedStrategie.isNeedRestart) {
       logger.error('[PLAYING] Strategie need to be restarted.')
       await prisma.strategie.update({
@@ -329,6 +338,8 @@ const launchStrategie = async (payload) => {
 
     try {
       await tx.wait()
+      //Wait for last transaction to be proceed.
+      await sleep(10 * 1000)
     } catch (error) {
       logger.error(`[CLAIM] Claim Tx Error for user ${user.id} and epochs ${claimablesEpochs}`)
       logger.error(error.message)
@@ -361,7 +372,7 @@ const launchStrategie = async (payload) => {
 
     const initialBankrollBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
-    strategie.betAmount = +(strategie.currentAmount / 11).toFixed(4)
+    strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
     strategie.playedHashs = []
     strategie.playedEpochs = []
 
