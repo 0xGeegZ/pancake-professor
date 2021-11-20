@@ -2,6 +2,7 @@ import 'moment-timezone'
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import CloseIcon from '@mui/icons-material/Close'
+import InfoIcon from '@mui/icons-material/Info'
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
 import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
 import LoadingButton from '@mui/lab/LoadingButton'
@@ -22,6 +23,7 @@ import {
   Divider,
   Grid,
   IconButton,
+  InputAdornment,
   LinearProgress,
   Link,
   List,
@@ -459,7 +461,13 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
   }
 
   const onSubmit = async (_values, { resetForm, setErrors, setStatus, setSubmitting }) => {
-    const { player } = _values
+    const { player, stopLoss, takeProfit } = _values
+    console.log('🚀 ~ file: ActiveStrategies.tsx ~ line 465 ~ onSubmit ~ takeProfit', takeProfit)
+    console.log('🚀 ~ file: ActiveStrategies.tsx ~ line 465 ~ onSubmit ~ stopLoss', stopLoss)
+    console.log(
+      '🚀 ~ file: ActiveStrategies.tsx ~ line 465 ~ onSubmit ~ activeStrategie.startedAmount',
+      activeStrategie.startedAmount
+    )
 
     try {
       ethers.utils.getAddress(player)
@@ -470,8 +478,27 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
       return
     }
 
+    if (+takeProfit <= 110) {
+      enqueueSnackbar(t('Take Profit need to be greather than 110%.'), {
+        variant: 'error',
+      })
+      return
+    }
+
+    if (+stopLoss < 10) {
+      enqueueSnackbar(t('Stop Loss need to be greather or equal to 10%.'), {
+        variant: 'error',
+      })
+      return
+    }
+
+    const maxLooseAmount = +((stopLoss * activeStrategie.startedAmount) / 100).toFixed(4)
+    console.log('🚀 ~ file: ActiveStrategies.tsx ~ line 476 ~ onSubmit ~ maxLooseAmount', maxLooseAmount)
+    const minWinAmount = +((takeProfit * activeStrategie.startedAmount) / 100).toFixed(4)
+    console.log('🚀 ~ file: ActiveStrategies.tsx ~ line 478 ~ onSubmit ~ minWinAmount', minWinAmount)
+
     try {
-      const { error } = await updateStrategie({ id: activeStrategie.id, player })
+      const { error } = await updateStrategie({ id: activeStrategie.id, player, maxLooseAmount, minWinAmount })
 
       if (error) throw new Error(error.message)
 
@@ -483,7 +510,11 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
 
       const updateds = strategies.map((s) => {
         const updated = s
-        if (updated.id === activeStrategie.id) updated.player = player
+        if (updated.id === activeStrategie.id) {
+          updated.player = player
+          updated.maxLooseAmount = maxLooseAmount
+          updated.minWinAmount = minWinAmount
+        }
 
         return updated
       })
@@ -759,8 +790,28 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                                 {parseInt(`${(+strategie.currentAmount * 100) / strategie.startedAmount - 100}`, 10)}%)
                               </Typography>
                             </Grid>
+                            {strategie.maxLooseAmount && strategie.minWinAmount ? (
+                              <Grid item xs={12}>
+                                <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
+                                  {t('Started Amount ')} <b>{strategie.startedAmount} BNB</b>
+                                </Typography>
+                                {strategie.maxLooseAmount && (
+                                  <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
+                                    {t('Stop Loss if less than ')} <b>{strategie.maxLooseAmount} BNB</b>
+                                  </Typography>
+                                )}
+                                {strategie.minWinAmount && (
+                                  <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
+                                    {t('Take profit if more than ')} <b>{strategie.minWinAmount} BNB</b>
+                                  </Typography>
+                                )}
+                              </Grid>
+                            ) : (
+                              <></>
+                            )}
                           </Grid>
                         </Box>
+
                         <Box sx={{ py: 1, pt: 0.5 }}>
                           <Grid spacing={1} container>
                             <Grid item xs={12}>
@@ -831,12 +882,21 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
         </DialogTitle>
         <Formik
           initialValues={{
-            // player: activeStrategie?.player || '',
-            player: '',
+            player: activeStrategie?.player || '',
+            // player: '',
+            // stopLoss: activeStrategie?.maxLooseAmount || 30,
+            stopLoss: activeStrategie?.maxLooseAmount
+              ? parseInt(`${(activeStrategie?.maxLooseAmount * 100) / activeStrategie?.startedAmount}`, 10)
+              : 30,
+            takeProfit: activeStrategie?.minWinAmount
+              ? parseInt(`${(activeStrategie?.minWinAmount * 100) / activeStrategie?.startedAmount}`, 10)
+              : 150,
             submit: null,
           }}
           validationSchema={Yup.object().shape({
             player: Yup.string().max(255).required(t('The player field is required')),
+            stopLoss: Yup.number().min(10).required(t('The stopLoss field is required')),
+            takeProfit: Yup.number().min(110).required(t('The takeProfit field is required')),
           })}
           onSubmit={onSubmit}>
           {({ errors, handleBlur, handleChange: handleChangeForm, handleSubmit, isSubmitting, touched, values }) => (
@@ -847,9 +907,9 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                     <Grid container spacing={3}>
                       <Grid item xs={12}>
                         <TextField
-                          error={Boolean(touched.name && errors.name)}
+                          error={Boolean(touched.player && errors.player)}
                           fullWidth
-                          helperText={touched.name && errors.name}
+                          helperText={touched.player && errors.player}
                           label={t('Player')}
                           name="player"
                           onBlur={handleBlur}
@@ -857,6 +917,83 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                           value={values.player}
                           variant="outlined"
                         />
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Box sx={{ textAlign: 'center' }} py={1}>
+                          <Grid container display="flex" alignItems="center">
+                            <Grid item xs={11}>
+                              <TextField
+                                error={Boolean(touched.stopLoss && errors.stopLoss)}
+                                fullWidth
+                                type="number"
+                                helperText={touched.stopLoss && errors.stopLoss}
+                                label={t('Stop Loss')}
+                                name="stopLoss"
+                                onBlur={handleBlur}
+                                onChange={handleChangeForm}
+                                value={values.stopLoss}
+                                variant="outlined"
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                InputProps={{
+                                  endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                                }}
+                              />
+                            </Grid>
+                            <Grid item xs={1}>
+                              <Tooltip
+                                placement="bottom-end"
+                                title={`${
+                                  t('Stop if strategie loose more than ') + values.stopLoss
+                                }% of started bankroll`}
+                                arrow>
+                                <IconButton color="secondary" size="small">
+                                  <InfoIcon fontSize="small" />
+                                </IconButton>
+                              </Tooltip>
+                            </Grid>
+                          </Grid>
+                        </Box>
+                      </Grid>
+
+                      <Grid item xs={6}>
+                        <Box sx={{ textAlign: 'center' }} py={1}>
+                          <Grid container display="flex" alignItems="center">
+                            <Grid item xs={11}>
+                              <TextField
+                                error={Boolean(touched.takeProfit && errors.takeProfit)}
+                                fullWidth
+                                type="number"
+                                helperText={touched.takeProfit && errors.takeProfit}
+                                label={t('Take Profit')}
+                                name="takeProfit"
+                                onBlur={handleBlur}
+                                onChange={handleChangeForm}
+                                value={values.takeProfit}
+                                variant="outlined"
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                InputProps={{
+                                  endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                                }}
+                              />
+                            </Grid>
+                            <Grid item xs={1}>
+                              <Tooltip
+                                placement="bottom-end"
+                                title={`${
+                                  t('Stop if strategie won more than ') + values.takeProfit
+                                }% of started bankroll`}
+                                arrow>
+                                <IconButton color="secondary" size="small">
+                                  <InfoIcon fontSize="small" />
+                                </IconButton>
+                              </Tooltip>
+                            </Grid>
+                          </Grid>
+                        </Box>
                       </Grid>
                     </Grid>
                   </Grid>

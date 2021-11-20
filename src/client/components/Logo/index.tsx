@@ -1,7 +1,7 @@
 import { Box, Hidden, Tooltip } from '@mui/material'
-import Link from 'src/client/components/Link'
 import { styled } from '@mui/material/styles'
 import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
 
 const LogoWrapper = styled(Link)(
   ({ theme }) => `
@@ -110,8 +110,8 @@ function Logo() {
       </LogoSignWrapper>
       <Hidden smDown>
         <LogoTextWrapper>
-          <Tooltip title={`${t('Version')} 0.0.1`} arrow placement="right">
-            <VersionBadge>0.0.1</VersionBadge>
+          <Tooltip title={`${t('Version')} 0.0.2`} arrow placement="right">
+            <VersionBadge>0.0.2</VersionBadge>
           </Tooltip>
           <LogoText>Pancake Professor</LogoText>
         </LogoTextWrapper>

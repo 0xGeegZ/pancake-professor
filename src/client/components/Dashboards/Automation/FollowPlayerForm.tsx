@@ -167,7 +167,7 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
     setStopLoss(+event.target.value)
   }
 
-  const [takeProfit, setTakeProfit] = useState(50)
+  const [takeProfit, setTakeProfit] = useState(150)
   const handleChangeTakeProfit = (event: React.ChangeEvent<HTMLInputElement>) => {
     setTakeProfit(+event.target.value)
   }
@@ -254,6 +254,20 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
       enqueueSnackbar(t('Amount is less than minimum bet.'), {
         variant: 'error',
         TransitionComponent: Zoom,
+      })
+      return
+    }
+
+    if (+takeProfit <= 110) {
+      enqueueSnackbar(t('Take Profit need to be greather than 110%.'), {
+        variant: 'error',
+      })
+      return
+    }
+
+    if (+stopLoss < 10) {
+      enqueueSnackbar(t('Stop Loss need to be greather or equal to 10%.'), {
+        variant: 'error',
       })
       return
     }
