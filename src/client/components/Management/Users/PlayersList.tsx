@@ -718,7 +718,7 @@ const PlayersList: FC = () => {
                                       </Box>
                                     </Grid>
 
-                                    {player.recentGames && (
+                                    {player.recentGames ? (
                                       <>
                                         <Grid item xs={12} sm={7}>
                                           <Typography variant="caption" sx={{ pb: 1 }} component="div">
@@ -774,6 +774,8 @@ const PlayersList: FC = () => {
                                           </Box>
                                         </Grid>
                                       </>
+                                    ) : (
+                                      <></>
                                     )}
                                   </Grid>
                                 </Box>

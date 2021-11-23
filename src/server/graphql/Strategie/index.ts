@@ -246,20 +246,6 @@ const mutations = extendType({
 
         if (!hasAccess) return null
 
-        // await prisma.strategieHistory.deleteMany({
-        //   where: {
-        //     strategieId: id,
-        //   },
-        // })
-
-        // const strategie = await prisma.strategie.delete({
-        //   where: {
-        //     id: id,
-        //   },
-        // })
-
-        // return strategie
-
         const strategie = await prisma.strategie.update({
           where: { id },
           data: {
@@ -267,7 +253,7 @@ const mutations = extendType({
             isRunning: false,
             isNeedRestart: false,
             isDeleted: true,
-            currentAmount: 0.0,
+            // currentAmount: 0.0,
           },
         })
 

@@ -4,6 +4,7 @@ const WebSocket = require('ws')
 const { sleep } = require('../../utils/utils')
 
 const { PREDICTION_CONTRACT_ABI } = require('../../../../src/contracts/abis/pancake-prediction-abi-v3')
+// const { PREDICTION_CONTRACT_ABI } = require('../../../../src/contracts/abis/pancake-prediction-abi-v3')
 
 const { decrypt } = require('../../utils/crpyto')
 const prisma = require('../../db/prisma')
@@ -373,6 +374,17 @@ const launchStrategie = async (payload) => {
     )
 
     try {
+      const isPaused = await preditionContract.paused()
+
+      if (isPaused) {
+        logger.error(`[ERROR] Contract is paused `)
+        // await stopStrategie()
+        // waiting one hour
+        await sleep(60 * 1 * 1000)
+        // TODO is Waiting better than pause Strategie ?
+        process.exit(0)
+      }
+
       currentEpoch = await preditionContract.currentEpoch()
 
       const lastEpochs = [...range(+currentEpoch - 24, +currentEpoch)]
