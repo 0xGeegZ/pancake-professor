@@ -387,9 +387,9 @@ const launchStrategie = async (payload) => {
         // await stopStrategie()
 
         // TODO is Waiting better than pause Strategie ?
-        // waiting one hour
 
-        await sleep(60 * 3 * 1000)
+        // waiting one hour
+        await sleep(60 * 60 * 1000)
         await prisma.strategie.update({
           where: { id: strategie.id },
           data: {
