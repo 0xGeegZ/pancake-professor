@@ -15,7 +15,7 @@
     "dev:start": "yarn run 'stop:strategies' &&  (yarn run 'launch:strategies' &)",
     "stop:dev": "killall node",
     "start": "node pm2.js",
-    "start:dev": "node pm2.js && yarn run 'pm2:logs'",
+    "start:logs": "node pm2.js && yarn run 'pm2:logs'",
     "stop": "yarn run 'pm2:stop:all' && yarn run 'pm2:list'",
     "pm2:list": "pm2 list",
     "pm2:logs": "pm2 logs --lines 500",

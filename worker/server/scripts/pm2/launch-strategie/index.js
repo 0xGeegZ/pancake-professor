@@ -8,7 +8,7 @@ const launchStrategieWithPm2 = async (strategieId) => {
   if (!strategieId) throw new Error('[LAUNCHING-STRATEGY] Need a strategieId')
 
   try {
-    logger.info(`[LAUNCHING-STRATEGY] Launching strategies locally with pm2 for strategy ${strategieId}`)
+    logger.info(`[LAUNCHING-STRATEGY] Launching strategies with pm2 for strategy ${strategieId}`)
 
     const strategie = await prisma.strategie.findUnique({
       where: {

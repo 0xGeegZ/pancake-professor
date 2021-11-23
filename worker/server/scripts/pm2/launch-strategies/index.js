@@ -22,7 +22,7 @@ const launch = async (strategie) => {
 }
 
 const launchStrategiesWithPM2 = async () => {
-  logger.info(`[LAUNCHING] Launching strategies locally`)
+  logger.info(`[LAUNCHING] Launching strategies`)
 
   const strategies = await prisma.strategie.findMany({
     where: {

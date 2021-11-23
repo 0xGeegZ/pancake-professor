@@ -17,7 +17,7 @@ const launch = async (strategie) => {
 }
 
 const launchStrategies = async () => {
-  logger.info(`[LAUNCHING] Launching strategies locally`)
+  logger.info(`[LAUNCHING] Launching strategies`)
 
   // const condition = {isActive: true,}
 
