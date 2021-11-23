@@ -327,9 +327,14 @@ const PlayersList: FC = () => {
   }
 
   const [mobileOpen, setMobileOpen] = useState(false)
+  const [selectedPlayerId, setSelectedPlayerId] = useState(null)
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
+  }
+
+  const handleDrawerSetPlayer = (playerId) => {
+    setSelectedPlayerId(playerId)
   }
 
   const [openCreateForm, setOpenCreateForm] = useState(false)
@@ -828,11 +833,14 @@ const PlayersList: FC = () => {
                                   <Grid item md={6}>
                                     <Button
                                       size="small"
-                                      disabled
+                                      // disabled
                                       fullWidth
                                       variant="outlined"
                                       color="secondary"
-                                      onClick={handleDrawerToggle}>
+                                      onClick={() => {
+                                        handleDrawerToggle()
+                                        handleDrawerSetPlayer(player.id)
+                                      }}>
                                       {t('View details')}
                                     </Button>
                                   </Grid>
@@ -926,7 +934,7 @@ const PlayersList: FC = () => {
         open={mobileOpen}
         onClose={handleDrawerToggle}
         elevation={9}>
-        {mobileOpen && <SidebarPlayerDrawer />}
+        {mobileOpen && <SidebarPlayerDrawer playerId={selectedPlayerId} />}
       </Drawer>
     </>
   )
