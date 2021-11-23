@@ -374,14 +374,28 @@ const launchStrategie = async (payload) => {
     )
 
     try {
+      await prisma.strategie.update({
+        where: { id: strategie.id },
+        data: {
+          isRunning: true,
+        },
+      })
       const isPaused = await preditionContract.paused()
 
       if (isPaused) {
         logger.error(`[ERROR] Contract is paused. Waiting one hour `)
         // await stopStrategie()
-        // waiting one hour
-        await sleep(60 * 60 * 1000)
+
         // TODO is Waiting better than pause Strategie ?
+        // waiting one hour
+
+        await sleep(60 * 3 * 1000)
+        await prisma.strategie.update({
+          where: { id: strategie.id },
+          data: {
+            isRunning: false,
+          },
+        })
         process.exit(0)
       }
 
