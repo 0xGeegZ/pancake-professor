@@ -4,7 +4,7 @@ import { ethers } from 'ethers'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
-import { ReactElement, useEffect, useState } from 'react'
+import { ReactElement, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Footer from 'src/client/components/Footer'
 import Link from 'src/client/components/Link'
@@ -39,15 +39,15 @@ const Overview = () => {
   const { enqueueSnackbar } = useSnackbar()
 
   const { t }: { t: any } = useTranslation()
-  const [isRedirected, setIsRedirected] = useState(false)
-  const [fetching] = useState(true)
+  // const [isRedirected, setIsRedirected] = useState(false)
+  const [fetching] = useState(false)
 
-  useEffect(() => {
-    if (!isRedirected) {
-      router.push('/app')
-      setIsRedirected(true)
-    }
-  }, [router, isRedirected])
+  // useEffect(() => {
+  //   if (!isRedirected) {
+  //     router.push('/app')
+  //     setIsRedirected(true)
+  //   }
+  // }, [router, isRedirected])
 
   // const [provider, setProvider] = useState<ethers.providers.Web3Provider>()
 
@@ -112,9 +112,9 @@ const Overview = () => {
 
               <Box>
                 <LanguageSwitcher />
-                <Link underline="hover" href="/blog" rel="noopener noreferrer" variant="body2" sx={{ ml: 2, p: 1 }}>
+                {/* <Link underline="hover" href="/blog" rel="noopener noreferrer" variant="body2" sx={{ ml: 2, p: 1 }}>
                   {t('Blog')}
-                </Link>
+                </Link> */}
                 <Link underline="hover" href="/app" rel="noopener noreferrer" sx={{ ml: 2, p: 1 }}>
                   <b> {t('Dashboard')}</b>
                 </Link>

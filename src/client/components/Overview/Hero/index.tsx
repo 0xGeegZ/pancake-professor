@@ -145,17 +145,15 @@ function Hero() {
             {t('Pancake Professor')}
           </TypographyH1>
           <TypographyH2 sx={{ lineHeight: 1.5, pb: 4 }} variant="h4" color="text.secondary" fontWeight="normal">
-            {t(
-              'Production-ready updated admin dashboard powered by React and Material-UI built on NextJS features hundreds of components and examples that will help you build faster and better apps.'
-            )}
+            {t('Play like bests players on PancakeSwap Prediction')}
           </TypographyH2>
-          <Button component={Link} href="/dashboards/analytics" size="large" variant="contained">
-            {t('Browse Live Preview')}
+          <Button component={Link} href="/app" size="large" variant="contained">
+            {t('Launch App')}
           </Button>
           <Button sx={{ ml: 2 }} component="a" href="#key-features" size="large" variant="text">
             {t('Key Features')}
           </Button>
-          <ListItemWrapper sx={{ mt: 5, mb: 2 }}>
+          {/* <ListItemWrapper sx={{ mt: 5, mb: 2 }}>
             <NextJsAvatar>
               <img src="/static/images/logo/next-js.svg" alt="NextJS" />
             </NextJsAvatar>
@@ -190,13 +188,12 @@ function Hero() {
                 - Tokyo features a modern technology stack and is built with React + Typescript.
               </Typography>
             </Typography>
-          </ListItemWrapper>
+          </ListItemWrapper> */}
         </Grid>
         <Grid item md={6} sx={{ mt: 6 }}>
           <BoxContent>
             <ImgWrapper>
               <img alt="Tokyo" src="/static/images/overview/hero-screenshot.png" />
-              {/* <Image src="/static/images/overview/hero-screenshot.png" alt="Tokyo" layout="fill" /> */}
             </ImgWrapper>
             <BoxAccent sx={{ display: { xs: 'none', md: 'block' } }} />
           </BoxContent>

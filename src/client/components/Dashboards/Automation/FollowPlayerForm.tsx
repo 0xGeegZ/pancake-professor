@@ -190,7 +190,7 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
     setGauge((g) => newValue || g - 1)
   }
   const handleGaugeDecreaseEvent = (e: { preventDefault: () => void }) => {
-    handleGaugeIncrease(e, null)
+    handleGaugeDecrease(e, null)
   }
 
   const handleChange = (_event: Event, newValue: number) => {

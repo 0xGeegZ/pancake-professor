@@ -15,6 +15,7 @@ const stopStrategie = async (strategie) => {
     where: { id: strategie.id },
     data: {
       isRunning: false,
+      isNeedRestart: false,
     },
   })
 }

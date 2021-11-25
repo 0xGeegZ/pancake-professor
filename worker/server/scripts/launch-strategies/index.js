@@ -35,9 +35,9 @@ const launchStrategies = async () => {
 
   await Promise.all(strategies.map(launch))
 
-  logger.info(`[WAITING] 10 minuts`)
+  logger.info(`[WAITING] 5 minuts`)
 
-  await sleep(60 * 1000 * 10)
+  await sleep(60 * 1000 * 5)
   logger.info(`[WAITING] waiting done`)
   await launchStrategies()
 }

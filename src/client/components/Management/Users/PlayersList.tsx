@@ -44,7 +44,6 @@ import moment from 'moment'
 import { useSnackbar } from 'notistack'
 import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import Moment from 'react-moment'
 import FollowPlayerForm from 'src/client/components/Dashboards/Automation/FollowPlayerForm'
 import { useGlobalStore } from 'src/client/store/swr'
 import loadPlayers from 'src/client/thegraph/loadPlayers'
@@ -153,6 +152,7 @@ const PlayersList: FC = () => {
   const theme = useTheme()
   const { enqueueSnackbar } = useSnackbar()
 
+  const [isPaused, setIsPaused] = useState<boolean>(false)
   const [fetching, setFetching] = useState<boolean>(false)
   const [players, setPlayers] = useState<any[]>([])
   const [hasError, setHasError] = useState<boolean>(false)
@@ -170,6 +170,7 @@ const PlayersList: FC = () => {
       setFetching(true)
       try {
         const lisPaused = await ppreditionContract.paused()
+        setIsPaused(lisPaused)
         if (lisPaused) {
           enqueueSnackbar(t(`Contract is actually paused`), {
             variant: 'error',
@@ -285,7 +286,7 @@ const PlayersList: FC = () => {
 
   const actionRef1 = useRef<any>(null)
   const [openOrderBy, setOpenMenuOrderBy] = useState<boolean>(false)
-  const [orderBy, setOrderBy] = useState<string>(ordersBy[2].text)
+  const [orderBy, setOrderBy] = useState<string>(ordersBy[3].text)
 
   const [page, setPage] = useState<number>(0)
   const [limit, setLimit] = useState<number>(10)
@@ -350,6 +351,24 @@ const PlayersList: FC = () => {
     mutate('currentUser')
   }
 
+  const getStrategieDuraction = (timestamp) => {
+    const duration = moment.duration(moment().diff(moment(timestamp)))
+
+    // Get Days
+    const days = Math.floor(duration.asDays())
+    const daysFormatted = days ? `${days}d ` : ''
+
+    // Get Hours
+    const hours = duration.hours()
+    const hoursFormatted = `${hours}h `
+
+    // Get Minutes
+    const minutes = duration.minutes()
+    const minutesFormatted = `${minutes}m`
+
+    return [daysFormatted, hoursFormatted, minutesFormatted].join('')
+  }
+
   return (
     <>
       <Box
@@ -384,6 +403,7 @@ const PlayersList: FC = () => {
                 {ordersBy.map((_order) => (
                   <MenuItem
                     key={_order.value}
+                    disabled={isPaused && _order.value === 'mostActiveLastHour'}
                     onClick={async () => {
                       setOrderBy(_order.text)
                       setOpenMenuOrderBy(false)
@@ -665,7 +685,15 @@ const PlayersList: FC = () => {
                                     <Typography sx={{ fontSize: `${theme.typography.pxToRem(10)}` }} variant="h6">
                                       {t('Last Play')}
                                       {' : '}
-                                      <Moment local>{moment(+player.bets[0].createdAt * 1000)}</Moment>
+                                      {getStrategieDuraction(+player.bets[0].createdAt * 1000)}
+                                      {/* <Moment local>{moment(+player.bets[0].createdAt * 1000)}</Moment> */}
+                                      {/* {formatDistance(
+                                        subDays(new Date(+player.bets[0].createdAt * 1000), 1),
+                                        new Date(),
+                                        {
+                                          addSuffix: true,
+                                        }
+                                      )} */}
                                     </Typography>
                                   )}
                                 </Box>
@@ -727,9 +755,34 @@ const PlayersList: FC = () => {
                                       <>
                                         <Grid item xs={12} sm={7}>
                                           <Typography variant="caption" sx={{ pb: 1 }} component="div">
-                                            {t(`Last ${denominatorValue / 12}H`)}(%)
+                                            {t(`Winrate last ${denominatorValue / 12}H`)}(%)
                                           </Typography>
                                           <Box>
+                                            <Typography
+                                              color="text.primary"
+                                              variant="h2"
+                                              sx={{ pr: 0.5, display: 'inline-flex' }}>
+                                              {parseInt(`${+player.winRateRecents}`, 10)}
+                                            </Typography>
+                                            <Typography
+                                              color="text.secondary"
+                                              variant="h4"
+                                              sx={{ pr: 2, display: 'inline-flex' }}>
+                                              /100
+                                            </Typography>
+                                            <LinearProgressWrapper
+                                              value={+player.winRateRecents}
+                                              color={
+                                                +player.winRateRecents >= 60
+                                                  ? 'success'
+                                                  : +player.winRateRecents >= 55
+                                                  ? 'warning'
+                                                  : 'error'
+                                              }
+                                              variant="determinate"
+                                            />
+                                          </Box>
+                                          {/* <Box>
                                             <Typography
                                               color="text.primary"
                                               variant="h2"
@@ -753,7 +806,7 @@ const PlayersList: FC = () => {
                                               }
                                               variant="determinate"
                                             />
-                                          </Box>
+                                          </Box> */}
                                         </Grid>
                                         <Grid item xs={12} sm={5}>
                                           <Typography variant="caption" sx={{ pb: 1.5 }} component="div">
@@ -770,11 +823,15 @@ const PlayersList: FC = () => {
                                                     : theme.colors.error.main,
                                               }}
                                             /> */}
-                                            <Typography variant="h4" sx={{ pl: 1 }} component="div">
-                                              {+player.recentGames}/{denominatorValue}{' '}
-                                              <sup>
-                                                ({parseInt(`${(+player.recentGames * 100) / denominatorValue}`, 10)}%)
-                                              </sup>
+                                            <Typography variant="h3" sx={{ pl: 1 }} component="div">
+                                              {parseInt(`${(+player.recentGames * 100) / denominatorValue}`, 10)}%{' '}
+                                              {/* {+player.recentGames}/{denominatorValue}{' '} */}
+                                              <Typography variant="h5" component="span">
+                                                <sup>
+                                                  ({+player.recentGames}/{denominatorValue})
+                                                  {/* ({parseInt(`${(+player.recentGames * 100) / denominatorValue}`, 10)}%) */}
+                                                </sup>
+                                              </Typography>
                                             </Typography>
                                           </Box>
                                         </Grid>

@@ -181,7 +181,7 @@ function AddFundsForm({ user, handleCloseForm }) {
     setBnbValue(((user.balance * updated) / 100).toFixed(6))
   }
   const handleGaugeDecreaseEvent = (e: { preventDefault: () => void }) => {
-    handleGaugeIncrease(e, null)
+    handleGaugeDecrease(e, null)
   }
 
   const handleChange = (_event: Event, newValue: number) => {
@@ -366,7 +366,7 @@ AddFundsForm.propTypes = {
   user: PropTypes.shape({
     address: PropTypes.string.isRequired,
     generated: PropTypes.string.isRequired,
-    balance: PropTypes.number.isRequired,
+    balance: PropTypes.string.isRequired,
   }).isRequired,
   handleCloseForm: PropTypes.func.isRequired,
 }

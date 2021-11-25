@@ -103,7 +103,7 @@ const launchStrategie = async (payload) => {
 
     let isError = false
     try {
-      const gasPrice = await provider.getGasPrice()
+      // const gasPrice = await provider.getGasPrice()
 
       const tx = await preditionContract[betBullOrBear](epoch.toString(), {
         value: ethers.utils.parseEther(amount),
@@ -139,8 +139,6 @@ const launchStrategie = async (payload) => {
       //   strategie.playsCount += 1
       // }
     }
-    logger.info('------------------------------------------------------------')
-    logger.info('------------------------------------------------------------')
     // TODO save bet to database
     // const bet = { epoch, betBull, betAmount, isError, strategieId: strategie.id, userId : user.id, hash : strategie.playedHashs[strategie.playedHashs.lenght-1], isClaimed : false}
   }
@@ -222,6 +220,8 @@ const launchStrategie = async (payload) => {
     strategie.playedHashs.push(transaction.hash)
 
     await betRound({ epoch, betBull, betAmount })
+    logger.info('------------------------------------------------------------')
+    logger.info('------------------------------------------------------------')
   }
 
   const roundEndListenner = async (epoch) => {
@@ -256,18 +256,13 @@ const launchStrategie = async (payload) => {
       },
     })
 
-    console.log(
-      '🚀 ~ file: index.js ~ line 258 ~ roundEndListenner ~ isUpdatedStrategie.isNeedRestart',
-      isUpdatedStrategie.isNeedRestart
-    )
-
     // Check if stop loss or take profit
     if (strategie.currentAmount <= isUpdatedStrategie.maxLooseAmount) {
       logger.info('[PLAYING] Stop Loss activated.')
       await stopStrategie()
     }
 
-    if (strategie.currentAmount > isUpdatedStrategie.minWinAmount) {
+    if (strategie.startedAmount - strategie.currentAmount >= isUpdatedStrategie.minWinAmount) {
       logger.info('[PLAYING] Take Profit activated.')
       await stopStrategie()
     }
@@ -401,7 +396,8 @@ const launchStrategie = async (payload) => {
 
       currentEpoch = await preditionContract.currentEpoch()
 
-      const lastEpochs = [...range(+currentEpoch - 24, +currentEpoch)]
+      // TODO try to claim all played epoch ??
+      const lastEpochs = [...range(+currentEpoch - 100, +currentEpoch)]
       await claimPlayedEpochs(lastEpochs)
     } catch (error) {
       logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)

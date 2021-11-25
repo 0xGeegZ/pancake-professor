@@ -21,6 +21,7 @@ import {
   DialogContent,
   DialogTitle,
   Divider,
+  Drawer,
   Grid,
   IconButton,
   InputAdornment,
@@ -32,6 +33,7 @@ import {
   Menu,
   MenuItem,
   Slide,
+  Slider,
   Switch,
   TextField,
   Tooltip,
@@ -46,7 +48,7 @@ import moment from 'moment'
 import { useSnackbar } from 'notistack'
 import { forwardRef, ReactElement, Ref, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import Moment from 'react-moment'
+import SidebarPlayerDrawer from 'src/client/components/Management/Users/SidebarPlayerDrawer'
 import { useDeleteStrategieMutation } from 'src/client/graphql/deleteStrategie.generated'
 import { useToogleActivateStrategieMutation } from 'src/client/graphql/toogleActivateStrategie.generated'
 import { useUpdateStrategieMutation } from 'src/client/graphql/updateStrategie.generated'
@@ -219,6 +221,20 @@ const DotLegend = styled('span')(
 `
 )
 
+interface Props {
+  children: React.ReactElement;
+  value: number;
+}
+const ValueLabelComponent = (props: Props)=> {
+  const { children, value } = props;
+
+  return (
+    <Tooltip enterTouchDelay={0} placement="top" title={value}>
+      {children}
+    </Tooltip>
+  );
+}
+
 /* eslint-disable */
 const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
   <Slide direction="down" ref={ref} {...props} />
@@ -288,6 +304,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
 
   const [strategies, setStrategies] = useState<any[]>(pstrategies)
   const [activeStrategie, setActiveStrategie] = useState<any>(null)
+  // const [isLoadingHistory, setIsLoadingHistory] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
 
   const actionRef = useRef<any>(null)
@@ -304,6 +321,19 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
     setPending(false)
     setActiveStrategie(null)
   }
+
+  const [mobileOpen, setMobileOpen] = useState(false)
+  const [selectedPlayerId, setSelectedPlayerId] = useState(null)
+
+  const handleDrawerToggle = () => {
+    setAnchorEl(null)
+    setMobileOpen(!mobileOpen)
+  }
+
+  const handleDrawerSetPlayer = (playerId) => {
+    setSelectedPlayerId(playerId)
+  }
+
   const handleChange = (strategie) => async () => {
     const updateds = strategies.map((s) => {
       const updated = s
@@ -333,6 +363,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
     const loadHistoryForStrategie = async (strategie) => {
       try {
         const { bets, ...enriched } = await loadPlayer(strategie.generated)
+
         return {
           ...strategie,
           bets,
@@ -346,7 +377,6 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
     }
     try {
       const updateds = await Promise.all(plstrategies.map(loadHistoryForStrategie))
-
       setStrategies(updateds)
     } catch (err) {
       console.error(err)
@@ -367,6 +397,9 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
     if (strategies) return
 
     console.log('useEffect -> updating strategies')
+    setMobileOpen(false)
+
+    setStrategies(pstrategies)
 
     loadStrategiesHistory(pstrategies)
 
@@ -378,8 +411,8 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
     // loadStrategiesHistory(lstrategies)
   }, [fetching, pstrategies, strategies, loadStrategiesHistory])
 
-  const getStrategieDuraction = (strategie) => {
-    const duration = moment.duration(moment().diff(moment(strategie.createdAt)))
+  const getStrategieDuraction = (timestamp) => {
+    const duration = moment.duration(moment().diff(moment(timestamp)))
 
     // Get Days
     const days = Math.floor(duration.asDays())
@@ -390,10 +423,10 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
     const hoursFormatted = `${hours}h `
 
     // Get Minutes
-    // const minutes = duration.minutes()
-    // const minutesFormatted = `${minutes}m`
+    const minutes = duration.minutes()
+    const minutesFormatted = `${minutes}m`
 
-    return [daysFormatted, hoursFormatted].join('')
+    return [daysFormatted, hoursFormatted, minutesFormatted].join('')
   }
 
   const deleteStrategie = async () => {
@@ -433,14 +466,14 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
     handleCloseDialog()
   }
 
-  const handleUpdateUserForStrategieOpen = (strategie) => () => {
+  const handleUpdateStrategieOpen = (strategie) => () => {
     setActiveStrategie(strategie)
     setOpen(true)
     // closeMenu()
     setAnchorEl(null)
   }
 
-  const handleUpdateUserForStrategieClose = () => {
+  const handleUpdateStrategieClose = () => {
     setOpen(false)
     // closeMenu()
     setAnchorEl(null)
@@ -462,12 +495,6 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
 
   const onSubmit = async (_values, { resetForm, setErrors, setStatus, setSubmitting }) => {
     const { player, stopLoss, takeProfit } = _values
-    console.log('🚀 ~ file: ActiveStrategies.tsx ~ line 465 ~ onSubmit ~ takeProfit', takeProfit)
-    console.log('🚀 ~ file: ActiveStrategies.tsx ~ line 465 ~ onSubmit ~ stopLoss', stopLoss)
-    console.log(
-      '🚀 ~ file: ActiveStrategies.tsx ~ line 465 ~ onSubmit ~ activeStrategie.startedAmount',
-      activeStrategie.startedAmount
-    )
 
     try {
       ethers.utils.getAddress(player)
@@ -541,6 +568,37 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
     return `${winRate}% `
   }
 
+  const getStrategieMarks = (strategie) => {
+    const stopLoss = parseInt(`${((strategie?.currentAmount - strategie?.maxLooseAmount) * 100) / strategie?.startedAmount}`, 10)
+    const takeProfit = parseInt(`${(strategie?.minWinAmount * 100) / strategie?.startedAmount}`, 10)
+    const currentAmount = parseFloat(`${strategie?.currentAmount}`).toFixed(4)
+
+    const marks = [
+      // {
+      //   value: 0,
+      //   label: '0 BNB',
+      // },
+      {
+        value: stopLoss,
+        label: `${parseFloat(`${(strategie?.currentAmount - strategie?.maxLooseAmount) }`).toFixed(4)} BNB`,
+      },
+
+      {
+        value: 100,
+        label: `${currentAmount} BNB`,
+      },
+      {
+        value: takeProfit,
+        label: `${parseFloat(`${strategie.minWinAmount}`).toFixed(4)} BNB`,
+      },
+    ]
+    return marks
+  }
+
+  const valuetext = (value: number) => {
+    return `${value} BNB`
+  }
+
   return (
     <>
       <Box>
@@ -580,7 +638,8 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
           </Button>
         </Box>
         <Grid container spacing={3}>
-          {fetching ? (
+          {/* {fetching || !strategies?.length ? ( */}
+          {fetching && !strategies?.length ? (
             <Grid sx={{ py: 11 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
               <Grid item>
                 <CircularProgress color="secondary" size="1rem" />
@@ -590,7 +649,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
             <>
               {strategies
                 .filter((strategie) => {
-                  if (locationValue === 'all') return true
+                  if (locationValue === 'all' && !strategie.isDeleted) return true
                   if (strategie.isActive && !strategie.isDeleted && locationValue === 'active') return true
                   if (!strategie.isActive && !strategie.isDeleted && locationValue === 'innactive') return true
                   if (strategie.isDeleted && locationValue === 'deleted') return true
@@ -641,15 +700,27 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                             <List sx={{ p: 1 }} component="nav">
                               <ListItem button>
                                 <ListItemText
-                                  onClick={handleUpdateUserForStrategieOpen(strategie)}
-                                  primary={t('Edit player')}
+                                  onClick={handleUpdateStrategieOpen(strategie)}
+                                  primary={t('Edit strategie')}
                                 />
                               </ListItem>
-                              <ListItem button disabled>
-                                <ListItemText primary={t('Edit strategie')} />
+                              <ListItem button>
+                                <ListItemText
+                                  onClick={() => {
+                                    handleDrawerToggle()
+                                    handleDrawerSetPlayer(strategie.generated)
+                                  }}
+                                  primary={t('View strategie history')}
+                                />
                               </ListItem>
-                              <ListItem button disabled>
-                                <ListItemText primary={t('View strategie history')} />
+                              <ListItem button>
+                                <ListItemText
+                                  onClick={() => {
+                                    handleDrawerToggle()
+                                    handleDrawerSetPlayer(strategie.player)
+                                  }}
+                                  primary={t('View player history')}
+                                />
                               </ListItem>
                               <ListItem button color="danger">
                                 {/* <ListItemText onClick={deleteStrategie(strategie)} primary={t('Delete strategie')} /> */}
@@ -702,11 +773,6 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
 
                         <Box sx={{ py: 1 }}>
                           <Grid spacing={2} container>
-                            {/* <Grid item xs={12} sm={3} alignItems="left">
-                            <IconWrapper>
-                              <AccountCircleIcon fontSize="large" />
-                            </IconWrapper>
-                          </Grid> */}
                             <Grid item xs={12}>
                               <Typography variant="h4" noWrap sx={{ pt: 3 }}>
                                 {t('Player')}:{' '}
@@ -738,18 +804,35 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                               </Typography>
                               <Box>
                                 <Typography color="text.primary" variant="h2" sx={{ pr: 0.5, display: 'inline-flex' }}>
-                                  {strategie.playsCount}
+                                  {strategie.bets && strategie.bets.length > strategie.playsCount
+                                    ? strategie.bets.length
+                                    : strategie.playsCount}
                                 </Typography>
                                 <Typography color="text.secondary" variant="h4" sx={{ pr: 2, display: 'inline-flex' }}>
                                   / {strategie.roundsCount}
                                 </Typography>
                                 <LinearProgressWrapper
-                                  value={(strategie.playsCount * 100) / strategie.roundsCount}
-                                  // color="primary"
+                                  value={
+                                    ((strategie.bets && strategie.bets.length > strategie.playsCount
+                                      ? strategie.bets.length
+                                      : strategie.playsCount) *
+                                      100) /
+                                    strategie.roundsCount
+                                  }
                                   color={
-                                    (strategie.playsCount * 100) / strategie.roundsCount >= 30
+                                    ((strategie.bets && strategie.bets.length > strategie.playsCount
+                                      ? strategie.bets.length
+                                      : strategie.playsCount) *
+                                      100) /
+                                      strategie.roundsCount >=
+                                    30
                                       ? 'success'
-                                      : (strategie.playsCount * 100) / strategie.roundsCount >= 20
+                                      : ((strategie.bets && strategie.bets.length > strategie.playsCount
+                                          ? strategie.bets.length
+                                          : strategie.playsCount) *
+                                          100) /
+                                          strategie.roundsCount >=
+                                        20
                                       ? 'warning'
                                       : 'error'
                                   }
@@ -792,17 +875,37 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                             </Grid>
                             {strategie.maxLooseAmount && strategie.minWinAmount ? (
                               <Grid item xs={12}>
+                                              {/* <Tooltip arrow placement="bottom" title={t('Share')}> */}
+
+<Slider
+                                  aria-label="Custom marks"
+                                  defaultValue={100}
+                                  getAriaValueText={valuetext}
+                                  step={10}
+                                  valueLabelDisplay="off"
+                                  marks={getStrategieMarks(strategie)}
+                                  color="secondary"
+        //                           components={{
+        //   ValueLabel: ValueLabelComponent,
+        // }}
+                                  // min={0}
+                                  max={parseInt(`${(strategie?.minWinAmount * 100) / strategie?.startedAmount}`, 10)}
+                                  disabled
+                                />
+                                              {/* </Tooltip> */}
+
+                                
                                 <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
                                   {t('Started Amount ')} <b>{strategie.startedAmount} BNB</b>
                                 </Typography>
                                 {strategie.maxLooseAmount && (
                                   <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
-                                    {t('Stop Loss if less than ')} <b>{strategie.maxLooseAmount} BNB</b>
+                                    {t('Stop Loss if loose more than ')} <b>{strategie.maxLooseAmount} BNB</b>
                                   </Typography>
                                 )}
                                 {strategie.minWinAmount && (
                                   <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
-                                    {t('Take profit if more than ')} <b>{strategie.minWinAmount} BNB</b>
+                                    {t('Take profit if win more than ')} <b>{strategie.minWinAmount} BNB</b>
                                   </Typography>
                                 )}
                               </Grid>
@@ -815,14 +918,35 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                         <Box sx={{ py: 1, pt: 0.5 }}>
                           <Grid spacing={1} container>
                             <Grid item xs={12}>
-                              <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
-                                {t('Running since')} <b>{getStrategieDuraction(strategie)}</b>
-                              </Typography>
+                              
                               {strategie?.bets?.length && (
-                                <Typography sx={{ fontSize: `${theme.typography.pxToRem(10)}`, pt: 0.5 }} variant="h6">
+                                <Typography sx={{ fontSize: `${theme.typography.pxToRem(10)}`, pt: 0.5 }} variant="h5">
                                   {t('Last Play')}
                                   {' : '}
-                                  <Moment local>{moment(+strategie?.bets[0]?.createdAt * 1000)}</Moment>
+                                  {getStrategieDuraction(+strategie?.bets[0]?.createdAt * 1000)}
+                                  {/* {formatDistance(
+                                    subDays(new Date(+strategie?.bets[0]?.createdAt * 1000), 1),
+                                    new Date(),
+                                    {
+                                      addSuffix: true,
+                                    }
+                                  )} */}
+                                  {/* <Moment local>{moment(+strategie?.bets[0]?.createdAt * 1000)}</Moment> */}
+                                </Typography>
+                              )}
+                              {strategie?.isActive && (
+                                <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
+                                  {t('Running since')} {getStrategieDuraction(Date.parse(strategie.createdAt))}
+                                  {/* {t('Launched')}{' '}
+                                  <b>
+                                    {formatDistance(
+                                      subDays(new Date(+strategie?.createdAt || new Date().getTime()), 1),
+                                      new Date(),
+                                      {
+                                        addSuffix: true,
+                                      }
+                                    )} 
+                                  </b> */}
                                 </Typography>
                               )}
                             </Grid>
@@ -873,7 +997,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
           </Grid>
         </Grid>
       </Box>
-      <Dialog fullWidth maxWidth="sm" open={open} onClose={handleUpdateUserForStrategieClose}>
+      <Dialog fullWidth maxWidth="sm" open={open} onClose={handleUpdateStrategieClose}>
         <DialogTitle sx={{ p: 3 }}>
           <Typography variant="h4" gutterBottom>
             {t('Update player')}
@@ -885,6 +1009,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
             player: activeStrategie?.player || '',
             // player: '',
             // stopLoss: activeStrategie?.maxLooseAmount || 30,
+            // takeProfit: activeStrategie?.minWinAmount || 150,
             stopLoss: activeStrategie?.maxLooseAmount
               ? parseInt(`${(activeStrategie?.maxLooseAmount * 100) / activeStrategie?.startedAmount}`, 10)
               : 30,
@@ -1000,7 +1125,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                 </Grid>
               </DialogContent>
               <DialogActions sx={{ p: 3 }}>
-                <Button color="secondary" onClick={handleUpdateUserForStrategieClose}>
+                <Button color="secondary" onClick={handleUpdateStrategieClose}>
                   {t('Cancel')}
                 </Button>
                 <Button
@@ -1056,6 +1181,14 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
           </LoadingButton>
         </Box>
       </DialogWrapper>
+      <Drawer
+        variant="temporary"
+        anchor={theme.direction === 'rtl' ? 'left' : 'right'}
+        open={mobileOpen}
+        onClose={handleDrawerToggle}
+        elevation={9}>
+        {mobileOpen && <SidebarPlayerDrawer playerId={selectedPlayerId} />}
+      </Drawer>
     </>
   )
 }

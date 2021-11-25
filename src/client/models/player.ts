@@ -9,6 +9,8 @@ export interface Player {
   averageBNB: string
   netBNB: string
   recentGames: number
+  winRateRecents: number
+  // lastHour: number
   bets: Bet[]
   // [key: string]: any
   // bets: {

@@ -8,6 +8,7 @@ export interface User {
   // role: UserRole
   address: string
   generated: string
+  isActivated: boolean
   registeredAt?: string
   loginAt?: string
   // jobtitle: string;
