@@ -23,18 +23,18 @@ const SAFE_GAS_PRICE = 5
 const FAST_GAS_PRICE = 6
 // const FAST_GAS_PRICE = 7
 
-const options = {
-  dappId: process.env.BLOCKNATIVE_API_KEY,
-  networkId: 56,
-  ws: WebSocket,
-  onerror: (error) => {
-    logger.error(error)
-  },
-}
-
 let range = (start, end) => Array.from(Array(end + 1).keys()).slice(start)
 
 const launchStrategie = async (payload) => {
+  const options = {
+    dappId: process.env.BLOCKNATIVE_API_KEY,
+    networkId: 56,
+    ws: WebSocket,
+    onerror: (error) => {
+      logger.error(error)
+    },
+  }
+
   const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
 
   const { user, strategie } = payload
@@ -415,7 +415,7 @@ const launchStrategie = async (payload) => {
       const epoch = await preditionContract.currentEpoch()
 
       // TODO try to claim all played epoch ??
-      const lastEpochs = [...range(+epoch - 24, +epoch)]
+      const lastEpochs = [...range(+epoch - 200, +epoch)]
       await claimPlayedEpochs(lastEpochs)
     } catch (error) {
       logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)
@@ -439,10 +439,10 @@ const launchStrategie = async (payload) => {
     // )
 
     // Raw Transaction
-    const rawTx = {
-      nonce: provider.getTransactionCount(strategie.generated, 'latest'),
-      value: ethers.utils.parseEther(strategie.betAmount.toString()),
-    }
+    // const rawTx = {
+    //   nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+    //   value: ethers.utils.parseEther(strategie.betAmount.toString()),
+    // }
 
     // Gas limit
     // let gasLimit = await provider.estimateGas(
@@ -482,12 +482,12 @@ const launchStrategie = async (payload) => {
     logger.info(`[LISTEN] Starting for user ${strategie.generated} copy betting player ${strategie.player}`)
 
     logger.info(`[LISTEN] Waiting for transaction for player ${strategie.player}`)
+    // logger.info(`[LISTEN] emitter is listenning to transaction from mempool`)
+    preditionContract.on('EndRound', roundEndListenner)
+
     const { emitter: emt } = blocknative.account(strategie.player)
     emitter = emt
     emitter.on('txPool', processRound)
-
-    // logger.info(`[LISTEN] emitter is listenning to transaction from mempool`)
-    preditionContract.on('EndRound', roundEndListenner)
   }
 
   try {

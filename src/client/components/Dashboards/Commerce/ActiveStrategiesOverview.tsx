@@ -38,7 +38,10 @@ function ActiveStrategiesOverview({ strategies }) {
   const getActiveSinceFromStrategies = () => {
     if (!strategies.length) return 0
 
-    const dates = strategies.map((s) => new Date(s.createdAt)).sort((a, b) => a.getTime() - b.getTime())
+    const dates = strategies
+      .filter((s) => s.isActive)
+      .map((s) => new Date(s.createdAt))
+      .sort((a, b) => a.getTime() - b.getTime())
 
     const lastDate = dates[0]
 
