@@ -70,7 +70,7 @@ const launchStrategie = async (payload) => {
       await claimPlayedEpochs(lastEpochs)
     }
     //TODO reactivate for production
-    // process.exit(0)
+    process.exit(0)
   }
   // const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
   const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {

@@ -953,7 +953,10 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                                   // </Typography>
                                   <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
                                     {t('Stop Loss if bankroll is less than ')}{' '}
-                                    <b>{strategie?.startedAmount - strategie?.maxLooseAmount} BNB</b>
+                                    <b>
+                                      {parseFloat(`${strategie?.startedAmount - strategie?.maxLooseAmount}`).toFixed(4)}{' '}
+                                      BNB
+                                    </b>
                                   </Typography>
                                 )}
                               </Grid>
