@@ -20,8 +20,8 @@ const MAX_BET_AMOUNT = 0.1
 const MIN_BET_AMOUNT = 0.001
 
 const SAFE_GAS_PRICE = 5
-// const FAST_GAS_PRICE = 6
-const FAST_GAS_PRICE = 7
+const FAST_GAS_PRICE = 6
+// const FAST_GAS_PRICE = 7
 
 const options = {
   dappId: process.env.BLOCKNATIVE_API_KEY,
@@ -439,9 +439,10 @@ const launchStrategie = async (payload) => {
     // )
 
     // Raw Transaction
-    // var rawTx = {
-    //   nonce: provider.getTransactionCount(strategie.generated, 'latest'),
-    // }
+    const rawTx = {
+      nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+      value: ethers.utils.parseEther(strategie.betAmount.toString()),
+    }
 
     // Gas limit
     // let gasLimit = await provider.estimateGas(
