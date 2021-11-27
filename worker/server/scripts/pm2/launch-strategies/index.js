@@ -11,8 +11,10 @@ const launch = async (strategie) => {
       name: `strategie_${strategie.id}`,
       instances: 1,
       args: `${strategie.id}`,
-      autorestart: true,
-      max_restarts: 10,
+      autorestart: false,
+      // maxRestarts: 10,
+      minUptime: 100,
+      exp_backoff_restart_delay: 60 * 1000,
       // exec_mode: 'fork',
       output: `./logs/pm2/launchStrategie/${strategie.id}/output/play.log`,
       error: `./logs/pm2/launchStrategie/${strategie.id}/error/play.error.log`,
@@ -28,14 +30,16 @@ const launchStrategiesWithPM2 = async () => {
     where: {
       isActive: true,
       isRunning: false,
-      isDeleted: false,
-      isError: false,
+      // isDeleted: false,
+      // isError: false,
     },
   })
 
   logger.info(`[LAUNCHING] ${strategies.length} strategies will be launched`)
 
   await Promise.all(strategies.map(launch))
+
+  logger.info(`[LAUNCHING] existing`)
 }
 
 launchStrategiesWithPM2()

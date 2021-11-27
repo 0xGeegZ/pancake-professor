@@ -15,6 +15,7 @@ const stopStrategie = async (strategie) => {
     where: { id: strategie.id },
     data: {
       isRunning: false,
+      isNeedRestart: false,
     },
   })
 }
@@ -23,7 +24,7 @@ const stopStrategiesWithPM2 = async () => {
   logger.info(`[STOPPING] Stopping strategies locally`)
   const strategies = await prisma.strategie.findMany({
     where: {
-      isActive: true,
+      // isActive: true,
       isRunning: true,
     },
   })
@@ -32,9 +33,10 @@ const stopStrategiesWithPM2 = async () => {
 
   await Promise.all(strategies.map(stopStrategie))
 
-  logger.info(`[STOPPING] Stopping process`)
-  process.exit(0)
+  // logger.info(`[STOPPING] Stopping process`)
+  // process.exit(0)
 }
 
-stopStrategiesWithPM2()
-module.exports = stopStrategiesWithPM2
+// stopStrategiesWithPM2()
+// module.exports = stopStrategiesWithPM2
+module.exports = { stopStrategiesWithPM2 }

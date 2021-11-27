@@ -10,6 +10,7 @@ import {
   Button,
   Card,
   Checkbox,
+  Chip,
   CircularProgress,
   Dialog,
   Divider,
@@ -37,6 +38,7 @@ import {
 import { styled } from '@mui/material/styles'
 import { TransitionProps } from '@mui/material/transitions'
 import clsx from 'clsx'
+import { formatDistance } from 'date-fns'
 import { useSnackbar } from 'notistack'
 import PropTypes from 'prop-types'
 import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, SyntheticEvent, useState } from 'react'
@@ -202,12 +204,12 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
       label: t('All users'),
     },
     // {
-    //   value: 'customer',
-    //   label: t('Customers'),
+    //   value: 'activateds',
+    //   label: t('Activateds'),
     // },
     // {
-    //   value: 'admin',
-    //   label: t('Administrators'),
+    //   value: 'unactivateds',
+    //   label: t('Unactivated'),
     // },
     // {
     //   value: 'subscriber',
@@ -267,7 +269,7 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
   const selectedSomeUsers = selectedItems.length > 0 && selectedItems.length < users.length
   const selectedAllUsers = selectedItems.length === users.length
 
-  const [toggleView, setToggleView] = useState<string | null>('table_view')
+  const [toggleView, setToggleView] = useState<string | null>('grid_view')
 
   const handleViewOrientation = (_event: MouseEvent<HTMLElement>, newValue: string | null) => {
     setToggleView(newValue)
@@ -294,6 +296,11 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
       },
       TransitionComponent: Zoom,
     })
+  }
+
+  const handleActivate = (user) => () => {
+    console.log('handleActivate', user)
+    // TODO
   }
 
   return (
@@ -391,6 +398,7 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
                       <TableCell>{t('Email')}</TableCell>
                       <TableCell>{t('Main address')}</TableCell>
                       <TableCell>{t('Generated address')}</TableCell>
+                      <TableCell align="center">{t('Status')}</TableCell>
                       {/* <TableCell align="center">{t('Posts')}</TableCell>
                       <TableCell>{t('Location')}</TableCell> */}
                       {/* <TableCell>{t('Role')}</TableCell> */}
@@ -448,6 +456,22 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
                               </Link>
                             </TableCell>
                           </TableCell>
+                           <TableCell align="center">
+                           <Chip
+                              sx={{ m: 1 }}
+                              key="isActive"
+                              color={user?.isActivated ? 'success' : 'error'}
+                              variant={user?.isActivated ? 'filled' : 'outlined'}
+                              label={user?.isActivated ? ' Active' : 'Unactive'}
+                              onClick={handleActivate(user)}
+                            />
+                            {/* {user.isDeleted ? (<Chip
+                                  sx={{ m: 1 }}
+                                  key="isDeleted"
+                                  variant="outlined"
+                                  label={"Deleted"} 
+                                />) : <></>}  */}
+ </TableCell>
                           {/* <TableCell align="center">
                             <Typography fontWeight="bold">{user?.posts}</Typography>
                           </TableCell>
@@ -578,7 +602,7 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
                               <Box>
                                 <Link underline="hover" variant="h5" href={`/admin/users/${user?.id}`}>
                                   {user?.name}
-                                </Link>{' '}
+                                </Link>
                                 <Typography sx={{ pt: 1 }} variant="h6">
                                   {user?.email}
                                 </Typography>
@@ -606,13 +630,42 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
                                     {user?.generated.substring(0, 15)}
                                   </Link>
                                 </Typography>
-                                {/* <Typography component="span" variant="body2" color="text.secondary">
-                                  ({user?.username})
-                                </Typography> */}
                               </Box>
-                              {/* <Typography sx={{ pt: 0.3 }} variant="subtitle2">
-                                {user?.jobtitle}
-                              </Typography> */}
+                              <Box pt={0.5}>
+                                <Typography variant="body2" color="text.secondary">
+                                  {t('Last login')} :{' '}
+                                  {formatDistance(user?.loginAt ? new Date(user?.loginAt) : new Date(), new Date(), {
+                                    addSuffix: true,
+                                  })}
+                                </Typography>
+                                <Typography variant="body2" color="text.secondary">
+                                  {t('Registered')} :{' '}
+                                  {formatDistance(
+                                    user?.registeredAt ? new Date(user?.registeredAt) : new Date(),
+                                    new Date(),
+                                    {
+                                      addSuffix: true,
+                                    }
+                                  )}
+                                </Typography>
+                              </Box>
+
+                              <Box pt={1}>
+                                <Chip
+                                  sx={{ m: 1 }}
+                                  key="isActive"
+                                  color={user?.isActivated ? 'success' : 'error'}
+                                  variant={user?.isActivated ? 'filled' : 'outlined'}
+                                  label={user?.isActivated ? ' Active' : 'Unactive'}
+                                  onClick={handleActivate(user)}
+                                />
+                                {/* {user.isDeleted ? (<Chip
+                                  sx={{ m: 1 }}
+                                  key="isDeleted"
+                                  variant="outlined"
+                                  label={"Deleted"} 
+                                />) : <></>}  */}
+                              </Box>
                             </Box>
                           </Box>
                           <Divider />

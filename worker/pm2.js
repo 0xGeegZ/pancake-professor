@@ -1,6 +1,7 @@
 const pm2 = require('pm2')
 const prisma = require('./server/db/prisma')
 const logger = require('./server/utils/logger')
+const { stopStrategiesWithPM2 } = require('./server/scripts/pm2/stop-strategies/index')
 const { sleep } = require('./server/utils/utils')
 
 const listLog = (error, list) => {
@@ -11,8 +12,6 @@ const listLog = (error, list) => {
   list.forEach(({ pid, name }) => {
     logger.info(`process id ${pid} - name ${name}`)
   })
-
-  disconnectAndExit()
 }
 
 // const startLogs = (error, [{ name }]) => {
@@ -45,23 +44,24 @@ const launchStrategieForUser = async (strategie) => {
   )
 }
 
-const stopAllStrategies = () => {
-  pm2.start(
-    {
-      script: 'server/scripts/pm2/stop-strategies/index.js',
-      name: 'stopStrategies',
-      instances: 1,
-      autorestart: false,
-      stop_exit_codes: [0],
-      // exec_mode: 'fork',
-      // evety ten minuts https://crontab.guru/every-10-minutes
-      // cron_restart: '*/10 * * * *',
-      output: './logs/pm2/stopStrategies/listen.log',
-      error: './logs/pm2/stopStrategies/listen.error.log',
-      log: './logs/pm2/stopStrategies/combined.listen.log',
-    },
-    startLogs
-  )
+const stopAllStrategies = async () => {
+  // pm2.start(
+  //   {
+  //     script: 'server/scripts/pm2/stop-strategies/index.js',
+  //     name: 'stopStrategies',
+  //     instances: 1,
+  //     autorestart: false,
+  //     stop_exit_codes: [0],
+  //     // exec_mode: 'fork',
+  //     // evety ten minuts https://crontab.guru/every-10-minutes
+  //     // cron_restart: '*/10 * * * *',
+  //     output: './logs/pm2/stopStrategies/listen.log',
+  //     error: './logs/pm2/stopStrategies/listen.error.log',
+  //     log: './logs/pm2/stopStrategies/combined.listen.log',
+  //   },
+  //   startLogs
+  // )
+  await stopStrategiesWithPM2()
 }
 
 const launchAllStrategies = () => {
@@ -70,11 +70,11 @@ const launchAllStrategies = () => {
       script: 'server/scripts/pm2/launch-strategies/index.js',
       name: 'launchStrategies',
       instances: 1,
-      autorestart: false,
+      autorestart: true,
       stop_exit_codes: [0],
       // evety five minuts https://crontab.guru/every-5-minutes
-      exec_mode: 'fork',
-      cron_restart: '*/5 * * * *',
+      // exec_mode: 'fork',
+      cron_restart: '*/60 * * * *',
       output: './logs/pm2/launchStrategies/listen.log',
       error: './logs/pm2/launchStrategies/listen.error.log',
       log: './logs/pm2/launchStrategies/combined.listen.log',
@@ -91,14 +91,13 @@ const launchServices = async (error) => {
 
   logger.info('********************')
   logger.info('stopping strategies')
-  stopAllStrategies()
+  await stopAllStrategies()
   logger.info('********************')
 
   await sleep(5 * 1000)
   logger.info('********************')
   logger.info('Launching strategies')
   launchAllStrategies()
-
   // const strategies = await prisma.strategie.findMany({
   //   where: {
   //     isActive: true,
@@ -114,6 +113,9 @@ const launchServices = async (error) => {
   logger.info('********************')
 
   pm2.list(listLog)
+
+  await sleep(5 * 1000)
+  disconnectAndExit()
 }
 
 const disconnectService = (service) => {

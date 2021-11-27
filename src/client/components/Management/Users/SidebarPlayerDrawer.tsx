@@ -18,9 +18,11 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { formatDistance } from 'date-fns'
+import PropTypes from 'prop-types'
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Link from 'src/client/components/Link'
+import Text from 'src/client/components/Text'
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import loadPlayer from 'src/client/thegraph/loadPlayer'
 
@@ -129,7 +131,7 @@ const AvatarWrapperSuccess = styled(Avatar)(
 // `
 // )
 
-function SidebarDrawer({ playerId }) {
+function SidebarPlayerDrawer({ playerId }) {
   const { t }: { t: any } = useTranslation()
   const isMountedRef = useRefMounted()
 
@@ -156,6 +158,9 @@ function SidebarDrawer({ playerId }) {
     try {
       if (isMountedRef.current) {
         const loadedHistory = await loadPlayer(playerId)
+
+        if (!loadedHistory) return
+
         setHistory(loadedHistory)
         setLoading(false)
       }
@@ -307,19 +312,6 @@ function SidebarDrawer({ playerId }) {
                       {parseFloat(history.averageBNB).toFixed(4)} BNB
                     </Typography>
                   </Grid>
-
-                  {/* <Grid item sm={12} display="flex" alignItems="center" justifyContent="space-between">
-                <Typography variant="subtitle2">{t('Description')}:</Typography>
-                <Button startIcon={<EditTwoToneIcon />} variant="text" size="small">
-                  {t('Edit')}
-                </Button>
-              </Grid>
-              <Grid item sm={12}>
-                <Typography variant="subtitle2" color="text.primary">
-                  It is a long established fact that a reader will be distracted by the readable content of a page when
-                  looking at its layout.
-                </Typography>
-              </Grid> */}
                 </Grid>
               </Box>
               <Divider sx={{ my: 3 }} />
@@ -440,21 +432,39 @@ function SidebarDrawer({ playerId }) {
                           </Box>
                           <Box display="flex" alignItems="center" py={0.5}>
                             {/* <PictureAsPdfTwoToneIcon /> */}
-                            <Typography variant="body1" color="text.secondary">
+                            <Typography variant="body1" fontWeight="bold" color="text.secondary">
                               {t('Bet Amount :')} {parseFloat(bet.amount).toFixed(6)} BNB
                             </Typography>
                           </Box>
                           <Divider sx={{ my: 1 }} />
-                          <Box display="flex" alignItems="center" py={0.5}>
-                            <Typography variant="body2" fontWeight="bold" gutterBottom noWrap color="text.secondary">
+                          {/* <Box display="flex" alignItems="center" py={0.5}>
+                            <Typography
+                              variant="body2"
+                              color={bet.position === bet.round.position ? 'success' : 'error'}
+                              fontWeight="bold"
+                              gutterBottom
+                              noWrap>
                               {bet.position === bet.round.position
                                 ? `${t('Won : ') + getWinLossAmount(bet)} BNB - ${t('Rate ')}${getWinLossRate(bet)}`
                                 : `${t('Loose : ') + getWinLossAmount(bet)} BNB`}
-                              {/* {' '}
-                              {getWinLossAmount(bet)}
-                              {' - '}
-                              {t('Rate')} {getWinLossRate(bet)} */}
                             </Typography>
+                          </Box> */}
+                          <Box display="flex" alignItems="center" py={0.5}>
+                            <ListItemText
+                              secondary={
+                                <Text color={bet.position === bet.round.position ? 'success' : 'error'}>
+                                  {`${
+                                    bet.position === bet.round.position ? t('Won : ') : t('Loose : ')
+                                  } ${getWinLossAmount(bet)} BNB - ${t('Rate ')}${getWinLossRate(bet)}`}
+                                </Text>
+                              }
+                              secondaryTypographyProps={{
+                                variant: 'body2',
+                                noWrap: true,
+                                gutterBottom: true,
+                                fontWeight: 'bold',
+                              }}
+                            />
                           </Box>
                         </>
                       }
@@ -475,4 +485,12 @@ function SidebarDrawer({ playerId }) {
   )
 }
 
-export default SidebarDrawer
+// SidebarPlayerDrawer.defaultProps = {
+//   playerId: null,
+// }
+
+SidebarPlayerDrawer.propTypes = {
+  playerId: PropTypes.string.isRequired,
+}
+
+export default SidebarPlayerDrawer

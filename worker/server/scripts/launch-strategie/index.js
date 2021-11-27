@@ -21,19 +21,20 @@ const MIN_BET_AMOUNT = 0.001
 
 const SAFE_GAS_PRICE = 5
 const FAST_GAS_PRICE = 6
-
-const options = {
-  dappId: process.env.BLOCKNATIVE_API_KEY,
-  networkId: 56,
-  ws: WebSocket,
-  onerror: (error) => {
-    logger.error(error)
-  },
-}
+// const FAST_GAS_PRICE = 7
 
 let range = (start, end) => Array.from(Array(end + 1).keys()).slice(start)
 
 const launchStrategie = async (payload) => {
+  const options = {
+    dappId: process.env.BLOCKNATIVE_API_KEY,
+    networkId: 56,
+    ws: WebSocket,
+    onerror: (error) => {
+      logger.error(error)
+    },
+  }
+
   const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
 
   const { user, strategie } = payload
@@ -51,7 +52,7 @@ const launchStrategie = async (payload) => {
   logger.info(`[LAUNCHING] Job launching job for strategie ${strategie.id} and address ${strategie.generated}`)
   const blocknative = new BlocknativeSdk(options)
 
-  const stopStrategie = async () => {
+  const stopStrategie = async ({ epoch }) => {
     logger.error(`[PLAYING] Stopping strategie ${strategie.id} for user ${user.id}`)
 
     await prisma.strategie.update({
@@ -64,13 +65,18 @@ const launchStrategie = async (payload) => {
     })
     if (emitter) emitter.off('txPool')
 
+    if (epoch) {
+      const lastEpochs = [...range(+epoch - 288, +epoch)]
+      await claimPlayedEpochs(lastEpochs)
+    }
+    //TODO reactivate for production
     process.exit(0)
   }
   // const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
   const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
     if (strategie.currentAmount === 0) {
       logger.error('[PLAYING] Not enought BNB')
-      await stopStrategie()
+      await stopStrategie({ epoch })
     }
 
     // if (bankroll > countedBankroll * 1.5) {
@@ -98,19 +104,21 @@ const launchStrategie = async (payload) => {
 
     if (!(+amount != 0)) {
       logger.error('[PLAYING] Bet amount is 0')
-      await stopStrategie()
+      await stopStrategie({ epoch })
     }
 
     let isError = false
     try {
-      const gasPrice = await provider.getGasPrice()
+      // const gasPrice = await provider.getGasPrice()
 
       const tx = await preditionContract[betBullOrBear](epoch.toString(), {
         value: ethers.utils.parseEther(amount),
         nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+        gasPrice: strategie.gasPrice,
+        gasLimit: strategie.gasLimit,
+        // gasPrice: ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString(),
+        // gasLimit: ethers.utils.hexlify(250000),
         // gasPrice,
-        gasPrice: ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString(),
-        gasLimit: ethers.utils.hexlify(250000),
       })
 
       await tx.wait()
@@ -118,7 +126,7 @@ const launchStrategie = async (payload) => {
       strategie.playedEpochs.push(epoch.toString())
       strategie.playsCount += 1
     } catch (error) {
-      logger.error(`[PLAYING] Betting Tx Error for user ${user.id} and epoch ${epoch}`)
+      logger.error(`[PLAYING] Betting Tx Error for adress ${strategie.generated} and epoch ${epoch}`)
       logger.error(error.message)
       isError = true
       // Try to reenter
@@ -139,8 +147,6 @@ const launchStrategie = async (payload) => {
       //   strategie.playsCount += 1
       // }
     }
-    logger.info('------------------------------------------------------------')
-    logger.info('------------------------------------------------------------')
     // TODO save bet to database
     // const bet = { epoch, betBull, betAmount, isError, strategieId: strategie.id, userId : user.id, hash : strategie.playedHashs[strategie.playedHashs.lenght-1], isClaimed : false}
   }
@@ -222,15 +228,21 @@ const launchStrategie = async (payload) => {
     strategie.playedHashs.push(transaction.hash)
 
     await betRound({ epoch, betBull, betAmount })
+    logger.info('------------------------------------------------------------')
+    logger.info('------------------------------------------------------------')
   }
 
   const roundEndListenner = async (epoch) => {
     strategie.roundsCount += 1
 
-    if (strategie.playedEpochs.length >= 3) {
-      await claimPlayedEpochs(strategie.playedEpochs)
-      strategie.playedEpochs = []
+    if (strategie.roundsCount % 5 === 0) {
+      const lastEpochs = [...range(+epoch - 6, +epoch)]
+      await claimPlayedEpochs(lastEpochs)
     }
+    // if (strategie.playedEpochs.length >= 3) {
+    // await claimPlayedEpochs(strategie.playedEpochs)
+    // strategie.playedEpochs = []
+    // }
 
     const currentAmountBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
@@ -256,20 +268,19 @@ const launchStrategie = async (payload) => {
       },
     })
 
-    console.log(
-      '🚀 ~ file: index.js ~ line 258 ~ roundEndListenner ~ isUpdatedStrategie.isNeedRestart',
-      isUpdatedStrategie.isNeedRestart
-    )
-
     // Check if stop loss or take profit
-    if (strategie.currentAmount <= isUpdatedStrategie.maxLooseAmount) {
-      logger.info('[PLAYING] Stop Loss activated.')
-      await stopStrategie()
+    if (strategie.currentAmount <= isUpdatedStrategie.startedAmount - isUpdatedStrategie.maxLooseAmount) {
+      logger.info(
+        `[PLAYING] Stop Loss activated for player ${user.id} : current amount ${
+          strategie.currentAmount
+        } --> STOP LOSS : ${isUpdatedStrategie.startedAmount - isUpdatedStrategie.maxLooseAmount}`
+      )
+      await stopStrategie({ epoch })
     }
 
-    if (strategie.currentAmount > isUpdatedStrategie.minWinAmount) {
+    if (strategie.currentAmount >= isUpdatedStrategie.minWinAmount) {
       logger.info('[PLAYING] Take Profit activated.')
-      await stopStrategie()
+      await stopStrategie({ epoch })
     }
 
     if (isUpdatedStrategie.isNeedRestart) {
@@ -286,7 +297,7 @@ const launchStrategie = async (payload) => {
 
     if (!isUpdatedStrategie.isActive || isUpdatedStrategie.isError || isUpdatedStrategie.isDeleted) {
       logger.error('[PLAYING] Strategie was updated by user (stopped or deleted) and need to be stoped.')
-      await stopStrategie()
+      await stopStrategie({ epoch })
     }
   }
 
@@ -328,9 +339,11 @@ const launchStrategie = async (payload) => {
     const losss = played.filter((c) => !c.isWon)?.length
 
     logger.info(
-      `[WIN/LOSS] Win/Loss ratio for last ${claimables.length} games : ${wins}W/${losss}L for ${
-        played.length
-      } played games (${parseFloat((wins * 100) / played.length).toFixed(2)}% Winrate) `
+      `[WIN/LOSS] Win/Loss ratio for player ${strategie.generated} and ${
+        claimables.length
+      } last games : ${wins}W/${losss}L for ${played.length} played games (${parseFloat(
+        (wins * 100) / played.length
+      ).toFixed(2)}% Winrate) `
     )
 
     const claimablesEpochs = claimables.filter((c) => c.isClaimable).map((c) => c.epoch)
@@ -399,9 +412,10 @@ const launchStrategie = async (payload) => {
         process.exit(0)
       }
 
-      currentEpoch = await preditionContract.currentEpoch()
+      const epoch = await preditionContract.currentEpoch()
 
-      const lastEpochs = [...range(+currentEpoch - 24, +currentEpoch)]
+      // TODO try to claim all played epoch ??
+      const lastEpochs = [...range(+epoch - 200, +epoch)]
       await claimPlayedEpochs(lastEpochs)
     } catch (error) {
       logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)
@@ -413,9 +427,43 @@ const launchStrategie = async (payload) => {
     strategie.playedHashs = []
     strategie.playedEpochs = []
 
+    strategie.gasPrice = ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString()
+    // strategie.gasPrice = await provider.getGasPrice()
+    // console.log(
+    //   '🚀 ~ file: index.js ~ line 420 ~ listen ~ await provider.getGasPrice()',
+    //   await (await provider.getGasPrice()).toString()
+    // )
+    // console.log(
+    //   "🚀 ~ file: index.js ~ line 419 ~ listen ~ ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString()",
+    //   ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString()
+    // )
+
+    // Raw Transaction
+    // const rawTx = {
+    //   nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+    //   value: ethers.utils.parseEther(strategie.betAmount.toString()),
+    // }
+
+    // Gas limit
+    // let gasLimit = await provider.estimateGas(
+    //   strategie.generated,
+    //   process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+    //   ethers.utils.parseEther(strategie.betAmount.toString()),
+    //   rawTx
+    // )
+
+    // const gasLimit = await provider.estimateGas({
+    //   to: process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+    //   value: ethers.utils.parseEther(strategie.betAmount.toString()),
+    // })
+
+    // strategie.gasLimit = ethers.utils.hexlify(gasLimit)
+
+    strategie.gasLimit = ethers.utils.hexlify(250000)
+
     if (strategie.betAmount <= MIN_BET_AMOUNT || strategie.betAmount > MAX_BET_AMOUNT) {
       logger.error(`[LISTEN] Bet amount error, value is ${strategie.betAmount} Stopping strategie for now`)
-      await stopStrategie()
+      await stopStrategie({ epoch })
       return
     }
 
@@ -434,12 +482,12 @@ const launchStrategie = async (payload) => {
     logger.info(`[LISTEN] Starting for user ${strategie.generated} copy betting player ${strategie.player}`)
 
     logger.info(`[LISTEN] Waiting for transaction for player ${strategie.player}`)
+    // logger.info(`[LISTEN] emitter is listenning to transaction from mempool`)
+    preditionContract.on('EndRound', roundEndListenner)
+
     const { emitter: emt } = blocknative.account(strategie.player)
     emitter = emt
     emitter.on('txPool', processRound)
-
-    // logger.info(`[LISTEN] emitter is listenning to transaction from mempool`)
-    preditionContract.on('EndRound', roundEndListenner)
   }
 
   try {

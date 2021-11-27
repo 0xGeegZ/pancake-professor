@@ -1,6 +1,5 @@
 query getUsers {
   getUsers {
-    # user {
     id
     name
     address
@@ -8,6 +7,6 @@ query getUsers {
     email
     registeredAt
     loginAt
-    # }
+    isActivated
   }
 }

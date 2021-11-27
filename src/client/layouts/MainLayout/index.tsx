@@ -167,7 +167,8 @@ const MainLayout: FC<MainLayoutProps> = ({ children }) => {
       {/* <Sidebar fetching={fetching} error={error} allMenuItems={allMenuItems} /> */}
       {/* {process.env.NODE_ENV === 'development' && <Banner networkId={user?.networkId} />} */}
       {/* {user?.networkId && <Banner networkId={user?.networkId} />} */}
-      <Banner networkId={user?.networkId} />
+      {/* <Banner networkId={user?.networkId} /> */}
+      {user?.networkId !== 56 && <Banner networkId={user?.networkId} />}
       <Sidebar
         fetching={fetching}
         allMenuItems={user?.isAdmin ? menuItems : menuItems.filter((mi) => mi.heading !== 'Admin')}
