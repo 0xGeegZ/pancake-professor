@@ -25,6 +25,7 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { TransitionProps } from '@mui/material/transitions'
+import { ethers } from 'ethers'
 import { useSnackbar } from 'notistack'
 import { forwardRef, ReactElement, Ref, useState } from 'react'
 import { useTranslation } from 'react-i18next'
@@ -274,12 +275,40 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
 
     setPending(true)
 
+    const provider = new ethers.providers.Web3Provider(window.ethereum)
+
+    if (!provider) return
+
+    // const rawBalance = await provider.getBalance(user.generated)
+
+    // const balance = ethers.utils.formatUnits(rawBalance)
+    // console.log('🚀 ~ file: AddFundsForm.tsx ~ line 213 ~ sumbitAddFunds ~ balance', balance)
+
+    // console.log('🚀 ~ file: AddFundsForm.tsx ~ line 225 ~ sumbitAddFunds ~ amount', amount)
+
+    const rawGasPrice = await provider.getGasPrice()
+    const gasPrice = ethers.utils.formatUnits(rawGasPrice)
+
+    // let bnbValue = amount
+    let bnbValue = `${amount}`
+
+    const gasLimit = await provider.estimateGas({
+      to: user.generated,
+      value: ethers.utils.parseEther(bnbValue),
+    })
+
+    if (gauge === 100) {
+      // TODO GUIGUI ERROR
+      const costs = +gasPrice * +gasLimit
+      bnbValue = `${+user.generatedBalance - +costs}`
+    }
+
     const maxLooseAmount = +((stopLoss * amount) / 100).toFixed(4)
     const minWinAmount = +((takeProfit * amount) / 100).toFixed(4)
 
     const { error } = await createStrategie({
       player: player.id,
-      startedAmount: amount,
+      startedAmount: +bnbValue,
       maxLooseAmount,
       minWinAmount,
     })

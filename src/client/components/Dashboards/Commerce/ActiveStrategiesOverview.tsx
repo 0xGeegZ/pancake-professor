@@ -29,6 +29,7 @@ function ActiveStrategiesOverview({ strategies }) {
     if (!strategies.length) return 0
 
     return `${strategies
+      .filter((s) => s.isActive)
       .map((s) => +s.currentAmount)
       .reduce((acc, num) => acc + num, 0)
       .toFixed(4)} BNB`

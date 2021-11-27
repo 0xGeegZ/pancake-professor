@@ -48,6 +48,7 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
     const first = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 250 : 50
     // const first = orderBy === 'default' ? 500 : orderBy === 'mostActiveLastHour' ? 1000 : 50
     const firstBets = orderBy === 'default' ? 12 * 24 : orderBy === 'mostActiveLastHour' ? 24 : 1
+    const epochGT = orderBy === 'default' ? epoch - 12 * 24 : orderBy === 'mostActiveLastHour' ? epoch - 24 : 1
     const query = gql`
       query getUsers(
         $totalBets: String!
@@ -91,7 +92,7 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
       orderBy: orderByFilter,
       first,
       firstBets,
-      epochGT: LIMIT_HISTORY_LENGTH,
+      epochGT,
     }
     const data = await graphQLClient.request(query, variables)
 

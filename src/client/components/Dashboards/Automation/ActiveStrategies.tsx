@@ -221,19 +221,19 @@ const DotLegend = styled('span')(
 `
 )
 
-interface Props {
-  children: React.ReactElement;
-  value: number;
-}
-const ValueLabelComponent = (props: Props)=> {
-  const { children, value } = props;
+// interface Props {
+//   children: React.ReactElement
+//   value: number
+// }
+// const ValueLabelComponent = (props: Props) => {
+//   const { children, value } = props
 
-  return (
-    <Tooltip enterTouchDelay={0} placement="top" title={value}>
-      {children}
-    </Tooltip>
-  );
-}
+//   return (
+//     <Tooltip enterTouchDelay={0} placement="top" title={value}>
+//       {children}
+//     </Tooltip>
+//   )
+// }
 
 /* eslint-disable */
 const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
@@ -302,7 +302,8 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
   const [location, setLocation] = useState<string>(locations[0].text)
   const [locationValue, setLocationValue] = useState<string>(locations[0].value)
 
-  const [strategies, setStrategies] = useState<any[]>(pstrategies)
+  const [strategies, setStrategies] = useState<any[]>(null)
+  const [withoutHistory, setWithoutHistory] = useState<any[]>(null)
   const [activeStrategie, setActiveStrategie] = useState<any>(null)
   // const [isLoadingHistory, setIsLoadingHistory] = useState<boolean>(false)
   const [open, setOpen] = useState<boolean>(false)
@@ -337,8 +338,10 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
   const handleChange = (strategie) => async () => {
     const updateds = strategies.map((s) => {
       const updated = s
-      if (updated.id === strategie.id) updated.isActive = !updated.isActive
-
+      if (updated.id === strategie.id) {
+        updated.isActive = !updated.isActive
+        updated.isError = false
+      }
       return updated
     })
     setStrategies(updateds)
@@ -394,12 +397,21 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
     }
     console.log('useEffect')
 
-    if (strategies) return
+    if (strategies) {
+      // check if strategies was updateds
+      // console.log('IS SAME', JSON.stringify(pstrategies) === JSON.stringify(withoutHistory))
+
+      if (JSON.stringify(pstrategies) === JSON.stringify(withoutHistory)) return
+
+      // console.log('pstrategies', pstrategies)
+      // console.log('strategies', withoutHistory)
+    }
 
     console.log('useEffect -> updating strategies')
     setMobileOpen(false)
 
     setStrategies(pstrategies)
+    setWithoutHistory(pstrategies)
 
     loadStrategiesHistory(pstrategies)
 
@@ -409,7 +421,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
     // })
     // setStrategies(lstrategies)
     // loadStrategiesHistory(lstrategies)
-  }, [fetching, pstrategies, strategies, loadStrategiesHistory])
+  }, [fetching, pstrategies, strategies, loadStrategiesHistory, withoutHistory])
 
   const getStrategieDuraction = (timestamp) => {
     const duration = moment.duration(moment().diff(moment(timestamp)))
@@ -431,7 +443,6 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
 
   const deleteStrategie = async () => {
     setAnchorEl(null)
-
     setPending(true)
 
     try {
@@ -568,9 +579,25 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
     return `${winRate}% `
   }
 
+  const getStrategieValue = (strategie) => {
+    const currentAmountPercent = parseInt(`${(strategie?.currentAmount * 100) / strategie?.minWinAmount}`, 10)
+    // const currentAmount = parseFloat(`${strategie?.currentAmount}`).toFixed(4)
+
+    return currentAmountPercent
+    // currentAmountPercent =
+    //   strategie?.currentAmount <= strategie?.startedAmount - strategie?.maxLooseAmount
+    //     ? currentAmountPercent - 30
+    //     : currentAmountPercent
+
+    // return currentAmountPercent
+  }
   const getStrategieMarks = (strategie) => {
-    const stopLoss = parseInt(`${((strategie?.currentAmount - strategie?.maxLooseAmount) * 100) / strategie?.startedAmount}`, 10)
+    // const stopLoss = parseInt(
+    //   `${((strategie?.startedAmount - strategie?.maxLooseAmount) * 100) / strategie?.startedAmount}`,
+    //   10
+    // )
     const takeProfit = parseInt(`${(strategie?.minWinAmount * 100) / strategie?.startedAmount}`, 10)
+    const currentAmountPercent = parseInt(`${(strategie?.currentAmount * 100) / strategie?.minWinAmount}`, 10)
     const currentAmount = parseFloat(`${strategie?.currentAmount}`).toFixed(4)
 
     const marks = [
@@ -579,25 +606,36 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
       //   label: '0 BNB',
       // },
       {
-        value: stopLoss,
-        label: `${parseFloat(`${(strategie?.currentAmount - strategie?.maxLooseAmount) }`).toFixed(4)} BNB`,
+        // value: 20,
+        // value: stopLoss,
+        value:
+          strategie?.currentAmount <= strategie?.startedAmount - strategie?.maxLooseAmount
+            ? currentAmountPercent + 30
+            : 20,
+        // value: currentAmountPercent + 30,
+        label: `${parseFloat(`${strategie?.startedAmount - strategie?.maxLooseAmount}`).toFixed(4)}`,
       },
-
       {
-        value: 100,
-        label: `${currentAmount} BNB`,
+        value: currentAmountPercent,
+        // value:
+        //   strategie?.currentAmount <= strategie?.startedAmount - strategie?.maxLooseAmount
+        //     ? currentAmountPercent - 30
+        //     : currentAmountPercent,
+        label: `${currentAmount}`,
       },
       {
-        value: takeProfit,
-        label: `${parseFloat(`${strategie.minWinAmount}`).toFixed(4)} BNB`,
+        // value: takeProfit - 10,
+        value:
+          strategie?.currentAmount > strategie?.minWinAmount ? takeProfit - currentAmountPercent - 10 : takeProfit - 10,
+        label: `${parseFloat(`${strategie.minWinAmount}`).toFixed(4)}`,
       },
     ]
     return marks
   }
 
-  const valuetext = (value: number) => {
-    return `${value} BNB`
-  }
+  // const valuetext = (value: number) => {
+  //   return `${value} BNB`
+  // }
 
   return (
     <>
@@ -657,6 +695,13 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                 })
                 .sort((x, y) => {
                   return x.isActive === y.isActive && x.isActive === true ? 0 : y.isDeleted ? -1 : x.isActive ? -1 : 1
+                })
+                .sort((x, y) => {
+                  return x.isActive === y.isActive && x.isActive === true
+                    ? +x.currentAmount > +y.currentAmount
+                      ? -1
+                      : 0
+                    : 1
                 })
                 .map((strategie) => (
                   <Grid item xs={12} xl={3} md={4} sm={6} key={strategie.id}>
@@ -800,7 +845,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                           <Grid spacing={2} container>
                             <Grid item xs={12} sm={8}>
                               <Typography variant="h5" sx={{ pb: 1 }} component="div">
-                                {t('Rounds played')}(%)
+                                {t('Rounds played')}
                               </Typography>
                               <Box>
                                 <Typography color="text.primary" variant="h2" sx={{ pr: 0.5, display: 'inline-flex' }}>
@@ -875,37 +920,40 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                             </Grid>
                             {strategie.maxLooseAmount && strategie.minWinAmount ? (
                               <Grid item xs={12}>
-                                              {/* <Tooltip arrow placement="bottom" title={t('Share')}> */}
+                                {/* <Tooltip arrow placement="bottom" title={t('Share')}> */}
 
-<Slider
+                                <Slider
                                   aria-label="Custom marks"
-                                  defaultValue={100}
-                                  getAriaValueText={valuetext}
+                                  defaultValue={getStrategieValue(strategie)}
+                                  // getAriaValueText={valuetext}
                                   step={10}
                                   valueLabelDisplay="off"
                                   marks={getStrategieMarks(strategie)}
                                   color="secondary"
-        //                           components={{
-        //   ValueLabel: ValueLabelComponent,
-        // }}
+                                  //                           components={{
+                                  //   ValueLabel: ValueLabelComponent,
+                                  // }}
                                   // min={0}
                                   max={parseInt(`${(strategie?.minWinAmount * 100) / strategie?.startedAmount}`, 10)}
                                   disabled
                                 />
-                                              {/* </Tooltip> */}
+                                {/* </Tooltip> */}
 
-                                
                                 <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
                                   {t('Started Amount ')} <b>{strategie.startedAmount} BNB</b>
                                 </Typography>
-                                {strategie.maxLooseAmount && (
-                                  <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
-                                    {t('Stop Loss if loose more than ')} <b>{strategie.maxLooseAmount} BNB</b>
-                                  </Typography>
-                                )}
                                 {strategie.minWinAmount && (
                                   <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
                                     {t('Take profit if win more than ')} <b>{strategie.minWinAmount} BNB</b>
+                                  </Typography>
+                                )}
+                                {strategie.maxLooseAmount && (
+                                  // <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
+                                  //   {t('Stop Loss if loose more than ')} <b>{strategie.maxLooseAmount} BNB</b>
+                                  // </Typography>
+                                  <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
+                                    {t('Stop Loss if bankroll is less than ')}{' '}
+                                    <b>{strategie?.startedAmount - strategie?.maxLooseAmount} BNB</b>
                                   </Typography>
                                 )}
                               </Grid>
@@ -918,7 +966,6 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                         <Box sx={{ py: 1, pt: 0.5 }}>
                           <Grid spacing={1} container>
                             <Grid item xs={12}>
-                              
                               {strategie?.bets?.length && (
                                 <Typography sx={{ fontSize: `${theme.typography.pxToRem(10)}`, pt: 0.5 }} variant="h5">
                                   {t('Last Play')}
