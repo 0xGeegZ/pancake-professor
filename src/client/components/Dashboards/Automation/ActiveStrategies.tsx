@@ -810,7 +810,9 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                           )}
                           <Box sx={{ pl: 0.5 }}>
                             <Typography fontWeight="bold" variant="caption" color="primary">
-                              {strategie.isError
+                              {strategie.isNeedRestart
+                                ? t('Restarting')
+                                : strategie.isError
                                 ? strategie.currentAmount > strategie.minWinAmount
                                   ? t('Take Profit')
                                   : strategie.currentAmount < strategie.startedAmount - strategie.maxLooseAmount
