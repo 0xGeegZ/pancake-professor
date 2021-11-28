@@ -15,7 +15,7 @@ const launch = async (strategie) => {
       // maxRestarts: 10,
       minUptime: 100,
       exp_backoff_restart_delay: 60 * 1000,
-      // exec_mode: 'fork',
+      exec_mode: 'fork',
       output: `./logs/pm2/launchStrategie/${strategie.id}/output/play.log`,
       error: `./logs/pm2/launchStrategie/${strategie.id}/error/play.error.log`,
       log: `./logs/pm2/launchStrategie/${strategie.id}/log/combined.play.log`,
