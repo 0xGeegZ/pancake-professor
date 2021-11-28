@@ -714,7 +714,8 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                           <Tooltip placement="top" title={t('More options')} arrow>
                             {/* <MenuIconWrapper color="primary" onClick={openMenu} onClick={handleClick} ref={moreRef}> */}
                             <MenuIconWrapper
-                              color="primary"
+                              // color="primary"
+                              color={strategie.isActive ? 'primary' : 'black'}
                               onClick={(e) => handleClick(strategie.id, e)}
                               ref={moreRef}>
                               <MoreVertTwoToneIcon />
@@ -743,12 +744,14 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                               horizontal: 'right',
                             }}>
                             <List sx={{ p: 1 }} component="nav">
-                              <ListItem button>
-                                <ListItemText
-                                  onClick={handleUpdateStrategieOpen(strategie)}
-                                  primary={t('Edit strategie')}
-                                />
-                              </ListItem>
+                              {!strategie.isDeleted && (
+                                <ListItem button>
+                                  <ListItemText
+                                    onClick={handleUpdateStrategieOpen(strategie)}
+                                    primary={t('Edit strategie')}
+                                  />
+                                </ListItem>
+                              )}
                               <ListItem button>
                                 <ListItemText
                                   onClick={() => {
@@ -767,10 +770,12 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                                   primary={t('View player history')}
                                 />
                               </ListItem>
-                              <ListItem button color="danger">
-                                {/* <ListItemText onClick={deleteStrategie(strategie)} primary={t('Delete strategie')} /> */}
-                                <ListItemText onClick={handleOpenDialog(strategie)} primary={t('Delete strategie')} />
-                              </ListItem>
+                              {!strategie.isDeleted && (
+                                <ListItem button color="danger">
+                                  {/* <ListItemText onClick={deleteStrategie(strategie)} primary={t('Delete strategie')} /> */}
+                                  <ListItemText onClick={handleOpenDialog(strategie)} primary={t('Delete strategie')} />
+                                </ListItem>
+                              )}
                             </List>
                           </Menu>
                         </Box>
@@ -806,7 +811,11 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                           <Box sx={{ pl: 0.5 }}>
                             <Typography fontWeight="bold" variant="caption" color="primary">
                               {strategie.isError
-                                ? t('Error')
+                                ? strategie.currentAmount > strategie.minWinAmount
+                                  ? t('Take Profit')
+                                  : strategie.currentAmount < strategie.startedAmount - strategie.maxLooseAmount
+                                  ? t('Stop Loss')
+                                  : t('Error')
                                 : strategie.isDeleted
                                 ? 'Deleted'
                                 : strategie.isActive

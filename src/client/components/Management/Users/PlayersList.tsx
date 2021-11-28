@@ -647,6 +647,31 @@ const PlayersList: FC = () => {
             )
           ) : (
             <>
+              <Card
+                sx={{
+                  p: 2,
+                  mb: 3,
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'space-between',
+                }}>
+                <Box>
+                  <Typography component="span" variant="subtitle1">
+                    {t('Showing')}
+                  </Typography>{' '}
+                  <b>{limit}</b> {t('of')} <b>{players.length}</b> <b>{t('players')}</b>
+                </Box>
+                <TablePagination
+                  component="div"
+                  count={players.length}
+                  onPageChange={handlePageChange}
+                  onRowsPerPageChange={handleLimitChange}
+                  page={page}
+                  rowsPerPage={limit}
+                  labelRowsPerPage=""
+                  rowsPerPageOptions={[5, 10, 15]}
+                />
+              </Card>
               <Grid container spacing={3}>
                 {paginatedPlayers.map((player) => {
                   return (
