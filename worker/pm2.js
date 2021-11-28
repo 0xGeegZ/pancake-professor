@@ -72,9 +72,9 @@ const launchAllStrategies = () => {
       instances: 1,
       autorestart: false,
       stop_exit_codes: [0],
-      // evety five minuts https://crontab.guru/every-5-minutes
       exec_mode: 'fork',
-      cron_restart: '*/60 * * * *',
+      // evety hour at 57' minuts https://crontab.guru/#57_*_*_*_*
+      cron_restart: '57 * * * *',
       output: './logs/pm2/launchStrategies/listen.log',
       error: './logs/pm2/launchStrategies/listen.error.log',
       log: './logs/pm2/launchStrategies/combined.listen.log',
