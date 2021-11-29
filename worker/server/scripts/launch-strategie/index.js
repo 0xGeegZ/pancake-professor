@@ -221,6 +221,24 @@ const launchStrategie = async (payload) => {
     logger.info('------------------------------------------------------------')
   }
 
+  const optimizeBetAmount = () => {
+    /* OPTIMIZE STRATEGIE BET AMOUNT */
+    if (strategie.currentAmount > strategie.stepBankroll * 1.2) {
+      const newBetAmount = parseFloat(strategie.betAmount * 1.1).toFixed(4)
+      logger.info(`[OPTIMIZE] Increasing bet amount from ${strategie.betAmount} to ${newBetAmount}`)
+      strategie.betAmount = newBetAmount
+      strategie.stepBankroll = strategie.currentAmount
+    }
+
+    if (strategie.currentAmount < strategie.stepBankroll / 1.2) {
+      const newBetAmount = parseFloat(strategie.betAmount / 1.1).toFixed(4)
+      logger.info(`[OPTIMIZE] Decreasing bet amount from ${strategie.betAmount} to ${newBetAmount}`)
+      strategie.betAmount = newBetAmount
+      strategie.stepBankroll = strategie.currentAmount
+    }
+    /* OPTIMIZE STRATEGIE BET AMOUNT */
+  }
+
   const roundEndListenner = async (epoch) => {
     strategie.roundsCount += 1
 
@@ -246,21 +264,7 @@ const launchStrategie = async (payload) => {
     // strategie.playedEpochs = []
     // }
 
-    /* OPTIMIZE STRATEGIE BET AMOUNT */
-    if (strategie.currentAmount > strategie.stepBankroll * 1.2) {
-      const newBetAmount = parseFloat(strategie.betAmount * 1.1).toFixed(4)
-      logger.info(`[OPTIMIZE] Increasing bet amount from ${strategie.betAmount} to ${newBetAmount}`)
-      strategie.betAmount = newBetAmount
-      strategie.stepBankroll = strategie.currentAmount
-    }
-
-    if (strategie.currentAmount < strategie.stepBankroll / 1.2) {
-      const newBetAmount = parseFloat(strategie.betAmount / 1.1).toFixed(4)
-      logger.info(`[OPTIMIZE] Decreasing bet amount from ${strategie.betAmount} to ${newBetAmount}`)
-      strategie.betAmount = newBetAmount
-      strategie.stepBankroll = strategie.currentAmount
-    }
-    /* OPTIMIZE STRATEGIE BET AMOUNT */
+    optimizeBetAmount()
 
     const isUpdatedStrategie = await prisma.strategie.update({
       where: { id: strategie.id },
@@ -481,8 +485,10 @@ const launchStrategie = async (payload) => {
 
     // strategie.gasLimit = ethers.utils.hexlify(gasLimit)
 
-    strategie.gasLimit = ethers.utils.hexlify(250000)
-    // strategie.gasLimit = ethers.utils.hexlify(350000)
+    // strategie.gasLimit = ethers.utils.hexlify(250000)
+    strategie.gasLimit = ethers.utils.hexlify(350000)
+
+    optimizeBetAmount()
 
     if (strategie.betAmount <= MIN_BET_AMOUNT || strategie.betAmount > MAX_BET_AMOUNT) {
       logger.error(`[LISTEN] Bet amount error, value is ${strategie.betAmount} Stopping strategie for now`)

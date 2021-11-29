@@ -14,15 +14,13 @@ import {
   Typography,
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import dynamic from 'next/dynamic'
-import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Link from 'src/client/components/Link'
 import Text from 'src/client/components/Text'
 
-const MonthlyGoalsTarget = dynamic(() => import('src/client/components/Dashboards/Fitness/MonthlyGoalsTarget'), {
-  ssr: true,
-})
+// const MonthlyGoalsTarget = dynamic(() => import('src/client/components/Dashboards/Fitness/MonthlyGoalsTarget'), {
+//   ssr: true,
+// })
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -32,31 +30,31 @@ const AvatarSuccess = styled(Avatar)(
 `
 )
 
-const BoxRtl = styled(Box)(
-  ({ theme }) => `
-    background: ${theme.colors.alpha.white[100]};
-`
-)
+// const BoxRtl = styled(Box)(
+//   ({ theme }) => `
+//     background: ${theme.colors.alpha.white[100]};
+// `
+// )
 
-const ImageWrapper = styled('img')(
-  ({ theme }) => `
-        margin-right: ${theme.spacing(1)};
-        width: 44px;
-`
-)
+// const ImageWrapper = styled('img')(
+//   ({ theme }) => `
+//         margin-right: ${theme.spacing(1)};
+//         width: 44px;
+// `
+// )
 
-const CardImageWrapper = styled(Card)(
-  () => `
-    display: flex;
-    position: relative;
-    z-index: 6;
+// const CardImageWrapper = styled(Card)(
+//   () => `
+//     display: flex;
+//     position: relative;
+//     z-index: 6;
 
-    img {
-      width: 100%;
-      height: auto;
-    }
-`
-)
+//     img {
+//       width: 100%;
+//       height: auto;
+//     }
+// `
+// )
 
 const CardImg = styled(Card)(
   ({ theme }) => `
@@ -93,56 +91,56 @@ const BoxHighlights = styled(Box)(
 `
 )
 
-const BlowWrapper = styled(Box)(
-  ({ theme }) => `
-    position: relative;
-    margin-top: ${theme.spacing(5)};
-`
-)
+// const BlowWrapper = styled(Box)(
+//   ({ theme }) => `
+//     position: relative;
+//     margin-top: ${theme.spacing(5)};
+// `
+// )
 
-const Blob1 = styled(Box)(
-  ({ theme }) => `
-  background: ${theme.palette.background.default};
-  width: 260px;
-    height: 260px;
-    position: absolute;
-    z-index: 5;
-    top: -${theme.spacing(9)};
-    right: -${theme.spacing(7)};
-    border-radius: 30% 70% 82% 18% / 26% 22% 78% 74%;
-`
-)
+// const Blob1 = styled(Box)(
+//   ({ theme }) => `
+//   background: ${theme.palette.background.default};
+//   width: 260px;
+//     height: 260px;
+//     position: absolute;
+//     z-index: 5;
+//     top: -${theme.spacing(9)};
+//     right: -${theme.spacing(7)};
+//     border-radius: 30% 70% 82% 18% / 26% 22% 78% 74%;
+// `
+// )
 
-const Blob2 = styled(Box)(
-  ({ theme }) => `
-    background: ${theme.palette.background.default};
-    width: 140px;
-    bottom: -${theme.spacing(5)};
-    left: -${theme.spacing(5)};
-    position: absolute;
-    z-index: 5;
-    height: 140px;
-    border-radius: 77% 23% 30% 70% / 81% 47% 53% 19% ;
-`
-)
+// const Blob2 = styled(Box)(
+//   ({ theme }) => `
+//     background: ${theme.palette.background.default};
+//     width: 140px;
+//     bottom: -${theme.spacing(5)};
+//     left: -${theme.spacing(5)};
+//     position: absolute;
+//     z-index: 5;
+//     height: 140px;
+//     border-radius: 77% 23% 30% 70% / 81% 47% 53% 19% ;
+// `
+// )
 
-const ScreenshotWrapper = styled(Card)(
-  ({ theme }) => `
-    perspective: 700px;
-    display: flex;
-    overflow: visible;
-    background: ${theme.palette.background.default};
-`
-)
+// const ScreenshotWrapper = styled(Card)(
+//   ({ theme }) => `
+//     perspective: 700px;
+//     display: flex;
+//     overflow: visible;
+//     background: ${theme.palette.background.default};
+// `
+// )
 
-const Screenshot = styled('img')(
-  ({ theme }) => `
-    width: 100%;
-    height: auto;
-    transform: rotateY(-35deg);
-    border-radius: ${theme.general.borderRadius};
-`
-)
+// const Screenshot = styled('img')(
+//   ({ theme }) => `
+//     width: 100%;
+//     height: auto;
+//     transform: rotateY(-35deg);
+//     border-radius: ${theme.general.borderRadius};
+// `
+// )
 
 const TypographyHeading = styled(Typography)(
   ({ theme }) => `
@@ -172,56 +170,56 @@ const AvatarWrapperSuccess = styled(Avatar)(
       color:  ${theme.colors.success.main};
 `
 )
-const TabsContainerWrapper = styled(Box)(
-  ({ theme }) => `
+// const TabsContainerWrapper = styled(Box)(
+//   ({ theme }) => `
 
-  .MuiTabs-root {
-    height: 54px;
-    min-height: 54px;
+//   .MuiTabs-root {
+//     height: 54px;
+//     min-height: 54px;
 
-    .MuiTabs-flexContainer {
-      justify-content: center;
-    }
-  }
+//     .MuiTabs-flexContainer {
+//       justify-content: center;
+//     }
+//   }
 
-  .MuiTabs-indicator {
-    min-height: 54px;
-    height: 54px;
-    box-shadow: none;
-    border-radius: 50px;
-    border: 0;
-    background: ${theme.colors.primary.main};
-  }
+//   .MuiTabs-indicator {
+//     min-height: 54px;
+//     height: 54px;
+//     box-shadow: none;
+//     border-radius: 50px;
+//     border: 0;
+//     background: ${theme.colors.primary.main};
+//   }
 
-  .MuiTab-root {
-    &.MuiButtonBase-root {
-        position: relative;
-        height: 54px;
-        min-height: 54px;
-        border-radius: 50px;
-        font-size: ${theme.typography.pxToRem(16)};
-        color: ${theme.colors.primary.main};
-        padding: 0 ${theme.spacing(4)};
+//   .MuiTab-root {
+//     &.MuiButtonBase-root {
+//         position: relative;
+//         height: 54px;
+//         min-height: 54px;
+//         border-radius: 50px;
+//         font-size: ${theme.typography.pxToRem(16)};
+//         color: ${theme.colors.primary.main};
+//         padding: 0 ${theme.spacing(4)};
 
-        .MuiTouchRipple-root {
-          opacity: 0;
-        }
+//         .MuiTouchRipple-root {
+//           opacity: 0;
+//         }
 
-        &:hover {
-          color: ${theme.colors.alpha.black[100]};
-        }
-    }
+//         &:hover {
+//           color: ${theme.colors.alpha.black[100]};
+//         }
+//     }
 
-    &.Mui-selected {
-        color: ${theme.colors.alpha.white[100]};
+//     &.Mui-selected {
+//         color: ${theme.colors.alpha.white[100]};
 
-        &:hover {
-          color: ${theme.colors.alpha.white[100]};
-        }
-    }
-}
-`
-)
+//         &:hover {
+//           color: ${theme.colors.alpha.white[100]};
+//         }
+//     }
+// }
+// `
+// )
 
 const BoxLayouts = styled(Box)(
   ({ theme }) => `
@@ -334,17 +332,17 @@ const icons = {
 function Highlights() {
   const { t }: { t: any } = useTranslation()
 
-  const [currentTab, setCurrentTab] = useState('performance')
+  // const [currentTab, setCurrentTab] = useState('performance')
 
-  const tabs = [
-    { value: 'performance', label: t('Performance') },
-    { value: 'extra_pages', label: t('Extra Pages') },
-    { value: 'rtl_languages', label: t('RTL & Languages') },
-  ]
+  // const tabs = [
+  //   { value: 'performance', label: t('Performance') },
+  //   { value: 'extra_pages', label: t('Extra Pages') },
+  //   { value: 'rtl_languages', label: t('RTL & Languages') },
+  // ]
 
-  const handleTabsChange = (_event, value) => {
-    setCurrentTab(value)
-  }
+  // const handleTabsChange = (_event, value) => {
+  //   setCurrentTab(value)
+  // }
 
   return (
     <BoxHighlights>
