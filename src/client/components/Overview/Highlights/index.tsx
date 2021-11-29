@@ -1,48 +1,26 @@
-import { useTranslation } from 'react-i18next'
-import { useState } from 'react'
-import Link from 'src/client/components/Link'
-import {
-  Box,
-  Grid,
-  Container,
-  Card,
-  Avatar,
-  ListItem,
-  ListItemText,
-  List,
-  ListItemAvatar,
-  Typography,
-  Button,
-  Tabs,
-  Tab,
-  Tooltip,
-} from '@mui/material'
-
-import Text from 'src/client/components/Text'
-import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone'
 import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  Container,
+  Grid,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Tooltip,
+  Typography,
+} from '@mui/material'
 import { styled } from '@mui/material/styles'
-import deFlag from 'country-flag-icons/3x2/DE.svg'
-import usFlag from 'country-flag-icons/3x2/US.svg'
-import esFlag from 'country-flag-icons/3x2/ES.svg'
-import frFlag from 'country-flag-icons/3x2/FR.svg'
-import cnFlag from 'country-flag-icons/3x2/CN.svg'
-import aeFlag from 'country-flag-icons/3x2/AE.svg'
-import ActiveReferrals from 'src/client/components/Dashboards/Analytics/ActiveReferrals'
-import Transfers from 'src/client/components/Dashboards/Banking/Transfers'
-import RecentTransactions from 'src/client/components/Dashboards/Commerce/RecentTransactions'
-import WatchListColumn1 from 'src/client/components/Dashboards/Crypto/WatchListColumn1'
-import AccountSecurity from 'src/client/components/Dashboards/Crypto/AccountSecurity'
-import AppointmentsAlt from 'src/client/components/Dashboards/Healthcare/hospital/AppointmentsAlt'
-import UnresolvedTickets from 'src/client/components/Dashboards/Helpdesk/UnresolvedTickets'
-import ResourcesAlarm from 'src/client/components/Dashboards/Monitoring/ResourcesAlarm'
-import Performance from 'src/client/components/Dashboards/Tasks/Performance'
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
+import Text from 'src/client/components/Text'
 
-import dynamic from 'next/dynamic'
-
-const MonthlyGoalsTarget = dynamic(() => import('src/client/components/Dashboards/Fitness/MonthlyGoalsTarget'), {
-  ssr: true,
-})
+// const MonthlyGoalsTarget = dynamic(() => import('src/client/components/Dashboards/Fitness/MonthlyGoalsTarget'), {
+//   ssr: true,
+// })
 
 const AvatarSuccess = styled(Avatar)(
   ({ theme }) => `
@@ -52,31 +30,31 @@ const AvatarSuccess = styled(Avatar)(
 `
 )
 
-const BoxRtl = styled(Box)(
-  ({ theme }) => `
-    background: ${theme.colors.alpha.white[100]};
-`
-)
+// const BoxRtl = styled(Box)(
+//   ({ theme }) => `
+//     background: ${theme.colors.alpha.white[100]};
+// `
+// )
 
-const ImageWrapper = styled('img')(
-  ({ theme }) => `
-        margin-right: ${theme.spacing(1)};
-        width: 44px;
-`
-)
+// const ImageWrapper = styled('img')(
+//   ({ theme }) => `
+//         margin-right: ${theme.spacing(1)};
+//         width: 44px;
+// `
+// )
 
-const CardImageWrapper = styled(Card)(
-  () => `
-    display: flex;
-    position: relative;
-    z-index: 6;
+// const CardImageWrapper = styled(Card)(
+//   () => `
+//     display: flex;
+//     position: relative;
+//     z-index: 6;
 
-    img {
-      width: 100%;
-      height: auto;
-    }
-`
-)
+//     img {
+//       width: 100%;
+//       height: auto;
+//     }
+// `
+// )
 
 const CardImg = styled(Card)(
   ({ theme }) => `
@@ -113,56 +91,56 @@ const BoxHighlights = styled(Box)(
 `
 )
 
-const BlowWrapper = styled(Box)(
-  ({ theme }) => `
-    position: relative;
-    margin-top: ${theme.spacing(5)};
-`
-)
+// const BlowWrapper = styled(Box)(
+//   ({ theme }) => `
+//     position: relative;
+//     margin-top: ${theme.spacing(5)};
+// `
+// )
 
-const Blob1 = styled(Box)(
-  ({ theme }) => `
-  background: ${theme.palette.background.default};
-  width: 260px;
-    height: 260px;
-    position: absolute;
-    z-index: 5;
-    top: -${theme.spacing(9)};
-    right: -${theme.spacing(7)};
-    border-radius: 30% 70% 82% 18% / 26% 22% 78% 74%;
-`
-)
+// const Blob1 = styled(Box)(
+//   ({ theme }) => `
+//   background: ${theme.palette.background.default};
+//   width: 260px;
+//     height: 260px;
+//     position: absolute;
+//     z-index: 5;
+//     top: -${theme.spacing(9)};
+//     right: -${theme.spacing(7)};
+//     border-radius: 30% 70% 82% 18% / 26% 22% 78% 74%;
+// `
+// )
 
-const Blob2 = styled(Box)(
-  ({ theme }) => `
-    background: ${theme.palette.background.default};
-    width: 140px;
-    bottom: -${theme.spacing(5)};
-    left: -${theme.spacing(5)};
-    position: absolute;
-    z-index: 5;
-    height: 140px;
-    border-radius: 77% 23% 30% 70% / 81% 47% 53% 19% ;
-`
-)
+// const Blob2 = styled(Box)(
+//   ({ theme }) => `
+//     background: ${theme.palette.background.default};
+//     width: 140px;
+//     bottom: -${theme.spacing(5)};
+//     left: -${theme.spacing(5)};
+//     position: absolute;
+//     z-index: 5;
+//     height: 140px;
+//     border-radius: 77% 23% 30% 70% / 81% 47% 53% 19% ;
+// `
+// )
 
-const ScreenshotWrapper = styled(Card)(
-  ({ theme }) => `
-    perspective: 700px;
-    display: flex;
-    overflow: visible;
-    background: ${theme.palette.background.default};
-`
-)
+// const ScreenshotWrapper = styled(Card)(
+//   ({ theme }) => `
+//     perspective: 700px;
+//     display: flex;
+//     overflow: visible;
+//     background: ${theme.palette.background.default};
+// `
+// )
 
-const Screenshot = styled('img')(
-  ({ theme }) => `
-    width: 100%;
-    height: auto;
-    transform: rotateY(-35deg);
-    border-radius: ${theme.general.borderRadius};
-`
-)
+// const Screenshot = styled('img')(
+//   ({ theme }) => `
+//     width: 100%;
+//     height: auto;
+//     transform: rotateY(-35deg);
+//     border-radius: ${theme.general.borderRadius};
+// `
+// )
 
 const TypographyHeading = styled(Typography)(
   ({ theme }) => `
@@ -192,56 +170,56 @@ const AvatarWrapperSuccess = styled(Avatar)(
       color:  ${theme.colors.success.main};
 `
 )
-const TabsContainerWrapper = styled(Box)(
-  ({ theme }) => `
+// const TabsContainerWrapper = styled(Box)(
+//   ({ theme }) => `
 
-  .MuiTabs-root {
-    height: 54px;
-    min-height: 54px;
+//   .MuiTabs-root {
+//     height: 54px;
+//     min-height: 54px;
 
-    .MuiTabs-flexContainer {
-      justify-content: center;
-    }
-  }
+//     .MuiTabs-flexContainer {
+//       justify-content: center;
+//     }
+//   }
 
-  .MuiTabs-indicator {
-    min-height: 54px;
-    height: 54px;
-    box-shadow: none;
-    border-radius: 50px;
-    border: 0;
-    background: ${theme.colors.primary.main};
-  }
+//   .MuiTabs-indicator {
+//     min-height: 54px;
+//     height: 54px;
+//     box-shadow: none;
+//     border-radius: 50px;
+//     border: 0;
+//     background: ${theme.colors.primary.main};
+//   }
 
-  .MuiTab-root {
-    &.MuiButtonBase-root {
-        position: relative;
-        height: 54px;
-        min-height: 54px;
-        border-radius: 50px;
-        font-size: ${theme.typography.pxToRem(16)};
-        color: ${theme.colors.primary.main};
-        padding: 0 ${theme.spacing(4)};
+//   .MuiTab-root {
+//     &.MuiButtonBase-root {
+//         position: relative;
+//         height: 54px;
+//         min-height: 54px;
+//         border-radius: 50px;
+//         font-size: ${theme.typography.pxToRem(16)};
+//         color: ${theme.colors.primary.main};
+//         padding: 0 ${theme.spacing(4)};
 
-        .MuiTouchRipple-root {
-          opacity: 0;
-        }
+//         .MuiTouchRipple-root {
+//           opacity: 0;
+//         }
 
-        &:hover {
-          color: ${theme.colors.alpha.black[100]};
-        }
-    }
+//         &:hover {
+//           color: ${theme.colors.alpha.black[100]};
+//         }
+//     }
 
-    &.Mui-selected {
-        color: ${theme.colors.alpha.white[100]};
+//     &.Mui-selected {
+//         color: ${theme.colors.alpha.white[100]};
 
-        &:hover {
-          color: ${theme.colors.alpha.white[100]};
-        }
-    }
-}
-`
-)
+//         &:hover {
+//           color: ${theme.colors.alpha.white[100]};
+//         }
+//     }
+// }
+// `
+// )
 
 const BoxLayouts = styled(Box)(
   ({ theme }) => `
@@ -354,20 +332,106 @@ const icons = {
 function Highlights() {
   const { t }: { t: any } = useTranslation()
 
-  const [currentTab, setCurrentTab] = useState('performance')
+  // const [currentTab, setCurrentTab] = useState('performance')
 
-  const tabs = [
-    { value: 'performance', label: t('Performance') },
-    { value: 'extra_pages', label: t('Extra Pages') },
-    { value: 'rtl_languages', label: t('RTL & Languages') },
-  ]
+  // const tabs = [
+  //   { value: 'performance', label: t('Performance') },
+  //   { value: 'extra_pages', label: t('Extra Pages') },
+  //   { value: 'rtl_languages', label: t('RTL & Languages') },
+  // ]
 
-  const handleTabsChange = (_event, value) => {
-    setCurrentTab(value)
-  }
+  // const handleTabsChange = (_event, value) => {
+  //   setCurrentTab(value)
+  // }
 
   return (
     <BoxHighlights>
+      <Container maxWidth="lg" sx={{ py: { xs: 8, md: 10 } }}>
+        <Grid spacing={0} sx={{ px: 10 }}>
+          <TypographyH1Primary id="key-features" textAlign="center" sx={{ mt: 8, mb: 2 }} variant="h1">
+            {t('Key Features')}
+          </TypographyH1Primary>
+          <Container maxWidth="sm">
+            <TypographyH2
+              sx={{ pb: 4, lineHeight: 1.5 }}
+              textAlign="center"
+              variant="h4"
+              color="text.secondary"
+              fontWeight="normal">
+              {t('Some of the features that make Tokyo one of the best admin templates available today')}
+            </TypographyH2>
+          </Container>
+          <>
+            <Typography textAlign="center" sx={{ mt: 14, mb: 2 }} variant="h2">
+              {t('Integrated Utility Pages')}
+            </Typography>
+            <Container sx={{ position: 'relative', pb: 4 }} maxWidth="sm">
+              <Tooltip arrow placement="top" title="Auth0">
+                <CardImg sx={{ width: 80, height: 80, top: -110, left: -30 }}>
+                  <img width={40} alt="Auth0" src={icons.Auth0} />
+                </CardImg>
+              </Tooltip>
+              <Tooltip arrow placement="top" title="Firebase">
+                <CardImg sx={{ width: 120, height: 120, top: -40, left: -190 }}>
+                  <img width={50} alt="Firebase" src={icons.FirebaseAuth} />
+                </CardImg>
+              </Tooltip>
+              <Tooltip arrow placement="top" title="JSON Web Token">
+                <CardImg sx={{ width: 130, height: 130, top: -50, right: -160 }}>
+                  <img width={80} alt="JSON Web Token" src={icons.JWT} />
+                </CardImg>
+              </Tooltip>
+              <Tooltip arrow placement="top" title="AWS Amplify">
+                <CardImg sx={{ width: 90, height: 90, top: -120, right: 20 }}>
+                  <img width={50} alt="Amplify" src={icons.Amplify} />
+                </CardImg>
+              </Tooltip>
+              <TypographyH2
+                sx={{ pb: 4, lineHeight: 1.5 }}
+                textAlign="center"
+                variant="h4"
+                color="text.secondary"
+                fontWeight="normal">
+                {t('Either use next-auth or build a custom auth solution using these ready-made pages')}.
+              </TypographyH2>
+            </Container>
+
+            <Grid container sx={{ textAlign: 'center' }} spacing={3}>
+              <Grid item xs={12} md={4}>
+                <AvatarSuccess sx={{ mx: 'auto', width: 50, height: 50 }}>
+                  <CheckTwoToneIcon />
+                </AvatarSuccess>
+                <Typography variant="h3" sx={{ py: 2 }}>
+                  {t('Multiple Auth Pages Variants')}
+                </Typography>
+                <Typography variant="subtitle2">{t('Choose the page style that best suits your app')}</Typography>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <AvatarSuccess sx={{ mx: 'auto', width: 50, height: 50 }}>
+                  <CheckTwoToneIcon />
+                </AvatarSuccess>
+                <Typography variant="h3" sx={{ py: 2 }}>
+                  {t('Status Pages')}
+                </Typography>
+                <Typography variant="subtitle2">
+                  {t('Multiple status pages included 500, 404 Error Pages, Coming Soon, Maintenance')}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <AvatarSuccess sx={{ mx: 'auto', width: 50, height: 50 }}>
+                  <CheckTwoToneIcon />
+                </AvatarSuccess>
+                <Typography variant="h3" sx={{ py: 2 }}>
+                  {t('Auth Pages')}
+                </Typography>
+                <Typography variant="subtitle2">
+                  {t('Login/Register Pages, Wizards, Recover Password with confirmation')}
+                </Typography>
+              </Grid>
+            </Grid>
+          </>
+        </Grid>
+      </Container>
       <BoxLayouts>
         <BoxWave>
           <svg viewBox="0 0 1440 172" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -376,6 +440,7 @@ function Highlights() {
         </BoxWave>
         <BoxLayoutsImage sx={{ backgroundImage: 'url("/static/images/placeholders/covers/7.jpg")' }} />
         <BoxLayoutsContent maxWidth="lg">
+          <Grid item xs={12} md={6} />
           <Grid justifyContent="center" alignItems="center" spacing={6} container>
             <Grid item xs={12} md={6}>
               <TypographyFeature className="typo-feature" sx={{ mt: { lg: 10 } }}>
@@ -408,6 +473,25 @@ function Highlights() {
               </LayoutImgButton>
             </Grid>
             <Grid item xs={12} md={6}>
+              <TypographyFeature className="typo-feature" sx={{ mt: { lg: 10 } }}>
+                6
+              </TypographyFeature>
+              <TypographyHeading className="typo-heading" sx={{ mb: 1 }} variant="h3">
+                Layout Blueprints
+              </TypographyHeading>
+              <TypographySubHeading
+                className="typo-subheading"
+                sx={{ lineHeight: 1.5 }}
+                variant="h4"
+                color="text.secondary"
+                fontWeight="normal">
+                {t(
+                  'A lot of cool features have been added in version 2.5. One of those features is the option to use any of the 6 layout blueprints included. Check out the live preview to see them in action.'
+                )}
+              </TypographySubHeading>
+            </Grid>
+            {/*
+            <Grid item xs={12} md={6}>
               <LayoutImgButton target="_blank" rel="noopener" href="/dashboards/banking">
                 <Typography variant="h4">{t('Accent Sidebar')}</Typography>
                 <img src="/static/images/overview/accent_sidebar.png" alt="Accent Sidebar" />
@@ -430,7 +514,7 @@ function Highlights() {
                 <Typography variant="h4">{t('Top Navigation')}</Typography>
                 <img src="/static/images/overview/top_navigation.png" alt="Bottom navigation" />
               </LayoutImgButton>
-            </Grid>
+            </Grid> */}
             <Grid item xs={12} md={6} />
           </Grid>
         </BoxLayoutsContent>
@@ -441,7 +525,7 @@ function Highlights() {
         </BoxWaveAlt>
       </BoxLayouts>
       <Container maxWidth="lg" sx={{ py: { xs: 8, md: 10 } }}>
-        <Grid spacing={0} direction={{ xs: 'column-reverse', md: 'row' }} justifyContent="center" container>
+        {/* <Grid spacing={0} direction={{ xs: 'column-reverse', md: 'row' }} justifyContent="center" container>
           <Grid item xs={12} md={6}>
             <Box
               sx={{
@@ -613,9 +697,9 @@ function Highlights() {
               </TypographySubHeading>
             </Box>
           </Grid>
-        </Grid>
+        </Grid> */}
         <Grid spacing={6} sx={{ mt: 4, justifyContent: { lg: 'center' } }} container>
-          <Grid item md={4}>
+          {/* <Grid item md={4}>
             <Box>
               <TypographyFeature>13</TypographyFeature>
               <TypographyHeading sx={{ mb: 1 }} variant="h3">
@@ -787,8 +871,8 @@ function Highlights() {
                 </Grid>
               </Grid>
             </Box>
-          </Grid>
-          <Grid item md={8}>
+          </Grid> */}
+          {/* <Grid item md={10}>
             <Box sx={{ position: 'relative' }}>
               <TypographyFeature>4</TypographyFeature>
               <TypographyHeading sx={{ mb: 1 }} variant="h3">
@@ -939,7 +1023,7 @@ function Highlights() {
                 </Grid>
               </Grid>
             </Box>
-          </Grid>
+          </Grid> */}
         </Grid>
         <Grid container direction={{ xs: 'column-reverse', md: 'row' }} sx={{ mt: 12, mb: 12 }} spacing={3}>
           <Grid item md={6} lg={7}>
@@ -995,6 +1079,159 @@ function Highlights() {
             </Box>
           </Grid>
           <Grid item md={6} lg={5}>
+            <Box sx={{ position: 'relative' }}>
+              <TypographyFeature>4</TypographyFeature>
+              <TypographyHeading sx={{ mb: 1 }} variant="h3">
+                {t('Applications')}
+              </TypographyHeading>
+              <TypographySubHeading
+                sx={{ maxWidth: 500, lineHeight: 1.5, pr: 8 }}
+                variant="h4"
+                color="text.secondary"
+                fontWeight="normal">
+                {t('Use these as standalone apps or included in a bigger project. You choose!')}
+              </TypographySubHeading>
+              <Typography variant="subtitle1" sx={{ py: 2 }} component="p">
+                <Text color="warning">
+                  <b>
+                    {t('Includes redux state management, working forms with validation, working filtering and more')}
+                  </b>
+                </Text>
+              </Typography>
+              <Grid container spacing={3}>
+                <Grid item xs={12} lg={6}>
+                  <Card sx={{ mt: 2 }}>
+                    <List disablePadding>
+                      <ListItem sx={{ py: 2 }}>
+                        <ListItemAvatar>
+                          <AvatarWrapperSuccess>
+                            <CheckTwoToneIcon fontSize="medium" />
+                          </AvatarWrapperSuccess>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={t('Jobs Platform')}
+                          primaryTypographyProps={{
+                            variant: 'h4',
+                            color: 'textPrimary',
+                            gutterBottom: true,
+                          }}
+                          secondary={t('API calls examples included')}
+                          secondaryTypographyProps={{ variant: 'subtitle2', noWrap: true }}
+                        />
+                        {/* <Button
+                          size="small"
+                          target="_blank"
+                          rel="noopener"
+                          startIcon={<LaunchTwoToneIcon />}
+                          component={Link}
+                          href="/applications/jobs-platform">
+                          {t('View')}
+                        </Button> */}
+                      </ListItem>
+                    </List>
+                  </Card>
+                </Grid>
+                <Grid item xs={12} lg={6}>
+                  <Card sx={{ mt: 2 }}>
+                    <List disablePadding>
+                      <ListItem sx={{ py: 2 }}>
+                        <ListItemAvatar>
+                          <AvatarWrapperSuccess>
+                            <CheckTwoToneIcon fontSize="medium" />
+                          </AvatarWrapperSuccess>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={t('Projects Board')}
+                          primaryTypographyProps={{
+                            variant: 'h4',
+                            color: 'textPrimary',
+                            gutterBottom: true,
+                          }}
+                          secondary={t('editable fields, drag & drop functionality')}
+                          secondaryTypographyProps={{ variant: 'subtitle2', noWrap: true }}
+                        />
+                        {/* <Button
+                          size="small"
+                          target="_blank"
+                          rel="noopener"
+                          startIcon={<LaunchTwoToneIcon />}
+                          component={Link}
+                          href="/applications/projects-board">
+                          {t('View')}
+                        </Button> */}
+                      </ListItem>
+                    </List>
+                  </Card>
+                </Grid>
+                <Grid item xs={12} lg={6}>
+                  <Card sx={{ mt: 2 }}>
+                    <List disablePadding>
+                      <ListItem sx={{ py: 2 }}>
+                        <ListItemAvatar>
+                          <AvatarWrapperSuccess>
+                            <CheckTwoToneIcon fontSize="medium" />
+                          </AvatarWrapperSuccess>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={t('Messenger')}
+                          primaryTypographyProps={{
+                            variant: 'h4',
+                            color: 'textPrimary',
+                            gutterBottom: true,
+                          }}
+                          secondary={t('beautiful functional design')}
+                          secondaryTypographyProps={{ variant: 'subtitle2', noWrap: true }}
+                        />
+                        {/* <Button
+                          size="small"
+                          target="_blank"
+                          rel="noopener"
+                          startIcon={<LaunchTwoToneIcon />}
+                          component={Link}
+                          href="/applications/messenger">
+                          {t('View')}
+                        </Button> */}
+                      </ListItem>
+                    </List>
+                  </Card>
+                </Grid>
+                <Grid item xs={12} lg={6}>
+                  <Card sx={{ mt: 2 }}>
+                    <List disablePadding>
+                      <ListItem sx={{ py: 2 }}>
+                        <ListItemAvatar>
+                          <AvatarWrapperSuccess>
+                            <CheckTwoToneIcon fontSize="medium" />
+                          </AvatarWrapperSuccess>
+                        </ListItemAvatar>
+                        <ListItemText
+                          primary={t('File Manager')}
+                          primaryTypographyProps={{
+                            variant: 'h4',
+                            color: 'textPrimary',
+                            gutterBottom: true,
+                          }}
+                          secondary={t('file details drawer sidebar')}
+                          secondaryTypographyProps={{ variant: 'subtitle2', noWrap: true }}
+                        />
+                        {/* <Button
+                          size="small"
+                          target="_blank"
+                          rel="noopener"
+                          startIcon={<LaunchTwoToneIcon />}
+                          component={Link}
+                          href="/applications/file-manager">
+                          {t('View')}
+                        </Button> */}
+                      </ListItem>
+                    </List>
+                  </Card>
+                </Grid>
+              </Grid>
+            </Box>
+          </Grid>
+
+          {/* <Grid item md={6} lg={5}>
             <TypographyFeature>7</TypographyFeature>
             <TypographyHeading sx={{ mb: 1 }} variant="h3">
               Pre-Built <br />
@@ -1007,6 +1244,7 @@ function Highlights() {
               fontWeight="normal">
               {t('Integrated forms with validation, API calls examples, working filters and search functionality!')}
             </TypographySubHeading>
+
             <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <Button
@@ -1105,24 +1343,94 @@ function Highlights() {
                 </Button>
               </Grid>
             </Grid>
-          </Grid>
+          </Grid> */}
         </Grid>
-        <TypographyH1Primary id="key-features" textAlign="center" sx={{ mt: 8, mb: 2 }} variant="h1">
-          {t('Key Features')}
-        </TypographyH1Primary>
-        <Container maxWidth="sm">
-          <TypographyH2
-            sx={{ pb: 4, lineHeight: 1.5 }}
-            textAlign="center"
-            variant="h4"
-            color="text.secondary"
-            fontWeight="normal">
-            {t('Some of the features that make Tokyo one of the best admin templates available today')}
-          </TypographyH2>
-        </Container>
+        {/* <Grid>
+          <TypographyH1Primary id="key-features" textAlign="center" sx={{ mt: 8, mb: 2 }} variant="h1">
+            {t('Key Features')}
+          </TypographyH1Primary>
+          <Container maxWidth="sm">
+            <TypographyH2
+              sx={{ pb: 4, lineHeight: 1.5 }}
+              textAlign="center"
+              variant="h4"
+              color="text.secondary"
+              fontWeight="normal">
+              {t('Some of the features that make Tokyo one of the best admin templates available today')}
+            </TypographyH2>
+          </Container>
+          <>
+            <Typography textAlign="center" sx={{ mt: 14, mb: 2 }} variant="h2">
+              {t('Integrated Utility Pages')}
+            </Typography>
+            <Container sx={{ position: 'relative', pb: 4 }} maxWidth="sm">
+              <Tooltip arrow placement="top" title="Auth0">
+                <CardImg sx={{ width: 80, height: 80, top: -110, left: -30 }}>
+                  <img width={40} alt="Auth0" src={icons.Auth0} />
+                </CardImg>
+              </Tooltip>
+              <Tooltip arrow placement="top" title="Firebase">
+                <CardImg sx={{ width: 120, height: 120, top: -40, left: -190 }}>
+                  <img width={50} alt="Firebase" src={icons.FirebaseAuth} />
+                </CardImg>
+              </Tooltip>
+              <Tooltip arrow placement="top" title="JSON Web Token">
+                <CardImg sx={{ width: 130, height: 130, top: -50, right: -160 }}>
+                  <img width={80} alt="JSON Web Token" src={icons.JWT} />
+                </CardImg>
+              </Tooltip>
+              <Tooltip arrow placement="top" title="AWS Amplify">
+                <CardImg sx={{ width: 90, height: 90, top: -120, right: 20 }}>
+                  <img width={50} alt="Amplify" src={icons.Amplify} />
+                </CardImg>
+              </Tooltip>
+              <TypographyH2
+                sx={{ pb: 4, lineHeight: 1.5 }}
+                textAlign="center"
+                variant="h4"
+                color="text.secondary"
+                fontWeight="normal">
+                {t('Either use next-auth or build a custom auth solution using these ready-made pages')}.
+              </TypographyH2>
+            </Container>
 
-        <TabsContainerWrapper>
-          <Tabs
+            <Grid container sx={{ textAlign: 'center' }} spacing={3}>
+              <Grid item xs={12} md={4}>
+                <AvatarSuccess sx={{ mx: 'auto', width: 50, height: 50 }}>
+                  <CheckTwoToneIcon />
+                </AvatarSuccess>
+                <Typography variant="h3" sx={{ py: 2 }}>
+                  {t('Multiple Auth Pages Variants')}
+                </Typography>
+                <Typography variant="subtitle2">{t('Choose the page style that best suits your app')}</Typography>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <AvatarSuccess sx={{ mx: 'auto', width: 50, height: 50 }}>
+                  <CheckTwoToneIcon />
+                </AvatarSuccess>
+                <Typography variant="h3" sx={{ py: 2 }}>
+                  {t('Status Pages')}
+                </Typography>
+                <Typography variant="subtitle2">
+                  {t('Multiple status pages included 500, 404 Error Pages, Coming Soon, Maintenance')}
+                </Typography>
+              </Grid>
+              <Grid item xs={12} md={4}>
+                <AvatarSuccess sx={{ mx: 'auto', width: 50, height: 50 }}>
+                  <CheckTwoToneIcon />
+                </AvatarSuccess>
+                <Typography variant="h3" sx={{ py: 2 }}>
+                  {t('Auth Pages')}
+                </Typography>
+                <Typography variant="subtitle2">
+                  {t('Login/Register Pages, Wizards, Recover Password with confirmation')}
+                </Typography>
+              </Grid>
+            </Grid>
+          </>
+        </Grid> */}
+        {/*  <TabsContainerWrapper>
+         <Tabs
             onChange={handleTabsChange}
             value={currentTab}
             variant="scrollable"
@@ -1131,9 +1439,10 @@ function Highlights() {
             {tabs.map((tab) => (
               <Tab key={tab.value} label={tab.label} value={tab.value} />
             ))}
-          </Tabs>
-        </TabsContainerWrapper>
-        {currentTab === 'performance' && (
+          </Tabs> 
+        </TabsContainerWrapper> */}
+
+        {/* {currentTab === 'performance' && (
           <Grid sx={{ mt: 8 }} container spacing={0}>
             <Grid item xs={12} md={6}>
               <Typography variant="h2">{t('Blazing-Fast Performance')}</Typography>
@@ -1293,7 +1602,7 @@ function Highlights() {
               </Grid>
             </Container>
           </BoxRtl>
-        )}
+        )} */}
       </Container>
 
       <Container sx={{ pt: { xs: 6, md: 12 }, pb: { xs: 5, md: 15 } }} maxWidth="md">

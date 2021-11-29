@@ -1,28 +1,37 @@
-const BlocknativeSdk = require('bnc-sdk')
-const { ethers } = require('ethers')
-const WebSocket = require('ws')
-
 const { launchStrategie } = require('../../launch-strategie/index')
-const { PREDICTION_CONTRACT_ABI } = require('../../../../src/contracts/abis/pancake-prediction-abi-v3')
 
-const { decrypt } = require('../../utils/crpyto')
-const prisma = require('../../db/prisma')
-const logger = require('../../utils/logger')
+const prisma = require('../../../db/prisma')
+const logger = require('../../../utils/logger')
 
 const launchStrategieWithPm2 = async (strategieId) => {
-  logger.info(`[LAUNCHING-LOCALLY] Launching strategies locally with pm2 for strategy ${strategieId}`)
-  const strategie = await prisma.strategie.findUnique({
-    where: {
-      id: strategieId,
-    },
-  })
-  const user = await prisma.user.findUnique({
-    where: {
-      id: strategie.userId,
-    },
-  })
+  if (typeof strategieId === 'undefined') throw new Error('[LAUNCHING-STRATEGY] Need a strategieId')
+  if (!strategieId) throw new Error('[LAUNCHING-STRATEGY] Need a strategieId')
 
-  await launchStrategie({ strategie, user })
+  try {
+    logger.info(`[LAUNCHING-STRATEGY] Launching strategies with pm2 for strategy ${strategieId}`)
+
+    const strategie = await prisma.strategie.findUnique({
+      where: {
+        id: strategieId,
+      },
+    })
+
+    if (!strategie) throw new Error('[LAUNCHING-STRATEGY] Strategie not finded')
+
+    const user = await prisma.user.findUnique({
+      where: {
+        id: strategie.userId,
+      },
+    })
+
+    if (!strategie) throw new Error('[LAUNCHING-STRATEGY] User not finded')
+
+    await launchStrategie({ strategie, user })
+  } catch (error) {
+    logger.error(`[LAUNCHING-STRATEGY] Error : ${error.message}.`)
+    process.exit(0)
+  }
 }
 
+launchStrategieWithPm2(process.argv[2])
 module.exports = { launchStrategieWithPm2 }

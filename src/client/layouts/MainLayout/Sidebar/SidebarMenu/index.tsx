@@ -1,12 +1,14 @@
 /* eslint-disable no-use-before-define */
-import { alpha, Box, CircularProgress, darken, Grid, lighten, List, ListSubheader } from '@mui/material'
+import { alpha, Box, darken, lighten, List, ListSubheader } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useRouter } from 'next/router'
+import PropTypes from 'prop-types'
 import { useTranslation } from 'react-i18next'
 
 import SidebarMenuItem from './item'
-import { MenuItem } from './items'
+import menuItems, { MenuItem } from './items'
 
+// import { MenuItem } from './items'
 const MenuWrapper = styled(Box)(
   ({ theme }) => `
   .MuiList-root {
@@ -212,39 +214,60 @@ const ReduceChildRoutes = ({
 }
 
 // function SidebarMenu({ fetching, error, allMenuItems }) {
-const SidebarMenu = ({ fetching, allMenuItems }) => {
+// const SidebarMenu = ({ allMenuItems }) => {
+// const SidebarMenu = ({ fetching, allMenuItems }) => {
+// const SidebarMenu = ({ fetching }) => {
+const SidebarMenu = () => {
   const router = useRouter()
   const { t }: { t: any } = useTranslation()
+
+  // const [items, setItems] = useState([])
+  // useEffect(() => {
+  //   if (items.length === allMenuItems.length) return
+
+  //   setItems(allMenuItems)
+  // }, [allMenuItems, items])
   return (
     <>
-      {fetching ? (
+      {/* {fetching ? (
         <Grid sx={{ py: 10 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
           <Grid item>
             <CircularProgress color="secondary" size="1rem" />
           </Grid>
         </Grid>
       ) : (
-        <>
-          {allMenuItems?.map((section) => (
-            <MenuWrapper key={section.heading}>
-              <List
-                component="div"
-                subheader={
-                  <ListSubheader component="div" disableSticky>
-                    {t(section.heading)}
-                  </ListSubheader>
-                }>
-                {renderSidebarMenuItems({
-                  items: section.items,
-                  path: router.pathname,
-                })}
-              </List>
-            </MenuWrapper>
-          ))}
-        </>
-      )}
+        <> */}
+      {/* {allMenuItems?.map((section) => ( */}
+      {menuItems?.map((section) => (
+        <MenuWrapper key={section.heading}>
+          <List
+            component="div"
+            subheader={
+              <ListSubheader component="div" disableSticky>
+                {t(section.heading)}
+              </ListSubheader>
+            }>
+            {renderSidebarMenuItems({
+              items: section.items,
+              path: router.pathname,
+            })}
+          </List>
+        </MenuWrapper>
+      ))}
+      {/* </>
+      )} */}
     </>
   )
+}
+
+SidebarMenu.propTypes = {
+  allMenuItems: PropTypes.array.isRequired,
+  // PropTypes.shape({
+  // address: PropTypes.string.isRequired,
+  // generated: PropTypes.string.isRequired,
+  // balance: PropTypes.string.isRequired,
+  // }).isRequired,
+  fetching: PropTypes.bool.isRequired,
 }
 
 export default SidebarMenu

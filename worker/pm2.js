@@ -1,17 +1,8 @@
-/* eslint-disable @typescript-eslint/no-var-requires */
 const pm2 = require('pm2')
-// const wait = require('./src/client/utils/wait')
 const prisma = require('./server/db/prisma')
-
-// https://pm2.keymetrics.io/docs/usage/pm2-api/
-// const { promisify } = require('util')
-// const { db } = require('./db/db')
-// const { wait } = require('./utils/utils')
-
 const logger = require('./server/utils/logger')
-
-// TODO runs launch-strategies periodically
-// https://stackoverflow.com/questions/42501219/how-to-make-a-task-job-with-pm2
+const { stopStrategiesWithPM2 } = require('./server/scripts/pm2/stop-strategies/index')
+const { sleep } = require('./server/utils/utils')
 
 const listLog = (error, list) => {
   if (error) {
@@ -38,53 +29,55 @@ const startLogs = (error, data) => {
 const launchStrategieForUser = async (strategie) => {
   pm2.start(
     {
-      script: './scripts/pm2/launch-strategie/index.js',
+      script: 'server/scripts/pm2/launch-strategie/index.js',
       name: `strategie_${strategie.id}`,
       instances: 1,
       args: `${strategie.id}`,
-      autorestart: false,
-      stop_exit_codes: [0],
-      // max_memory_restart: '300M'
-      // restart_delay: 3000
-      // cron_restart: "0 0 * * *",
-      // env: {
-      //   NODE_ENV: "development"
-      // },
-      // env_production: {
-      //   NODE_ENV: "production"
-      // }
-      output: `./logs/pm2/play_${strategie.id}.log`,
-      error: `./logs/pm2/play_${strategie.id}.error.log`,
-      log: `./logs/pm2/combined_${strategie.id}.play.log`,
+      autorestart: true,
+      max_restarts: 10,
+      // exec_mode: 'fork',
+      output: `./logs/pm2/launchStrategie/${strategie.id}/output/play.log`,
+      error: `./logs/pm2/launchStrategie/${strategie.id}/error/play.error.log`,
+      log: `./logs/pm2/launchStrategie/${strategie.id}/log/combined.play.log`,
     },
     startLogs
   )
 }
 
-const stopAllStrategies = () => {
-  // starting scrapper
+const stopAllStrategies = async () => {
+  // pm2.start(
+  //   {
+  //     script: 'server/scripts/pm2/stop-strategies/index.js',
+  //     name: 'stopStrategies',
+  //     instances: 1,
+  //     autorestart: false,
+  //     stop_exit_codes: [0],
+  //     // exec_mode: 'fork',
+  //     // evety ten minuts https://crontab.guru/every-10-minutes
+  //     // cron_restart: '*/10 * * * *',
+  //     output: './logs/pm2/stopStrategies/listen.log',
+  //     error: './logs/pm2/stopStrategies/listen.error.log',
+  //     log: './logs/pm2/stopStrategies/combined.listen.log',
+  //   },
+  //   startLogs
+  // )
+  await stopStrategiesWithPM2()
+}
+
+const launchAllStrategies = () => {
   pm2.start(
     {
-      script: 'server/scripts/pm2/stop-strategies/index.js',
-      name: 'stopStrategies',
+      script: 'server/scripts/pm2/launch-strategies/index.js',
+      name: 'launchStrategies',
       instances: 1,
-      watch: true,
-      watch_delay: 1000,
       autorestart: false,
       stop_exit_codes: [0],
-      // max_memory_restart: '300M'
-      // restart_delay: 3000
-      // evety ten minuts https://crontab.guru/every-10-minutes
-      cron_restart: '*/10 * * * *',
-      // env: {
-      //   NODE_ENV: "development"
-      // },
-      // env_production: {
-      //   NODE_ENV: "production"
-      // }
-      output: './logs/pm2/listen.log',
-      error: './logs/pm2/listen.error.log',
-      log: './logs/pm2/combined.listen.log',
+      exec_mode: 'fork',
+      // evety hour at 57' minuts https://crontab.guru/#57_*_*_*_*
+      cron_restart: '57 * * * *',
+      output: './logs/pm2/launchStrategies/listen.log',
+      error: './logs/pm2/launchStrategies/listen.error.log',
+      log: './logs/pm2/launchStrategies/combined.listen.log',
     },
     startLogs
   )
@@ -96,10 +89,15 @@ const launchServices = async (error) => {
     process.exit(2)
   }
 
+  logger.info('********************')
   logger.info('stopping strategies')
-  stopAllStrategies()
+  await stopAllStrategies()
+  logger.info('********************')
 
-  // logger.info('Launching strategies')
+  await sleep(5 * 1000)
+  logger.info('********************')
+  logger.info('Launching strategies')
+  launchAllStrategies()
   // const strategies = await prisma.strategie.findMany({
   //   where: {
   //     isActive: true,
@@ -112,8 +110,12 @@ const launchServices = async (error) => {
   // logger.info(`[LAUNCHING-LOCALLY] ${strategies.length} strategies will be launched`)
 
   // await Promise.all(strategies.map(launchStrategieForUser))
+  logger.info('********************')
 
   pm2.list(listLog)
+
+  await sleep(5 * 1000)
+  disconnectAndExit()
 }
 
 const disconnectService = (service) => {
@@ -134,10 +136,10 @@ const disconnect = () => {
 }
 
 const disconnectAndExit = async () => {
-  disconnect()
-  // await wait(5 * 1000)
+  // disconnect()
+  // await sleep(5 * 1000)
   pm2.disconnect()
-  process.exit(2)
+  process.exit(0)
 }
 
 process.on('SIGINT', async () => {

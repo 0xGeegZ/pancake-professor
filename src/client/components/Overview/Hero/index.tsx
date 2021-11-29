@@ -66,72 +66,72 @@ const LabelWrapper = styled(Box)(
 `
 )
 
-const ListItemWrapper = styled(Box)(
-  () => `
-    display: flex;
-    align-items: center;
-`
-)
+// const ListItemWrapper = styled(Box)(
+//   () => `
+//     display: flex;
+//     align-items: center;
+// `
+// )
 
-const MuiAvatar = styled(Box)(
-  ({ theme }) => `
-    width: ${theme.spacing(8)};
-    height: ${theme.spacing(8)};
-    border-radius: ${theme.general.borderRadius};
-    background-color: #e5f7ff;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: ${theme.spacing(2)};
+// const MuiAvatar = styled(Box)(
+//   ({ theme }) => `
+//     width: ${theme.spacing(8)};
+//     height: ${theme.spacing(8)};
+//     border-radius: ${theme.general.borderRadius};
+//     background-color: #e5f7ff;
+//     flex-shrink: 0;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     margin-right: ${theme.spacing(2)};
 
-    img {
-      width: 60%;
-      height: 60%;
-      display: block;
-    }
-`
-)
+//     img {
+//       width: 60%;
+//       height: 60%;
+//       display: block;
+//     }
+// `
+// )
 
-const TsAvatar = styled(Box)(
-  ({ theme }) => `
-    width: ${theme.spacing(8)};
-    height: ${theme.spacing(8)};
-    border-radius: ${theme.general.borderRadius};
-    background-color: #dfebf6;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: ${theme.spacing(2)};
+// const TsAvatar = styled(Box)(
+//   ({ theme }) => `
+//     width: ${theme.spacing(8)};
+//     height: ${theme.spacing(8)};
+//     border-radius: ${theme.general.borderRadius};
+//     background-color: #dfebf6;
+//     flex-shrink: 0;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     margin-right: ${theme.spacing(2)};
 
-    img {
-      width: 60%;
-      height: 60%;
-      display: block;
-    }
-`
-)
+//     img {
+//       width: 60%;
+//       height: 60%;
+//       display: block;
+//     }
+// `
+// )
 
-const NextJsAvatar = styled(Box)(
-  ({ theme }) => `
-    width: ${theme.spacing(8)};
-    height: ${theme.spacing(8)};
-    border-radius: ${theme.general.borderRadius};
-    background-color: ${theme.colors.alpha.black[10]};
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-right: ${theme.spacing(2)};
+// const NextJsAvatar = styled(Box)(
+//   ({ theme }) => `
+//     width: ${theme.spacing(8)};
+//     height: ${theme.spacing(8)};
+//     border-radius: ${theme.general.borderRadius};
+//     background-color: ${theme.colors.alpha.black[10]};
+//     flex-shrink: 0;
+//     display: flex;
+//     align-items: center;
+//     justify-content: center;
+//     margin-right: ${theme.spacing(2)};
 
-    img {
-      width: 60%;
-      height: 60%;
-      display: block;
-    }
-`
-)
+//     img {
+//       width: 60%;
+//       height: 60%;
+//       display: block;
+//     }
+// `
+// )
 
 function Hero() {
   const { t }: { t: any } = useTranslation()
@@ -140,22 +140,20 @@ function Hero() {
     <Container maxWidth="lg">
       <Grid spacing={{ xs: 6, md: 10 }} justifyContent="center" alignItems="center" container>
         <Grid item md={6} pr={{ xs: 0, md: 3 }}>
-          <LabelWrapper color="success">{`${t('Version')} 0.0.1`}</LabelWrapper>
+          <LabelWrapper color="success">{`${t('Version')} 0.0.2`}</LabelWrapper>
           <TypographyH1 sx={{ mb: 2 }} variant="h1">
             {t('Pancake Professor')}
           </TypographyH1>
           <TypographyH2 sx={{ lineHeight: 1.5, pb: 4 }} variant="h4" color="text.secondary" fontWeight="normal">
-            {t(
-              'Production-ready updated admin dashboard powered by React and Material-UI built on NextJS features hundreds of components and examples that will help you build faster and better apps.'
-            )}
+            {t('Play like bests players on PancakeSwap Prediction')}
           </TypographyH2>
-          <Button component={Link} href="/dashboards/analytics" size="large" variant="contained">
-            {t('Browse Live Preview')}
+          <Button component={Link} href="/app" size="large" variant="contained">
+            {t('Launch App')}
           </Button>
           <Button sx={{ ml: 2 }} component="a" href="#key-features" size="large" variant="text">
             {t('Key Features')}
           </Button>
-          <ListItemWrapper sx={{ mt: 5, mb: 2 }}>
+          {/* <ListItemWrapper sx={{ mt: 5, mb: 2 }}>
             <NextJsAvatar>
               <img src="/static/images/logo/next-js.svg" alt="NextJS" />
             </NextJsAvatar>
@@ -190,13 +188,12 @@ function Hero() {
                 - Tokyo features a modern technology stack and is built with React + Typescript.
               </Typography>
             </Typography>
-          </ListItemWrapper>
+          </ListItemWrapper> */}
         </Grid>
         <Grid item md={6} sx={{ mt: 6 }}>
           <BoxContent>
             <ImgWrapper>
               <img alt="Tokyo" src="/static/images/overview/hero-screenshot.png" />
-              {/* <Image src="/static/images/overview/hero-screenshot.png" alt="Tokyo" layout="fill" /> */}
             </ImgWrapper>
             <BoxAccent sx={{ display: { xs: 'none', md: 'block' } }} />
           </BoxContent>

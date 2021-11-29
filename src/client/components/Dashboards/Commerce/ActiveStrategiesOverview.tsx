@@ -29,6 +29,7 @@ function ActiveStrategiesOverview({ strategies }) {
     if (!strategies.length) return 0
 
     return `${strategies
+      .filter((s) => s.isActive)
       .map((s) => +s.currentAmount)
       .reduce((acc, num) => acc + num, 0)
       .toFixed(4)} BNB`
@@ -37,7 +38,10 @@ function ActiveStrategiesOverview({ strategies }) {
   const getActiveSinceFromStrategies = () => {
     if (!strategies.length) return 0
 
-    const dates = strategies.map((s) => new Date(s.createdAt)).sort((a, b) => a.getTime() - b.getTime())
+    const dates = strategies
+      .filter((s) => s.isActive)
+      .map((s) => new Date(s.createdAt))
+      .sort((a, b) => a.getTime() - b.getTime())
 
     const lastDate = dates[0]
 
