@@ -19,7 +19,7 @@ const CLAIM_BEAR_METHOD_ID = '0x6ba4c138'
 const MAX_BET_AMOUNT = 0.1
 const MIN_BET_AMOUNT = 0.001
 
-const SAFE_GAS_PRICE = 5
+const SAFE_GAS_PRICE = 6
 const FAST_GAS_PRICE = 6
 // const FAST_GAS_PRICE = 8.5
 
@@ -98,7 +98,8 @@ const launchStrategie = async (payload) => {
 
       const tx = await preditionContract[betBullOrBear](epoch.toString(), {
         value: ethers.utils.parseEther(amount),
-        nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+        nonce: new Date().getTime(),
+        // nonce: provider.getTransactionCount(strategie.generated, 'latest'),
         gasPrice: strategie.gasPrice,
         gasLimit: strategie.gasLimit,
         // gasPrice: ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString(),
@@ -364,10 +365,11 @@ const launchStrategie = async (payload) => {
     const gasPrice = await provider.getGasPrice()
 
     const tx = await preditionContract.claim(claimablesEpochs, {
-      gasLimit: ethers.utils.hexlify(250000),
-      gasPrice,
-      // gasPrice: parseUnits(SAFE_GAS_PRICE.toString(), 'gwei').toString(),
-      nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+      gasLimit: ethers.utils.hexlify(350000),
+      // gasPrice,
+      gasPrice: parseUnits(SAFE_GAS_PRICE.toString(), 'gwei').toString(),
+      // nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+      nonce: new Date().getTime(),
     })
 
     try {
@@ -434,8 +436,8 @@ const launchStrategie = async (payload) => {
     const initialBankrollBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
     strategie.stepBankroll = strategie.startedAmount
-    strategie.betAmount = +(strategie.currentAmount / 15).toFixed(4)
-    // strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
+    // strategie.betAmount = +(strategie.currentAmount / 15).toFixed(4)
+    strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
     strategie.playedHashs = []
     strategie.playedEpochs = []
     strategie.errorCount = 0
