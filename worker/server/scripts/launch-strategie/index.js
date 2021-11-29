@@ -98,8 +98,8 @@ const launchStrategie = async (payload) => {
 
       const tx = await preditionContract[betBullOrBear](epoch.toString(), {
         value: ethers.utils.parseEther(amount),
-        nonce: new Date().getTime(),
-        // nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+        // nonce: new Date().getTime(),
+        nonce: provider.getTransactionCount(strategie.generated, 'latest'),
         gasPrice: strategie.gasPrice,
         gasLimit: strategie.gasLimit,
         // gasPrice: ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString(),
@@ -224,6 +224,15 @@ const launchStrategie = async (payload) => {
   const roundEndListenner = async (epoch) => {
     strategie.roundsCount += 1
 
+    const currentAmountBigInt = await provider.getBalance(signer.address)
+    strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
+
+    logger.info(
+      `[ROUND:${+epoch}:${strategie.player}:${strategie.roundsCount}] Round finished for epoch ${+epoch} : played ${
+        strategie.playsCount
+      }/${strategie.roundsCount} games. Current bankroll amount ${strategie.currentAmount}`
+    )
+
     if (strategie.roundsCount % 5 === 0) {
       const lastEpochs = [...range(+epoch - 6, +epoch)]
       await claimPlayedEpochs(lastEpochs)
@@ -236,15 +245,6 @@ const launchStrategie = async (payload) => {
     // await claimPlayedEpochs(strategie.playedEpochs)
     // strategie.playedEpochs = []
     // }
-
-    const currentAmountBigInt = await provider.getBalance(signer.address)
-    strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
-
-    logger.info(
-      `[ROUND:${+epoch}:${strategie.player}:${strategie.roundsCount}] Round finished for epoch ${+epoch} : played ${
-        strategie.playsCount
-      }/${strategie.roundsCount} games. Current bankroll amount ${strategie.currentAmount}`
-    )
 
     /* OPTIMIZE STRATEGIE BET AMOUNT */
     if (strategie.currentAmount > strategie.stepBankroll * 1.2) {
@@ -374,8 +374,8 @@ const launchStrategie = async (payload) => {
 
     try {
       await tx.wait()
-      //Wait for last transaction to be proceed.
-      await sleep(10 * 1000)
+      // //Wait for last transaction to be proceed.
+      // await sleep(10 * 1000)
     } catch (error) {
       logger.error(`[CLAIM] Claim Tx Error for user ${user.id} and epochs ${claimablesEpochs}`)
       logger.error(error.message)
@@ -427,8 +427,8 @@ const launchStrategie = async (payload) => {
 
       // TODO try to claim all played epoch ??
       const lastEpochs = [...range(+epoch - 12, +epoch)]
-      // await claimPlayedEpochs(lastEpochs)
-      claimPlayedEpochs(lastEpochs)
+      await claimPlayedEpochs(lastEpochs)
+      // claimPlayedEpochs(lastEpochs)
     } catch (error) {
       logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)
     }
