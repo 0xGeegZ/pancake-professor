@@ -367,7 +367,7 @@ const launchStrategie = async (payload) => {
     const tx = await preditionContract.claim(claimablesEpochs, {
       gasLimit: ethers.utils.hexlify(350000),
       // gasPrice,
-      gasPrice: parseUnits(SAFE_GAS_PRICE.toString(), 'gwei').toString(),
+      gasPrice: ethers.utils.parseUnits(SAFE_GAS_PRICE.toString(), 'gwei').toString(),
       // nonce: provider.getTransactionCount(strategie.generated, 'latest'),
       nonce: new Date().getTime(),
     })
