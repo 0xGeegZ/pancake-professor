@@ -214,9 +214,7 @@ const mutations = extendType({
         if (parseFloat(balance).toFixed(14) === parseFloat(args.value).toFixed(14)) {
           // TODO ERROR IF NOT ADDING 0.5% (works)
           const costs = +gasPrice * +gasLimit * 1.001
-          console.log('🚀 ~ file: index.ts ~ line 215 ~ resolve: ~ costs', costs)
           bnbValue = `${+args.value - +costs}`
-          console.log('🚀 NEW bnbValue', bnbValue)
         }
 
         const tx = {
@@ -230,7 +228,6 @@ const mutations = extendType({
         try {
           await signer.sendTransaction(tx)
         } catch (error) {
-          console.log('🚀 ~ file: index.ts ~ line 229 ~ resolve: ~ error', error)
           throw new Error(error)
         }
 
