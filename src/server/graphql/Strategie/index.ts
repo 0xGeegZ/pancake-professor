@@ -267,30 +267,45 @@ const mutations = extendType({
           const signer = wallet.connect(provider)
 
           const rawGasPrice = await provider.getGasPrice()
+          console.log('🚀 ~ file: index.ts ~ line 270 ~ resolve: ~ rawGasPrice', +rawGasPrice)
           const rawBalance = await provider.getBalance(strategie.generated)
 
           const balance = ethers.utils.formatUnits(rawBalance)
+          console.log('🚀 ~ file: index.ts ~ line 273 ~ resolve: ~ balance', balance)
 
           if (balance !== '0.0') {
             const gasPrice = ethers.utils.formatUnits(rawGasPrice)
+            console.log('🚀 ~ file: index.ts ~ line 277 ~ resolve: ~ gasPrice', gasPrice)
             const gasLimit = await provider.estimateGas({
               to: user.generated,
+              // value: rawBalance,
+              data: '0x',
               value: ethers.utils.parseEther(balance),
             })
+            console.log('🚀 ~ file: index.ts ~ line 282 ~ resolve: ~ gasLimit', +gasLimit)
+            // TODO ERROR IF NOT ADDING 0.5% (works)
+            const costs = +gasPrice * +gasLimit * 1.001
+            // const costs = (await provider.getFeeData()).gasPrice.mul(gasLimit)
 
-            const costs = +gasPrice * +gasLimit
+            console.log('🚀 ~ file: index.ts ~ line 283 ~ resolve: ~ costs', +costs)
+            // const value = ethers.utils.parseEther(`${+rawBalance - +costs}`)
             const value = `${+balance - +costs}`
+            // const value = `${(+balance - +costs).toFixed(8)}`
+
+            console.log('🚀 ~ file: index.ts ~ line 285 ~ resolve: ~ value', +value)
             const tx = {
               to: user.generated,
+              // value,
               value: ethers.utils.parseEther(value),
               nonce: provider.getTransactionCount(strategie.generated, 'latest'),
               gasPrice: rawGasPrice,
               gasLimit: ethers.utils.hexlify(gasLimit),
             }
-
+            // prout
             await signer.sendTransaction(tx)
           }
         } catch (error) {
+          console.log('🚀 ~ file: index.ts ~ line 297 ~ resolve: ~ error', error)
           await prisma.strategie.update({
             where: { id },
             data: {

@@ -810,7 +810,9 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                           )}
                           <Box sx={{ pl: 0.5 }}>
                             <Typography fontWeight="bold" variant="caption" color="primary">
-                              {strategie.isNeedRestart
+                              {strategie.isDeleted
+                                ? 'Deleted'
+                                : strategie.isNeedRestart
                                 ? t('Restarting')
                                 : strategie.isError
                                 ? strategie.currentAmount > strategie.minWinAmount
@@ -818,8 +820,6 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                                   : strategie.currentAmount < strategie.startedAmount - strategie.maxLooseAmount
                                   ? t('Stop Loss')
                                   : t('Error')
-                                : strategie.isDeleted
-                                ? 'Deleted'
                                 : strategie.isActive
                                 ? t('Active')
                                 : t('Innactive')}

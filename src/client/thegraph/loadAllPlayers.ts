@@ -1,6 +1,11 @@
 import { gql, GraphQLClient } from 'graphql-request'
 import { finder, range } from 'src/server/utils/utils'
 
+// const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_GRAPHQL_ENDPOINT, {
+//   headers: { 'Access-Control-Allow-Origin': '*' },
+// })
+// graphQLClient.setHeader('Access-Control-Allow-Origin', '*')
+
 const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
 
 const TOTAL_BETS_INITIAL = 80

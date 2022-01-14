@@ -2,7 +2,7 @@ const prisma = require('../../db/prisma')
 const logger = require('../../utils/logger')
 const { sleep } = require('../../utils/utils')
 
-const { launchStrategie } = require('../launch-strategie')
+const { run } = require('../../jobs/strategie/single-player')
 
 const launch = async (strategie) => {
   const user = await prisma.user.findUnique({
@@ -13,7 +13,7 @@ const launch = async (strategie) => {
 
   logger.info(`[LAUNCHING] Launching strategie ${strategie?.id} for user ${user?.address}`)
 
-  await launchStrategie({ strategie, user })
+  await run({ strategie, user })
 }
 
 const launchStrategies = async () => {
@@ -24,10 +24,10 @@ const launchStrategies = async () => {
   // if()
   const strategies = await prisma.strategie.findMany({
     where: {
-      isActive: true,
+      // isActive: true,
       isRunning: false,
-      isDeleted: false,
-      isError: false,
+      // isDeleted: false,
+      // isError: false,
     },
   })
 

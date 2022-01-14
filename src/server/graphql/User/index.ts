@@ -201,6 +201,7 @@ const mutations = extendType({
         const gasPrice = ethers.utils.formatUnits(rawGasPrice)
 
         let bnbValue = `${parseFloat(args.value).toFixed(10)}`
+        console.log('🚀 ~ file: index.ts ~ line 204 ~ resolve: ~ bnbValue', bnbValue)
 
         const gasLimit = await provider.estimateGas({
           to: userExists.generated,
@@ -210,9 +211,12 @@ const mutations = extendType({
         const rawBalance = await provider.getBalance(userExists.generated)
         const balance = ethers.utils.formatUnits(rawBalance)
 
-        if (balance === args.value) {
-          const costs = +gasPrice * +gasLimit
+        if (parseFloat(balance).toFixed(14) === parseFloat(args.value).toFixed(14)) {
+          // TODO ERROR IF NOT ADDING 0.5% (works)
+          const costs = +gasPrice * +gasLimit * 1.001
+          console.log('🚀 ~ file: index.ts ~ line 215 ~ resolve: ~ costs', costs)
           bnbValue = `${+args.value - +costs}`
+          console.log('🚀 NEW bnbValue', bnbValue)
         }
 
         const tx = {
@@ -226,6 +230,7 @@ const mutations = extendType({
         try {
           await signer.sendTransaction(tx)
         } catch (error) {
+          console.log('🚀 ~ file: index.ts ~ line 229 ~ resolve: ~ error', error)
           throw new Error(error)
         }
 

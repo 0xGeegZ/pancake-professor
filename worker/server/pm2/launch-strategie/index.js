@@ -1,7 +1,7 @@
-const { launchStrategie } = require('../../launch-strategie/index')
+const { run } = require('../../jobs/launch-strategie/index')
 
-const prisma = require('../../../db/prisma')
-const logger = require('../../../utils/logger')
+const prisma = require('../../db/prisma')
+const logger = require('../../utils/logger')
 
 const launchStrategieWithPm2 = async (strategieId) => {
   if (typeof strategieId === 'undefined') throw new Error('[LAUNCHING-STRATEGY] Need a strategieId')
@@ -26,7 +26,7 @@ const launchStrategieWithPm2 = async (strategieId) => {
 
     if (!strategie) throw new Error('[LAUNCHING-STRATEGY] User not finded')
 
-    await launchStrategie({ strategie, user })
+    await run({ strategie, user })
   } catch (error) {
     logger.error(`[LAUNCHING-STRATEGY] Error : ${error.message}.`)
     process.exit(0)
