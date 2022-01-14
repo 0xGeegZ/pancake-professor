@@ -29,6 +29,22 @@ const User = objectType({
         return strategies
       },
     })
+    t.model.favorites({
+      type: `Favorite`,
+      resolve: async (_, __, ctx) => {
+        if (!ctx.user?.id) return null
+        const favorites = await prisma.favorite.findMany({
+          where: {
+            user: {
+              is: {
+                id: ctx.user.id,
+              },
+            },
+          },
+        })
+        return favorites
+      },
+    })
     // t.model.strategies({
     //   filtering: {
     //     isActive: true,
@@ -96,17 +112,18 @@ const queries = extendType({
       // },
       // resolve: (_, { id }, ctx) => {
       // resolve: (_, args, ctx) =>
-      resolve: () =>
-        // resolve: (_, __, ctx) => {
+      // resolve: () =>
+      resolve: async (_, __, ctx) => {
         // resolve() {
-        // if (!ctx.user?.id) return null
+        if (!ctx.user?.id) return null
 
         // return prisma.user.findMany({
-        prisma.user.findMany({
+        return prisma.user.findMany({
           // where: {
           //   id: ctx.user.id,
           // },
-        }),
+        })
+      },
     })
   },
 })
@@ -140,6 +157,8 @@ const mutations = extendType({
         })
       },
     })
+
+    // TODO addFavotite & removeFavorite
 
     t.nullable.field('createFriend', {
       type: 'User',

@@ -11,10 +11,20 @@ const Strategie = objectType({
     t.model.createdAt()
     t.model.modifiedAt()
     t.model.player()
+    t.model.name()
+    t.model.color()
     t.model.generated()
     t.model.private()
+
+    t.model.betAmount()
+    t.model.increaseAmount()
+    t.model.decreaseAmount()
+
     t.model.startedAmount()
     t.model.currentAmount()
+    t.model.stopLoss()
+    t.model.takeProfit()
+    t.model.isTrailing()
     t.model.roundsCount()
     t.model.playsCount()
     t.model.isActive()
@@ -25,6 +35,7 @@ const Strategie = objectType({
     t.model.maxLooseAmount()
     t.model.minWinAmount()
     t.model.user()
+    t.model.history()
   },
 })
 
@@ -66,6 +77,16 @@ const mutations = extendType({
       args: {
         player: nonNull(stringArg()),
         startedAmount: nonNull(floatArg()),
+        betAmount: nonNull(floatArg()),
+        increaseAmount: intArg(),
+        decreaseAmount: intArg(),
+
+        name: stringArg(),
+        color: stringArg(),
+
+        takeProfit: intArg(),
+        stopLoss: intArg(),
+        isTrailing: booleanArg(),
         maxLooseAmount: floatArg(),
         minWinAmount: floatArg(),
       },
@@ -90,8 +111,16 @@ const mutations = extendType({
         const strategie = await prisma.strategie.create({
           data: {
             player: args.player,
+            name: args.name,
+            color: args.color,
             generated: walletInitial.address.toLowerCase(),
             private: encrypt(walletInitial.privateKey),
+            betAmount: args.betAmount,
+            increaseAmount: args.increaseAmount,
+            decreaseAmount: args.decreaseAmount,
+            takeProfit: args.takeProfit,
+            stopLoss: args.stopLoss,
+            isTrailing: args.isTrailing,
             startedAmount: args.startedAmount,
             currentAmount: args.startedAmount,
             maxLooseAmount: args.maxLooseAmount,
@@ -136,7 +165,15 @@ const mutations = extendType({
       type: 'Strategie',
       args: {
         id: nonNull(stringArg()),
+        betAmount: floatArg(),
         player: stringArg(),
+        increaseAmount: intArg(),
+        decreaseAmount: intArg(),
+        name: stringArg(),
+        color: stringArg(),
+        takeProfit: intArg(),
+        stopLoss: intArg(),
+        isTrailing: booleanArg(),
         roundsCount: intArg(),
         playsCount: intArg(),
         isActive: booleanArg(),
@@ -161,6 +198,20 @@ const mutations = extendType({
         })
 
         if (!hasAccess) return null
+
+        // TODO update history if updating player
+        // if (args.player && args.player !== hasAccess.player) {
+        //   const concat = (...arrays) => [].concat(...arrays.filter(Array.isArray))
+
+        //   const unique = (array) => [...new Set(array)]
+
+        //   const concated = concat([hasAccess.player], hasAccess.history)
+        //   const uniqued = unique(concated)
+        //   args = {
+        //     ...args,
+        //     history: uniqued,
+        //   }
+        // }
 
         return prisma.strategie.update({
           where: { id },

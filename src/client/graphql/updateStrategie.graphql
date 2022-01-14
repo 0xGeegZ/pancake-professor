@@ -1,6 +1,11 @@
 mutation UpdateStrategie(
   $id: String!
   $player: String
+  $betAmount: Float!
+  $increaseAmount: Int
+  $decreaseAmount: Int
+  $name: String
+  $color: String
   # $startedAmount: Float!
   # $currentAmount: Float!
   $roundsCount: Int
@@ -11,10 +16,18 @@ mutation UpdateStrategie(
   $isError: Boolean
   $maxLooseAmount: Float
   $minWinAmount: Float
+  $takeProfit: Int
+  $stopLoss: Int
+  $isTrailing: Boolean
 ) {
   updateStrategie(
     id: $id
     player: $player
+    betAmount: $betAmount
+    increaseAmount: $increaseAmount
+    decreaseAmount: $decreaseAmount
+    name: $name
+    color: $color
     # startedAmount: $startedAmount
     # currentAmount: $currentAmount
     roundsCount: $roundsCount
@@ -25,9 +38,17 @@ mutation UpdateStrategie(
     isError: $isError
     maxLooseAmount: $maxLooseAmount
     minWinAmount: $minWinAmount
+    takeProfit: $takeProfit
+    stopLoss: $stopLoss
+    isTrailing: $isTrailing
   ) {
     id
     player
+    betAmount
+    increaseAmount
+    decreaseAmount
+    name
+    color
     startedAmount
     currentAmount
     roundsCount
@@ -39,6 +60,9 @@ mutation UpdateStrategie(
     isNeedRestart
     maxLooseAmount
     minWinAmount
+    takeProfit
+    stopLoss
+    isTrailing
     user {
       id
       address

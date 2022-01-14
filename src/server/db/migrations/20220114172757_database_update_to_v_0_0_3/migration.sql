@@ -1,0 +1,28 @@
+-- CreateEnum
+CREATE TYPE "FavoriteType" AS ENUM ('LIKE', 'DISLIKE');
+
+-- AlterTable
+ALTER TABLE "Strategie" ADD COLUMN     "betAmount" DOUBLE PRECISION NOT NULL DEFAULT 0.0,
+ADD COLUMN     "decreaseAmount" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "history" TEXT[],
+ADD COLUMN     "increaseAmount" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "isTrailing" BOOLEAN NOT NULL DEFAULT false,
+ADD COLUMN     "stopLoss" INTEGER NOT NULL DEFAULT 0,
+ADD COLUMN     "takeProfit" INTEGER NOT NULL DEFAULT 0;
+
+-- CreateTable
+CREATE TABLE "Favorite" (
+    "id" TEXT NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "modifiedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "player" TEXT NOT NULL,
+    "type" "FavoriteType" NOT NULL DEFAULT E'LIKE',
+    "comment" TEXT NOT NULL DEFAULT E'',
+    "note" INTEGER NOT NULL,
+    "userId" TEXT NOT NULL,
+
+    PRIMARY KEY ("id")
+);
+
+-- AddForeignKey
+ALTER TABLE "Favorite" ADD FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
