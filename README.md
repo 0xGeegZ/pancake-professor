@@ -18,7 +18,7 @@ cp .env.example .env
 ```
 
 ```sh
-cp .env.localexample .env.local
+cp .env.local.example .env.local
 ```
 
 > Note: do not delete the `.env.example` file, as it's used by some code generation processes and is useful for potential future team members as a reference.
@@ -39,7 +39,7 @@ yarn
 docker-compose up
 ```
 
-4. **Copy the webhook secret** that the Stripe CLI logged, something like "> Ready! Your webhook signing secret is whsec\_\*\*\*". Copy that secret and add it to your `.env` file.
+4. OPTIONNAL : **Copy the webhook secret** that the Stripe CLI logged, something like "> Ready! Your webhook signing secret is whsec\_\*\*\*". Copy that secret and add it to your `.env` file.
 
 5. **Migrate your local development database** to the base schema:
 
