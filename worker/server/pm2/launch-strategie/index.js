@@ -1,4 +1,5 @@
-const { run } = require('../../jobs/launch-strategie/index')
+// const { run } = require('../../jobs/launch-strategie/index')
+const { run } = require('../../jobs/strategies/single-player/index')
 
 const prisma = require('../../db/prisma')
 const logger = require('../../utils/logger')

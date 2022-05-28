@@ -109,6 +109,7 @@ const Header: FC = () => {
     const accounts = await window.ethereum.request({
       method: 'eth_requestAccounts',
     })
+    console.log('🚀 ~ file: index.tsx ~ line 112 ~ connect ~ accounts', accounts)
     // setProvider(lprovider)
     // setAccount(accounts[0])
 

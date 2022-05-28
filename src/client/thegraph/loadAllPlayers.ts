@@ -6,7 +6,7 @@ import { finder, range } from 'src/server/utils/utils'
 // })
 // graphQLClient.setHeader('Access-Control-Allow-Origin', '*')
 
-const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
+const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_GRAPHQL_ENDPOINT, { mode: 'cors' })
 
 const TOTAL_BETS_INITIAL = 80
 const WIN_RATE_INITIAL = 55

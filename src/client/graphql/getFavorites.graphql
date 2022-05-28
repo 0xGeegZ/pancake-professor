@@ -1,0 +1,10 @@
+query getFavorites {
+  getFavorites {
+    id
+    player
+    type
+    comment
+    note
+    # user
+  }
+}

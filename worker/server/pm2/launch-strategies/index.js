@@ -1,5 +1,7 @@
 const prisma = require('../../db/prisma')
 const logger = require('../../utils/logger')
+const { sleep } = require('../../utils/utils')
+
 const pm2 = require('pm2')
 
 const launch = async (strategie) => {
@@ -30,8 +32,8 @@ const launchStrategiesWithPM2 = async () => {
     where: {
       isActive: true,
       isRunning: false,
-      // isDeleted: false,
-      // isError: false,
+      isDeleted: false,
+      isError: false,
     },
   })
 
@@ -44,7 +46,8 @@ const launchStrategiesWithPM2 = async () => {
   logger.info(`[WAITING] 5 minuts`)
   await sleep(60 * 1000 * 5)
   logger.info(`[WAITING] waiting done`)
-  await launchStrategiesWithPM2()
+  // await launchStrategiesWithPM2()
+  return await launchStrategiesWithPM2()
 }
 
 launchStrategiesWithPM2()

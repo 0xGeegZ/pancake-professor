@@ -1,9 +1,9 @@
 mutation CreateStrategie(
   $player: String!
   $startedAmount: Float!
-  $betAmount: Float!
-  $increaseAmount: Int
-  $decreaseAmount: Int
+  $betAmountPercent: Float!
+  $increaseAmount: Float
+  $decreaseAmount: Float
   $name: String
   $color: String
   $maxLooseAmount: Float
@@ -15,7 +15,7 @@ mutation CreateStrategie(
   createStrategie(
     player: $player
     startedAmount: $startedAmount
-    betAmount: $betAmount
+    betAmountPercent: $betAmountPercent
     increaseAmount: $increaseAmount
     decreaseAmount: $decreaseAmount
     name: $name

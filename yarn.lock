@@ -1249,10 +1249,10 @@
   resolved "https://registry.yarnpkg.com/@bcoe/v8-coverage/-/v8-coverage-0.2.3.tgz#75a2e8b51cb758a7553d6804a5932d7aace75c39"
   integrity sha512-0hYQ8SB4Db5zvZB4axdMHGwEaQjkZzFjQiN9LVYvIFB2nSUHW9tYpxWriPrWDASIxiaXax83REcLxuSdnGPZtw==
 
-"@binance/connector@^1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@binance/connector/-/connector-1.5.0.tgz#ebae346f4785ba5154cc893fe139c0e798a0a51b"
-  integrity sha512-t2ulDEojPR+Uv2X1a7Yub/+GjxeRjvw7ETJlvVWqtI+liDkGtpKPuiuhb4kVLXJG2jqj6++fLmUa5tP9xd9DGw==
+"@binance/connector@^1.10.0":
+  version "1.10.0"
+  resolved "https://registry.yarnpkg.com/@binance/connector/-/connector-1.10.0.tgz#b0179bb6665963e0965fec4a27f155a0ac241905"
+  integrity sha512-+BRTo99XinTHqI83zOExXRAupzh4N4C0A68umzxrzobQdYAXe6xwB/ECMRrQbtP/kQZktjSHFSIWcF0hJeXCaw==
   dependencies:
     axios "^0.21.4"
     ws "^7.5.0"
@@ -3239,6 +3239,11 @@
   version "1.20.2"
   resolved "https://registry.yarnpkg.com/@stripe/stripe-js/-/stripe-js-1.20.2.tgz#5bb8deff1ba6cdc83d0bfac58e4d61fe2e4a53e7"
   integrity sha512-gTPpXQgAgKrAAvV2R5WO4NCuozALD4n3xaDLhPv+nAomIdPLtgEwI2xIGY7WMSKp9KfkKmlcjoPO4pkz8f/bpw==
+
+"@supercharge/promise-pool@^2.2.0":
+  version "2.2.0"
+  resolved "https://registry.yarnpkg.com/@supercharge/promise-pool/-/promise-pool-2.2.0.tgz#ed11fe64c69bb7e7f794ccefa0703ae2b463bd84"
+  integrity sha512-rkYrbgl59+MoTU0gDn7sVqTRMyEQSMzoYA3KLuRLEGuEesSXlSjJf4Ql0fh4yU+kf3JowCjtebUDabYiSn000Q==
 
 "@szmarczak/http-timer@^1.1.2":
   version "1.1.2"
@@ -5737,6 +5742,13 @@ cross-fetch@3.1.4, cross-fetch@^3.0.4, cross-fetch@^3.0.6:
   dependencies:
     node-fetch "2.6.1"
 
+cross-fetch@^3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/cross-fetch/-/cross-fetch-3.1.5.tgz#e1389f44d9e7ba767907f7af8454787952ab534f"
+  integrity sha512-lvb1SBsI0Z7GDwmuid+mU3kWVBwTVUbe7S0H52yaaAdQOXq2YktTCZdlAcNKFzE6QtRz0snpw9bNiPeOIkkQvw==
+  dependencies:
+    node-fetch "2.6.7"
+
 cross-spawn@^6.0.0:
   version "6.0.5"
   resolved "https://registry.yarnpkg.com/cross-spawn/-/cross-spawn-6.0.5.tgz#4a5ec7c64dfae22c3a14124dbacdee846d80cbc4"
@@ -7943,12 +7955,12 @@ graphql-request@^3.3.0:
     extract-files "^9.0.0"
     form-data "^3.0.0"
 
-graphql-request@^3.6.1:
-  version "3.6.1"
-  resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-3.6.1.tgz#689cce1da990131b40b05651f9f32bff506a1d8e"
-  integrity sha512-Nm1EasrAQVZllyNTlHDLnLZjlhC6eRWnWP6KH//ytnAL08pjlLkdI2K+s6OV92p45hn5b/kUlLbDwACmRoLwrQ==
+graphql-request@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/graphql-request/-/graphql-request-4.2.0.tgz#063377bc2dd29cc46aed3fddcc65fe97b805ba81"
+  integrity sha512-uFeMyhhl8ss4LFgjlfPeAn2pqYw+CJto+cjj71uaBYIMMK2jPIqgHm5KEFxUk0YDD41A8Bq31a2b4G2WJBlp2Q==
   dependencies:
-    cross-fetch "^3.0.6"
+    cross-fetch "^3.1.5"
     extract-files "^9.0.0"
     form-data "^3.0.0"
 
@@ -10555,6 +10567,13 @@ node-fetch@2.6.1:
   version "2.6.1"
   resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.1.tgz#045bd323631f76ed2e2b55573394416b639a0052"
   integrity sha512-V4aYg89jEoVRxRb2fJdAg8FHvI7cEyYdVAh94HH0UIK8oJxUfkjlDQN9RbMx+bEjP7+ggMiFRprSti032Oipxw==
+
+node-fetch@2.6.7:
+  version "2.6.7"
+  resolved "https://registry.yarnpkg.com/node-fetch/-/node-fetch-2.6.7.tgz#24de9fba827e3b4ae44dc8b20256a379160052ad"
+  integrity sha512-ZjMPFEfVx5j+y2yF35Kzx5sF7kDzxuDj6ziH4FFbOp87zKDZNx8yExJIb05OGF4Nlt9IHFIMBkRl41VdvcNdbQ==
+  dependencies:
+    whatwg-url "^5.0.0"
 
 node-fetch@^2.6.1:
   version "2.6.5"

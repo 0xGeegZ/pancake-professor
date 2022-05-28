@@ -32,6 +32,7 @@ export interface Mutation {
     inviteToProject?: Scalars['Boolean']
     removeFunds?: User
     toogleActivateStrategie?: Strategie
+    toogleFavoritePlayer?: User
     toogleIsActivated?: User
     updateStrategie?: Strategie
     updateUser?: User
@@ -52,6 +53,8 @@ export interface Project {
 export interface Query {
     currentUser?: User
     getAllFavorites?: (Favorite | undefined)[]
+    getFavorite?: Favorite
+    getFavorites?: (Favorite | undefined)[]
     getUsers?: (User | undefined)[]
     project?: Project
     strategie?: Strategie
@@ -60,7 +63,7 @@ export interface Query {
 }
 
 export interface Strategie {
-    betAmount: Scalars['Float']
+    betAmountPercent: Scalars['Float']
     color?: Scalars['String']
     createdAt: Scalars['DateTime']
     currentAmount: Scalars['Float']
@@ -126,15 +129,16 @@ export interface FavoriteWhereUniqueInput {id?: (Scalars['String'] | null)}
 export interface MutationRequest{
     createFriend?: [{id: Scalars['String']},UserRequest]
     createProject?: [{name: Scalars['String'],slug?: (Scalars['String'] | null)},ProjectRequest]
-    createStrategie?: [{betAmount: Scalars['Float'],color?: (Scalars['String'] | null),decreaseAmount?: (Scalars['Int'] | null),increaseAmount?: (Scalars['Int'] | null),isTrailing?: (Scalars['Boolean'] | null),maxLooseAmount?: (Scalars['Float'] | null),minWinAmount?: (Scalars['Float'] | null),name?: (Scalars['String'] | null),player: Scalars['String'],startedAmount: Scalars['Float'],stopLoss?: (Scalars['Int'] | null),takeProfit?: (Scalars['Int'] | null)},StrategieRequest]
+    createStrategie?: [{betAmountPercent: Scalars['Float'],color?: (Scalars['String'] | null),decreaseAmount?: (Scalars['Float'] | null),increaseAmount?: (Scalars['Float'] | null),isTrailing?: (Scalars['Boolean'] | null),maxLooseAmount?: (Scalars['Float'] | null),minWinAmount?: (Scalars['Float'] | null),name?: (Scalars['String'] | null),player: Scalars['String'],startedAmount: Scalars['Float'],stopLoss?: (Scalars['Int'] | null),takeProfit?: (Scalars['Int'] | null)},StrategieRequest]
     createStripeCheckoutBillingPortalUrl?: [{projectId: Scalars['String']}]
     createStripeCheckoutSession?: [{plan: PaidPlan,projectId: Scalars['String']}]
     deleteStrategie?: [{id: Scalars['String']},StrategieRequest]
     inviteToProject?: [{email: Scalars['String'],projectId: Scalars['String']}]
     removeFunds?: [{id: Scalars['String'],value: Scalars['String']},UserRequest]
     toogleActivateStrategie?: [{id: Scalars['String']},StrategieRequest]
+    toogleFavoritePlayer?: [{isNeedToFavorite: Scalars['Boolean'],player: Scalars['String'],type: Scalars['String']},UserRequest]
     toogleIsActivated?: [{id: Scalars['String']},UserRequest]
-    updateStrategie?: [{betAmount?: (Scalars['Float'] | null),color?: (Scalars['String'] | null),decreaseAmount?: (Scalars['Int'] | null),id: Scalars['String'],increaseAmount?: (Scalars['Int'] | null),isActive?: (Scalars['Boolean'] | null),isDeleted?: (Scalars['Boolean'] | null),isError?: (Scalars['Boolean'] | null),isRunning?: (Scalars['Boolean'] | null),isTrailing?: (Scalars['Boolean'] | null),maxLooseAmount?: (Scalars['Float'] | null),minWinAmount?: (Scalars['Float'] | null),name?: (Scalars['String'] | null),player?: (Scalars['String'] | null),playsCount?: (Scalars['Int'] | null),roundsCount?: (Scalars['Int'] | null),stopLoss?: (Scalars['Int'] | null),takeProfit?: (Scalars['Int'] | null)},StrategieRequest]
+    updateStrategie?: [{betAmountPercent?: (Scalars['Float'] | null),color?: (Scalars['String'] | null),decreaseAmount?: (Scalars['Float'] | null),id: Scalars['String'],increaseAmount?: (Scalars['Float'] | null),isActive?: (Scalars['Boolean'] | null),isDeleted?: (Scalars['Boolean'] | null),isError?: (Scalars['Boolean'] | null),isRunning?: (Scalars['Boolean'] | null),isTrailing?: (Scalars['Boolean'] | null),maxLooseAmount?: (Scalars['Float'] | null),minWinAmount?: (Scalars['Float'] | null),name?: (Scalars['String'] | null),player?: (Scalars['String'] | null),playsCount?: (Scalars['Int'] | null),roundsCount?: (Scalars['Int'] | null),stopLoss?: (Scalars['Int'] | null),takeProfit?: (Scalars['Int'] | null)},StrategieRequest]
     updateUser?: [{address: Scalars['String'],email?: (Scalars['String'] | null),id: Scalars['String'],name?: (Scalars['String'] | null)},UserRequest]
     __typename?: boolean | number
     __scalar?: boolean | number
@@ -153,6 +157,8 @@ export interface ProjectRequest{
 export interface QueryRequest{
     currentUser?: UserRequest
     getAllFavorites?: FavoriteRequest
+    getFavorite?: [{id: Scalars['String']},FavoriteRequest]
+    getFavorites?: FavoriteRequest
     getUsers?: UserRequest
     project?: [{id?: (Scalars['String'] | null),slug?: (Scalars['String'] | null)},ProjectRequest] | ProjectRequest
     strategie?: [{id: Scalars['String']},StrategieRequest]
@@ -162,7 +168,7 @@ export interface QueryRequest{
 }
 
 export interface StrategieRequest{
-    betAmount?: boolean | number
+    betAmountPercent?: boolean | number
     color?: boolean | number
     createdAt?: boolean | number
     currentAmount?: boolean | number
@@ -289,30 +295,32 @@ export interface FavoriteObservableChain{
 export interface MutationPromiseChain{
     createFriend: ((args: {id: Scalars['String']}) => UserPromiseChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Promise<(FieldsSelection<User, R> | undefined)>}),
     createProject: ((args: {name: Scalars['String'],slug?: (Scalars['String'] | null)}) => ProjectPromiseChain & {get: <R extends ProjectRequest>(request: R, defaultValue?: (FieldsSelection<Project, R> | undefined)) => Promise<(FieldsSelection<Project, R> | undefined)>}),
-    createStrategie: ((args: {betAmount: Scalars['Float'],color?: (Scalars['String'] | null),decreaseAmount?: (Scalars['Int'] | null),increaseAmount?: (Scalars['Int'] | null),isTrailing?: (Scalars['Boolean'] | null),maxLooseAmount?: (Scalars['Float'] | null),minWinAmount?: (Scalars['Float'] | null),name?: (Scalars['String'] | null),player: Scalars['String'],startedAmount: Scalars['Float'],stopLoss?: (Scalars['Int'] | null),takeProfit?: (Scalars['Int'] | null)}) => StrategiePromiseChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Promise<(FieldsSelection<Strategie, R> | undefined)>}),
+    createStrategie: ((args: {betAmountPercent: Scalars['Float'],color?: (Scalars['String'] | null),decreaseAmount?: (Scalars['Float'] | null),increaseAmount?: (Scalars['Float'] | null),isTrailing?: (Scalars['Boolean'] | null),maxLooseAmount?: (Scalars['Float'] | null),minWinAmount?: (Scalars['Float'] | null),name?: (Scalars['String'] | null),player: Scalars['String'],startedAmount: Scalars['Float'],stopLoss?: (Scalars['Int'] | null),takeProfit?: (Scalars['Int'] | null)}) => StrategiePromiseChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Promise<(FieldsSelection<Strategie, R> | undefined)>}),
     createStripeCheckoutBillingPortalUrl: ((args: {projectId: Scalars['String']}) => {get: (request?: boolean|number, defaultValue?: (Scalars['String'] | undefined)) => Promise<(Scalars['String'] | undefined)>}),
     createStripeCheckoutSession: ((args: {plan: PaidPlan,projectId: Scalars['String']}) => {get: (request?: boolean|number, defaultValue?: (Scalars['String'] | undefined)) => Promise<(Scalars['String'] | undefined)>}),
     deleteStrategie: ((args: {id: Scalars['String']}) => StrategiePromiseChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Promise<(FieldsSelection<Strategie, R> | undefined)>}),
     inviteToProject: ((args: {email: Scalars['String'],projectId: Scalars['String']}) => {get: (request?: boolean|number, defaultValue?: (Scalars['Boolean'] | undefined)) => Promise<(Scalars['Boolean'] | undefined)>}),
     removeFunds: ((args: {id: Scalars['String'],value: Scalars['String']}) => UserPromiseChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Promise<(FieldsSelection<User, R> | undefined)>}),
     toogleActivateStrategie: ((args: {id: Scalars['String']}) => StrategiePromiseChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Promise<(FieldsSelection<Strategie, R> | undefined)>}),
+    toogleFavoritePlayer: ((args: {isNeedToFavorite: Scalars['Boolean'],player: Scalars['String'],type: Scalars['String']}) => UserPromiseChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Promise<(FieldsSelection<User, R> | undefined)>}),
     toogleIsActivated: ((args: {id: Scalars['String']}) => UserPromiseChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Promise<(FieldsSelection<User, R> | undefined)>}),
-    updateStrategie: ((args: {betAmount?: (Scalars['Float'] | null),color?: (Scalars['String'] | null),decreaseAmount?: (Scalars['Int'] | null),id: Scalars['String'],increaseAmount?: (Scalars['Int'] | null),isActive?: (Scalars['Boolean'] | null),isDeleted?: (Scalars['Boolean'] | null),isError?: (Scalars['Boolean'] | null),isRunning?: (Scalars['Boolean'] | null),isTrailing?: (Scalars['Boolean'] | null),maxLooseAmount?: (Scalars['Float'] | null),minWinAmount?: (Scalars['Float'] | null),name?: (Scalars['String'] | null),player?: (Scalars['String'] | null),playsCount?: (Scalars['Int'] | null),roundsCount?: (Scalars['Int'] | null),stopLoss?: (Scalars['Int'] | null),takeProfit?: (Scalars['Int'] | null)}) => StrategiePromiseChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Promise<(FieldsSelection<Strategie, R> | undefined)>}),
+    updateStrategie: ((args: {betAmountPercent?: (Scalars['Float'] | null),color?: (Scalars['String'] | null),decreaseAmount?: (Scalars['Float'] | null),id: Scalars['String'],increaseAmount?: (Scalars['Float'] | null),isActive?: (Scalars['Boolean'] | null),isDeleted?: (Scalars['Boolean'] | null),isError?: (Scalars['Boolean'] | null),isRunning?: (Scalars['Boolean'] | null),isTrailing?: (Scalars['Boolean'] | null),maxLooseAmount?: (Scalars['Float'] | null),minWinAmount?: (Scalars['Float'] | null),name?: (Scalars['String'] | null),player?: (Scalars['String'] | null),playsCount?: (Scalars['Int'] | null),roundsCount?: (Scalars['Int'] | null),stopLoss?: (Scalars['Int'] | null),takeProfit?: (Scalars['Int'] | null)}) => StrategiePromiseChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Promise<(FieldsSelection<Strategie, R> | undefined)>}),
     updateUser: ((args: {address: Scalars['String'],email?: (Scalars['String'] | null),id: Scalars['String'],name?: (Scalars['String'] | null)}) => UserPromiseChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Promise<(FieldsSelection<User, R> | undefined)>})
 }
 
 export interface MutationObservableChain{
     createFriend: ((args: {id: Scalars['String']}) => UserObservableChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Observable<(FieldsSelection<User, R> | undefined)>}),
     createProject: ((args: {name: Scalars['String'],slug?: (Scalars['String'] | null)}) => ProjectObservableChain & {get: <R extends ProjectRequest>(request: R, defaultValue?: (FieldsSelection<Project, R> | undefined)) => Observable<(FieldsSelection<Project, R> | undefined)>}),
-    createStrategie: ((args: {betAmount: Scalars['Float'],color?: (Scalars['String'] | null),decreaseAmount?: (Scalars['Int'] | null),increaseAmount?: (Scalars['Int'] | null),isTrailing?: (Scalars['Boolean'] | null),maxLooseAmount?: (Scalars['Float'] | null),minWinAmount?: (Scalars['Float'] | null),name?: (Scalars['String'] | null),player: Scalars['String'],startedAmount: Scalars['Float'],stopLoss?: (Scalars['Int'] | null),takeProfit?: (Scalars['Int'] | null)}) => StrategieObservableChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Observable<(FieldsSelection<Strategie, R> | undefined)>}),
+    createStrategie: ((args: {betAmountPercent: Scalars['Float'],color?: (Scalars['String'] | null),decreaseAmount?: (Scalars['Float'] | null),increaseAmount?: (Scalars['Float'] | null),isTrailing?: (Scalars['Boolean'] | null),maxLooseAmount?: (Scalars['Float'] | null),minWinAmount?: (Scalars['Float'] | null),name?: (Scalars['String'] | null),player: Scalars['String'],startedAmount: Scalars['Float'],stopLoss?: (Scalars['Int'] | null),takeProfit?: (Scalars['Int'] | null)}) => StrategieObservableChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Observable<(FieldsSelection<Strategie, R> | undefined)>}),
     createStripeCheckoutBillingPortalUrl: ((args: {projectId: Scalars['String']}) => {get: (request?: boolean|number, defaultValue?: (Scalars['String'] | undefined)) => Observable<(Scalars['String'] | undefined)>}),
     createStripeCheckoutSession: ((args: {plan: PaidPlan,projectId: Scalars['String']}) => {get: (request?: boolean|number, defaultValue?: (Scalars['String'] | undefined)) => Observable<(Scalars['String'] | undefined)>}),
     deleteStrategie: ((args: {id: Scalars['String']}) => StrategieObservableChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Observable<(FieldsSelection<Strategie, R> | undefined)>}),
     inviteToProject: ((args: {email: Scalars['String'],projectId: Scalars['String']}) => {get: (request?: boolean|number, defaultValue?: (Scalars['Boolean'] | undefined)) => Observable<(Scalars['Boolean'] | undefined)>}),
     removeFunds: ((args: {id: Scalars['String'],value: Scalars['String']}) => UserObservableChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Observable<(FieldsSelection<User, R> | undefined)>}),
     toogleActivateStrategie: ((args: {id: Scalars['String']}) => StrategieObservableChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Observable<(FieldsSelection<Strategie, R> | undefined)>}),
+    toogleFavoritePlayer: ((args: {isNeedToFavorite: Scalars['Boolean'],player: Scalars['String'],type: Scalars['String']}) => UserObservableChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Observable<(FieldsSelection<User, R> | undefined)>}),
     toogleIsActivated: ((args: {id: Scalars['String']}) => UserObservableChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Observable<(FieldsSelection<User, R> | undefined)>}),
-    updateStrategie: ((args: {betAmount?: (Scalars['Float'] | null),color?: (Scalars['String'] | null),decreaseAmount?: (Scalars['Int'] | null),id: Scalars['String'],increaseAmount?: (Scalars['Int'] | null),isActive?: (Scalars['Boolean'] | null),isDeleted?: (Scalars['Boolean'] | null),isError?: (Scalars['Boolean'] | null),isRunning?: (Scalars['Boolean'] | null),isTrailing?: (Scalars['Boolean'] | null),maxLooseAmount?: (Scalars['Float'] | null),minWinAmount?: (Scalars['Float'] | null),name?: (Scalars['String'] | null),player?: (Scalars['String'] | null),playsCount?: (Scalars['Int'] | null),roundsCount?: (Scalars['Int'] | null),stopLoss?: (Scalars['Int'] | null),takeProfit?: (Scalars['Int'] | null)}) => StrategieObservableChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Observable<(FieldsSelection<Strategie, R> | undefined)>}),
+    updateStrategie: ((args: {betAmountPercent?: (Scalars['Float'] | null),color?: (Scalars['String'] | null),decreaseAmount?: (Scalars['Float'] | null),id: Scalars['String'],increaseAmount?: (Scalars['Float'] | null),isActive?: (Scalars['Boolean'] | null),isDeleted?: (Scalars['Boolean'] | null),isError?: (Scalars['Boolean'] | null),isRunning?: (Scalars['Boolean'] | null),isTrailing?: (Scalars['Boolean'] | null),maxLooseAmount?: (Scalars['Float'] | null),minWinAmount?: (Scalars['Float'] | null),name?: (Scalars['String'] | null),player?: (Scalars['String'] | null),playsCount?: (Scalars['Int'] | null),roundsCount?: (Scalars['Int'] | null),stopLoss?: (Scalars['Int'] | null),takeProfit?: (Scalars['Int'] | null)}) => StrategieObservableChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Observable<(FieldsSelection<Strategie, R> | undefined)>}),
     updateUser: ((args: {address: Scalars['String'],email?: (Scalars['String'] | null),id: Scalars['String'],name?: (Scalars['String'] | null)}) => UserObservableChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Observable<(FieldsSelection<User, R> | undefined)>})
 }
 
@@ -335,6 +343,8 @@ export interface ProjectObservableChain{
 export interface QueryPromiseChain{
     currentUser: (UserPromiseChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Promise<(FieldsSelection<User, R> | undefined)>}),
     getAllFavorites: ({get: <R extends FavoriteRequest>(request: R, defaultValue?: ((FieldsSelection<Favorite, R> | undefined)[] | undefined)) => Promise<((FieldsSelection<Favorite, R> | undefined)[] | undefined)>}),
+    getFavorite: ((args: {id: Scalars['String']}) => FavoritePromiseChain & {get: <R extends FavoriteRequest>(request: R, defaultValue?: (FieldsSelection<Favorite, R> | undefined)) => Promise<(FieldsSelection<Favorite, R> | undefined)>}),
+    getFavorites: ({get: <R extends FavoriteRequest>(request: R, defaultValue?: ((FieldsSelection<Favorite, R> | undefined)[] | undefined)) => Promise<((FieldsSelection<Favorite, R> | undefined)[] | undefined)>}),
     getUsers: ({get: <R extends UserRequest>(request: R, defaultValue?: ((FieldsSelection<User, R> | undefined)[] | undefined)) => Promise<((FieldsSelection<User, R> | undefined)[] | undefined)>}),
     project: ((args?: {id?: (Scalars['String'] | null),slug?: (Scalars['String'] | null)}) => ProjectPromiseChain & {get: <R extends ProjectRequest>(request: R, defaultValue?: (FieldsSelection<Project, R> | undefined)) => Promise<(FieldsSelection<Project, R> | undefined)>})&(ProjectPromiseChain & {get: <R extends ProjectRequest>(request: R, defaultValue?: (FieldsSelection<Project, R> | undefined)) => Promise<(FieldsSelection<Project, R> | undefined)>}),
     strategie: ((args: {id: Scalars['String']}) => StrategiePromiseChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Promise<(FieldsSelection<Strategie, R> | undefined)>}),
@@ -344,6 +354,8 @@ export interface QueryPromiseChain{
 export interface QueryObservableChain{
     currentUser: (UserObservableChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Observable<(FieldsSelection<User, R> | undefined)>}),
     getAllFavorites: ({get: <R extends FavoriteRequest>(request: R, defaultValue?: ((FieldsSelection<Favorite, R> | undefined)[] | undefined)) => Observable<((FieldsSelection<Favorite, R> | undefined)[] | undefined)>}),
+    getFavorite: ((args: {id: Scalars['String']}) => FavoriteObservableChain & {get: <R extends FavoriteRequest>(request: R, defaultValue?: (FieldsSelection<Favorite, R> | undefined)) => Observable<(FieldsSelection<Favorite, R> | undefined)>}),
+    getFavorites: ({get: <R extends FavoriteRequest>(request: R, defaultValue?: ((FieldsSelection<Favorite, R> | undefined)[] | undefined)) => Observable<((FieldsSelection<Favorite, R> | undefined)[] | undefined)>}),
     getUsers: ({get: <R extends UserRequest>(request: R, defaultValue?: ((FieldsSelection<User, R> | undefined)[] | undefined)) => Observable<((FieldsSelection<User, R> | undefined)[] | undefined)>}),
     project: ((args?: {id?: (Scalars['String'] | null),slug?: (Scalars['String'] | null)}) => ProjectObservableChain & {get: <R extends ProjectRequest>(request: R, defaultValue?: (FieldsSelection<Project, R> | undefined)) => Observable<(FieldsSelection<Project, R> | undefined)>})&(ProjectObservableChain & {get: <R extends ProjectRequest>(request: R, defaultValue?: (FieldsSelection<Project, R> | undefined)) => Observable<(FieldsSelection<Project, R> | undefined)>}),
     strategie: ((args: {id: Scalars['String']}) => StrategieObservableChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Observable<(FieldsSelection<Strategie, R> | undefined)>}),
@@ -351,7 +363,7 @@ export interface QueryObservableChain{
 }
 
 export interface StrategiePromiseChain{
-    betAmount: ({get: (request?: boolean|number, defaultValue?: Scalars['Float']) => Promise<Scalars['Float']>}),
+    betAmountPercent: ({get: (request?: boolean|number, defaultValue?: Scalars['Float']) => Promise<Scalars['Float']>}),
     color: ({get: (request?: boolean|number, defaultValue?: (Scalars['String'] | undefined)) => Promise<(Scalars['String'] | undefined)>}),
     createdAt: ({get: (request?: boolean|number, defaultValue?: Scalars['DateTime']) => Promise<Scalars['DateTime']>}),
     currentAmount: ({get: (request?: boolean|number, defaultValue?: Scalars['Float']) => Promise<Scalars['Float']>}),
@@ -381,7 +393,7 @@ export interface StrategiePromiseChain{
 }
 
 export interface StrategieObservableChain{
-    betAmount: ({get: (request?: boolean|number, defaultValue?: Scalars['Float']) => Observable<Scalars['Float']>}),
+    betAmountPercent: ({get: (request?: boolean|number, defaultValue?: Scalars['Float']) => Observable<Scalars['Float']>}),
     color: ({get: (request?: boolean|number, defaultValue?: (Scalars['String'] | undefined)) => Observable<(Scalars['String'] | undefined)>}),
     createdAt: ({get: (request?: boolean|number, defaultValue?: Scalars['DateTime']) => Observable<Scalars['DateTime']>}),
     currentAmount: ({get: (request?: boolean|number, defaultValue?: Scalars['Float']) => Observable<Scalars['Float']>}),

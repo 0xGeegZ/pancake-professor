@@ -27,7 +27,7 @@ const run = async () => {
 
   const strategie = await prisma.strategie.findUnique({
     where: {
-      id: 'ckwi3ghhh3886ew7x5xqi05pv',
+      id: 'cl3py8svc16325k9kqf5mfk4m',
     },
   })
 
@@ -647,7 +647,7 @@ const run = async () => {
 
     if (
       (strategie.playsCount === 0 && strategie.roundsCountForActualPlayer === 2) ||
-      (strategie.roundsCountForActualPlayer >= 2 && strategie.lastLooseCount - strategie.previousLastLooseCount >= 2) ||
+      (strategie.roundsCountForActualPlayer >= 2 && strategie.lastLooseCount - strategie.previousLastLooseCount >= 3) ||
       !isPLaying
     ) {
       console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
@@ -709,76 +709,115 @@ const run = async () => {
     // } else await waitForTransaction(strategie.playerData)
   }
 
+  // const findBestPlayer = (bestPlayers) => {
+  //   bestPlayers = bestPlayers.sort((a, b) => {
+  //     // if (isFavoritBestPlayers && FAVORITE_PLAYERS.includes(a.id) && a.lastFive >= 2) return -1
+  //     // if (isFavoritBestPlayers && FAVORITE_PLAYERS.includes(b.id) && b.lastFive >= 2) return 1
+
+  //     if (
+  //       // Math.round(+a.winRateRecents) < Math.round(+b.winRateRecents) &&
+  //       Math.round(+a.winRateRecents) >= Math.round(+b.winRateRecents) &&
+  //       // Math.round(+a.winRate) >= Math.round(+b.winRate) &&
+  //       a.lastFive === b.lastFive &&
+  //       a.recentGames > b.recentGames
+  //     )
+  //       return -1
+
+  //     if (
+  //       // Math.round(+a.winRateRecents) >= Math.round(+b.winRateRecents) &&
+  //       Math.round(+a.winRateRecents) < Math.round(+b.winRateRecents) &&
+  //       // Math.round(+a.winRate) < Math.round(+b.winRate) &&
+  //       a.lastFive === b.lastFive &&
+  //       a.recentGames < b.recentGames
+  //     )
+  //       return 1
+
+  //     if (
+  //       // Math.round(+a.winRateRecents) < Math.round(+b.winRateRecents) &&
+  //       Math.round(+a.winRateRecents) >= Math.round(+b.winRateRecents) &&
+  //       // Math.round(+a.winRate) >= Math.round(+b.winRate) &&
+  //       a.lastFive > b.lastFive &&
+  //       a.recentGames > b.recentGames
+  //     )
+  //       return -1
+  //     if (
+  //       // Math.round(+a.winRateRecents) >= Math.round(+b.winRateRecents) &&
+  //       Math.round(+a.winRateRecents) < Math.round(+b.winRateRecents) &&
+  //       // Math.round(+a.winRate) < Math.round(+b.winRate) &&
+  //       a.lastFive < b.lastFive &&
+  //       a.recentGames < b.recentGames
+  //     )
+  //       return 1
+
+  //     if (
+  //       // Math.round(+a.winRateRecents) < Math.round(+b.winRateRecents) &&
+  //       Math.round(+a.winRateRecents) >= Math.round(+b.winRateRecents) &&
+  //       // Math.round(+a.winRate) >= Math.round(+b.winRate) &&
+  //       a.lastFive === b.lastFive + 1 &&
+  //       a.recentGames >= b.recentGames
+  //       // &&
+  //       // a.lastLooseCount < b.lastLooseCount
+  //     )
+  //       return -1
+  //     if (
+  //       // Math.round(+a.winRateRecents) >= Math.round(+b.winRateRecents) &&
+  //       Math.round(+a.winRateRecents) < Math.round(+b.winRateRecents) &&
+  //       // Math.round(+a.winRate) < Math.round(+b.winRate) &&
+  //       a.lastFive === b.lastFive + 1 &&
+  //       a.recentGames < b.recentGames
+  //       // &&
+  //       // a.lastLooseCount >= b.lastLooseCount
+  //     )
+  //       return 1
+
+  //     if (a.lastFive > b.lastFive && a.recentGames > b.recentGames) return -1
+  //     if (a.lastFive < b.lastFive && a.recentGames < b.recentGames) return 1
+
+  //     // if (Math.round(+a.winRateRecents) < Math.round(+b.winRateRecents)) return -1
+  //     if (Math.round(+a.winRateRecents) >= Math.round(+b.winRateRecents)) return -1
+  //     // if (Math.round(+a.winRate) >= Math.round(+b.winRate)) return -1
+  //     // if (Math.round(+a.winRateRecents) >= Math.round(+b.winRateRecents)) return 1
+  //     if (Math.round(+a.winRateRecents) < Math.round(+b.winRateRecents)) return 1
+  //     // if (Math.round(+a.winRate) < Math.round(+b.winRate)) return 1
+  //   })
+
+  //   player = Object.assign({}, bestPlayers[0])
+
+  //   if (!bestPlayers.length) return logger.error('No player finded')
+
+  //   for (let i = 0; i < bestPlayers.length; i++) {
+  //     delete bestPlayers[i].bets
+  //   }
+  //   console.log('🚀 ~ file: index.js ~ line 773 ~ bestPlayers=bestPlayers.sort ~ bestPlayers', bestPlayers)
+
+  //   return player
+  // }
   const findBestPlayer = (bestPlayers) => {
     bestPlayers = bestPlayers.sort((a, b) => {
-      // if (isFavoritBestPlayers && FAVORITE_PLAYERS.includes(a.id) && a.lastFive >= 2) return -1
-      // if (isFavoritBestPlayers && FAVORITE_PLAYERS.includes(b.id) && b.lastFive >= 2) return 1
+      if (Math.round(+a.winRateRecents) === Math.round(+b.winRateRecents) && a.recentGames === b.recentGames) {
+        return a.lastFive > b.lastFive ? -1 : 1
+      }
 
-      if (
-        // Math.abs(+a.winRateRecents) < Math.abs(+b.winRateRecents) &&
-        Math.abs(+a.winRateRecents) >= Math.abs(+b.winRateRecents) &&
-        // Math.abs(+a.winRate) >= Math.abs(+b.winRate) &&
-        a.lastFive === b.lastFive &&
-        a.recentGames > b.recentGames
-      )
-        return -1
+      if (a.recentGames === b.recentGames) {
+        return Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) ? -1 : 1
+      }
 
-      if (
-        // Math.abs(+a.winRateRecents) >= Math.abs(+b.winRateRecents) &&
-        Math.abs(+a.winRateRecents) < Math.abs(+b.winRateRecents) &&
-        // Math.abs(+a.winRate) < Math.abs(+b.winRate) &&
-        a.lastFive === b.lastFive &&
-        a.recentGames < b.recentGames
-      )
-        return 1
+      if (a.recentGames === b.recentGames + 1 || a.recentGames + 1 === b.recentGames) {
+        return Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) ? -1 : 1
+      }
+      if (a.recentGames === b.recentGames + 2 || a.recentGames + 2 === b.recentGames) {
+        return Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) ? -1 : 1
+      }
+      if (a.recentGames === b.recentGames + 3 || a.recentGames + 3 === b.recentGames) {
+        return Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) ? -1 : 1
+      }
+      if (a.recentGames === b.recentGames + 4 || a.recentGames + 4 === b.recentGames) {
+        return Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) ? -1 : 1
+      }
 
-      if (
-        // Math.abs(+a.winRateRecents) < Math.abs(+b.winRateRecents) &&
-        Math.abs(+a.winRateRecents) >= Math.abs(+b.winRateRecents) &&
-        // Math.abs(+a.winRate) >= Math.abs(+b.winRate) &&
-        a.lastFive > b.lastFive &&
-        a.recentGames > b.recentGames
-      )
-        return -1
-      if (
-        // Math.abs(+a.winRateRecents) >= Math.abs(+b.winRateRecents) &&
-        Math.abs(+a.winRateRecents) < Math.abs(+b.winRateRecents) &&
-        // Math.abs(+a.winRate) < Math.abs(+b.winRate) &&
-        a.lastFive < b.lastFive &&
-        a.recentGames < b.recentGames
-      )
-        return 1
+      if (Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) && a.recentGames > b.recentGames) return -1
 
-      if (
-        // Math.abs(+a.winRateRecents) < Math.abs(+b.winRateRecents) &&
-        Math.abs(+a.winRateRecents) >= Math.abs(+b.winRateRecents) &&
-        // Math.abs(+a.winRate) >= Math.abs(+b.winRate) &&
-        a.lastFive === b.lastFive + 1 &&
-        a.recentGames >= b.recentGames
-        // &&
-        // a.lastLooseCount < b.lastLooseCount
-      )
-        return -1
-      if (
-        // Math.abs(+a.winRateRecents) >= Math.abs(+b.winRateRecents) &&
-        Math.abs(+a.winRateRecents) < Math.abs(+b.winRateRecents) &&
-        // Math.abs(+a.winRate) < Math.abs(+b.winRate) &&
-        a.lastFive === b.lastFive + 1 &&
-        a.recentGames < b.recentGames
-        // &&
-        // a.lastLooseCount >= b.lastLooseCount
-      )
-        return 1
-
-      if (a.lastFive > b.lastFive && a.recentGames > b.recentGames) return -1
-      if (a.lastFive < b.lastFive && a.recentGames < b.recentGames) return 1
-
-      // if (Math.abs(+a.winRateRecents) < Math.abs(+b.winRateRecents)) return -1
-      if (Math.abs(+a.winRateRecents) >= Math.abs(+b.winRateRecents)) return -1
-      // if (Math.abs(+a.winRate) >= Math.abs(+b.winRate)) return -1
-      // if (Math.abs(+a.winRateRecents) >= Math.abs(+b.winRateRecents)) return 1
-      if (Math.abs(+a.winRateRecents) < Math.abs(+b.winRateRecents)) return 1
-      // if (Math.abs(+a.winRate) < Math.abs(+b.winRate)) return 1
+      return a.recentGames > b.recentGames ? -1 : 1
     })
 
     player = Object.assign({}, bestPlayers[0])
@@ -788,7 +827,12 @@ const run = async () => {
     for (let i = 0; i < bestPlayers.length; i++) {
       delete bestPlayers[i].bets
     }
-    console.log('🚀 ~ file: index.js ~ line 773 ~ bestPlayers=bestPlayers.sort ~ bestPlayers', bestPlayers)
+
+    console.log('==============================')
+    console.log('🚀 ~ bestPlayers=bestPlayers.sort ~ bestPlayers', bestPlayers.slice(0, 10))
+    console.log('==============================')
+    console.log('🚀 ~ bestPlayers=bestPlayers.sort ~ PLAYER', bestPlayers[0])
+    console.log('==============================')
 
     return player
   }
@@ -838,8 +882,8 @@ const run = async () => {
     strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
     strategie.stepBankroll = strategie.startedAmount
     // strategie.betAmount = +(strategie.currentAmount / 15).toFixed(4)
-    strategie.betAmount = config.MIN_BET_AMOUNT
-    // strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
+    // strategie.betAmount = config.MIN_BET_AMOUNT
+    strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
 
     strategie.playsCount = 0
     strategie.playsCountForActualPlayer = 0

@@ -110,8 +110,8 @@ function Logo() {
       </LogoSignWrapper>
       <Hidden smDown>
         <LogoTextWrapper>
-          <Tooltip title={`${t('Version')} 0.0.2`} arrow placement="right">
-            <VersionBadge>0.0.2</VersionBadge>
+          <Tooltip title={`${t('Version')} 0.0.3`} arrow placement="right">
+            <VersionBadge>0.0.3</VersionBadge>
           </Tooltip>
           <LogoText>Pancake Professor</LogoText>
         </LogoTextWrapper>

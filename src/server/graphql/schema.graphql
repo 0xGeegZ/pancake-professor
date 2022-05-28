@@ -27,15 +27,16 @@ input FavoriteWhereUniqueInput {
 type Mutation {
   createFriend(id: String!): User
   createProject(name: String!, slug: String): Project
-  createStrategie(betAmount: Float!, color: String, decreaseAmount: Int, increaseAmount: Int, isTrailing: Boolean, maxLooseAmount: Float, minWinAmount: Float, name: String, player: String!, startedAmount: Float!, stopLoss: Int, takeProfit: Int): Strategie
+  createStrategie(betAmountPercent: Float!, color: String, decreaseAmount: Float, increaseAmount: Float, isTrailing: Boolean, maxLooseAmount: Float, minWinAmount: Float, name: String, player: String!, startedAmount: Float!, stopLoss: Int, takeProfit: Int): Strategie
   createStripeCheckoutBillingPortalUrl(projectId: String!): String
   createStripeCheckoutSession(plan: PaidPlan!, projectId: String!): String
   deleteStrategie(id: String!): Strategie
   inviteToProject(email: String!, projectId: String!): Boolean
   removeFunds(id: String!, value: String!): User
   toogleActivateStrategie(id: String!): Strategie
+  toogleFavoritePlayer(isNeedToFavorite: Boolean!, player: String!, type: String!): User
   toogleIsActivated(id: String!): User
-  updateStrategie(betAmount: Float, color: String, decreaseAmount: Int, id: String!, increaseAmount: Int, isActive: Boolean, isDeleted: Boolean, isError: Boolean, isRunning: Boolean, isTrailing: Boolean, maxLooseAmount: Float, minWinAmount: Float, name: String, player: String, playsCount: Int, roundsCount: Int, stopLoss: Int, takeProfit: Int): Strategie
+  updateStrategie(betAmountPercent: Float, color: String, decreaseAmount: Float, id: String!, increaseAmount: Float, isActive: Boolean, isDeleted: Boolean, isError: Boolean, isRunning: Boolean, isTrailing: Boolean, maxLooseAmount: Float, minWinAmount: Float, name: String, player: String, playsCount: Int, roundsCount: Int, stopLoss: Int, takeProfit: Int): Strategie
   updateUser(address: String!, email: String, id: String!, name: String): User
 }
 
@@ -54,6 +55,8 @@ type Project {
 type Query {
   currentUser: User
   getAllFavorites: [Favorite]
+  getFavorite(id: String!): Favorite
+  getFavorites: [Favorite]
   getUsers: [User]
   project(id: String, slug: String): Project
   strategie(id: String!): Strategie
@@ -61,7 +64,7 @@ type Query {
 }
 
 type Strategie {
-  betAmount: Float!
+  betAmountPercent: Float!
   color: String
   createdAt: DateTime!
   currentAmount: Float!

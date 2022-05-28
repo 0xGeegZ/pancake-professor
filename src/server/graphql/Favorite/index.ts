@@ -1,4 +1,4 @@
-import { extendType, list, objectType } from 'nexus'
+import { booleanArg, extendType, floatArg, intArg, nonNull, objectType, list, stringArg } from 'nexus'
 
 import prisma from '../../db/prisma'
 
@@ -28,12 +28,48 @@ const queries = extendType({
   definition: (t) => {
     t.field('getAllFavorites', {
       type: list('Favorite'),
-      resolve: async (_, __, ctx) => {
+      resolve: (_, __, ctx) => {
         if (!ctx.user?.id) return null
 
         return prisma.favorite.findMany({})
       },
-    })
+    }),
+      t.field('getFavorites', {
+        type: list('Favorite'),
+        resolve: (_, __, ctx) => {
+          if (!ctx.user?.id) return null
+
+          return prisma.favorite.findMany({
+            where: {
+              user: {
+                is: {
+                  id: ctx.user.id,
+                },
+              },
+            },
+          })
+        },
+      }),
+      t.field('getFavorite', {
+        type: 'Favorite',
+        args: {
+          id: nonNull(stringArg()),
+        },
+        resolve: (_, { id }, ctx) => {
+          if (!ctx.user?.id) return null
+
+          return prisma.favorite.findUnique({
+            where: {
+              user: {
+                is: {
+                  id: ctx.user.id,
+                },
+              },
+              id,
+            },
+          })
+        },
+      })
   },
 })
 

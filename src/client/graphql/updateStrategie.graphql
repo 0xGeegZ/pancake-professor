@@ -1,9 +1,9 @@
 mutation UpdateStrategie(
   $id: String!
   $player: String
-  $betAmount: Float!
-  $increaseAmount: Int
-  $decreaseAmount: Int
+  $betAmountPercent: Float!
+  $increaseAmount: Float
+  $decreaseAmount: Float
   $name: String
   $color: String
   # $startedAmount: Float!
@@ -23,7 +23,7 @@ mutation UpdateStrategie(
   updateStrategie(
     id: $id
     player: $player
-    betAmount: $betAmount
+    betAmountPercent: $betAmountPercent
     increaseAmount: $increaseAmount
     decreaseAmount: $decreaseAmount
     name: $name
@@ -44,7 +44,7 @@ mutation UpdateStrategie(
   ) {
     id
     player
-    betAmount
+    betAmountPercent
     increaseAmount
     decreaseAmount
     name

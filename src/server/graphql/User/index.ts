@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { extendType, list, nonNull, objectType, stringArg } from 'nexus'
+import { extendType, list, nonNull, objectType, stringArg, booleanArg } from 'nexus'
 
 import prisma from '../../db/prisma'
 import { decrypt } from '../../utils/crpyto'
@@ -158,8 +158,6 @@ const mutations = extendType({
       },
     })
 
-    // TODO addFavotite & removeFavorite
-
     t.nullable.field('createFriend', {
       type: 'User',
       args: {
@@ -275,6 +273,66 @@ const mutations = extendType({
             isActivated: !user.isActivated,
           },
         })
+      },
+    })
+
+    t.nullable.field('toogleFavoritePlayer', {
+      type: 'User',
+      args: {
+        player: nonNull(stringArg()),
+        isNeedToFavorite: nonNull(booleanArg()),
+        type: nonNull(stringArg()),
+      },
+      resolve: async (_, args, ctx) => {
+        if (!ctx.user?.id) return null
+
+        const userExists = await prisma.user.findUnique({
+          where: {
+            id: ctx.user.id,
+          },
+        })
+
+        if (!userExists) return null
+
+        if (!args.isNeedToFavorite) {
+          await prisma.favorite.deleteMany({
+            where: {
+              player: args.player,
+              user: {
+                is: {
+                  id: ctx.user.id,
+                },
+              },
+            },
+          })
+          return ctx.user
+        }
+
+        // const favoriteExists = await prisma.favorite.findFirst({
+        //   where: {
+        //     player: args.player,
+        //     user: {
+        //       is: {
+        //         id: ctx.user.id,
+        //       },
+        //     },
+        //   },
+        // })
+        // if (favoriteExists) return null
+
+        await prisma.favorite.create({
+          data: {
+            player: args.player,
+            type: args.type,
+            user: {
+              connect: {
+                id: ctx.user.id,
+              },
+            },
+          },
+        })
+
+        return ctx.user
       },
     })
   },

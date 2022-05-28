@@ -16,7 +16,7 @@ const Strategie = objectType({
     t.model.generated()
     t.model.private()
 
-    t.model.betAmount()
+    t.model.betAmountPercent()
     t.model.increaseAmount()
     t.model.decreaseAmount()
 
@@ -77,9 +77,10 @@ const mutations = extendType({
       args: {
         player: nonNull(stringArg()),
         startedAmount: nonNull(floatArg()),
-        betAmount: nonNull(floatArg()),
-        increaseAmount: intArg(),
-        decreaseAmount: intArg(),
+        // betAmountPercent: floatArg(),
+        betAmountPercent: nonNull(floatArg()),
+        increaseAmount: floatArg(),
+        decreaseAmount: floatArg(),
 
         name: stringArg(),
         color: stringArg(),
@@ -91,6 +92,8 @@ const mutations = extendType({
         minWinAmount: floatArg(),
       },
       resolve: async (_, args, ctx) => {
+        console.log('🚀 ~ file: index.ts ~ line 124 ~ resolve: ~ args', args)
+
         if (!ctx.user?.id) return null
 
         const user = await prisma.user.findUnique({
@@ -108,14 +111,20 @@ const mutations = extendType({
         // console.log('privateKey:', wallet.privateKey)
         // console.log('privateKey:', encrypt(wallet.privateKey))
 
+        // TODO allow color selection from front end
+        const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`
+        const randomName = Math.random().toString(36).substring(2, 12)
+
         const strategie = await prisma.strategie.create({
           data: {
             player: args.player,
-            name: args.name,
-            color: args.color,
+            // name: args.name,
+            // color: args.color,
+            name: randomName,
+            color: randomColor,
             generated: walletInitial.address.toLowerCase(),
             private: encrypt(walletInitial.privateKey),
-            betAmount: args.betAmount,
+            betAmountPercent: args.betAmountPercent,
             increaseAmount: args.increaseAmount,
             decreaseAmount: args.decreaseAmount,
             takeProfit: args.takeProfit,
@@ -165,10 +174,10 @@ const mutations = extendType({
       type: 'Strategie',
       args: {
         id: nonNull(stringArg()),
-        betAmount: floatArg(),
+        betAmountPercent: floatArg(),
         player: stringArg(),
-        increaseAmount: intArg(),
-        decreaseAmount: intArg(),
+        increaseAmount: floatArg(),
+        decreaseAmount: floatArg(),
         name: stringArg(),
         color: stringArg(),
         takeProfit: intArg(),
@@ -212,12 +221,23 @@ const mutations = extendType({
         //     history: uniqued,
         //   }
         // }
+        const difference = Object.keys(args).reduce((diff, key) => {
+          if (hasAccess[key] === args[key]) return diff
+          return {
+            ...diff,
+            [key]: args[key],
+          }
+        }, {})
+
+        delete difference?.color
+        delete difference?.name
 
         return prisma.strategie.update({
           where: { id },
           data: {
             ...args,
-            isNeedRestart: true,
+            // isNeedRestart: true,
+            isNeedRestart: Object.keys(difference).length !== 0,
           },
         })
       },

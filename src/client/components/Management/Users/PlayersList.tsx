@@ -4,8 +4,15 @@ import 'moment-timezone'
 import { PREDICTION_CONTRACT_ABI } from '@/contracts/abis/pancake-prediction-abi-v3'
 import CloseIcon from '@mui/icons-material/Close'
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt'
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
+import ThumbDownIcon from '@mui/icons-material/ThumbDown'
+import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import GamepadIcon from '@mui/icons-material/Gamepad'
 import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone'
+import StickyNote2Icon from '@mui/icons-material/StickyNote2'
 import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
 import {
   Avatar,
@@ -47,6 +54,7 @@ import { useTranslation } from 'react-i18next'
 import FollowPlayerForm from 'src/client/components/Dashboards/Automation/FollowPlayerForm'
 import { useGlobalStore } from 'src/client/store/swr'
 import loadPlayers from 'src/client/thegraph/loadPlayers'
+import { useToogleFavoritePlayerMutation } from 'src/client/graphql/toogleFavoritePlayer.generated'
 
 import SidebarPlayerDrawer from './SidebarPlayerDrawer'
 
@@ -181,8 +189,10 @@ const PlayersList: FC = () => {
         }
         const epoch = await ppreditionContract.currentEpoch()
 
-        const lplayers = await loadPlayers({ epoch })
-        // const lplayers = await loadAllPlayers({ epoch })
+        let lplayers = await loadPlayers({ epoch })
+        // TODO v0.0.3 add filter like/unlike only in page filter
+        lplayers = lplayers.filter((p) => !user?.favorites.find((f) => f.player === p.id && f.type === 'DISLIKE'))
+        // lplayers = lplayers.sort((p) => (user?.favorites.find((f) => f.player === p.id && f.type === 'LIKE') ? -1 : 0))
 
         setPlayers(lplayers)
         setFetching(false)
@@ -191,7 +201,7 @@ const PlayersList: FC = () => {
         setFetching(false)
       }
     },
-    [fetching, enqueueSnackbar, t]
+    [fetching, enqueueSnackbar, t, user]
   )
 
   const refreshQuery = useCallback(
@@ -204,9 +214,10 @@ const PlayersList: FC = () => {
       players.length = 0
 
       try {
-        const lplayers = await loadPlayers({ epoch, orderBy })
-        // const lplayers = await loadAllPlayers({ epoch, orderBy })
-        console.log('🚀 ~ file: PlayersList.tsx ~ line 205 ~ lplayers', lplayers.length)
+        let lplayers = await loadPlayers({ epoch, orderBy })
+        // TODO v0.0.3 add filter like/unlike only in page filter
+        lplayers = lplayers.filter((p) => !user.favorites.find((f) => f.player === p.id && f.type === 'DISLIKE'))
+        // lplayers = lplayers.sort((p) => (user?.favorites.find((f) => f.player === p.id && f.type === 'LIKE') ? -1 : 0))
 
         setDenominatorValue(orderBy === 'default' ? 288 : orderBy === 'mostActiveLastHour' ? 12 : 0)
         setPlayers(lplayers)
@@ -217,10 +228,11 @@ const PlayersList: FC = () => {
         setFetching(false)
       }
     },
-    [players, preditionContract]
+    [players, preditionContract, user]
   )
 
   useEffect(() => {
+    if (userFetching) return
     if (preditionContract) return
 
     // if (!user && !userFetching) {
@@ -351,7 +363,7 @@ const PlayersList: FC = () => {
     mutate('currentUser')
   }
 
-  const getStrategieDuraction = (timestamp) => {
+  const getStrategieDuration = (timestamp) => {
     const duration = moment.duration(moment().diff(moment(timestamp)))
 
     // Get Days
@@ -367,6 +379,31 @@ const PlayersList: FC = () => {
     const minutesFormatted = `${minutes}m`
 
     return [daysFormatted, hoursFormatted, minutesFormatted].join('')
+  }
+
+  const [, toogleFavoritePlayer] = useToogleFavoritePlayerMutation()
+
+  const handleToogleFavoritePlayer = async (player: any, favorite: any) => {
+    try {
+      const { error } = await toogleFavoritePlayer({ player, ...favorite })
+
+      if (error) throw new Error(error.message)
+
+      enqueueSnackbar(t('Player successfully favorited'), {
+        variant: 'success',
+        // anchorOrigin: {
+        //   vertical: 'top',
+        //   horizontal: 'right',
+        // },
+        TransitionComponent: Zoom,
+      })
+      mutate('currentUser')
+    } catch (err) {
+      console.error(err)
+      enqueueSnackbar(t('Unexpected error occurred when favoriting/unfavoriting player.'), {
+        variant: 'error',
+      })
+    }
   }
 
   return (
@@ -431,7 +468,7 @@ const PlayersList: FC = () => {
           <Divider />
 
           {paginatedPlayers.length === 0 ? (
-            fetching ? (
+            fetching || userFetching ? (
               <>
                 <Grid
                   sx={{ py: 10 }}
@@ -503,7 +540,7 @@ const PlayersList: FC = () => {
                           )}
                           <TableCell>
                             <Box display="flex" alignItems="center">
-                              {!player.recentGames ? (
+                              {!player.recentGames && (
                                 <DotLegend
                                   style={{
                                     background:
@@ -514,8 +551,6 @@ const PlayersList: FC = () => {
                                         : theme.colors.error.main,
                                   }}
                                 />
-                              ) : (
-                                <></>
                               )}
                               <Box>{parseFloat(player.winRate).toFixed(2)}%</Box>
                             </Box>
@@ -597,7 +632,7 @@ const PlayersList: FC = () => {
       {toggleView === 'grid_view' && (
         <>
           {paginatedPlayers.length === 0 ? (
-            fetching ? (
+            fetching || userFetching ? (
               <>
                 <Card>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -710,7 +745,7 @@ const PlayersList: FC = () => {
                                     <Typography sx={{ fontSize: `${theme.typography.pxToRem(10)}` }} variant="h6">
                                       {t('Last Play')}
                                       {' : '}
-                                      {getStrategieDuraction(+player.bets[0].createdAt * 1000)}
+                                      {getStrategieDuration(+player.bets[0].createdAt * 1000)}
                                       {/* <Moment local>{moment(+player.bets[0].createdAt * 1000)}</Moment> */}
                                       {/* {formatDistance(
                                         subDays(new Date(+player.bets[0].createdAt * 1000), 1),
@@ -776,7 +811,7 @@ const PlayersList: FC = () => {
                                       </Box>
                                     </Grid>
 
-                                    {player.recentGames ? (
+                                    {player.recentGames && (
                                       <>
                                         <Grid item xs={12} sm={7}>
                                           <Typography variant="caption" sx={{ pb: 1 }} component="div">
@@ -861,8 +896,6 @@ const PlayersList: FC = () => {
                                           </Box>
                                         </Grid>
                                       </>
-                                    ) : (
-                                      <></>
                                     )}
                                   </Grid>
                                 </Box>
@@ -870,8 +903,8 @@ const PlayersList: FC = () => {
 
                               <Divider />
                               <Box px={3} py={2}>
-                                <Grid container spacing={3}>
-                                  <Grid item md={6}>
+                                <Grid container spacing={1}>
+                                  <Grid item md={5}>
                                     {!user ? (
                                       <Tooltip
                                         placement="top"
@@ -886,14 +919,13 @@ const PlayersList: FC = () => {
                                         placement="top"
                                         title={t('Need to have positive balance in secondary address to copy player')}
                                         arrow>
-                                        {/* TODO : Remove handleClick for production */}
+                                        {/* TODO 0.0.3 : Remove handleClick for production */}
                                         <Button
                                           size="small"
                                           fullWidth
                                           variant="outlined"
                                           color="warning"
-                                          // onClick={handleOpenCreateForm(player.id)}
-                                        >
+                                          onClick={handleOpenCreateForm(player.id)}>
                                           <b> {t('Copy')}</b>
                                         </Button>
                                       </Tooltip>
@@ -901,18 +933,18 @@ const PlayersList: FC = () => {
                                       <Button
                                         size="small"
                                         fullWidth
-                                        disabled={!!user?.strategies.find((s) => s.player === player.id)}
+                                        disabled={!!user?.strategies.find((s) => s.player === player.id && s.isActive)}
                                         variant="contained"
                                         onClick={handleOpenCreateForm(player.id)}>
                                         <b>
-                                          {user?.strategies.find((s) => s.player === player.id)
+                                          {user?.strategies.find((s) => s.player === player.id && s.isActive)
                                             ? t('Copied')
                                             : t('Copy')}
                                         </b>
                                       </Button>
                                     )}
                                   </Grid>
-                                  <Grid item md={6}>
+                                  <Grid item md={4}>
                                     <Button
                                       size="small"
                                       // disabled
@@ -923,9 +955,82 @@ const PlayersList: FC = () => {
                                         handleDrawerToggle()
                                         handleDrawerSetPlayer(player.id)
                                       }}>
-                                      {t('View details')}
+                                      {t('Details')}
                                     </Button>
                                   </Grid>
+                                  {!user?.favorites?.find((f) => f.player === player.id) ? (
+                                    <>
+                                      <Grid item md={1}>
+                                        <IconButton
+                                          size="small"
+                                          color="error"
+                                          onClick={() => {
+                                            handleToogleFavoritePlayer(player.id, {
+                                              type: 'LIKE',
+                                              isNeedToFavorite: true,
+                                            })
+                                          }}>
+                                          <FavoriteBorderIcon fontSize="small" />
+                                          {/* <ThumbUpOffAltIcon fontSize="small" /> */}
+                                        </IconButton>
+                                      </Grid>
+
+                                      <Grid item md={1}>
+                                        <IconButton
+                                          size="small"
+                                          color="error"
+                                          onClick={() => {
+                                            handleToogleFavoritePlayer(player.id, {
+                                              type: 'DISLIKE',
+                                              isNeedToFavorite: true,
+                                            })
+                                          }}>
+                                          <ThumbDownOffAltIcon fontSize="small" />
+                                        </IconButton>
+                                      </Grid>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Grid item md={1}>
+                                        {user?.favorites?.find((f) => f.player === player.id && f.type === 'LIKE') ? (
+                                          <IconButton
+                                            size="small"
+                                            color="error"
+                                            onClick={() => {
+                                              handleToogleFavoritePlayer(player.id, {
+                                                type: 'LIKE',
+                                                isNeedToFavorite: false,
+                                              })
+                                            }}>
+                                            <FavoriteIcon fontSize="small" />
+                                          </IconButton>
+                                        ) : (
+                                          <IconButton
+                                            size="small"
+                                            color="error"
+                                            onClick={() => {
+                                              handleToogleFavoritePlayer(player.id, {
+                                                type: 'DISLIKE',
+                                                isNeedToFavorite: false,
+                                              })
+                                            }}>
+                                            <ThumbDownIcon fontSize="small" />
+                                          </IconButton>
+                                        )}
+                                      </Grid>
+                                      <Grid item md={1}>
+                                        <IconButton
+                                          size="small"
+                                          color="secondary"
+                                          onClick={() => {
+                                            handleDrawerToggle()
+                                            handleDrawerSetPlayer(player.id)
+                                          }}>
+                                          <StickyNote2Icon fontSize="small" />
+                                        </IconButton>
+                                      </Grid>
+                                    </>
+                                  )}
                                 </Grid>
                               </Box>
                             </>

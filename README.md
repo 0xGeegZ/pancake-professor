@@ -18,7 +18,7 @@ cp .env.example .env
 ```
 
 ```sh
-cp .env.localexample .env.local
+cp .env.local.example .env.local
 ```
 
 > Note: do not delete the `.env.example` file, as it's used by some code generation processes and is useful for potential future team members as a reference.

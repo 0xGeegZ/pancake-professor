@@ -19,7 +19,7 @@ query GetCurrentUser {
     strategies {
       id
       player
-      betAmount
+      betAmountPercent
       increaseAmount
       decreaseAmount
       name

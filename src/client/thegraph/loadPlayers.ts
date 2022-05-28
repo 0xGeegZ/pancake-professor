@@ -1,7 +1,14 @@
 import { gql, GraphQLClient } from 'graphql-request'
 import { finder, range } from 'src/server/utils/utils'
 
-const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
+const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_GRAPHQL_ENDPOINT, {
+  mode: 'cors',
+  // credentials: 'include',
+  // headers: {
+  //   // 'Access-Control-Allow-Origin': 'http://localhost:3000',
+  //   'Access-Control-Allow-Origin': '*',
+  // },
+})
 
 const TOTAL_BETS_INITIAL = 80
 const WIN_RATE_INITIAL = 56
@@ -43,6 +50,7 @@ const checkIfPlaying = (pplayer, lastGame) => {
 const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
   try {
     const orderByFilter = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 'totalBets' : orderBy
+    // const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12
     const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12 * 2
 
     const first = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 250 : 100

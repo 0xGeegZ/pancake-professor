@@ -16,6 +16,7 @@ import {
   InputAdornment,
   Slide,
   Slider,
+  Switch,
   Stack,
   TextField,
   Tooltip,
@@ -163,6 +164,16 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
 
   const { enqueueSnackbar } = useSnackbar()
 
+  const [betAmountPercent, setBetAmountPercent] = useState(5)
+  const handleChangeBetAmount = (event) => {
+    setBetAmountPercent(+event.target.value)
+  }
+
+  const [isTrailing, setIsTrailing] = useState(false)
+  const handleChangeIsTrailing = (event) => {
+    setIsTrailing(event.target.checked)
+  }
+
   const [stopLoss, setStopLoss] = useState(30)
   const handleChangeStopLoss = (event: React.ChangeEvent<HTMLInputElement>) => {
     setStopLoss(+event.target.value)
@@ -175,7 +186,9 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
 
   const handleGaugeIncrease = (e: { preventDefault: () => void }, newValue: number | null) => {
     e.preventDefault()
-    if (gauge === 100) return
+    // if (gauge === 100) return
+    if (gauge >= 98) return
+
     // setGauge((g) => g + (gauge >= 80 || gauge <= 20 ? 1 : 2))
     setGauge((g) => newValue || g + 1)
   }
@@ -237,22 +250,44 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
       'stopLoss',
       stopLoss,
       'takeProfit',
-      takeProfit
+      takeProfit,
+      'betAmountPercent',
+      betAmountPercent,
+      'isTrailing',
+      isTrailing
     )
 
     // const amount = getAvailableBankroll()
     const amount = +((+gauge * user.generatedBalance) / 100).toFixed(4)
 
-    if (amount < 0.0001) {
-      enqueueSnackbar(t('Amount is too small. Please check you balance.'), {
+    // TODO 0.0.3 Reactivate for production
+    // if (amount < 0.0001) {
+    //   enqueueSnackbar(t('Amount is too small. Please check you balance.'), {
+    //     variant: 'error',
+    //     TransitionComponent: Zoom,
+    //   })
+    //   return
+    // }
+
+    // TODO 0.0.3 Reactivate for production
+    // if (amount / 13 < 0.0001) {
+    //   enqueueSnackbar(t('Amount is less than minimum bet.'), {
+    //     variant: 'error',
+    //     TransitionComponent: Zoom,
+    //   })
+    //   return
+    // }
+
+    if (betAmountPercent < 2) {
+      enqueueSnackbar(t('Bet Amount need to be greather than 2%.'), {
         variant: 'error',
         TransitionComponent: Zoom,
       })
       return
     }
 
-    if (amount / 13 < 0.0001) {
-      enqueueSnackbar(t('Amount is less than minimum bet.'), {
+    if (betAmountPercent >= 50) {
+      enqueueSnackbar(t('Bet Amount need to be less than 50%.'), {
         variant: 'error',
         TransitionComponent: Zoom,
       })
@@ -311,7 +346,12 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
       startedAmount: +bnbValue,
       maxLooseAmount,
       minWinAmount,
+      betAmountPercent,
+      isTrailing,
+      // TODO Pass Bet Amount
+      // betAmountPercent: 0.0,
     })
+    console.log('🚀 ~ file: FollowPlayerForm.tsx ~ line 317 ~ sumbitCreateStrategie ~ error', error)
 
     if (error) {
       enqueueSnackbar(t('Unexpected error during strategie creation'), {
@@ -415,7 +455,8 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
                 step={5}
                 // marks
                 min={0}
-                max={100}
+                // max={100}
+                max={98}
                 onChange={handleChange}
               />
               <BoxSliderButtons>
@@ -445,6 +486,80 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
                 </Grid>
               </Grid>
             </Box>
+            <Grid container spacing={2} py={2}>
+              <Grid item xs={6}>
+                <Box sx={{ textAlign: 'center' }} pl={3} py={1}>
+                  <Grid container display="flex" alignItems="center">
+                    <Grid item xs={10}>
+                      <TextField
+                        id="outlined-number"
+                        label="Bet Amount"
+                        type="number"
+                        size="small"
+                        onChange={handleChangeBetAmount}
+                        value={betAmountPercent}
+                        InputLabelProps={{
+                          shrink: true,
+                        }}
+                        InputProps={{
+                          endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                        }}
+                      />
+                    </Grid>
+                    <Grid item xs={2} pl={0.3}>
+                      <Tooltip placement="bottom-end" title={`${t('Bet amount for each round in %')}`} arrow>
+                        <IconButton color="secondary" size="small">
+                          <InfoIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Grid>
+                  </Grid>
+                </Box>
+              </Grid>
+
+              <Grid item xs={6}>
+                <Box sx={{ textAlign: 'center' }} pr={3} py={1}>
+                  <Grid container display="flex" alignItems="center">
+                    <Grid item xs={4}>
+                      <Tooltip
+                        placement="left"
+                        title={`${t('Fixed : Bet amount will always be the same (more secure)')}`}
+                        arrow>
+                        <Typography>Fixed</Typography>
+                        {/* <InfoIcon fontSize="small" /> */}
+                      </Tooltip>
+                    </Grid>
+
+                    <Grid item xs={4}>
+                      <Tooltip
+                        placement="bottom-end"
+                        title={`${
+                          isTrailing
+                            ? t(
+                                `Trailing : Bet amount will always be ${betAmountPercent}% of you balance (more volatile)`
+                              )
+                            : t('Fixed : Bet amount will always be the same (more secure)')
+                        }`}
+                        arrow>
+                        <Switch onChange={handleChangeIsTrailing} checked={isTrailing} color="primary" />
+                      </Tooltip>
+                    </Grid>
+                    <Grid item xs={4}>
+                      <Tooltip
+                        placement="right"
+                        title={`${t(
+                          `Trailing : Bet amount will always be ${betAmountPercent}% of you balance (more volatile)`
+                        )}`}
+                        arrow>
+                        <Typography>Trailing</Typography>
+                      </Tooltip>
+                    </Grid>
+                  </Grid>
+                </Box>
+                {/* </Stack> */}
+              </Grid>
+            </Grid>
+
             <Stack
               spacing={2}
               alignItems="center"
@@ -525,13 +640,14 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
                     onClick={handleOpenDialog}>
                     <b> {t('Copy')}</b>
                   </Button> */}
+                  {/* TODO 0.0.3 : Remove handleOpenDialog for production */}
                   {+user.generatedBalance === 0 ? (
                     // {getAvailableBankroll() === 0 ? (
                     <Tooltip
                       placement="top"
                       title={t('Need to have available BNB in secondary address to copy player')}
                       arrow>
-                      <Button size="small" fullWidth variant="outlined" color="warning">
+                      <Button size="small" fullWidth variant="outlined" color="warning" onClick={handleOpenDialog}>
                         <b> {t('Copy')}</b>
                       </Button>
                     </Tooltip>

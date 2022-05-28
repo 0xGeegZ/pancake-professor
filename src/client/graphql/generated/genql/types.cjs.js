@@ -75,7 +75,7 @@ module.exports = {
             "createStrategie": [
                 12,
                 {
-                    "betAmount": [
+                    "betAmountPercent": [
                         7,
                         "Float!"
                     ],
@@ -83,10 +83,10 @@ module.exports = {
                         2
                     ],
                     "decreaseAmount": [
-                        3
+                        7
                     ],
                     "increaseAmount": [
-                        3
+                        7
                     ],
                     "isTrailing": [
                         8
@@ -182,6 +182,23 @@ module.exports = {
                     ]
                 }
             ],
+            "toogleFavoritePlayer": [
+                14,
+                {
+                    "isNeedToFavorite": [
+                        8,
+                        "Boolean!"
+                    ],
+                    "player": [
+                        2,
+                        "String!"
+                    ],
+                    "type": [
+                        2,
+                        "String!"
+                    ]
+                }
+            ],
             "toogleIsActivated": [
                 14,
                 {
@@ -194,21 +211,21 @@ module.exports = {
             "updateStrategie": [
                 12,
                 {
-                    "betAmount": [
+                    "betAmountPercent": [
                         7
                     ],
                     "color": [
                         2
                     ],
                     "decreaseAmount": [
-                        3
+                        7
                     ],
                     "id": [
                         2,
                         "String!"
                     ],
                     "increaseAmount": [
-                        3
+                        7
                     ],
                     "isActive": [
                         8
@@ -318,6 +335,18 @@ module.exports = {
             "getAllFavorites": [
                 1
             ],
+            "getFavorite": [
+                1,
+                {
+                    "id": [
+                        2,
+                        "String!"
+                    ]
+                }
+            ],
+            "getFavorites": [
+                1
+            ],
             "getUsers": [
                 14
             ],
@@ -355,7 +384,7 @@ module.exports = {
             ]
         },
         "Strategie": {
-            "betAmount": [
+            "betAmountPercent": [
                 7
             ],
             "color": [

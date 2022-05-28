@@ -1,7 +1,15 @@
 const { GraphQLClient, gql } = require('graphql-request')
 const { range, finder } = require('../utils/utils')
 
-const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
+// const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
+const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT, {
+  mode: 'cors',
+  credentials: 'include',
+  headers: {
+    // 'Access-Control-Allow-Origin': 'http://localhost:3000',
+    'Access-Control-Allow-Origin': '*',
+  },
+})
 
 const TOTAL_BETS_INITIAL = 80
 const WIN_RATE_INITIAL = 56
@@ -58,6 +66,7 @@ const checkPlayer = async (idPlayer, lastGame) => {
         averageBNB
         netBNB
         bets(first: 1000, orderBy: createdAt, orderDirection: desc) {
+          # bets(first: 500, orderBy: createdAt, orderDirection: desc) {
           round {
             epoch
           }
@@ -81,6 +90,7 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
   try {
     const orderByFilter = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 'totalBets' : orderBy
     const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12 * 2
+    // const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12
 
     // const first = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 250 : 100
     const first = orderBy === 'default' ? 500 : orderBy === 'mostActiveLastHour' ? 1000 : 100
@@ -98,6 +108,7 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
         users(
           first: $first
           where: { totalBets_gt: $totalBets, winRate_gt: $winRate }
+          # where: { totalBets_gt: $totalBets, winRate_gt: $winRate, netBNB_gt: 0.01 }
           orderBy: $orderBy
           orderDirection: desc
         ) {
@@ -196,7 +207,8 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
 
     return bestPlayers
   } catch (error) {
-    throw new Error(error)
+    console.log('🚀 ~ file: loadPlayers.js ~ line 199 ~ loadPlayers ~ error', error)
+    // throw new Error(error)
   }
 }
 
