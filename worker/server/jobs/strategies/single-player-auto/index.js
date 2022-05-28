@@ -800,6 +800,9 @@ const run = async () => {
     if (!filtereds.length) filtereds = bestPlayers
 
     bestPlayers = filtereds.sort((a, b) => {
+      if (strategie.alreadyPlayeds.includes(a.id)) return 1
+      if (strategie.alreadyPlayeds.includes(b.id)) return 1
+
       if (Math.round(+a.winRateRecents) === Math.round(+b.winRateRecents) && a.recentGames === b.recentGames) {
         return a.lastFive > b.lastFive ? -1 : 1
       }

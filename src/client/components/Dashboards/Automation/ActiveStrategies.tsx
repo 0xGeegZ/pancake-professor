@@ -665,14 +665,23 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
 
       if (error) throw new Error(error.message)
 
-      enqueueSnackbar(t('Player successfully favorited'), {
-        variant: 'success',
-        // anchorOrigin: {
-        //   vertical: 'top',
-        //   horizontal: 'right',
-        // },
-        TransitionComponent: Zoom,
-      })
+      enqueueSnackbar(
+        t(
+          `Player successfully ${
+            favorite.type === 'LIKE'
+              ? favorite.isNeedToFavorite
+                ? 'favorited'
+                : 'unfavorited'
+              : favorite.isNeedToFavorite
+              ? 'disliked'
+              : 'undisliked'
+          }`
+        ),
+        {
+          variant: 'success',
+          TransitionComponent: Zoom,
+        }
+      )
       mutate('currentUser')
     } catch (err) {
       console.error(err)

@@ -121,7 +121,6 @@ const run = async (payload) => {
     // const gasPrice = await provider.getGasPrice()
 
     const gasLimit = 350000 + 350000 * Math.round(claimablesEpochs.length / 5)
-    console.log('🚀 ~ file: index.js ~ line 162 ~ claimPlayedEpochs ~ gasLimit', gasLimit)
 
     const tx = await preditionContract.claim(claimablesEpochs, {
       // gasLimit: ethers.utils.hexlify(350000),
@@ -134,6 +133,8 @@ const run = async (payload) => {
 
     try {
       await tx.wait()
+      logger.info(`[CLAIM] claim ok for epochs : ${claimablesEpochs}`)
+
       // //Wait for last transaction to be proceed.
       // await sleep(10 * 1000)
     } catch (error) {

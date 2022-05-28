@@ -43,8 +43,8 @@ const launchStrategiesWithPM2 = async () => {
 
   // logger.info(`[LAUNCHING] existing`)
 
-  logger.info(`[WAITING] 5 minuts`)
-  await sleep(60 * 1000 * 5)
+  logger.info(`[WAITING] 2.5 minuts`)
+  await sleep(60 * 1000 * 2.5)
   logger.info(`[WAITING] waiting done`)
   // await launchStrategiesWithPM2()
   return await launchStrategiesWithPM2()
