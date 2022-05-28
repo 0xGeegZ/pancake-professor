@@ -882,8 +882,8 @@ const run = async () => {
     strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
     strategie.stepBankroll = strategie.startedAmount
     // strategie.betAmount = +(strategie.currentAmount / 15).toFixed(4)
-    // strategie.betAmount = config.MIN_BET_AMOUNT
-    strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
+    strategie.betAmount = config.MIN_BET_AMOUNT
+    // strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
 
     strategie.playsCount = 0
     strategie.playsCountForActualPlayer = 0
