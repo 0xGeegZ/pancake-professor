@@ -131,10 +131,11 @@ const run = async () => {
 
     const tx = await preditionContract.claim(claimablesEpochs, {
       gasLimit: ethers.utils.hexlify(350000),
+      // gasLimit: ethers.utils.hexlify(gasLimit),
       // gasPrice,
       gasPrice: ethers.utils.parseUnits(config.SAFE_GAS_PRICE.toString(), 'gwei').toString(),
-      // nonce: provider.getTransactionCount(strategie.generated, 'latest'),
-      nonce: new Date().getTime(),
+      nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+      // nonce: new Date().getTime(),
     })
 
     try {
