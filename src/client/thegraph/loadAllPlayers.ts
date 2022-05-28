@@ -51,7 +51,8 @@ const loadAllPlayers = async ({ epoch, orderBy = 'winRate' }) => {
   let isAllLoaded = false
 
   const orderByFilter = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 'winRate' : orderBy
-  const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12
+  // const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12
+  const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12 * 2
 
   const first = orderBy === 'default' ? 500 : orderBy === 'mostActiveLastHour' ? 1000 : 50
   const firstBets = orderBy === 'default' ? 12 * 24 : orderBy === 'mostActiveLastHour' ? 12 : 1
