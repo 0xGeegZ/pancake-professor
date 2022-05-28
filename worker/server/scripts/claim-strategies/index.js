@@ -33,7 +33,7 @@ const claimStrategies = async () => {
 
   logger.info(`[CLAIMING] ${strategies.length} strategies will be launched`)
 
-  await Promise.all(strategies.map(claim))
+  return await Promise.all(strategies.map(claim))
 }
 
 module.exports = { claimStrategies }

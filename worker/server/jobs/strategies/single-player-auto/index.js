@@ -11,6 +11,7 @@ const { sleep, range, finder } = require('../../../utils/utils')
 const { decrypt } = require('../../../utils/crpyto')
 
 const config = require('../../../providers/pancakeswap/config')
+const { filter } = require('lodash')
 
 // const run = async (payload) => {
 const run = async () => {
@@ -794,7 +795,11 @@ const run = async () => {
   //   return player
   // }
   const findBestPlayer = (bestPlayers) => {
-    bestPlayers = bestPlayers.sort((a, b) => {
+    let filtereds = bestPlayers.filter((player) => Math.round(+player.winRateRecents) >= 50)
+
+    if (!filtereds.length) filtereds = bestPlayers
+
+    bestPlayers = filtereds.sort((a, b) => {
       if (Math.round(+a.winRateRecents) === Math.round(+b.winRateRecents) && a.recentGames === b.recentGames) {
         return a.lastFive > b.lastFive ? -1 : 1
       }
@@ -883,8 +888,8 @@ const run = async () => {
     strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
     strategie.stepBankroll = strategie.startedAmount
     // strategie.betAmount = +(strategie.currentAmount / 15).toFixed(4)
-    strategie.betAmount = config.MIN_BET_AMOUNT
-    // strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
+    // strategie.betAmount = config.MIN_BET_AMOUNT
+    strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
 
     strategie.playsCount = 0
     strategie.playsCountForActualPlayer = 0

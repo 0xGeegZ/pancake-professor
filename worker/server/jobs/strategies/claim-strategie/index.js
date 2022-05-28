@@ -203,13 +203,13 @@ const run = async (payload) => {
 
   try {
     const epoch = await preditionContract.currentEpoch()
-    // await claimLastEpochs(epoch, 12 * 24)
-    await claimLastEpochs(epoch, 12 * 24)
+    await claimLastEpochs(epoch, 12 * 5)
   } catch (error) {
     logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)
     // await stopStrategie({ epoch: -1 })
     // throw new Error(error)
   }
+  return
 }
 
 module.exports = { run }
