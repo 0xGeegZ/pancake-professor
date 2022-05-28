@@ -21,6 +21,10 @@ const run = async () => {
     ws: WebSocket,
     onerror: (error) => {
       logger.error(error)
+      // TODO v0.0.3 restart strategie
+      logger.error('[AUTO-PLAYING] Blocknative listenner error', error.toString())
+      process.exit(0)
+      // await stopStrategie({ epoch: -1 })
     },
   }
 
@@ -150,7 +154,7 @@ const run = async () => {
   }
 
   const stopStrategie = async ({ epoch }) => {
-    logger.error(`[PLAYING] Stopping strategie ${strategie.id} for user ${user.id}`)
+    logger.error(`[AUTO-PLAYING] Stopping strategie ${strategie.id} for user ${user.id}`)
 
     await prisma.strategie.update({
       where: { id: strategie.id },
@@ -172,7 +176,7 @@ const run = async () => {
   // const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
   const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
     if (strategie.currentAmount === 0) {
-      logger.error('[PLAYING] Not enought BNB')
+      logger.error('[AUTO-PLAYING] Not enought BNB')
       await stopStrategie({ epoch })
     }
 
@@ -184,7 +188,7 @@ const run = async () => {
     const betBullOrBear = betBull ? 'betBull' : 'betBear'
 
     if (!(+amount != 0)) {
-      logger.error('[PLAYING] Bet amount is 0')
+      logger.error('[AUTO-PLAYING] Bet amount is 0')
       await stopStrategie({ epoch })
     }
 
@@ -210,7 +214,7 @@ const run = async () => {
       strategie.playsCountForActualPlayer += 1
       strategie.errorCount = 0
     } catch (error) {
-      logger.error(`[PLAYING] Betting Tx Error for adress ${strategie.generated} and epoch ${epoch}`)
+      logger.error(`[AUTO-PLAYING] Betting Tx Error for adress ${strategie.generated} and epoch ${epoch}`)
       logger.error(error.message)
 
       // Try to reenter
@@ -517,7 +521,9 @@ const run = async () => {
 
     logger.info('------------------------------------------------------------')
     logger.info('------------------------------------------------------------')
-    logger.info(`[PLAYING] Betting on ${betBull ? 'BULL' : 'BEAR'} with ${betAmount} BNB amount for epoch ${epoch}`)
+    logger.info(
+      `[AUTO-PLAYING] Betting on ${betBull ? 'BULL' : 'BEAR'} with ${betAmount} BNB amount for epoch ${epoch}`
+    )
 
     strategie.playedHashs.push(transaction.hash)
 
@@ -578,7 +584,7 @@ const run = async () => {
     // Check if stop loss or take profit
     // if (strategie.currentAmount <= isUpdatedStrategie.startedAmount - isUpdatedStrategie.maxLooseAmount) {
     //   logger.info(
-    //     `[PLAYING] Stop Loss activated for player ${user.id} : current amount ${
+    //     `[AUTO-PLAYING] Stop Loss activated for player ${user.id} : current amount ${
     //       strategie.currentAmount
     //     } --> STOP LOSS : ${isUpdatedStrategie.startedAmount - isUpdatedStrategie.maxLooseAmount}`
     //   )
@@ -587,30 +593,30 @@ const run = async () => {
 
     if (strategie.currentAmount >= isUpdatedStrategie.minWinAmount) {
       logger.info(
-        `[PLAYING] Take Profit activated for player ${user.id} : current amount ${strategie.currentAmount} --> TAKE PROFIT : ${isUpdatedStrategie.minWinAmount}`
+        `[AUTO-PLAYING] Take Profit activated for player ${user.id} : current amount ${strategie.currentAmount} --> TAKE PROFIT : ${isUpdatedStrategie.minWinAmount}`
       )
       await stopStrategie({ epoch })
     }
 
     if (strategie.errorCount >= 5) {
-      logger.error('[PLAYING] Strategie had 5 error consecutively. Stopping it.')
+      logger.error('[AUTO-PLAYING] Strategie had 5 error consecutively. Stopping it.')
       await stopStrategie({ epoch })
     }
 
     if (isUpdatedStrategie.isNeedRestart) {
-      logger.error('[PLAYING] Strategie need to be restarted.')
+      logger.error('[AUTO-PLAYING] Strategie need to be restarted.')
       await prisma.strategie.update({
         where: { id: strategie.id },
         data: {
           isNeedRestart: false,
         },
       })
-      logger.error('[PLAYING] RESTARTING STRATEGIE')
+      logger.error('[AUTO-PLAYING] RESTARTING STRATEGIE')
       process.exit(0)
     }
 
     // if (!isUpdatedStrategie.isActive || isUpdatedStrategie.isError || isUpdatedStrategie.isDeleted) {
-    //   logger.error('[PLAYING] Strategie was updated by user (stopped or deleted) and need to be stoped.')
+    //   logger.error('[AUTO-PLAYING] Strategie was updated by user (stopped or deleted) and need to be stoped.')
     //   await stopStrategie({ epoch })
     // }
 
