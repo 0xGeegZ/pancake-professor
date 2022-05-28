@@ -9,6 +9,7 @@
     "launch:multiple:players": "cross-env node -e 'require(\"./server/jobs/strategies/multiple-players/index.js\").run()'",
     "launch:single:auto": "cross-env node -e 'require(\"./server/jobs/strategies/single-player-auto/index.js\").run()'",
     "launch:strategies": "cross-env node -e 'require(\"./server/scripts/launch-strategies/index.js\").launchStrategies()'",
+    "claim:strategies": "cross-env node -e 'require(\"./server/scripts/claim-strategies/index.js\").claimStrategies()'",
     "stop:strategies": "cross-env node -e 'require(\"./server/scripts/stop-strategies/index.js\").stopStrategies()'",
     "generate": "prisma generate",
     "dev:multiple": "yarn run 'launch:multiple:players'",
