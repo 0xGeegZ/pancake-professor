@@ -37,6 +37,7 @@ const claimStrategies = async () => {
 
   // await Promise.all(strategies.map(claim))
   await PromisePool.for(strategies).withConcurrency(1).process(claim)
+  console.log('[CLAIMING] All finished')
 }
 
 module.exports = { claimStrategies }

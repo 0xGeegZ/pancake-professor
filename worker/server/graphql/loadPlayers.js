@@ -57,7 +57,7 @@ const checkIfPlaying = (player, lastGame) => {
   if (recentGames >= lastGame.length / 4 && lastFive >= 1) return player
   // if (recentGames >= lastGame.length / 4) return player
 
-  return player
+  // return player
 }
 
 const checkPlayer = async (idPlayer, lastGame) => {
@@ -214,6 +214,7 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
   } catch (error) {
     console.log('🚀 ~ file: loadPlayers.js ~ line 199 ~ loadPlayers ~ error', error)
     // throw new Error(error)
+    // TODO v0.0.3 manage error when server timeout
   }
 }
 

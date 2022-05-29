@@ -433,6 +433,8 @@ const run = async () => {
     console.log(
       'playsCount',
       strategie.playsCount,
+      'lastFive',
+      strategie.lastFive,
       'roundsCountForActualPlayer',
       strategie.roundsCountForActualPlayer,
       'isPLaying',
