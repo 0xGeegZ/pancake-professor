@@ -1,3 +1,5 @@
+const { PromisePool } = require('@supercharge/promise-pool')
+
 const prisma = require('../../db/prisma')
 const logger = require('../../utils/logger')
 const { sleep } = require('../../utils/utils')
@@ -33,7 +35,8 @@ const claimStrategies = async () => {
 
   logger.info(`[CLAIMING] ${strategies.length} strategies will be launched`)
 
-  return await Promise.all(strategies.map(claim))
+  // await Promise.all(strategies.map(claim))
+  await PromisePool.for(strategies).withConcurrency(1).process(claim)
 }
 
 module.exports = { claimStrategies }

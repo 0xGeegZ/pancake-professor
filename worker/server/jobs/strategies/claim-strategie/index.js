@@ -31,7 +31,6 @@ const run = async (payload) => {
   const { user, strategie } = payload
   let preditionContract
   let signer
-  let emitter
 
   // TODO define interface to stabilise objecti params that we need in addition to default fields
   // TODO load player from TheGraph to have special data like amountBNB played
@@ -134,34 +133,10 @@ const run = async (payload) => {
     try {
       await tx.wait()
       logger.info(`[CLAIM] claim ok for epochs : ${claimablesEpochs}`)
-
-      // //Wait for last transaction to be proceed.
-      // await sleep(10 * 1000)
     } catch (error) {
       logger.error(`[CLAIM] Claim Tx Error for user ${user.id} and epochs ${claimablesEpochs}`)
       logger.error(error.message)
     }
-  }
-
-  const stopStrategie = async ({ epoch }) => {
-    logger.error(`[CLAIMING] Stopping strategie ${strategie.id} for user ${user.id}`)
-
-    await prisma.strategie.update({
-      where: { id: strategie.id },
-      data: {
-        isError: true,
-        isActive: false,
-        isRunning: false,
-      },
-    })
-    if (emitter) emitter.off('txPool')
-
-    if (epoch) {
-      const lastEpochs = [...range(+epoch - 12, +epoch)]
-      await claimPlayedEpochs(lastEpochs)
-    }
-    //TODO reactivate for production
-    process.exit(0)
   }
 
   const claimLastEpochs = async (epoch, to) => {
@@ -169,13 +144,7 @@ const run = async (payload) => {
 
     if (!lastEpochs.length) return logger.error(`[ERROR] Error during claiming for last epochs : no epochs findeds`)
 
-    // await claimPlayedEpochs(lastEpochs)
     await claimPlayedEpochs([...new Set([...lastEpochs])])
-
-    //wait for all transactions to completes
-    // avoid error for stop loss if claim a lot of amount
-    await sleep(10 * 1000)
-    strategie.playedEpochs = []
   }
 
   const privateKey = decrypt(strategie.private)
@@ -188,13 +157,6 @@ const run = async (payload) => {
   )
 
   try {
-    await prisma.strategie.update({
-      where: { id: strategie.id },
-      data: {
-        isRunning: true,
-        isNeedRestart: false,
-      },
-    })
     const isPaused = await preditionContract.paused()
 
     if (isPaused) return logger.error(`[ERROR] Contract is paused. Waiting one hour `)
@@ -204,11 +166,9 @@ const run = async (payload) => {
 
   try {
     const epoch = await preditionContract.currentEpoch()
-    await claimLastEpochs(epoch, 12 * 5)
+    await claimLastEpochs(epoch, 12 * 24 * 2)
   } catch (error) {
     logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)
-    // await stopStrategie({ epoch: -1 })
-    // throw new Error(error)
   }
   return
 }

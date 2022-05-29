@@ -16,7 +16,7 @@ const { filter } = require('lodash')
 // const run = async (payload) => {
 const run = async () => {
   const blockNativeOptions = {
-    dappId: process.env.BLOCKNATIVE_API_KEY,
+    dappId: process.env.BLOCKNATIVE_API_KEY_GLANUM,
     networkId: +process.env.BINANCE_SMART_CHAIN_ID,
     ws: WebSocket,
     onerror: (error) => {
@@ -241,220 +241,6 @@ const run = async () => {
     // const bet = { epoch, betBull, betAmount, isError, strategieId: strategie.id, userId : user.id, hash : strategie.playedHashs[strategie.playedHashs.lenght-1], isClaimed : false}
   }
 
-  const playRound = async ({ epoch }) => {
-    console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-    logger.info(`********** [ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING **********`)
-
-    if (strategie.plays.length === 0)
-      return logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NO USERS PLAYED`)
-
-    // players.map(p => {
-    //   blocknative.unsubscribe(p.id)
-    // })
-    // if (emitter) emitter.off("txPool")
-
-    logger.info(`[INFO] Listenning adresses stopped`)
-
-    let betBullCount = strategie.plays.filter((p) => p.betBull)
-    let betBearCount = strategie.plays.filter((p) => !p.betBull)
-
-    const totalPlayers = betBullCount.length + betBearCount.length
-
-    let isBullBetter =
-      betBullCount.map((p) => +p.player.winRate).reduce((acc, winRate) => acc + winRate, 0) / betBullCount.length || 0
-    // let isBullBetter =
-    //   betBullCount
-    //     .map(p => +p.player.winRate * (+p.player.totalBets / 100))
-    //     .reduce((acc, winRate) => acc + winRate, 0) || 0
-    // isBullBetter = parseFloat(isBullBetter).toFixed(2)
-
-    //TODO GUIGUI WIP
-    let isBullBetterAdjusted =
-      betBullCount
-        // .map(p => +p.player.winRate * (+p.player.totalBets / 100))
-        .map((p) => {
-          const ratio = (+p.player.totalBets / 100).toString().replace('.', '')
-          const multiplier = `${+p.player.totalBets > 1000 ? '2' : '1'}.${ratio}`
-          // console.log("🚀 ~ ratio", ratio)
-          // console.log("🚀 ~ multiplier", multiplier)
-          return +p.player.winRate * parseFloat(multiplier).toFixed(4)
-          // return +p.player.winRate * (+p.player.totalBets / 100)
-          // return +p.player.winRate / +p.player.totalBets
-          // return +p.player.totalBets / +p.player.winRate
-          // return (
-          //   +p.player.winRate / +p.player.totalBets +
-          //   +p.player.totalBets / +p.player.winRate
-          // )
-        })
-        .reduce((acc, winRate) => acc + winRate, 0) / betBullCount.length || 0
-    isBullBetterAdjusted = parseFloat(isBullBetterAdjusted).toFixed(2)
-
-    let isBearBetter =
-      betBearCount.map((p) => +p.player.winRate).reduce((acc, winRate) => acc + winRate, 0) / betBearCount.length || 0
-    // let isBearBetter =
-    //   betBearCount
-    //     .map(p => +p.player.winRate * (+p.player.totalBets / 100))
-    //     .reduce((acc, winRate) => acc + winRate, 0) || 0
-    // isBearBetter = parseFloat(isBearBetter).toFixed(2)
-
-    let isBearBetterAdjusted =
-      betBearCount
-        // .map(p => +p.player.winRate * (+p.player.totalBets / 100))
-        .map((p) => {
-          const ratio = (+p.player.totalBets / 100).toString().replace('.', '')
-          const multiplier = `${+p.player.totalBets > 1000 ? '2' : '1'}.${ratio}`
-          // console.log("🚀 ~ ratio", ratio)
-          // console.log("🚀  ~ multiplier", multiplier)
-          return +p.player.winRate * parseFloat(multiplier).toFixed(4)
-          // return +p.player.winRate * (+p.player.totalBets / 100)
-          // return +p.player.winRate / +p.player.totalBets
-          // return +p.player.totalBets / +p.player.winRate
-          // return (
-          //   +p.player.winRate / +p.player.totalBets +
-          //   +p.player.totalBets / +p.player.winRate
-          // )
-        })
-        .reduce((acc, winRate) => acc + winRate, 0) / betBearCount.length || 0
-    isBearBetterAdjusted = parseFloat(isBearBetterAdjusted).toFixed(2)
-
-    const isDifferenceAdjustedEfficient =
-      +isBullBetterAdjusted > +isBearBetterAdjusted
-        ? +isBullBetterAdjusted - +isBearBetterAdjusted
-        : +isBearBetterAdjusted - +isBullBetterAdjusted
-
-    // logger.info(
-    //   `[ROUND-${
-    //     user.id
-    //   }:${strategie.roundsCount}:${+epoch}] Last game results : lastBullsCount ${lastBullsCount}  lastBearsCount ${lastBearsCount}`
-    // )
-
-    logger.info(
-      `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING : betBullCount ${
-        betBullCount.length
-      }, betBearCount ${betBearCount.length} - totalPlayers ${totalPlayers}`
-    )
-
-    logger.info(
-      `[ROUND-${user.id}:${
-        strategie.roundsCount
-      }:${+epoch}] PLAYING : isBullBetterAdjusted ${isBullBetterAdjusted}, isBearBetterAdjusted ${isBearBetterAdjusted} --> isDifferenceAdjustedEfficient ${isDifferenceAdjustedEfficient}`
-    )
-
-    logger.info(
-      `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] (isBullBetter ${Math.round(
-        isBullBetter
-      )}, isBearBetter ${Math.round(isBearBetter)})`
-      // }:${strategie.roundsCount}:${+epoch}] (isBullBetter ${isBullBetter}, isBearBetter ${isBearBetter})`
-    )
-
-    // && isDifferenceAdjustedEfficient >= 30
-    // if (
-    //   !isSecureMode &&
-    //   (lastBullsCount > lastBearsCount || +isBullBetterAdjusted >= 65) &&
-    //   ((totalPlayers > 1 && +isBullBetterAdjusted > +isBearBetterAdjusted) ||
-    //     (betBullCount === 1 &&
-    //       // isBullBetter > 58 &&
-    //       // lastBullsCount > lastBearsCount) ||
-    //       +isBullBetter >= 59 &&
-    //       +isBullBetterAdjusted > +isBearBetterAdjusted))
-    //   // // +isBullBetter > +isBearBetter &&
-    //   // // lastBullsCount > lastBearsCount
-    //   // (lastBullsCount > lastBearsCount || +isBullBetterAdjusted > 150)
-    // ) {
-    //   console.log(
-    //     "///////////////////////// BULL /////////////////////////////////"
-    //   )
-    //    await betRound(epoch, true, BET_AMOUNT)
-    //   data.position = POSITION_BULL
-    //   data.isPlaying = true
-    //   console.log("//////////////////////////////////////////////////////////")
-    // } else if (
-    //   !isSecureMode &&
-    //   // (lastBearsCount > lastBullsCount || +isBearBetterAdjusted > 80) &&
-    //   (lastBearsCount > lastBullsCount || +isBearBetterAdjusted >= 65) &&
-    //   ((totalPlayers > 1 && +isBearBetterAdjusted > +isBullBetterAdjusted) ||
-    //     (totalPlayers === 1 &&
-    //       // isBearBetter > 58 &&
-    //       // lastBearsCount > lastBullsCount) ||
-    //       +isBearBetter >= 59 &&
-    //       +isBearBetterAdjusted > +isBullBetterAdjusted))
-    //   // // +isBearBetter > +isBullBetter &&
-    //   // // lastBearsCount > lastBullsCount
-    //   // (lastBearsCount > lastBullsCount || +isBearBetterAdjusted > 150)
-    // ) {
-    //   console.log(
-    //     "////////////////////////// BEAR ////////////////////////////////"
-    //   )
-    //    await betRound(epoch, false, BET_AMOUNT)
-    //   data.position = POSITION_BEAR
-    //   data.isPlaying = true
-    //   console.log("//////////////////////////////////////////////////////////")
-    // } else
-
-    //TODO GUIGUI WIP
-    if (
-      // isSecureMode &&
-      // totalPlayers > 1 &&
-      (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
-      betBullCount.length > betBearCount.length &&
-      +isBullBetterAdjusted > +isBearBetterAdjusted
-      // (+isBullBetterAdjusted > +isBearBetterAdjusted ||
-      //   Math.round(+isBullBetter) > Math.round(+isBearBetter))
-      // ||
-      // (Math.round(+isBullBetter) === Math.round(+isBearBetter) &&
-      //   +isBullBetterAdjusted / 2 > +isBearBetterAdjusted))
-      //OLD
-      // &&
-      // Math.round(+isBullBetter) >= Math.round(+isBearBetter)
-      // &&
-      // lastBullsCount > lastBearsCount
-      // &&
-      // isDifferenceAdjustedEfficient >= 3 &&
-      // // +isBullBetter > +isBearBetter &&
-      // // lastBullsCount > lastBearsCount
-      // (lastBullsCount > lastBearsCount ||
-      //   +isBullBetterAdjusted >= 70 ||
-      //   lastBearsCount === 0)
-    ) {
-      console.log('///////////////////////// BULL /////////////////////////////////')
-      await betRound({ epoch, betBull: true, betAmount: strategie.betAmount })
-      console.log('//////////////////////////////////////////////////////////')
-    } else if (
-      // isSecureMode &&
-      // totalPlayers > 1 &&
-      (totalPlayers > 1 || Math.round(+isBearBetter) >= 57) &&
-      betBearCount.length > betBullCount.length &&
-      +isBearBetterAdjusted > +isBullBetterAdjusted
-      // (+isBearBetterAdjusted > +isBullBetterAdjusted ||
-      //   Math.round(+isBearBetter) > Math.round(+isBullBetter))
-      // ||
-      // (Math.round(+isBearBetter) === Math.round(+isBullBetter) &&
-      //   +isBearBetterAdjusted / 2 > +isBullBetterAdjusted))
-      //OLD
-      //  &&
-      // Math.round(+isBearBetter) >= Math.round(+isBullBetter)
-      // &&
-      // lastBearsCount > lastBullsCount
-      // &&
-      // isDifferenceAdjustedEfficient >= 3 &&
-      // // +isBearBetter > +isBullBetter &&
-      // // lastBearsCount > lastBullsCount
-      // (lastBearsCount > lastBullsCount ||
-      //   +isBearBetterAdjusted >= 70 ||
-      //   lastBullsCount === 0)
-    ) {
-      console.log('////////////////////////// BEAR ////////////////////////////////')
-      await betRound({ epoch, betBull: false, betAmount: strategie.betAmount })
-      console.log('//////////////////////////////////////////////////////////')
-    } else logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NOT PLAYING`)
-
-    console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-    players.map((p) => {
-      blocknative.unsubscribe(p.id)
-    })
-    if (emitter) emitter.off('txPool')
-  }
-
   const processRound = async (transaction, epoch) => {
     // const epoch = await preditionContract.currentEpoch()
 
@@ -654,8 +440,9 @@ const run = async () => {
     )
 
     if (
-      (strategie.playsCount === 0 && strategie.roundsCountForActualPlayer === 2) ||
-      (strategie.roundsCountForActualPlayer >= 2 && strategie.lastLooseCount - strategie.previousLastLooseCount >= 2) ||
+      (strategie.playsCount === 0 && strategie.roundsCountForActualPlayer === 3) ||
+      (strategie.roundsCountForActualPlayer >= 3 && strategie.lastLooseCount - strategie.previousLastLooseCount >= 3) ||
+      // (strategie.roundsCountForActualPlayer >= 2 && strategie.lastLooseCount - strategie.previousLastLooseCount >= 2) ||
       !isPLaying
     ) {
       console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
@@ -803,7 +590,7 @@ const run = async () => {
   const findBestPlayer = (bestPlayers) => {
     let filtereds = bestPlayers.filter((player) => Math.round(+player.winRateRecents) >= 50)
 
-    if (!filtereds.length) filtereds = bestPlayers
+    if (filtereds.length === 0) filtereds = bestPlayers
 
     filtereds = bestPlayers.filter((player) => !strategie.alreadyPlayeds.includes(player.id))
 
