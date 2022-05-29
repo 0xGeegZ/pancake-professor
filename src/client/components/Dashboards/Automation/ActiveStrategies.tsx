@@ -1018,10 +1018,10 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
                                 {t('Winrate')}
                               </Typography>
                               <Box pl={0}>
-                                <Typography color="text.primary" variant="h3" sx={{ display: 'inline-flex' }}>
+                                {/* <Typography color="text.primary" variant="h3" sx={{ display: 'inline-flex' }}>
                                   {parseInt(`${strategie?.enriched?.winRate}`, 10) || '...'}%
-                                </Typography>
-                                {/* {getWinrateForStrategie(strategie) === '...' ? (
+                                </Typography> */}
+                                {getWinrateForStrategie(strategie) === '...' ? (
                                   <Tooltip
                                     title={t(
                                       'Winrate generaly start to be diplayed when adress have more than few hours.'
@@ -1035,21 +1035,21 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
                                   <Typography color="text.primary" variant="h3" sx={{ display: 'inline-flex' }}>
                                     {getWinrateForStrategie(strategie)}
                                   </Typography>
-                                )} */}
+                                )}
                                 {'  '}
                                 <DotLegend
                                   style={{
                                     background:
-                                      // +getWinrateForStrategie(strategie) >= 55.0
-                                      //   ? theme.colors.success.main
-                                      //   : +getWinrateForStrategie(strategie) >= 50.0
-                                      //   ? theme.colors.warning.main
-                                      //   : theme.colors.error.main,
-                                      +strategie?.enriched?.winRate >= 55
+                                      +getWinrateForStrategie(strategie) >= 55
                                         ? theme.colors.success.main
-                                        : +strategie?.enriched?.winRate >= 50
+                                        : +getWinrateForStrategie(strategie) >= 50
                                         ? theme.colors.warning.main
                                         : theme.colors.error.main,
+                                    // +strategie?.enriched?.winRate >= 55
+                                    //   ? theme.colors.success.main
+                                    //   : +strategie?.enriched?.winRate >= 50
+                                    //   ? theme.colors.warning.main
+                                    //   : theme.colors.error.main,
                                   }}
                                 />
                               </Box>

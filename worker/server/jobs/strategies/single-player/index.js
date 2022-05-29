@@ -150,7 +150,8 @@ const run = async (payload) => {
       ).toFixed(2)}% Winrate) `
     )
 
-    const claimablesEpochs = claimables.filter((c) => c.isClaimable).map((c) => c.epoch)
+    // const claimablesEpochs = claimables.filter((c) => c.isClaimable).map((c) => c.epoch)
+    const claimablesEpochs = [...new Set(claimables.filter((c) => c.isClaimable).map((c) => c.epoch))]
 
     if (claimablesEpochs.length === 0) return logger.info('[CLAIM] Nothing to claim')
 
