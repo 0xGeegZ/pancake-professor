@@ -151,7 +151,7 @@ const run = async (payload) => {
     )
 
     // const claimablesEpochs = claimables.filter((c) => c.isClaimable).map((c) => c.epoch)
-    const claimablesEpochs = [...new Set(claimables.filter((c) => c.isClaimable).map((c) => c.epoch))]
+    const claimablesEpochs = [...new Set(claimables.filter((c) => c.isClaimable).map((c) => +c.epoch))]
 
     if (claimablesEpochs.length === 0) return logger.info('[CLAIM] Nothing to claim')
 
@@ -427,7 +427,7 @@ const run = async (payload) => {
     }
 
     if (strategie.errorCount >= 5) {
-      await claimLastEpochs(epoch, 5)
+      await claimLastEpochs(epoch, 6)
       logger.error('[PLAYING] Strategie had 5 error consecutively. Stopping it.')
       await stopStrategie({ epoch })
     }
@@ -496,11 +496,15 @@ const run = async (payload) => {
       }
 
       const epoch = await preditionContract.currentEpoch()
+
       // await claimLastEpochs(epoch, 12 * 24)
       await claimLastEpochs(epoch, 12)
     } catch (error) {
       logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)
     }
+
+    const epoch = await preditionContract.currentEpoch()
+
     // return
     const initialBankrollBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)

@@ -208,7 +208,7 @@ function SidebarPlayerDrawer({ playerId }) {
   }
 
   const getWinLossAmount = (bet) => {
-    if (bet.position !== bet.round.position) return parseFloat(bet.amount).toFixed(6)
+    if (bet.position !== bet.round.position) return parseFloat(bet.amount).toFixed(4)
 
     const rate = getWinLossRate(bet)
 
@@ -430,7 +430,7 @@ function SidebarPlayerDrawer({ playerId }) {
                           <Box display="flex" alignItems="center" py={0.5}>
                             {/* <PictureAsPdfTwoToneIcon /> */}
                             <Typography variant="body1" fontWeight="bold" color="text.secondary">
-                              {t('Bet Amount :')} {parseFloat(bet.amount).toFixed(6)} BNB
+                              {t('Bet Amount :')} {parseFloat(bet.amount).toFixed(4)} BNB
                             </Typography>
                           </Box>
                           <Divider sx={{ my: 1 }} />
