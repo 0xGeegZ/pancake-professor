@@ -28,8 +28,17 @@ import {
   IconButton,
   LinearProgress,
   Link,
+  List,
   Menu,
+  Slider,
   MenuItem,
+  FormControl,
+  ListItemIcon,
+  Checkbox,
+  ListItemButton,
+  ListItemText,
+  InputLabel,
+  Select,
   Slide,
   Table,
   TableBody,
@@ -55,6 +64,7 @@ import FollowPlayerForm from 'src/client/components/Dashboards/Automation/Follow
 import { useGlobalStore } from 'src/client/store/swr'
 import loadPlayers from 'src/client/thegraph/loadPlayers'
 import { useToogleFavoritePlayerMutation } from 'src/client/graphql/toogleFavoritePlayer.generated'
+import FilterAltTwoToneIcon from '@mui/icons-material/FilterAltTwoTone'
 
 import SidebarPlayerDrawer from './SidebarPlayerDrawer'
 
@@ -146,6 +156,14 @@ const LinearProgressWrapper = styled(LinearProgress)(
 `
 )
 
+const ListItemWrapper = styled(ListItemButton)(
+  () => `
+      &.MuiButtonBase-root {
+        border-radius: 0;
+      }
+  `
+)
+
 /* eslint-disable */
 const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
   <Slide direction="down" ref={ref} {...props} />
@@ -168,6 +186,68 @@ const PlayersList: FC = () => {
   const [denominatorValue, setDenominatorValue] = useState<number>(0)
 
   const { user, mutate, fetching: userFetching } = useGlobalStore()
+
+  // START FILTERS
+  const actionRef2 = useRef<any>(null)
+  const [openFilters, setOpenMenuFilters] = useState<boolean>(false)
+
+  // const [type, setType] = useState('')
+
+  // const handleType = (event) => {
+  //   setType(event.target.value)
+  // }
+
+  const playerTypesFilter = [
+    // {
+    //   id: 1,
+    //   name: 'All',
+    //   value: 'all',
+    // },
+    {
+      id: 1,
+      name: 'Liked',
+      value: 'liked',
+    },
+    {
+      id: 2,
+      name: 'Unliked',
+      value: 'unliked',
+    },
+    {
+      id: 3,
+      name: 'Others',
+      value: 'others',
+    },
+  ]
+
+  const [playerTypesChecked, setPlayerTypesChecked] = useState([1, 3])
+
+  const handleTogglePlayerTypes = (value: number) => () => {
+    const currentIndex = playerTypesChecked.indexOf(value)
+    const newChecked = [...playerTypesChecked]
+
+    if (currentIndex === -1) {
+      newChecked.push(value)
+    } else {
+      newChecked.splice(currentIndex, 1)
+    }
+
+    setPlayerTypesChecked(newChecked)
+  }
+
+  const [winrateRange, setWinrageRange] = useState<number[]>([55, 100])
+
+  const handleWinrageRangeChange = (_event: Event, newValue: number | number[]) => {
+    setWinrageRange(newValue as number[])
+  }
+
+  const [netbnbRange, setNetbnbRange] = useState<number[]>([-100, 1000])
+
+  const handleNetbnbRangeChange = (_event: Event, newValue: number | number[]) => {
+    setNetbnbRange(newValue as number[])
+  }
+
+  // END FILTERS
 
   const getPlayers = useCallback(
     async (ppreditionContract) => {
@@ -205,19 +285,54 @@ const PlayersList: FC = () => {
   )
 
   const refreshQuery = useCallback(
-    async ({ orderBy }) => {
+    // async ({ orderBy, winRateMin, winRateMax }) => {
+    async () => {
       console.log('refreshQuery')
+
       const epoch = await preditionContract.currentEpoch()
 
       setFetching(true)
       setPlayers([])
       players.length = 0
 
+      const orderBy = orderByValue
+      const winRateMin = winrateRange[0]
+      const winRateMax = winrateRange[1]
+
+      const netBnbMin = netbnbRange[0]
+      const netBnbMax = netbnbRange[1]
+
+      console.log(user.favorites)
+      console.log(playerTypesChecked)
+
+      const isOnlyplayerTypesFilterSelected = !playerTypesChecked.includes(3)
+      const playerTypesFilterSelected = user.favorites
+        .filter((favorite) => {
+          if (favorite.type === 'LIKE' && playerTypesChecked.includes(1)) return true
+          if (favorite.type === 'DISLIKE' && playerTypesChecked.includes(2)) return true
+          return false
+        })
+        .map((f) => f.player)
+
       try {
-        let lplayers = await loadPlayers({ epoch, orderBy })
-        // TODO v0.0.3 add filter like/unlike only in page filter
-        lplayers = lplayers.filter((p) => !user.favorites.find((f) => f.player === p.id && f.type === 'DISLIKE'))
-        // lplayers = lplayers.sort((p) => (user?.favorites.find((f) => f.player === p.id && f.type === 'LIKE') ? -1 : 0))
+        let lplayers = await loadPlayers({
+          epoch,
+          orderBy,
+          winRateMin,
+          winRateMax,
+          netBnbMin,
+          netBnbMax,
+          selecteds: isOnlyplayerTypesFilterSelected ? playerTypesFilterSelected : '',
+        })
+
+        if (!playerTypesChecked.includes(2))
+          lplayers = lplayers.filter((p) => !user.favorites.find((f) => f.player === p.id && f.type === 'DISLIKE'))
+
+        // TODO v0.0.4 add sortBy, SEE : http://localhost:3000/dashboards/monitoring
+        // if (playerTypesChecked.includes(1))
+        //   lplayers = lplayers.sort((p) =>
+        //     user?.favorites.find((f) => f.player === p.id && f.type === 'LIKE') ? -1 : 0
+        //   )
 
         setDenominatorValue(orderBy === 'default' ? 288 : orderBy === 'mostActiveLastHour' ? 12 : 0)
         setPlayers(lplayers)
@@ -228,7 +343,7 @@ const PlayersList: FC = () => {
         setFetching(false)
       }
     },
-    [players, preditionContract, user]
+    [players, preditionContract, user, playerTypesChecked]
   )
 
   useEffect(() => {
@@ -252,12 +367,13 @@ const PlayersList: FC = () => {
 
     const lprovider = new ethers.providers.Web3Provider(window.ethereum)
 
-    const signer = lprovider.getSigner()
+    // const signer = lprovider.getSigner()
 
     const lpreditionContract = new ethers.Contract(
       process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS,
       PREDICTION_CONTRACT_ABI,
-      signer
+      // signer,
+      lprovider
     )
 
     setPreditionContract(lpreditionContract)
@@ -298,10 +414,12 @@ const PlayersList: FC = () => {
 
   const actionRef1 = useRef<any>(null)
   const [openOrderBy, setOpenMenuOrderBy] = useState<boolean>(false)
-  const [orderBy, setOrderBy] = useState<string>(ordersBy[3].text)
+  // const [orderBy, setOrderBy] = useState<string>(ordersBy[3].text)
+  const [orderByText, setOrderByText] = useState<string>(ordersBy[3].text)
+  const [orderByValue, setOrderByValue] = useState<string>(ordersBy[3].value)
 
   const [page, setPage] = useState<number>(0)
-  const [limit, setLimit] = useState<number>(10)
+  const [limit, setLimit] = useState<number>(15)
 
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage)
@@ -432,7 +550,7 @@ const PlayersList: FC = () => {
                 ref={actionRef1}
                 onClick={() => setOpenMenuOrderBy(true)}
                 endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}>
-                {orderBy}
+                {orderByText}
               </Button>
               <Menu
                 anchorEl={actionRef1.current}
@@ -451,13 +569,120 @@ const PlayersList: FC = () => {
                     key={_order.value}
                     disabled={isPaused && _order.value === 'mostActiveLastHour'}
                     onClick={async () => {
-                      setOrderBy(_order.text)
+                      setOrderByText(_order.text)
+                      setOrderByValue(_order.value)
+
                       setOpenMenuOrderBy(false)
-                      await refreshQuery({ orderBy: _order.value })
+                      await refreshQuery()
+                      // await refreshQuery({ orderBy: _order.value })
                     }}>
                     {_order.text}
                   </MenuItem>
                 ))}
+              </Menu>{' '}
+              <Button
+                size="small"
+                variant="outlined"
+                ref={actionRef2}
+                onClick={() => setOpenMenuFilters(true)}
+                endIcon={<FilterAltTwoToneIcon fontSize="small" />}>
+                {t('Filters')}
+              </Button>
+              <Menu
+                anchorEl={actionRef2.current}
+                onClose={() => setOpenMenuFilters(false)}
+                open={openFilters}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}>
+                <Box sx={{ pt: 1, /* minWidth: '360px', */ outline: 'none' }}>
+                  <Grid container spacing={3}>
+                    {/* <Grid item md={6}>
+                      <FormControl fullWidth variant="outlined" size="small">
+                        <InputLabel>{t('Type')}</InputLabel>
+                        <Select label={t('Type')} value={type} onChange={handleType}>
+                          <MenuItem value={0}>{t('All types')}</MenuItem>
+                          <MenuItem value={1}>{t('Likes only')}</MenuItem>
+                          <MenuItem value={2}>{t('Unlike only')}</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid> */}
+                    <Grid item md={12}>
+                      <Typography variant="h5">{t('Winrate range')}</Typography>
+                      <Box sx={{ mx: 5, mt: 5 }}>
+                        <Slider
+                          value={winrateRange}
+                          step={0.25}
+                          min={50}
+                          max={100}
+                          onChange={handleWinrageRangeChange}
+                          valueLabelDisplay="on"
+                          valueLabelFormat={(value) => <div>{value}%</div>}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item md={12}>
+                      <Typography variant="h5">{t('Net BNB range')}</Typography>
+                      <Box sx={{ mx: 5, mt: 5 }}>
+                        <Slider
+                          value={netbnbRange}
+                          step={50}
+                          min={-100}
+                          max={1000}
+                          onChange={handleNetbnbRangeChange}
+                          valueLabelDisplay="on"
+                          valueLabelFormat={(value) => <div>{value} BNB</div>}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item md={12}>
+                      <Typography variant="h5">{t('Players')}</Typography>
+
+                      <List component="div">
+                        {playerTypesFilter.map((value) => (
+                          <ListItemWrapper
+                            sx={{ py: 0, px: 2 }}
+                            key={value.id}
+                            onClick={handleTogglePlayerTypes(value.id)}>
+                            <ListItemIcon sx={{ minWidth: 32 }}>
+                              <Checkbox
+                                edge="start"
+                                checked={playerTypesChecked.indexOf(value.id) !== -1}
+                                tabIndex={-1}
+                                disableRipple
+                              />
+                            </ListItemIcon>
+                            <ListItemText primary={value.name} primaryTypographyProps={{ variant: 'body1' }} />
+                          </ListItemWrapper>
+                        ))}
+                      </List>
+                    </Grid>
+                  </Grid>
+                  <Divider sx={{ mb: 2, mt: 2 }} />
+                  <Box pb={1} display="flex" alignItems="center" justifyContent="center">
+                    <Button
+                      onClick={async () => {
+                        setOpenMenuFilters(false)
+                        await refreshQuery()
+                        // await refreshQuery({
+                        //   orderBy: orderByValue,
+                        //   // winRateMin: winrateRange[0],
+                        //   // winRateMax: winrateRange[1],
+                        //   // netBnbMin: netbnbRange[0],
+                        //   // netBnbMax: netbnbRange[1],
+                        // })
+                      }}
+                      variant="contained"
+                      size="small">
+                      {t('Filter results')}
+                    </Button>
+                  </Box>
+                </Box>
               </Menu>
             </>
           }
@@ -631,7 +856,7 @@ const PlayersList: FC = () => {
                   onRowsPerPageChange={handleLimitChange}
                   page={page}
                   rowsPerPage={limit}
-                  rowsPerPageOptions={[5, 10, 15]}
+                  rowsPerPageOptions={[5, 10, 15, 20]}
                 />
               </Box>
             </>
@@ -713,7 +938,7 @@ const PlayersList: FC = () => {
                   page={page}
                   rowsPerPage={limit}
                   labelRowsPerPage=""
-                  rowsPerPageOptions={[5, 10, 15]}
+                  rowsPerPageOptions={[5, 10, 15, 20]}
                 />
               </Card>
               <Grid container spacing={3}>
@@ -1072,7 +1297,7 @@ const PlayersList: FC = () => {
                   page={page}
                   rowsPerPage={limit}
                   labelRowsPerPage=""
-                  rowsPerPageOptions={[5, 10, 15]}
+                  rowsPerPageOptions={[5, 10, 15, 20]}
                 />
               </Card>
             </>

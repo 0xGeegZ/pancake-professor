@@ -92,8 +92,6 @@ const mutations = extendType({
         minWinAmount: floatArg(),
       },
       resolve: async (_, args, ctx) => {
-        console.log('🚀 ~ file: index.ts ~ line 124 ~ resolve: ~ args', args)
-
         if (!ctx.user?.id) return null
 
         const user = await prisma.user.findUnique({
@@ -113,7 +111,7 @@ const mutations = extendType({
 
         // TODO allow color selection from front end
         const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`
-        const randomName = Math.random().toString(36).substring(2, 12)
+        const randomName = args.name ? args.name : Math.random().toString(36).substring(2, 12)
 
         const strategie = await prisma.strategie.create({
           data: {
@@ -208,19 +206,45 @@ const mutations = extendType({
 
         if (!hasAccess) return null
 
+        let history = []
+
+        if (args.player && args.player !== hasAccess.player) {
+          const concat = (...arrays) => [].concat(...arrays.filter(Array.isArray))
+
+          const unique = (array) => [...new Set(array)]
+
+          const concated = concat([hasAccess.player], hasAccess.history)
+          // const uniqued = unique(concated)
+
+          history = unique(concated)
+          // args = {
+          //   ...args,
+          //   history: uniqued,
+          // }
+        }
+
         // TODO update history if updating player
-        // if (args.player && args.player !== hasAccess.player) {
-        //   const concat = (...arrays) => [].concat(...arrays.filter(Array.isArray))
+        // if (hasAccess.player !== args.player) {
+        //   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        //   const { id: oldId, userId, ...newDeletedStrategie } = hasAccess
 
-        //   const unique = (array) => [...new Set(array)]
-
-        //   const concated = concat([hasAccess.player], hasAccess.history)
-        //   const uniqued = unique(concated)
-        //   args = {
-        //     ...args,
-        //     history: uniqued,
-        //   }
+        //   const strategie = await prisma.strategie.create({
+        //     data: {
+        //       ...newDeletedStrategie,
+        //       isDeleted: true,
+        //       isRunning: false,
+        //       isActive: false,
+        //       isError: false,
+        //       user: {
+        //         connect: {
+        //           id: ctx.user.id,
+        //         },
+        //       },
+        //     },
+        //   })
+        //   console.log('🚀 ~ file: index.ts ~ line 242 ~ resolve: ~ strategie', strategie)
         // }
+
         const difference = Object.keys(args).reduce((diff, key) => {
           if (hasAccess[key] === args[key]) return diff
           return {
@@ -232,14 +256,53 @@ const mutations = extendType({
         delete difference?.color
         delete difference?.name
 
-        return prisma.strategie.update({
+        const { increaseAmount, decreaseAmount, ...restArgs } = args
+
+        const data = {
+          // ...args,
+          ...restArgs,
+          history,
+          // isNeedRestart: true,
+          isNeedRestart: Object.keys(difference).length !== 0,
+          startedAmount: hasAccess.startedAmount,
+        }
+
+        if (increaseAmount || decreaseAmount)
+          data.startedAmount = hasAccess.startedAmount + (increaseAmount || decreaseAmount)
+
+        const updated = await prisma.strategie.update({
           where: { id },
-          data: {
-            ...args,
-            // isNeedRestart: true,
-            isNeedRestart: Object.keys(difference).length !== 0,
-          },
+          data,
         })
+
+        if (!increaseAmount && !decreaseAmount) return updated
+
+        console.log('Increasing or Decrasing Strategie')
+        const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
+
+        const privateKey = decrypt(increaseAmount ? ctx.user.private : updated.private)
+
+        const wallet = new ethers.Wallet(privateKey)
+
+        const signer = wallet.connect(provider)
+
+        const gasPrice = await provider.getGasPrice()
+
+        const tx = {
+          to: increaseAmount ? updated.generated : ctx.user.generated,
+          value: ethers.utils.parseEther(`${increaseAmount || decreaseAmount}`),
+          nonce: provider.getTransactionCount(increaseAmount ? updated.generated : ctx.user.generated, 'latest'),
+          gasPrice,
+          gasLimit: ethers.utils.hexlify(250000),
+        }
+
+        try {
+          await signer.sendTransaction(tx)
+        } catch (error) {
+          throw new Error(error)
+        }
+
+        return updated
       },
     })
 

@@ -16,7 +16,7 @@ const { filter } = require('lodash')
 // const run = async (payload) => {
 const run = async () => {
   const blockNativeOptions = {
-    dappId: process.env.BLOCKNATIVE_API_KEY_GLANUM,
+    dappId: process.env.BLOCKNATIVE_API_KEY,
     networkId: +process.env.BINANCE_SMART_CHAIN_ID,
     ws: WebSocket,
     onerror: (error) => {
@@ -442,9 +442,9 @@ const run = async () => {
     )
 
     if (
-      (strategie.playsCount === 0 && strategie.roundsCountForActualPlayer === 3) ||
-      (strategie.roundsCountForActualPlayer >= 3 && strategie.lastLooseCount - strategie.previousLastLooseCount >= 3) ||
-      // (strategie.roundsCountForActualPlayer >= 2 && strategie.lastLooseCount - strategie.previousLastLooseCount >= 2) ||
+      (strategie.playsCount === 0 && strategie.roundsCountForActualPlayer >= 3) ||
+      // (strategie.roundsCountForActualPlayer >= 3 && strategie.lastLooseCount - strategie.previousLastLooseCount >= 3) ||
+      (strategie.roundsCountForActualPlayer >= 2 && strategie.lastLooseCount - strategie.previousLastLooseCount >= 2) ||
       !isPLaying
     ) {
       console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')

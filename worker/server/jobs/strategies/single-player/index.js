@@ -160,7 +160,6 @@ const run = async (payload) => {
     // const gasPrice = await provider.getGasPrice()
 
     const gasLimit = 350000 + 350000 * Math.round(claimablesEpochs.length / 5)
-    console.log('🚀 ~ file: index.js ~ line 162 ~ claimPlayedEpochs ~ gasLimit', gasLimit)
 
     const tx = await preditionContract.claim(claimablesEpochs, {
       // gasLimit: ethers.utils.hexlify(350000),
@@ -556,7 +555,8 @@ const run = async (payload) => {
 
     calculateBetAmount()
 
-    if (strategie.betAmount <= config.MIN_BET_AMOUNT || strategie.betAmount > config.MAX_BET_AMOUNT) {
+    // should never append
+    if (strategie.betAmount < config.MIN_BET_AMOUNT || strategie.betAmount > config.MAX_BET_AMOUNT) {
       logger.error(`[LISTEN] Bet amount error, value is ${strategie.betAmount} Stopping strategie for now`)
       await stopStrategie({ epoch })
       return

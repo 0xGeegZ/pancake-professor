@@ -251,7 +251,8 @@ const Transition = forwardRef((props: TransitionProps & { children?: ReactElemen
 ))
 /* eslint-enable */
 
-function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetching }) {
+// function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetching }) {
+function ActiveStrategies({ user: puser, fetching }) {
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
   const [, updateStrategie] = useUpdateStrategieMutation()
@@ -312,8 +313,9 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
   const [location, setLocation] = useState<string>(locations[0].text)
   const [locationValue, setLocationValue] = useState<string>(locations[0].value)
 
-  const [strategies, setStrategies] = useState<any[]>(null)
-  const [favorites, setFavorites] = useState<any[]>(null)
+  const [user, setUser] = useState<any>(null)
+  // const [strategies, setStrategies] = useState<any[]>(null)
+  // const [favorites, setFavorites] = useState<any[]>(null)
   const [withoutHistory, setWithoutHistory] = useState<any[]>(null)
   const [activeStrategie, setActiveStrategie] = useState<any>(null)
   // const [isLoadingHistory, setIsLoadingHistory] = useState<boolean>(false)
@@ -347,7 +349,7 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
   }
 
   const handleChange = (strategie) => async () => {
-    const updateds = strategies.map((s) => {
+    const updateds = user?.strategies.map((s) => {
       const updated = s
       if (updated.id === strategie.id) {
         updated.isActive = !updated.isActive
@@ -355,7 +357,10 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
       }
       return updated
     })
-    setStrategies(updateds)
+    // setStrategies(updateds)
+    const newUser = user
+    newUser.strategies = updateds
+    setUser(newUser)
 
     const { error } = await toogleActivateStrategie({ id: strategie.id })
 
@@ -373,7 +378,7 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
     mutate('currentUser')
   }
 
-  const loadStrategiesHistory = useCallback(async (plstrategies) => {
+  const loadStrategiesHistory = useCallback(async (ppuser) => {
     const loadHistoryForStrategie = async (strategie) => {
       try {
         const { bets, ...enriched } = await loadPlayer(strategie.generated)
@@ -390,8 +395,11 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
       }
     }
     try {
-      const updateds = await Promise.all(plstrategies.map(loadHistoryForStrategie))
-      setStrategies(updateds)
+      const updateds = await Promise.all(ppuser.strategies.map(loadHistoryForStrategie))
+
+      const newUser = ppuser
+      newUser.strategies = updateds
+      setUser(newUser)
     } catch (err) {
       console.error(err)
     }
@@ -401,19 +409,22 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
     if (fetching) {
       return
     }
-    setFavorites(pfavorites)
 
-    if (!pstrategies) {
+    // setFavorites(pfavorites)
+
+    if (!puser) {
       // setStrategies(null)
       return
     }
-    console.log('useEffect')
 
-    if (strategies) {
+    // if (user) return
+    // console.log('useEffect')
+
+    if (puser.strategies) {
       // check if strategies was updateds
       // console.log('IS SAME', JSON.stringify(pstrategies) === JSON.stringify(withoutHistory))
 
-      if (JSON.stringify(pstrategies) === JSON.stringify(withoutHistory)) return
+      if (JSON.stringify(puser.strategies) === JSON.stringify(withoutHistory)) return
 
       // console.log('pstrategies', pstrategies)
       // console.log('strategies', withoutHistory)
@@ -422,10 +433,10 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
     console.log('useEffect -> updating strategies')
     setMobileOpen(false)
 
-    setStrategies(pstrategies)
-    setWithoutHistory(pstrategies)
+    setUser(puser)
+    setWithoutHistory(puser.strategies)
 
-    loadStrategiesHistory(pstrategies)
+    loadStrategiesHistory(puser)
 
     // const lstrategies = pstrategies.sort((x, y) => {
     //   // return x.isActive === y.isActive ? 0 : x.isActive ? -1 : 1
@@ -433,7 +444,7 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
     // })
     // setStrategies(lstrategies)
     // loadStrategiesHistory(lstrategies)
-  }, [fetching, pstrategies, pfavorites, strategies, loadStrategiesHistory, withoutHistory])
+  }, [fetching, loadStrategiesHistory, withoutHistory, puser])
 
   const getStrategieDuraction = (timestamp) => {
     const duration = moment.duration(moment().diff(moment(timestamp)))
@@ -467,13 +478,17 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
         })
         return
       }
-      const updateds = strategies.map((s) => {
+      const updateds = user.strategies.map((s) => {
         const updated = s
         if (updated.id === activeStrategie.id) updated.isDeleted = !updated.isDeleted
 
         return updated
       })
-      setStrategies(updateds)
+
+      const newUser = user
+      newUser.strategies = updateds
+      setUser(newUser)
+      // setStrategies(updateds)
 
       enqueueSnackbar(t(`Stratégie successfully deleted.`), {
         variant: 'success',
@@ -517,7 +532,29 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
   }
 
   const onSubmit = async (_values, { resetForm, setErrors, setStatus, setSubmitting }) => {
-    const { player, stopLoss, takeProfit, name, color, betAmountPercent, isTrailing } = _values
+    const { player, stopLoss, takeProfit, name, color, betAmountPercent, isTrailing, bankrol } = _values
+    console.log('🚀 ~ file: ActiveStrategies.tsx ~ line 533 ~ onSubmit ~ bankrol', bankrol)
+    console.log(
+      '🚀 ~ file: ActiveStrategies.tsx ~ line 533 ~ onSubmit ~ activeStrategie.startedAmount',
+      activeStrategie.startedAmount
+    )
+    console.log(
+      '🚀 ~ file: ActiveStrategies.tsx ~ line 533 ~ onSubmit ~ bankrol - activeStrategie.stratedAmount',
+      bankrol - activeStrategie.startedAmount
+    )
+
+    let increaseAmount = 0.0
+    let decreaseAmount = 0.0
+
+    if (bankrol > 0) increaseAmount = bankrol
+    else if (bankrol < 0) decreaseAmount = bankrol
+    // else if (bankrol < 0) decreaseAmount = Math.abs(bankrol)
+
+    // if (bankrol - activeStrategie.startedAmount > 0) increaseAmount = bankrol - activeStrategie.startedAmount
+    // else if (bankrol - activeStrategie.startedAmount < 0) decreaseAmount = bankrol - activeStrategie.startedAmount
+
+    console.log('🚀 ~ file: ActiveStrategies.tsx ~ line 537 ~ onSubmit ~ increaseAmount', increaseAmount)
+    console.log('🚀 ~ file: ActiveStrategies.tsx ~ line 537 ~ onSubmit ~ decreaseAmount', decreaseAmount)
 
     try {
       ethers.utils.getAddress(player)
@@ -548,8 +585,7 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
     console.log('🚀 ~ file: ActiveStrategies.tsx ~ line 478 ~ onSubmit ~ minWinAmount', minWinAmount)
 
     try {
-      // TODO 0.0.3 update BetAmount
-      const { error } = await updateStrategie({
+      const { error /* , data */ } = await updateStrategie({
         id: activeStrategie.id,
         player,
         maxLooseAmount,
@@ -558,28 +594,38 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
         isTrailing,
         name,
         color,
-        // betAmountPercent: 0.0,
+        increaseAmount,
+        decreaseAmount,
       })
 
       if (error) throw new Error(error.message)
 
+      // const { updateStrategie: updated } = data
       resetForm()
       setStatus({ success: true })
       setSubmitting(false)
       handleUpdateUserForStrategie()
       // mutate('currentUser')
 
-      const updateds = strategies.map((s) => {
-        const updated = s
-        if (updated.id === activeStrategie.id) {
-          updated.player = player
-          updated.maxLooseAmount = maxLooseAmount
-          updated.minWinAmount = minWinAmount
+      // const updateds = strategies.map((strategie) => (strategie.id === activeStrategie.id ? updated : strategie))
+      const updateds = user.strategies.map((s) => {
+        const strategie = s
+        if (strategie.id === activeStrategie.id) {
+          strategie.player = player
+          strategie.name = name
+          strategie.color = color
+          strategie.isTrailing = isTrailing
+          strategie.betAmountPercent = betAmountPercent
+          strategie.maxLooseAmount = maxLooseAmount
+          strategie.minWinAmount = minWinAmount
         }
 
-        return updated
+        return strategie
       })
-      setStrategies(updateds)
+
+      const newUser = user
+      newUser.strategies = updateds
+      setUser(newUser)
     } catch (err) {
       console.error(err)
       setStatus({ success: false })
@@ -620,6 +666,9 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
     //   `${((strategie?.startedAmount - strategie?.maxLooseAmount) * 100) / strategie?.startedAmount}`,
     //   10
     // )
+
+    if (!strategie) return []
+
     const takeProfit = parseInt(`${(strategie?.minWinAmount * 100) / strategie?.startedAmount}`, 10)
     const currentAmountPercent = parseInt(`${(strategie?.currentAmount * 100) / strategie?.minWinAmount}`, 10)
     const currentAmount = parseFloat(`${strategie?.currentAmount}`).toFixed(4)
@@ -630,16 +679,18 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
       //   label: '0 BNB',
       // },
       {
+        id: 1,
         // value: 20,
         // value: stopLoss,
         value:
           strategie?.currentAmount <= strategie?.startedAmount - strategie?.maxLooseAmount
             ? currentAmountPercent + 30
-            : 20,
+            : 15,
         // value: currentAmountPercent + 30,
         label: `${parseFloat(`${strategie?.startedAmount - strategie?.maxLooseAmount}`).toFixed(4)}`,
       },
       {
+        id: 2,
         value: currentAmountPercent,
         // value:
         //   strategie?.currentAmount <= strategie?.startedAmount - strategie?.maxLooseAmount
@@ -648,12 +699,20 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
         label: `${currentAmount}`,
       },
       {
+        id: 3,
         // value: takeProfit - 10,
         value:
           strategie?.currentAmount > strategie?.minWinAmount ? takeProfit - currentAmountPercent - 10 : takeProfit - 10,
         label: `${parseFloat(`${strategie.minWinAmount}`).toFixed(4)}`,
       },
     ]
+
+    // const key = 'value'
+
+    // const filtereds = [...new Map(marks.map((item) => [item[key], item])).values()]
+
+    // if (filtereds.length !== marks.length) console.log('🚀 ~ filtereds', filtereds, 'marks', marks)
+
     return marks
   }
 
@@ -735,15 +794,15 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
         </Box>
         <Grid container spacing={3}>
           {/* {fetching || !strategies?.length ? ( */}
-          {fetching && !strategies?.length ? (
+          {fetching && !user?.strategies?.length ? (
             <Grid sx={{ py: 11 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
               <Grid item>
                 <CircularProgress color="secondary" size="1rem" />
               </Grid>
             </Grid>
-          ) : strategies?.length ? (
+          ) : user?.strategies?.length ? (
             <>
-              {strategies
+              {user?.strategies
                 .filter((strategie) => {
                   if (locationValue === 'all' && !strategie.isDeleted) return true
                   if (strategie.isActive && !strategie.isDeleted && locationValue === 'active') return true
@@ -911,9 +970,11 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
                             <Grid item xs={12}>
                               <Typography variant="h4" noWrap sx={{ pt: 3 }}>
                                 {t('Name')}: {strategie.name}{' '}
-                                {favorites?.find((f) => f.player === strategie?.player) && (
+                                {user?.favorites?.find((f) => f.player === strategie?.player) && (
                                   <>
-                                    {favorites?.find((f) => f.player === strategie?.player && f.type === 'LIKE') ? (
+                                    {user?.favorites?.find(
+                                      (f) => f.player === strategie?.player && f.type === 'LIKE'
+                                    ) ? (
                                       <Tooltip placement="top" title={t('Current player is in favorites')} arrow>
                                         <IconButton
                                           size="small"
@@ -1204,7 +1265,7 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
             </Grid>
             <Grid item md={2}>
               <Grid container spacing={1}>
-                {!favorites?.find((f) => f.player === activeStrategie?.player) ? (
+                {!user?.favorites?.find((f) => f.player === activeStrategie?.player) ? (
                   <>
                     <Grid item md={6}>
                       <Tooltip placement="top" title={t('Favorite current player')} arrow>
@@ -1252,7 +1313,7 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
                   // </Tooltip>
                   <>
                     <Grid item md={6}>
-                      {favorites?.find((f) => f.player === activeStrategie?.player && f.type === 'LIKE') ? (
+                      {user?.favorites?.find((f) => f.player === activeStrategie?.player && f.type === 'LIKE') ? (
                         <IconButton
                           size="small"
                           color="error"
@@ -1299,7 +1360,8 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
         <Formik
           initialValues={{
             player: activeStrategie?.player || '',
-            bankrol: activeStrategie?.currentAmount.toFixed(4),
+            // bankrol: activeStrategie?.startedAmount.toFixed(4),
+            bankrol: 0.0,
             name: activeStrategie?.name || '',
             color: activeStrategie?.color || '',
             betAmountPercent: activeStrategie?.betAmountPercent || 5,
@@ -1317,7 +1379,13 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
           }}
           validationSchema={Yup.object().shape({
             player: Yup.string().max(255).required(t('The player field is required')),
-            bankrol: Yup.number().required(t('The bankrol field is required')),
+            bankrol: Yup.number()
+              // TODO beter management
+              // maximum amount is 95% of available balance
+              .max(+`${+user?.generatedBalance - +user?.generatedBalance / 20}`)
+              // max minimum amount is 50% of current amount
+              .min(+`${+(activeStrategie?.currentAmount / 2) * -1}`)
+              .required(t('The bankrol field is required')),
             name: Yup.string().max(100),
             color: Yup.string().max(7),
             betAmountPercent: Yup.number().min(2).max(50).required(t('The betAmount field is required')),
@@ -1385,28 +1453,6 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
                         />
                       </Grid>
 
-                      {/* TODO v0.0.3 */}
-                      {/* <Grid item xs={12}>
-                        <TextField
-                          error={Boolean(touched.bankrol && errors.bankrol)}
-                          fullWidth
-                          type="number"
-                          helperText={touched.bankrol && errors.bankrol}
-                          label={t('Bankrol')}
-                          name="bankrol"
-                          onBlur={handleBlur}
-                          onChange={handleChangeForm}
-                          value={values.bankrol}
-                          variant="outlined"
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                          InputProps={{
-                            endAdornment: <InputAdornment position="end">BNB</InputAdornment>,
-                          }}
-                        />
-                      </Grid> */}
-
                       <Grid item xs={6}>
                         <Box sx={{ textAlign: 'center' }} py={1}>
                           <TextField
@@ -1422,6 +1468,9 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
                             variant="outlined"
                             InputLabelProps={{
                               shrink: true,
+                            }}
+                            InputProps={{
+                              endAdornment: <InputAdornment position="end">%</InputAdornment>,
                             }}
                           />
                         </Box>
@@ -1562,6 +1611,49 @@ function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetc
                                 placement="bottom-end"
                                 title={`${
                                   t('Stop if strategie won more than ') + values.takeProfit
+                                }% of started bankroll`}
+                                arrow>
+                                <IconButton color="secondary" size="small">
+                                  <InfoIcon fontSize="small" />
+                                </IconButton>
+                              </Tooltip>
+                            </Grid>
+                          </Grid>
+                        </Box>
+                      </Grid>
+
+                      <Grid item xs={12}>
+                        <Box sx={{ textAlign: 'center' }} py={1}>
+                          <Grid container display="flex" alignItems="center">
+                            <Grid item xs={11}>
+                              <TextField
+                                error={Boolean(touched.bankrol && errors.bankrol)}
+                                fullWidth
+                                type="number"
+                                helperText={touched.bankrol && errors.bankrol}
+                                label={t('Increase or decrease bankroll amount')}
+                                name="bankrol"
+                                onBlur={handleBlur}
+                                onChange={handleChangeForm}
+                                value={values.bankrol}
+                                variant="filled"
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                inputProps={{
+                                  step: '0.05',
+                                }}
+                                // eslint-disable-next-line react/jsx-no-duplicate-props
+                                InputProps={{
+                                  endAdornment: <InputAdornment position="end">BNB</InputAdornment>,
+                                }}
+                              />
+                            </Grid>
+                            <Grid item xs={1}>
+                              <Tooltip
+                                placement="bottom-end"
+                                title={`${
+                                  t('Stop if strategie loose more than ') + values.stopLoss
                                 }% of started bankroll`}
                                 arrow>
                                 <IconButton color="secondary" size="small">

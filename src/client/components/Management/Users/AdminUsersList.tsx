@@ -44,11 +44,11 @@ import PropTypes from 'prop-types'
 import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, SyntheticEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
-import BulkActions from './BulkActions'
-
 import type { ReactElement } from 'react'
 
 import type { User, UserRole } from 'src/client/models/user'
+import BulkActions from './BulkActions'
+
 const DialogWrapper = styled(Dialog)(
   () => `
       .MuiDialog-paper {
@@ -456,8 +456,8 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
                               </Link>
                             </TableCell>
                           </TableCell>
-                           <TableCell align="center">
-                           <Chip
+                          <TableCell align="center">
+                            <Chip
                               sx={{ m: 1 }}
                               key="isActive"
                               color={user?.isActivated ? 'success' : 'error'}
@@ -471,7 +471,7 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
                                   variant="outlined"
                                   label={"Deleted"} 
                                 />) : <></>}  */}
- </TableCell>
+                          </TableCell>
                           {/* <TableCell align="center">
                             <Typography fontWeight="bold">{user?.posts}</Typography>
                           </TableCell>
@@ -548,7 +548,7 @@ const AdminUsersList: FC<ResultsProps> = ({ users, fetching }) => {
                     ),
                   }}
                   onChange={handleQueryChange}
-                  placeholder={t('Search by name, email or address...')}
+                  placeholder={t('Search by name or address...')}
                   value={query}
                   size="small"
                   margin="normal"

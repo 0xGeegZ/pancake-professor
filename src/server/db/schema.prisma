@@ -55,8 +55,8 @@ model Strategie {
   generated  String   @unique
   private    String   @unique
   betAmountPercent  Float @default(0.0) //TODO
-  increaseAmount  Int? @default(0) //TODO
-  decreaseAmount  Int? @default(0) //TODO
+  increaseAmount  Float? @default(0.0) //TODO
+  decreaseAmount  Float? @default(0.0) //TODO
   startedAmount   Float
   currentAmount   Float
   maxLooseAmount  Float? @default(0.0) //TODO DELETE AFTER UPDATE

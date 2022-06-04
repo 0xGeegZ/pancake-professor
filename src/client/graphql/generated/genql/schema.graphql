@@ -64,11 +64,11 @@ type Strategie {
   color: String
   createdAt: DateTime!
   currentAmount: Float!
-  decreaseAmount: Int
+  decreaseAmount: Float
   generated: String!
   history: [String!]!
   id: String!
-  increaseAmount: Int
+  increaseAmount: Float
   isActive: Boolean!
   isDeleted: Boolean!
   isError: Boolean!

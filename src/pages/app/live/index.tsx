@@ -321,12 +321,13 @@ const LiveView = () => {
 
       // const signer = new ethers.Wallet(privateKey, lprovider)
 
-      const signer = lprovider.getSigner()
+      // const signer = lprovider.getSigner()
 
       const lpreditionContract = new ethers.Contract(
         process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS,
         PREDICTION_CONTRACT_ABI,
-        signer
+        // signer
+        lprovider
       )
 
       initialize(lpreditionContract)

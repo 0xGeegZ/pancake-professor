@@ -257,6 +257,10 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
       isTrailing
     )
 
+    const name = `${Math.round(+player.winRate)}% WR - ${player.totalBets} bets - ${Math.round(+player.netBNB)} BNB ${
+      Math.round(+player.netBNB) > 0 ? 'Won' : 'Loose'
+    }`
+
     // const amount = getAvailableBankroll()
     const amount = +((+gauge * user.generatedBalance) / 100).toFixed(4)
 
@@ -343,15 +347,13 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
 
     const { error } = await createStrategie({
       player: player.id,
+      name,
       startedAmount: +bnbValue,
       maxLooseAmount,
       minWinAmount,
       betAmountPercent,
       isTrailing,
-      // TODO Pass Bet Amount
-      // betAmountPercent: 0.0,
     })
-    console.log('🚀 ~ file: FollowPlayerForm.tsx ~ line 317 ~ sumbitCreateStrategie ~ error', error)
 
     if (error) {
       enqueueSnackbar(t('Unexpected error during strategie creation'), {
@@ -370,7 +372,12 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
   }
 
   const getBnbForOneBet = () => {
-    return +((+gauge * user.generatedBalance) / 100 / 13).toFixed(4)
+    // return +((+gauge * user.generatedBalance) / 100 / 13).toFixed(4)
+    // return +((+gauge * user.generatedBalance) / 100 / betAmountPercent).toFixed(4)
+    const balanceAmount = (+gauge * user.generatedBalance) / 100
+
+    const betAmount = +((balanceAmount * betAmountPercent) / 100).toFixed(4)
+    return betAmount < 0.001 ? 0.001 : betAmount
   }
 
   const getFeesRatioForOneBet = () => {
@@ -475,7 +482,7 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
                     sx={{ fontSize: `${theme.typography.pxToRem(10)}` }}
                     variant="h6"
                     color={getBnbForOneBet() <= 0.001 ? 'error' : getBnbForOneBet() <= 0.005 ? 'warning' : ''}>
-                    {t(`You'll bet ${getBnbForOneBet()} BNB for each game (${+(100 / 13).toFixed(1)}%).`)}
+                    {t(`You'll bet ${getBnbForOneBet()} BNB for each game (${betAmountPercent}%).`)}
                   </Typography>
                   <Typography
                     sx={{ fontSize: `${theme.typography.pxToRem(10)}` }}

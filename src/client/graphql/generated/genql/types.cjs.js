@@ -397,7 +397,7 @@ module.exports = {
                 7
             ],
             "decreaseAmount": [
-                3
+                7
             ],
             "generated": [
                 2
@@ -409,7 +409,7 @@ module.exports = {
                 2
             ],
             "increaseAmount": [
-                3
+                7
             ],
             "isActive": [
                 8
