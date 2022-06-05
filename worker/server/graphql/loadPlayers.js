@@ -53,9 +53,9 @@ const checkIfPlaying = (player, lastGame) => {
   player.winRateRecents = winRateRecents
 
   // TODO v0.0.3
-  // console.log('recentGames', recentGames, ' lastGame.length', lastGame.length, 'lastFive', lastFive)
-  if (recentGames >= lastGame.length / 4 && lastFive >= 1) return player
-  // if (recentGames >= lastGame.length / 4) return player
+  console.log('recentGames', recentGames, ' lastGame.length', lastGame.length, 'lastFive', lastFive)
+  // if (recentGames >= lastGame.length / 4 && lastFive >= 1) return player
+  if (recentGames >= lastGame.length / 4) return player
 
   // return player
 }
