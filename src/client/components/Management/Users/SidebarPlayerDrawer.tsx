@@ -3,6 +3,7 @@ import TrendingUp from '@mui/icons-material/TrendingUp'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import StickyNote2Icon from '@mui/icons-material/StickyNote2'
+import AssessmentIcon from '@mui/icons-material/Assessment'
 
 import {
   Accordion,
@@ -273,6 +274,11 @@ function SidebarPlayerDrawer({ playerId }) {
             // }}
           >
             <StickyNote2Icon fontSize="small" />
+          </IconButton>
+          <IconButton size="small" color="secondary">
+            <Link href={`/app/player/${playerId}`} variant="body2" underline="hover">
+              <AssessmentIcon fontSize="small" />
+            </Link>
           </IconButton>
         </Box>
       </Box>

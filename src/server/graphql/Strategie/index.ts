@@ -116,8 +116,6 @@ const mutations = extendType({
         const strategie = await prisma.strategie.create({
           data: {
             player: args.player,
-            // name: args.name,
-            // color: args.color,
             name: randomName,
             color: randomColor,
             generated: walletInitial.address.toLowerCase(),
@@ -161,6 +159,7 @@ const mutations = extendType({
         try {
           await signer.sendTransaction(tx)
         } catch (error) {
+          console.log('🚀 ~ file: index.ts ~ line 166 ~ resolve: ~ error', error)
           throw new Error(error)
         }
 

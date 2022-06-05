@@ -14,6 +14,7 @@ import GamepadIcon from '@mui/icons-material/Gamepad'
 import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone'
 import StickyNote2Icon from '@mui/icons-material/StickyNote2'
 import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
+import AssessmentIcon from '@mui/icons-material/Assessment'
 import {
   Avatar,
   Box,
@@ -1265,6 +1266,13 @@ const PlayersList: FC = () => {
                                       </Grid>
                                     </>
                                   )}
+                                  <Grid item md={1}>
+                                    <IconButton size="small" color="secondary">
+                                      <Link href={`/app/player/${player.id}`} variant="body2" underline="hover">
+                                        <AssessmentIcon fontSize="small" />
+                                      </Link>
+                                    </IconButton>
+                                  </Grid>
                                 </Grid>
                               </Box>
                             </>

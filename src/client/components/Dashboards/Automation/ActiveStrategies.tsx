@@ -14,7 +14,7 @@ import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt'
 import ThumbDownIcon from '@mui/icons-material/ThumbDown'
 import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import StickyNote2Icon from '@mui/icons-material/StickyNote2'
-
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Alert,
   Avatar,
@@ -754,6 +754,25 @@ function ActiveStrategies({ user: puser, fetching }) {
   //   return `${value} BNB`
   // }
 
+  // const getBnbForOneBet = ({ betAmountPercent, isTrailing, currentAmount, startedAmount }) => {
+  const getBnbForOneBet = ({ betAmountPercent, isTrailing }) => {
+    let betAmount
+    if (isTrailing) {
+      betAmount = parseFloat(`${(activeStrategie.startedAmount * betAmountPercent) / 100}`).toFixed(4)
+    } else {
+      betAmount = parseFloat(`${(activeStrategie.currentAmount * betAmountPercent) / 100}`).toFixed(4)
+    }
+
+    return betAmount < 0.001 ? 0.001 : betAmount
+  }
+
+  const getFeesRatioForOneBet = (values) => {
+    // TODO v0.04 calculate fees with provider
+    const fees = 0.000558792
+    const oneBetAmount = getBnbForOneBet(values)
+    return +((fees * 100) / oneBetAmount).toFixed(2)
+  }
+
   return (
     <>
       <Box>
@@ -1348,7 +1367,7 @@ function ActiveStrategies({ user: puser, fetching }) {
                           handleDrawerToggle()
                           handleDrawerSetPlayer(activeStrategie?.player)
                         }}>
-                        <StickyNote2Icon fontSize="small" />
+                        <ExpandMoreIcon fontSize="small" />
                       </IconButton>
                     </Grid>
                   </>
@@ -1454,7 +1473,7 @@ function ActiveStrategies({ user: puser, fetching }) {
                       </Grid>
 
                       <Grid item xs={6}>
-                        <Box sx={{ textAlign: 'center' }} py={1}>
+                        <Box sx={{ textAlign: 'center' }}>
                           <TextField
                             error={Boolean(touched.betAmountPercent && errors.betAmountPercent)}
                             fullWidth
@@ -1476,7 +1495,7 @@ function ActiveStrategies({ user: puser, fetching }) {
                         </Box>
                       </Grid>
                       <Grid item xs={6}>
-                        <Box sx={{ textAlign: 'center' }} py={1}>
+                        <Box sx={{ textAlign: 'center' }}>
                           {/* <TextField
                             error={Boolean(touched.color && errors.color)}
                             fullWidth
@@ -1543,6 +1562,39 @@ function ActiveStrategies({ user: puser, fetching }) {
                             </Grid>
                           </Grid>
                         </Box>
+                      </Grid>
+
+                      <Grid item xs={12}>
+                        {/* <Box sx={{ textAlign: 'center' }} pb={1}> */}
+                        <Typography
+                          sx={{ fontSize: `${theme.typography.pxToRem(10)}` }}
+                          variant="h6"
+                          color={
+                            getBnbForOneBet(values) <= 0.001
+                              ? 'error'
+                              : getBnbForOneBet(values) <= 0.005
+                              ? 'warning'
+                              : ''
+                          }>
+                          {t(`You'll bet ${getBnbForOneBet(values)} BNB for each game (${values.betAmountPercent}%).`)}
+                        </Typography>
+                        <Typography
+                          sx={{ fontSize: `${theme.typography.pxToRem(10)}` }}
+                          variant="h6"
+                          color={
+                            getFeesRatioForOneBet(values) >= 25
+                              ? 'error'
+                              : getFeesRatioForOneBet(values) >= 10.0
+                              ? 'warning'
+                              : ''
+                          }>
+                          {t(
+                            `Transaction costs will be approximatly ${getFeesRatioForOneBet(
+                              values
+                            )}% of your bet amount.`
+                          )}
+                        </Typography>
+                        {/* </Box> */}
                       </Grid>
 
                       <Grid item xs={6}>
@@ -1652,11 +1704,10 @@ function ActiveStrategies({ user: puser, fetching }) {
                             <Grid item xs={1}>
                               <Tooltip
                                 placement="bottom-end"
-                                title={`${
-                                  t('Stop if strategie loose more than ') + values.stopLoss
-                                }% of started bankroll`}
+                                color="error"
+                                title={`${t('Increase amount alocated for this strategy')}`}
                                 arrow>
-                                <IconButton color="secondary" size="small">
+                                <IconButton color="warning" size="small">
                                   <InfoIcon fontSize="small" />
                                 </IconButton>
                               </Tooltip>

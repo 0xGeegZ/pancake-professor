@@ -187,7 +187,7 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
   const handleGaugeIncrease = (e: { preventDefault: () => void }, newValue: number | null) => {
     e.preventDefault()
     // if (gauge === 100) return
-    if (gauge >= 98) return
+    if (gauge >= 97) return
 
     // setGauge((g) => g + (gauge >= 80 || gauge <= 20 ? 1 : 2))
     setGauge((g) => newValue || g + 1)
@@ -372,8 +372,6 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
   }
 
   const getBnbForOneBet = () => {
-    // return +((+gauge * user.generatedBalance) / 100 / 13).toFixed(4)
-    // return +((+gauge * user.generatedBalance) / 100 / betAmountPercent).toFixed(4)
     const balanceAmount = (+gauge * user.generatedBalance) / 100
 
     const betAmount = +((balanceAmount * betAmountPercent) / 100).toFixed(4)
@@ -381,7 +379,7 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
   }
 
   const getFeesRatioForOneBet = () => {
-    // TODO calculate fees with provider
+    // TODO v0.04 calculate fees with provider
     const fees = 0.000558792
     const oneBetAmount = getBnbForOneBet()
     return +((fees * 100) / oneBetAmount).toFixed(2)
@@ -463,7 +461,7 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
                 // marks
                 min={0}
                 // max={100}
-                max={98}
+                max={97}
                 onChange={handleChange}
               />
               <BoxSliderButtons>
@@ -475,7 +473,7 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
                 </IconButtonIncrement>
               </BoxSliderButtons>
             </Box>
-            <Box sx={{ textAlign: 'center' }} pb={2} px={3}>
+            {/* <Box sx={{ textAlign: 'center' }} pb={1} px={3}>
               <Grid spacing={1} container>
                 <Grid item xs={12}>
                   <Typography
@@ -492,7 +490,7 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
                   </Typography>
                 </Grid>
               </Grid>
-            </Box>
+            </Box> */}
             <Grid container spacing={2} py={2}>
               <Grid item xs={6}>
                 <Box sx={{ textAlign: 'center' }} pl={3} py={1}>
@@ -564,6 +562,28 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
                   </Grid>
                 </Box>
                 {/* </Stack> */}
+              </Grid>
+              <Grid item xs={12}>
+                <Box sx={{ textAlign: 'left' }} pb={1} px={3}>
+                  <Grid spacing={1} container>
+                    <Grid item xs={12}>
+                      <Typography
+                        sx={{ fontSize: `${theme.typography.pxToRem(10)}` }}
+                        variant="h6"
+                        color={getBnbForOneBet() <= 0.001 ? 'error' : getBnbForOneBet() <= 0.005 ? 'warning' : ''}>
+                        {t(`You'll bet ${getBnbForOneBet()} BNB for each game (${betAmountPercent}%).`)}
+                      </Typography>
+                      <Typography
+                        sx={{ fontSize: `${theme.typography.pxToRem(10)}` }}
+                        variant="h6"
+                        color={
+                          getFeesRatioForOneBet() >= 25 ? 'error' : getFeesRatioForOneBet() >= 10.0 ? 'warning' : ''
+                        }>
+                        {t(`Transaction costs will be approximatly ${getFeesRatioForOneBet()}% of your bet amount.`)}
+                      </Typography>
+                    </Grid>
+                  </Grid>
+                </Box>
               </Grid>
             </Grid>
 
