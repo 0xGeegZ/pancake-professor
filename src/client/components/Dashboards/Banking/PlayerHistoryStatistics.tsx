@@ -33,156 +33,48 @@ const DotPrimary = styled('span')(
 `
 )
 
-// Group by time period - By 'day' | 'week' | 'month' | 'year'
-// ------------------------------------------------------------
-const groupByTimePeriod = (obj, timestamp, period) => {
-  const objPeriod = {}
-  const oneDay = 24 * 60 * 60 * 1000 // hours * minutes * seconds * milliseconds
-  for (let i = 0; i < obj.length; i++) {
-    let d = new Date(obj[i][timestamp] * 1000)
-    if (period == 'day') {
-      d = Math.floor(d.getTime() / oneDay)
-    } else if (period == 'week') {
-      d = Math.floor(d.getTime() / (oneDay * 7))
-    } else if (period == 'month') {
-      d = (d.getFullYear() - 1970) * 12 + d.getMonth()
-    } else if (period == 'year') {
-      d = d.getFullYear()
-    } else {
-      console.log('groupByTimePeriod: You have to set a period! day | week | month | year')
-    }
-    // define object key
-    objPeriod[d] = objPeriod[d] || []
-    objPeriod[d].push(obj[i])
-  }
-  return objPeriod
-}
-
-function PlayerHistoryStatistics({ player }) {
+function PlayerHistoryStatistics({ player, updateDataForPeriod }) {
   const { t }: { t: any } = useTranslation()
 
-  let totalWon = []
-  let totalLoss = []
-  let totalPlayed = []
-  let weekLabels = ['Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun']
-  const monthLabels = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-
-  if (player?.bets) {
-    const groupeds = groupByTimePeriod(player?.bets, 'createdAt', 'day')
-
-    const now = new Date()
-    const oneDay = 24 * 60 * 60 * 1000
-    const timestamp = Math.floor(now.getTime() / oneDay)
-
-    const entries = Object.entries(groupeds).filter((element) => {
-      // TODO try different range base on restult count (if no result for 7, try 30, ...)
-      return +element[0] >= timestamp - 7
-    })
-    console.log('🚀 ~ file: PlayerHistoryStatistics.tsx ~ line 82 ~ entries ~ entries', entries)
-
-    totalPlayed = entries
-      .map((element) => {
-        return element[1]
-      })
-      .map((element) => {
-        const reduced = element.reduce((accu, bet) => {
-          // return +accu + +bet.amount
-          return +accu + 1
-        }, 0)
-        return parseFloat(reduced).toFixed(4)
-      })
-    console.log('🚀 ~ file: PlayerHistoryStatistics.tsx ~ line 94 ~ PlayerHistoryStatistics ~ totalPlayed', totalPlayed)
-
-    totalWon = entries
-      .map((element) => {
-        return element[1]
-      })
-      .map((element) => {
-        const reduced = element.reduce((accu, bet) => {
-          console.log('🚀 ~ file: PlayerHistoryStatistics.tsx ~ line 102 ~ reduced ~ bet', bet)
-          // TODO add won amount to total
-          // if (bet?.position === bet?.round?.position) return +accu + +bet.amount
-          if (bet?.position === bet?.round?.position) return +accu + 1
-
-          return +accu
-        }, 0)
-        return parseFloat(reduced).toFixed(4)
-      })
-
-    totalLoss = entries
-      .map((element) => {
-        return element[1]
-      })
-      .map((element) => {
-        const reduced = element.reduce((accu, bet) => {
-          console.log('🚀 ~ file: PlayerHistoryStatistics.tsx ~ line 102 ~ reduced ~ bet', bet)
-          // TODO add won amount to total
-          // if (bet?.position === bet?.round?.position) return +accu + +bet.amount
-          if (bet?.position !== bet?.round?.position) return +accu + 1
-
-          return +accu
-        }, 0)
-        return parseFloat(reduced).toFixed(4)
-      })
-
-    weekLabels = entries.map(([element]) => {
-      const date = new Date(Math.floor(element * oneDay))
-
-      const month = date.getMonth() + 1
-
-      const monthName = date.toLocaleString('default', {
-        month: 'long',
-      })
-      console.log(monthName)
-      // TODO use monthName to updat month labels
-
-      const day = date.getDate()
-
-      return `${month}/${day}`
-    })
-  }
-
   const data = {
-    totalWon,
-    totalLoss,
-    totalPlayed,
+    totalWon: player?.statistics?.totalWon,
+    totalLoss: player?.statistics?.totalLoss,
+    totalPlayed: player?.statistics?.totalPlayed,
   }
 
-  const generic = {
-    weeks: {
-      labels: weekLabels,
-    },
-    month: {
-      labels: monthLabels,
-    },
-  }
+  const labels = player?.statistics?.weekLabels || []
 
   const periods = [
-    {
-      value: 'today',
-      text: t('Today'),
-    },
+    // {
+    //   value: 'today',
+    //   text: t('Today'),
+    //   multiplier: 0,
+    // },
     {
       value: 'yesterday',
       text: t('Yesterday'),
+      multiplier: 1,
     },
     {
       value: 'last_week',
       text: t('Last week'),
+      multiplier: 8,
     },
     {
       value: 'last_month',
       text: t('Last month'),
+      multiplier: 31,
     },
     {
       value: 'ever',
       text: t('Ever'),
+      multiplier: 999,
     },
   ]
 
   const actionRef1 = useRef<any>(null)
   const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false)
-  const [period, setPeriod] = useState<string>(periods[2].text)
+  const [period, setPeriod] = useState<string>(periods[1].text)
 
   return (
     <Card>
@@ -227,15 +119,15 @@ function PlayerHistoryStatistics({ player }) {
               onClick={() => {
                 setPeriod(_period.text)
                 setOpenMenuPeriod(false)
+                updateDataForPeriod(_period.multiplier)
               }}>
               {_period.text}
             </MenuItem>
           ))}
         </Menu>
 
-        <Box height={275} sx={{ py: 3, px: { lg: 2 } }}>
-          {/* TODO display loader while totalPlayed is empty */}
-          <PlayerHistoryStatisticsChartWrapper data={data} labels={generic.weeks.labels} />
+        <Box height={250} sx={{ py: 3, px: { lg: 2 } }}>
+          <PlayerHistoryStatisticsChartWrapper data={data} labels={labels} />
         </Box>
       </CardContent>
     </Card>

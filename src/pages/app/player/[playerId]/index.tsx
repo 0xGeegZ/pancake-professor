@@ -1,45 +1,22 @@
 import 'moment-timezone'
 
-import {
-  Box,
-  Grid,
-  LinearProgress,
-  Zoom,
-  Card,
-  CardContent,
-  CardHeader,
-  IconButton,
-  Tooltip,
-  Typography,
-} from '@mui/material'
-import { styled } from '@mui/material/styles'
+import { Box, Grid, Zoom, Card, CardContent, CardHeader, IconButton, Tooltip, Typography } from '@mui/material'
 import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone'
+import Label from 'src/client/components/Label'
 
-import { ethers } from 'ethers'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import Leaderboard from 'src/client/components/Dashboards/Learning/Leaderboard'
+// import Leaderboard from 'src/client/components/Dashboards/Learning/Leaderboard'
 import PlayerHistoryStatistics from 'src/client/components/Dashboards/Banking/PlayerHistoryStatistics'
 
 import { useSnackbar } from 'notistack'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import ActiveTotalAmount from 'src/client/components/Dashboards/Commerce/ActiveTotalAmount'
-import ActiveTotalBears from 'src/client/components/Dashboards/Commerce/ActiveTotalBears'
-import ActiveTotalBets from 'src/client/components/Dashboards/Commerce/ActiveTotalBets'
-import ActiveTotalBulls from 'src/client/components/Dashboards/Commerce/ActiveTotalBulls'
-import FollowPlayersPromotion from 'src/client/components/Dashboards/Healthcare/doctor/FollowPlayersPromotion'
-import PlayerStatsDayAverage from 'src/client/components/Dashboards/Healthcare/hospital/PlayerStatsDayAverage'
-import LiveActivePlayers from 'src/client/components/Dashboards/Learning/LiveActivePlayers'
 import Footer from 'src/client/components/Footer'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
-import loadGameData from 'src/client/thegraph/loadGameData'
-import wait from 'src/client/utils/wait'
-import { PREDICTION_CONTRACT_ABI } from 'src/contracts/abis/pancake-prediction-abi-v3'
 import loadPlayer from 'src/client/thegraph/loadPlayer'
-
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
 
@@ -48,24 +25,179 @@ const PlayerStats = () => {
   const { t }: { t: any } = useTranslation()
 
   const isMountedRef = useRefMounted()
-  const [user, setUser] = useState<User | any>(null)
+  // const [user, setUser] = useState<User | any>(null)
   const [player, setPlayer] = useState<any>(null)
+  const [multiplier, setMultiplier] = useState<number>(8)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const router = useRouter()
   const { playerId } = router.query
-  console.log('🚀 ~ file: index.tsx ~ line 43 ~ PlayerStats ~ playerId', playerId)
 
-  const [{ data }] = useGetCurrentUserQuery()
+  // const [{ data }] = useGetCurrentUserQuery()
+
+  // Group by time period - By 'day' | 'week' | 'month' | 'year'
+  // ------------------------------------------------------------
+  const groupByTimePeriod = (obj, timestamp, period) => {
+    const objPeriod = {}
+    const oneDay = 24 * 60 * 60 * 1000 // hours * minutes * seconds * milliseconds
+    for (let i = 0; i < obj.length; i++) {
+      let d = new Date(obj[i][timestamp] * 1000)
+      if (period == 'day') {
+        d = Math.floor(d.getTime() / oneDay)
+      } else if (period == 'week') {
+        d = Math.floor(d.getTime() / (oneDay * 7))
+      } else if (period == 'month') {
+        d = (d.getFullYear() - 1970) * 12 + d.getMonth()
+      } else if (period == 'year') {
+        d = d.getFullYear()
+      } else {
+        console.log('groupByTimePeriod: You have to set a period! day | week | month | year')
+      }
+      // define object key
+      objPeriod[d] = objPeriod[d] || []
+      objPeriod[d].push(obj[i])
+    }
+    return objPeriod
+  }
+
+  const loadStastistics = useCallback(
+    async (pplayer, pmultiplier) => {
+      const statistics = {
+        totalWon: [],
+        totalLoss: [],
+        totalPlayed: [],
+        weekLabels: ['Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun'],
+        monthLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+        winRateCurrentPeriod: 0,
+        totalBetsCurrentPeriod: 0,
+        totalWonCurrentPeriod: 0,
+        averageBetsByDayCurrentPeriod: 0,
+      }
+
+      const groupeds = groupByTimePeriod(pplayer?.bets, 'createdAt', 'day')
+
+      const now = new Date()
+      const oneDay = 24 * 60 * 60 * 1000
+      const timestamp = Math.floor(now.getTime() / oneDay)
+
+      const entries = Object.entries(groupeds).filter((element) => {
+        // return +element[0] >= timestamp - multiplier && +element[0] !== timestamp
+        return +element[0] >= timestamp - pmultiplier
+      })
+
+      // if (entries.length === 0) {
+      //   entries = Object.entries(groupeds).filter((element) => {
+      //     return +element[0] >= timestamp - 31 && +element[0] !== timestamp
+      //   })
+      // }
+
+      statistics.totalPlayed = entries
+        .map((element) => {
+          return element[1]
+        })
+        .map((element) => {
+          const reduced = element.reduce((accu, bet) => {
+            // return +accu + +bet.amount
+            return +accu + 1
+          }, 0)
+          return parseFloat(reduced).toFixed(4)
+        })
+
+      statistics.totalWon = entries
+        .map((element) => {
+          return element[1]
+        })
+        .map((element) => {
+          const reduced = element.reduce((accu, bet) => {
+            // console.log('🚀 ~ file: PlayerHistoryStatistics.tsx ~ line 102 ~ reduced ~ bet', bet)
+            // TODO add won amount to total
+            // if (bet?.position === bet?.round?.position) return +accu + +bet.amount
+            if (bet?.position === bet?.round?.position) return +accu + 1
+
+            return +accu
+          }, 0)
+          return parseFloat(reduced).toFixed(4)
+        })
+
+      statistics.totalLoss = entries
+        .map((element) => {
+          return element[1]
+        })
+        .map((element) => {
+          const reduced = element.reduce((accu, bet) => {
+            // console.log('🚀 ~ file: PlayerHistoryStatistics.tsx ~ line 102 ~ reduced ~ bet', bet)
+            // TODO add won amount to total
+            // if (bet?.position === bet?.round?.position) return +accu + +bet.amount
+            if (bet?.position !== bet?.round?.position) return +accu + 1
+
+            return +accu
+          }, 0)
+          return parseFloat(reduced).toFixed(4)
+        })
+
+      statistics.weekLabels = entries.map(([element]) => {
+        const date = new Date(Math.floor(element * oneDay))
+
+        const month = date.getMonth() + 1
+
+        // TODO use monthName to updat month labels
+        // const monthName = date.toLocaleString('default', {
+        //   month: 'long',
+        // })
+        // console.log(monthName)
+
+        const day = date.getDate()
+
+        return `${month}/${day}`
+      })
+
+      // monthLabels = entries.map(([element]) => {
+      //   const date = new Date(Math.floor(element * oneDay))
+
+      //   // TODO use monthName to updat month labels
+      //   const monthName = date.toLocaleString('default', {
+      //     month: 'long',
+      //   })
+
+      //   return `${monthName}`
+      // })
+
+      const totalPlayedCount = statistics.totalPlayed.reduce((accu, value) => {
+        return +accu + +value
+      }, 0)
+      const totalWonCount = statistics.totalWon.reduce((accu, value) => {
+        return +accu + +value
+      }, 0)
+
+      statistics.winRateCurrentPeriod = (totalWonCount * 100) / totalPlayedCount
+
+      statistics.totalBetsCurrentPeriod = totalPlayedCount
+      statistics.totalWonCurrentPeriod = totalWonCount
+      statistics.averageBetsByDayCurrentPeriod = statistics.totalBetsCurrentPeriod / entries.length
+
+      // return statistics
+      setPlayer({
+        ...pplayer,
+        statistics,
+      })
+    },
+    [setPlayer]
+  )
 
   const initialize = useCallback(async () => {
     try {
+      if (!playerId) return
+
       const pplayer = await loadPlayer(playerId)
-      setPlayer(pplayer)
 
       enqueueSnackbar(t(`[SYNC] Data loaded for player ${pplayer.id}`), {
         variant: 'success',
         TransitionComponent: Zoom,
       })
+
+      if (pplayer?.bets) {
+        loadStastistics(pplayer, multiplier)
+      } else setPlayer(pplayer)
     } catch (error) {
       console.error(error)
       enqueueSnackbar(t(`[ERROR] Error when getting smart contract round data. Starting colleting data from now`), {
@@ -73,12 +205,12 @@ const PlayerStats = () => {
         TransitionComponent: Zoom,
       })
     }
-  }, [enqueueSnackbar, t, playerId])
+  }, [enqueueSnackbar, t, playerId, loadStastistics, multiplier])
 
   useEffect(() => {
-    if (!data) return
+    if (isLoading) return
 
-    if (user) return
+    setIsLoading(true)
 
     if (!window.ethereum?.request) {
       enqueueSnackbar(t(`You need to have metamask installed on your browser.`), {
@@ -89,11 +221,17 @@ const PlayerStats = () => {
     }
 
     if (isMountedRef.current) {
-      setUser(data?.currentUser)
+      // setUser(data?.currentUser)
 
       initialize()
     }
-  }, [data, user, initialize, isMountedRef, enqueueSnackbar, t])
+  }, [initialize, isLoading, isMountedRef, enqueueSnackbar, t])
+
+  const updateDataForPeriod = (pmultiplier) => {
+    setMultiplier(pmultiplier)
+
+    loadStastistics(player, pmultiplier)
+  }
 
   return (
     <>
@@ -103,11 +241,11 @@ const PlayerStats = () => {
       <Box sx={{ mt: 3 }}>
         <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
           <Grid item lg={10} xs={12}>
-            <PlayerHistoryStatistics player={player} />
+            <PlayerHistoryStatistics player={player} updateDataForPeriod={updateDataForPeriod} />
           </Grid>
 
           <Grid item lg={2} xs={12}>
-            <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={5}>
+            <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={2.5}>
               <Grid item lg={12}>
                 <Card sx={{ px: 1, pt: 1 }}>
                   <CardHeader
@@ -132,7 +270,57 @@ const PlayerStats = () => {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                     }}>
-                    <Typography variant="h4">{parseFloat(player?.winRate).toFixed(2)}%</Typography>
+                    <Typography variant="h4">
+                      {parseFloat(player?.statistics?.winRateCurrentPeriod || 0).toFixed(2)}%
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item lg={12}>
+                <Card sx={{ px: 1, pt: 1 }}>
+                  <CardHeader
+                    sx={{ pb: 0 }}
+                    titleTypographyProps={{
+                      variant: 'subtitle2',
+                      fontWeight: 'bold',
+                      color: 'textSecondary',
+                    }}
+                    action={
+                      <Tooltip placement="top" arrow title={t('Total wons for current period.')}>
+                        <IconButton size="small" color="secondary">
+                          <HelpOutlineTwoToneIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    }
+                    title={t('Total Wons')}
+                  />
+                  <CardContent
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Typography variant="h3">{player?.statistics?.totalWonCurrentPeriod || 0}</Typography>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Label
+                        color={
+                          (player?.statistics?.totalWonCurrentPeriod * 100) /
+                            player?.statistics?.totalBetsCurrentPeriod >
+                          50
+                            ? 'success'
+                            : 'error'
+                        }>
+                        {player?.statistics?.totalBetsCurrentPeriod > 0
+                          ? parseFloat(
+                              (
+                                (player?.statistics?.totalWonCurrentPeriod * 100) /
+                                player?.statistics?.totalBetsCurrentPeriod
+                              ).toString()
+                            ).toFixed(2)
+                          : 0}
+                        %
+                      </Label>
+                    </Box>
                   </CardContent>
                 </Card>
               </Grid>
@@ -160,35 +348,7 @@ const PlayerStats = () => {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                     }}>
-                    <Typography variant="h4">{player?.totalBets}</Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
-              <Grid item lg={12}>
-                <Card sx={{ px: 1, pt: 1 }}>
-                  <CardHeader
-                    sx={{ pb: 0 }}
-                    titleTypographyProps={{
-                      variant: 'subtitle2',
-                      fontWeight: 'bold',
-                      color: 'textSecondary',
-                    }}
-                    action={
-                      <Tooltip placement="top" arrow title={t('Net BNB amount won/loss for current period.')}>
-                        <IconButton size="small" color="secondary">
-                          <HelpOutlineTwoToneIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    }
-                    title={t('Net BNB')}
-                  />
-                  <CardContent
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}>
-                    <Typography variant="h4">{parseFloat(player?.netBNB).toFixed(2)} BNB</Typography>
+                    <Typography variant="h4">{player?.statistics?.totalBetsCurrentPeriod || 0}</Typography>
                   </CardContent>
                 </Card>
               </Grid>
@@ -220,7 +380,7 @@ const PlayerStats = () => {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                     }}>
-                    <Typography variant="h3">{parseFloat(player?.winRate).toFixed(2)}%</Typography>
+                    <Typography variant="h3">{parseFloat(player?.winRate || 0).toFixed(2)}%</Typography>
                   </CardContent>
                 </Card>
               </Grid>
@@ -248,7 +408,7 @@ const PlayerStats = () => {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                     }}>
-                    <Typography variant="h3">{player?.totalBets}</Typography>
+                    <Typography variant="h3">{player?.totalBets || 0}</Typography>
                   </CardContent>
                 </Card>{' '}
               </Grid>
@@ -276,7 +436,7 @@ const PlayerStats = () => {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                     }}>
-                    <Typography variant="h3">{parseFloat(player?.netBNB).toFixed(2)} BNB</Typography>
+                    <Typography variant="h3">{parseFloat(player?.netBNB || 0).toFixed(2)} BNB</Typography>
                   </CardContent>
                 </Card>{' '}
               </Grid>
@@ -304,7 +464,7 @@ const PlayerStats = () => {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                     }}>
-                    <Typography variant="h3">{parseFloat(player?.averageBNB).toFixed(4)} BNB</Typography>
+                    <Typography variant="h3">{parseFloat(player?.averageBNB || 0).toFixed(4)} BNB</Typography>
                   </CardContent>
                 </Card>{' '}
               </Grid>
