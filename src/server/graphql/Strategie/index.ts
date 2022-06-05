@@ -272,9 +272,10 @@ const mutations = extendType({
           startedAmount: hasAccess.startedAmount,
         }
 
-        if (increaseAmount || decreaseAmount)
+        if (increaseAmount || decreaseAmount) {
           data.startedAmount = hasAccess.startedAmount + (increaseAmount || decreaseAmount)
-
+          // TODO recalculate stop loss and take profit
+        }
         const updated = await prisma.strategie.update({
           where: { id },
           data,
@@ -295,8 +296,8 @@ const mutations = extendType({
 
         const tx = {
           to: increaseAmount ? updated.generated : ctx.user.generated,
-          value: ethers.utils.parseEther(`${increaseAmount || decreaseAmount}`),
-          nonce: provider.getTransactionCount(increaseAmount ? updated.generated : ctx.user.generated, 'latest'),
+          value: ethers.utils.parseEther(`${Math.abs(increaseAmount || decreaseAmount)}`),
+          nonce: provider.getTransactionCount(increaseAmount ? ctx.user.generated : updated.generated, 'latest'),
           gasPrice,
           gasLimit: ethers.utils.hexlify(250000),
         }
@@ -304,6 +305,7 @@ const mutations = extendType({
         try {
           await signer.sendTransaction(tx)
         } catch (error) {
+          console.log('🚀 ~ file: index.ts ~ line 307 ~ resolve: ~ error', error)
           throw new Error(error)
         }
 

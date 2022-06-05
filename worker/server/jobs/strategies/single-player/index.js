@@ -360,7 +360,8 @@ const run = async (payload) => {
     if (!lastEpochs.length) return logger.error(`[ERROR] Error during claiming for last epochs : no epochs findeds`)
 
     // await claimPlayedEpochs(lastEpochs)
-    await claimPlayedEpochs([...new Set([...lastEpochs, ...strategie.playedEpochs])])
+    // await claimPlayedEpochs([...new Set([...lastEpochs, ...strategie.playedEpochs])])
+    await claimPlayedEpochs(lastEpochs)
 
     //wait for all transactions to completes
     // avoid error for stop loss if claim a lot of amount
@@ -381,7 +382,8 @@ const run = async (payload) => {
     )
 
     // TODO v0.03 : if isTrailing, claim for each epoch.
-    if (strategie.roundsCount % 5 === 0 && strategie.playedEpochs.length > 1) await claimLastEpochs(epoch, 6)
+    if ((strategie.roundsCount % 5 === 0 || !strategie.isTrailing) && strategie.playedEpochs.length > 1)
+      await claimLastEpochs(epoch, 6)
 
     // if (strategie.playedEpochs.length >= 3) {
     // await claimPlayedEpochs(strategie.playedEpochs)

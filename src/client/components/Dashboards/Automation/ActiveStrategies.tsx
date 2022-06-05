@@ -522,7 +522,7 @@ function ActiveStrategies({ user: puser, fetching }) {
   }
 
   const handleUpdateUserForStrategie = () => {
-    enqueueSnackbar(t('The user account was successfully updated'), {
+    enqueueSnackbar(t('The strategie was successfully updated'), {
       variant: 'success',
       anchorOrigin: {
         vertical: 'top',
@@ -589,7 +589,7 @@ function ActiveStrategies({ user: puser, fetching }) {
     console.log('🚀 ~ file: ActiveStrategies.tsx ~ line 478 ~ onSubmit ~ minWinAmount', minWinAmount)
 
     try {
-      const { error /* , data */ } = await updateStrategie({
+      const { error, data } = await updateStrategie({
         id: activeStrategie.id,
         player,
         maxLooseAmount,
@@ -622,6 +622,7 @@ function ActiveStrategies({ user: puser, fetching }) {
           strategie.betAmountPercent = betAmountPercent
           strategie.maxLooseAmount = maxLooseAmount
           strategie.minWinAmount = minWinAmount
+          strategie.isNeedRestart = data?.updateStrategie?.isNeedRestart || strategie.isNeedRestart
         }
 
         return strategie
