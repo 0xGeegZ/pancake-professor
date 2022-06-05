@@ -1,5 +1,6 @@
 import 'moment-timezone'
 
+import moment from 'moment'
 import { Box, Grid, Zoom, Card, CardContent, CardHeader, IconButton, Tooltip, Typography } from '@mui/material'
 import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone'
 import Label from 'src/client/components/Label'
@@ -20,18 +21,18 @@ import loadPlayer from 'src/client/thegraph/loadPlayer'
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
 
-const PlayerStats = () => {
+const PlayerStats = ({ playerId: pplayerId }) => {
   const { enqueueSnackbar } = useSnackbar()
   const { t }: { t: any } = useTranslation()
 
   const isMountedRef = useRefMounted()
   // const [user, setUser] = useState<User | any>(null)
   const [player, setPlayer] = useState<any>(null)
-  const [multiplier, setMultiplier] = useState<number>(8)
+  const [multiplier, setMultiplier] = useState<number>(7)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const router = useRouter()
-  const { playerId } = router.query
+  const playerId = router.query.playerId || pplayerId
 
   // const [{ data }] = useGetCurrentUserQuery()
 
@@ -67,11 +68,11 @@ const PlayerStats = () => {
         totalLoss: [],
         totalPlayed: [],
         weekLabels: ['Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat', 'Sun'],
-        monthLabels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         winRateCurrentPeriod: 0,
         totalBetsCurrentPeriod: 0,
         totalWonCurrentPeriod: 0,
         averageBetsByDayCurrentPeriod: 0,
+        daysPlayedCurrentPeriod: 0,
       }
 
       const groupeds = groupByTimePeriod(pplayer?.bets, 'createdAt', 'day')
@@ -82,12 +83,15 @@ const PlayerStats = () => {
 
       const entries = Object.entries(groupeds).filter((element) => {
         // return +element[0] >= timestamp - multiplier && +element[0] !== timestamp
-        return +element[0] >= timestamp - pmultiplier
+        // return +element[0] >= timestamp - pmultiplier
+        return +element[0] > timestamp - pmultiplier
       })
 
       // if (entries.length === 0) {
+      //   const newMultiplier = 31
+      //   // setMultiplier(newMultiplier)
       //   entries = Object.entries(groupeds).filter((element) => {
-      //     return +element[0] >= timestamp - 31 && +element[0] !== timestamp
+      //     return +element[0] >= timestamp - newMultiplier
       //   })
       // }
 
@@ -97,7 +101,6 @@ const PlayerStats = () => {
         })
         .map((element) => {
           const reduced = element.reduce((accu, bet) => {
-            // return +accu + +bet.amount
             return +accu + 1
           }, 0)
           return parseFloat(reduced).toFixed(4)
@@ -109,11 +112,7 @@ const PlayerStats = () => {
         })
         .map((element) => {
           const reduced = element.reduce((accu, bet) => {
-            // console.log('🚀 ~ file: PlayerHistoryStatistics.tsx ~ line 102 ~ reduced ~ bet', bet)
-            // TODO add won amount to total
-            // if (bet?.position === bet?.round?.position) return +accu + +bet.amount
             if (bet?.position === bet?.round?.position) return +accu + 1
-
             return +accu
           }, 0)
           return parseFloat(reduced).toFixed(4)
@@ -125,42 +124,17 @@ const PlayerStats = () => {
         })
         .map((element) => {
           const reduced = element.reduce((accu, bet) => {
-            // console.log('🚀 ~ file: PlayerHistoryStatistics.tsx ~ line 102 ~ reduced ~ bet', bet)
-            // TODO add won amount to total
-            // if (bet?.position === bet?.round?.position) return +accu + +bet.amount
             if (bet?.position !== bet?.round?.position) return +accu + 1
-
             return +accu
           }, 0)
           return parseFloat(reduced).toFixed(4)
         })
 
       statistics.weekLabels = entries.map(([element]) => {
-        const date = new Date(Math.floor(element * oneDay))
-
-        const month = date.getMonth() + 1
-
-        // TODO use monthName to updat month labels
-        // const monthName = date.toLocaleString('default', {
-        //   month: 'long',
-        // })
-        // console.log(monthName)
-
-        const day = date.getDate()
-
-        return `${month}/${day}`
+        const date = moment(new Date(Math.floor(element * oneDay)))
+        return date.format('L')
+        // return pmultiplier <= 10 ? date.format('DD/MM') : date.format('DD/MM/YY')
       })
-
-      // monthLabels = entries.map(([element]) => {
-      //   const date = new Date(Math.floor(element * oneDay))
-
-      //   // TODO use monthName to updat month labels
-      //   const monthName = date.toLocaleString('default', {
-      //     month: 'long',
-      //   })
-
-      //   return `${monthName}`
-      // })
 
       const totalPlayedCount = statistics.totalPlayed.reduce((accu, value) => {
         return +accu + +value
@@ -175,7 +149,33 @@ const PlayerStats = () => {
       statistics.totalWonCurrentPeriod = totalWonCount
       statistics.averageBetsByDayCurrentPeriod = statistics.totalBetsCurrentPeriod / entries.length
 
-      // return statistics
+      // calculate number of days from first day to last day in entries
+
+      const dates = entries.map((element) => {
+        return element[0]
+      })
+
+      if (dates.length) {
+        // console.log('🚀 ~ file: index.tsx ~ line 157 ~ dates ~ dates', dates)
+        const from = moment(new Date(Math.floor(dates[0] * oneDay)))
+        console.log("🚀 ~ file: index.tsx ~ line 154 ~ from.format('L')", from.format('L'))
+
+        const to = moment(new Date(Math.floor(dates[dates.length - 1] * oneDay)))
+        console.log("🚀 ~ file: index.tsx ~ line 154 ~ to.format('L')", to.format('L'))
+
+        const daysPlayed = to.diff(from, 'days')
+        console.log('🚀 ~ file: index.tsx ~ line 164 ~ daysPlayed', daysPlayed)
+
+        // const today = moment(new Date())
+        const today = moment().add(1, 'days')
+        console.log("🚀 ~ file: index.tsx ~ line 154 ~ today.format('L')", today.format('L'))
+
+        const daysTotal = today.diff(from, 'days')
+        console.log('🚀 ~ file: index.tsx ~ line 164 ~ daysTotal', daysTotal)
+        console.log('🚀 ~ file: index.tsx ~ line 164 ~ entries.length', entries.length)
+        statistics.daysPlayedCurrentPeriod = (entries.length * 100) / daysTotal
+      }
+
       setPlayer({
         ...pplayer,
         statistics,
@@ -241,41 +241,15 @@ const PlayerStats = () => {
       <Box sx={{ mt: 3 }}>
         <Grid sx={{ px: 4 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
           <Grid item lg={10} xs={12}>
-            <PlayerHistoryStatistics player={player} updateDataForPeriod={updateDataForPeriod} />
+            <PlayerHistoryStatistics
+              player={player}
+              updateDataForPeriod={updateDataForPeriod}
+              multiplier={multiplier}
+            />
           </Grid>
 
           <Grid item lg={2} xs={12}>
             <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={2.5}>
-              <Grid item lg={12}>
-                <Card sx={{ px: 1, pt: 1 }}>
-                  <CardHeader
-                    sx={{ pb: 0 }}
-                    titleTypographyProps={{
-                      variant: 'subtitle2',
-                      fontWeight: 'bold',
-                      color: 'textSecondary',
-                    }}
-                    action={
-                      <Tooltip placement="top" arrow title={t('Winrate for current period.')}>
-                        <IconButton size="small" color="secondary">
-                          <HelpOutlineTwoToneIcon fontSize="small" />
-                        </IconButton>
-                      </Tooltip>
-                    }
-                    title={t('Winrate')}
-                  />
-                  <CardContent
-                    sx={{
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'space-between',
-                    }}>
-                    <Typography variant="h4">
-                      {parseFloat(player?.statistics?.winRateCurrentPeriod || 0).toFixed(2)}%
-                    </Typography>
-                  </CardContent>
-                </Card>
-              </Grid>
               <Grid item lg={12}>
                 <Card sx={{ px: 1, pt: 1 }}>
                   <CardHeader
@@ -300,7 +274,9 @@ const PlayerStats = () => {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                     }}>
-                    <Typography variant="h3">{player?.statistics?.totalWonCurrentPeriod || 0}</Typography>
+                    <Typography variant="h4">
+                      {player?.statistics?.totalWonCurrentPeriod || 0}/{player?.statistics?.totalBetsCurrentPeriod || 0}
+                    </Typography>
                     <Box sx={{ display: 'flex', alignItems: 'center' }}>
                       <Label
                         color={
@@ -334,13 +310,13 @@ const PlayerStats = () => {
                       color: 'textSecondary',
                     }}
                     action={
-                      <Tooltip placement="top" arrow title={t('Total bets for current period.')}>
+                      <Tooltip placement="top" arrow title={t('Average bets/day for current period.')}>
                         <IconButton size="small" color="secondary">
                           <HelpOutlineTwoToneIcon fontSize="small" />
                         </IconButton>
                       </Tooltip>
                     }
-                    title={t('Total bets')}
+                    title={t('Avg bets/day')}
                   />
                   <CardContent
                     sx={{
@@ -348,7 +324,39 @@ const PlayerStats = () => {
                       alignItems: 'center',
                       justifyContent: 'space-between',
                     }}>
-                    <Typography variant="h4">{player?.statistics?.totalBetsCurrentPeriod || 0}</Typography>
+                    <Typography variant="h4">
+                      {parseFloat(player?.statistics?.averageBetsByDayCurrentPeriod || 0).toFixed(1)}
+                    </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item lg={12}>
+                <Card sx={{ px: 1, pt: 1 }}>
+                  <CardHeader
+                    sx={{ pb: 0 }}
+                    titleTypographyProps={{
+                      variant: 'subtitle2',
+                      fontWeight: 'bold',
+                      color: 'textSecondary',
+                    }}
+                    action={
+                      <Tooltip placement="top" arrow title={t('Average days played for current period.')}>
+                        <IconButton size="small" color="secondary">
+                          <HelpOutlineTwoToneIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    }
+                    title={t('Days played')}
+                  />
+                  <CardContent
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Typography variant="h4">
+                      {parseFloat(player?.statistics?.daysPlayedCurrentPeriod || 0).toFixed(2)}%
+                    </Typography>
                   </CardContent>
                 </Card>
               </Grid>

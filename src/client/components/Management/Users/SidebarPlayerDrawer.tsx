@@ -4,6 +4,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import StickyNote2Icon from '@mui/icons-material/StickyNote2'
 import AssessmentIcon from '@mui/icons-material/Assessment'
+import PlayerStats from 'src/pages/app/player/[playerId]'
 
 import {
   Accordion,
@@ -217,7 +218,8 @@ function SidebarPlayerDrawer({ playerId }) {
   }
 
   return (
-    <Box sx={{ width: { xs: 340, lg: 400 } }}>
+    <Box sx={{ width: '80vw' }}>
+      {/* TODO v0.0.3 Inset Player statistics directly inside Drawer */}
       <Box sx={{ textAlign: 'center' }}>
         {/* <AvatarPrimary
           sx={{
@@ -247,7 +249,6 @@ function SidebarPlayerDrawer({ playerId }) {
           {t('by')}{' '}
         </Typography> */}
       </Box>
-
       {/* <Divider sx={{ my: 3 }} /> */}
       <Box px={3}>
         <Box mb={3} display="flex" justifyContent="center">
@@ -283,7 +284,6 @@ function SidebarPlayerDrawer({ playerId }) {
         </Box>
       </Box>
       <Divider sx={{ my: 3 }} />
-
       {loading ? (
         <>
           <Box height={200}>
@@ -311,26 +311,7 @@ function SidebarPlayerDrawer({ playerId }) {
           </TabsContainerWrapper>
           {currentTab === 'details' && (
             <>
-              {/* <Box mt={3} px={3}>
-            <Typography variant="h3">{t('Followed by')}</Typography>
-            <Box mt={2} display="flex">
-              <AvatarGroup max={6}>
-                <Tooltip arrow title="Remy Sharp">
-                  <Avatar component={Link} href="#" alt="Remy Sharp" src="/static/images/avatars/1.jpg" />
-                </Tooltip>
-                <Tooltip arrow title="Travis Howard">
-                  <Avatar component={Link} href="#" alt="Travis Howard" src="/static/images/avatars/2.jpg" />
-                </Tooltip>
-                <Tooltip arrow title="Cindy Baker">
-                  <Avatar component={Link} href="#" alt="Cindy Baker" src="/static/images/avatars/3.jpg" />
-                </Tooltip>
-                <Tooltip arrow title="Agnes Walker">
-                  <Avatar component={Link} href="#" alt="Agnes Walker" src="/static/images/avatars/4.jpg" />
-                </Tooltip>
-              </AvatarGroup>
-            </Box>
-          </Box> */}
-              <Divider sx={{ my: 3 }} />
+              {/* <Divider sx={{ my: 3 }} />
               <Box px={3}>
                 <Typography variant="h3" sx={{ mb: 3 }}>
                   {t('Details')}
@@ -378,7 +359,7 @@ function SidebarPlayerDrawer({ playerId }) {
                     </Typography>
                   </Grid>
                 </Grid>
-              </Box>
+              </Box> */}
               <Divider sx={{ my: 3 }} />
             </>
           )}
@@ -484,6 +465,8 @@ function SidebarPlayerDrawer({ playerId }) {
           )}
         </>
       )}
+
+      <PlayerStats playerId={playerId} />
     </Box>
   )
 }

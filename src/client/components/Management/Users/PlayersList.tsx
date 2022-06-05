@@ -186,6 +186,39 @@ const PlayersList: FC = () => {
   const [preditionContract, setPreditionContract] = useState<any>(null)
   const [denominatorValue, setDenominatorValue] = useState<number>(0)
 
+  const ordersBy = [
+    {
+      value: 'default',
+      text: t('Most actives from last 24 hours'),
+    },
+    {
+      value: 'mostActiveLastHour',
+      text: t('Most actives from last hour'),
+    },
+    {
+      value: 'winRate',
+      text: t('Best Winrate'),
+    },
+    {
+      value: 'totalBets',
+      text: t('Most active'),
+    },
+    {
+      value: 'netBNB',
+      text: t('Best Gain'),
+    },
+    {
+      value: 'totalBNB',
+      text: t('Total BNB'),
+    },
+  ]
+
+  const actionRef1 = useRef<any>(null)
+  const [openOrderBy, setOpenMenuOrderBy] = useState<boolean>(false)
+  // const [orderBy, setOrderBy] = useState<string>(ordersBy[3].text)
+  const [orderByText, setOrderByText] = useState<string>(ordersBy[3].text)
+  const [orderByValue, setOrderByValue] = useState<string>(ordersBy[3].value)
+
   const { user, mutate, fetching: userFetching } = useGlobalStore()
 
   // START FILTERS
@@ -286,8 +319,7 @@ const PlayersList: FC = () => {
   )
 
   const refreshQuery = useCallback(
-    // async ({ orderBy, winRateMin, winRateMax }) => {
-    async () => {
+    async ({ orderBy }) => {
       console.log('refreshQuery')
 
       const epoch = await preditionContract.currentEpoch()
@@ -296,7 +328,6 @@ const PlayersList: FC = () => {
       setPlayers([])
       players.length = 0
 
-      const orderBy = orderByValue
       const winRateMin = winrateRange[0]
       const winRateMax = winrateRange[1]
 
@@ -344,7 +375,7 @@ const PlayersList: FC = () => {
         setFetching(false)
       }
     },
-    [players, preditionContract, user, playerTypesChecked]
+    [players, preditionContract, user, playerTypesChecked, orderByValue, netbnbRange, winrateRange]
   )
 
   useEffect(() => {
@@ -385,39 +416,6 @@ const PlayersList: FC = () => {
       setHasError(true)
     }
   }, [getPlayers, user, preditionContract, enqueueSnackbar, t, userFetching])
-
-  const ordersBy = [
-    {
-      value: 'default',
-      text: t('Most actives from last 24 hours'),
-    },
-    {
-      value: 'mostActiveLastHour',
-      text: t('Most actives from last hour'),
-    },
-    {
-      value: 'winRate',
-      text: t('Best Winrate'),
-    },
-    {
-      value: 'totalBets',
-      text: t('Most active'),
-    },
-    {
-      value: 'netBNB',
-      text: t('Best Gain'),
-    },
-    {
-      value: 'totalBNB',
-      text: t('Total BNB'),
-    },
-  ]
-
-  const actionRef1 = useRef<any>(null)
-  const [openOrderBy, setOpenMenuOrderBy] = useState<boolean>(false)
-  // const [orderBy, setOrderBy] = useState<string>(ordersBy[3].text)
-  const [orderByText, setOrderByText] = useState<string>(ordersBy[3].text)
-  const [orderByValue, setOrderByValue] = useState<string>(ordersBy[3].value)
 
   const [page, setPage] = useState<number>(0)
   const [limit, setLimit] = useState<number>(15)
@@ -572,10 +570,8 @@ const PlayersList: FC = () => {
                     onClick={async () => {
                       setOrderByText(_order.text)
                       setOrderByValue(_order.value)
-
                       setOpenMenuOrderBy(false)
-                      await refreshQuery()
-                      // await refreshQuery({ orderBy: _order.value })
+                      await refreshQuery({ orderBy: _order.value })
                     }}>
                     {_order.text}
                   </MenuItem>
@@ -669,14 +665,7 @@ const PlayersList: FC = () => {
                     <Button
                       onClick={async () => {
                         setOpenMenuFilters(false)
-                        await refreshQuery()
-                        // await refreshQuery({
-                        //   orderBy: orderByValue,
-                        //   // winRateMin: winrateRange[0],
-                        //   // winRateMax: winrateRange[1],
-                        //   // netBnbMin: netbnbRange[0],
-                        //   // netBnbMax: netbnbRange[1],
-                        // })
+                        await refreshQuery({ orderBy: orderByValue })
                       }}
                       variant="contained"
                       size="small">
@@ -1267,11 +1256,20 @@ const PlayersList: FC = () => {
                                     </>
                                   )}
                                   <Grid item md={1}>
-                                    <IconButton size="small" color="secondary">
-                                      <Link href={`/app/player/${player.id}`} variant="body2" underline="hover">
-                                        <AssessmentIcon fontSize="small" />
-                                      </Link>
+                                    {/* <IconButton size="small" color="secondary"> */}
+                                    {/* <Link href={`/app/player/${player.id}`} variant="body2" underline="hover"> */}
+
+                                    <IconButton
+                                      size="small"
+                                      color="primary"
+                                      onClick={() => {
+                                        handleDrawerToggle()
+                                        handleDrawerSetPlayer(player.id)
+                                      }}>
+                                      <AssessmentIcon fontSize="small" />
                                     </IconButton>
+                                    {/* </Link> */}
+                                    {/* </IconButton> */}
                                   </Grid>
                                 </Grid>
                               </Box>

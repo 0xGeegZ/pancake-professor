@@ -33,7 +33,7 @@ const DotPrimary = styled('span')(
 `
 )
 
-function PlayerHistoryStatistics({ player, updateDataForPeriod }) {
+function PlayerHistoryStatistics({ player, updateDataForPeriod, multiplier }) {
   const { t }: { t: any } = useTranslation()
 
   const data = {
@@ -45,36 +45,37 @@ function PlayerHistoryStatistics({ player, updateDataForPeriod }) {
   const labels = player?.statistics?.weekLabels || []
 
   const periods = [
-    // {
-    //   value: 'today',
-    //   text: t('Today'),
-    //   multiplier: 0,
-    // },
     {
-      value: 'yesterday',
-      text: t('Yesterday'),
+      value: 'today',
+      text: t('Today'),
       multiplier: 1,
+    },
+    {
+      value: 'last_three_days',
+      text: t('Last three days'),
+      multiplier: 3,
     },
     {
       value: 'last_week',
       text: t('Last week'),
-      multiplier: 8,
+      multiplier: 7,
     },
     {
       value: 'last_month',
       text: t('Last month'),
-      multiplier: 31,
+      multiplier: 30,
     },
     {
       value: 'ever',
       text: t('Ever'),
-      multiplier: 999,
+      multiplier: 1000,
     },
   ]
 
   const actionRef1 = useRef<any>(null)
   const [openPeriod, setOpenMenuPeriod] = useState<boolean>(false)
-  const [period, setPeriod] = useState<string>(periods[1].text)
+  const [period, setPeriod] = useState<string>(periods[2].text)
+  // const [period, setPeriod] = useState<string>(multiplier && multiplier === 31 ? periods[].text : periods[1].text)
 
   return (
     <Card>
