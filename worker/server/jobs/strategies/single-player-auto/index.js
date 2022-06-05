@@ -434,6 +434,8 @@ const run = async () => {
       strategie.playsCount,
       'lastFive',
       strategie.playerData.lastFive,
+      'recentGames',
+      strategie.playerData.recentGames,
       'roundsCountForActualPlayer',
       strategie.roundsCountForActualPlayer,
       'isPLaying',
