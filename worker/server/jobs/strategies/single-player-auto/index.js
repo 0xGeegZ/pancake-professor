@@ -423,7 +423,8 @@ const run = async () => {
 
     const lastFinishedEpoch = +epoch - 1
 
-    const lastGame = [...range(lastFinishedEpoch - 5, lastFinishedEpoch)]
+    const lastGame = [...range(lastFinishedEpoch - 12 * 2, lastFinishedEpoch)]
+    // const lastGame = [...range(lastFinishedEpoch - 5, lastFinishedEpoch)]
 
     const isPLaying = !!(await checkPlayer(strategie.playerData.id, lastGame))
 
