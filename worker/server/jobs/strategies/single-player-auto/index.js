@@ -445,7 +445,7 @@ const run = async () => {
     if (
       (strategie.playsCount === 0 && strategie.roundsCountForActualPlayer >= 3) ||
       // (strategie.roundsCountForActualPlayer >= 3 && strategie.lastLooseCount - strategie.previousLastLooseCount >= 3) ||
-      (strategie.roundsCountForActualPlayer >= 2 && strategie.lastLooseCount - strategie.previousLastLooseCount >= 2) ||
+      (strategie.roundsCountForActualPlayer > 2 && strategie.lastLooseCount - strategie.previousLastLooseCount >= 2) ||
       !isPLaying
     ) {
       console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
