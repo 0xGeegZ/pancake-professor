@@ -424,14 +424,18 @@ function ActiveStrategies({ user: puser, fetching }) {
       // check if strategies was updateds
       // console.log('IS SAME', JSON.stringify(pstrategies) === JSON.stringify(withoutHistory))
 
-      if (JSON.stringify(puser.strategies) === JSON.stringify(withoutHistory)) return
+      if (
+        JSON.stringify(puser.strategies) === JSON.stringify(withoutHistory) &&
+        JSON.stringify(puser.favorites) === JSON.stringify(user.favorites)
+      )
+        return
 
       // console.log('pstrategies', pstrategies)
       // console.log('strategies', withoutHistory)
     }
 
     console.log('useEffect -> updating strategies')
-    setMobileOpen(false)
+    // setMobileOpen(false)
 
     setUser(puser)
     setWithoutHistory(puser.strategies)
@@ -444,7 +448,7 @@ function ActiveStrategies({ user: puser, fetching }) {
     // })
     // setStrategies(lstrategies)
     // loadStrategiesHistory(lstrategies)
-  }, [fetching, loadStrategiesHistory, withoutHistory, puser])
+  }, [fetching, loadStrategiesHistory, withoutHistory, puser, user])
 
   const getStrategieDuraction = (timestamp) => {
     const duration = moment.duration(moment().diff(moment(timestamp)))

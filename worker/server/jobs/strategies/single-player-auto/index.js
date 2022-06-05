@@ -4,8 +4,6 @@ const WebSocket = require('ws')
 const prisma = require('../../../db/prisma')
 const logger = require('../../../utils/logger')
 const { loadPlayers, checkPlayer } = require('../../../graphql/loadPlayers')
-const { GraphQLClient, gql } = require('graphql-request')
-const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
 
 const { sleep, range, finder } = require('../../../utils/utils')
 const { decrypt } = require('../../../utils/crpyto')
@@ -32,7 +30,7 @@ const run = async () => {
 
   const strategie = await prisma.strategie.findUnique({
     where: {
-      id: 'cl3py8svc16325k9kqf5mfk4m',
+      id: 'cl41i7emy6408v19k7z5dytih',
     },
   })
 
@@ -625,7 +623,7 @@ const run = async () => {
 
     player = Object.assign({}, bestPlayers[0])
 
-    if (!bestPlayers.length) return logger.error('No player finded')
+    if (!bestPlayers.length) throw new Error('No player finded')
 
     for (let i = 0; i < bestPlayers.length; i++) {
       delete bestPlayers[i].bets
@@ -730,7 +728,9 @@ const run = async () => {
 
     const player = findBestPlayer(players)
 
-    if (!player) throw new Error('No player finded')
+    if (!player) {
+      throw new Error('No player finded')
+    }
 
     strategie.playerData = player
     logger.info(`[LISTEN] Starting for user ${strategie.generated} copy player ${player.id}`)

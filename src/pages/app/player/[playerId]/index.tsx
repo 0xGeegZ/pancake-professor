@@ -41,7 +41,7 @@ const PlayerStats = ({ playerId: pplayerId }) => {
   const groupByTimePeriod = (obj, timestamp, period) => {
     const objPeriod = {}
     const oneDay = 24 * 60 * 60 * 1000 // hours * minutes * seconds * milliseconds
-    for (let i = 0; i < obj.length; i++) {
+    for (let i = 0; i < obj?.length; i++) {
       let d = new Date(obj[i][timestamp] * 1000)
       if (period == 'day') {
         d = Math.floor(d.getTime() / oneDay)
@@ -173,7 +173,8 @@ const PlayerStats = ({ playerId: pplayerId }) => {
         const daysTotal = today.diff(from, 'days')
         console.log('🚀 ~ file: index.tsx ~ line 164 ~ daysTotal', daysTotal)
         console.log('🚀 ~ file: index.tsx ~ line 164 ~ entries.length', entries.length)
-        statistics.daysPlayedCurrentPeriod = (entries.length * 100) / daysTotal
+        console.log('🚀 ~ file: index.tsx ~ line 177 ~ pmultiplier', pmultiplier)
+        statistics.daysPlayedCurrentPeriod = (entries.length * 100) / (pmultiplier < 50 ? pmultiplier : daysTotal)
       }
 
       setPlayer({
@@ -250,7 +251,7 @@ const PlayerStats = ({ playerId: pplayerId }) => {
 
           <Grid item lg={2} xs={12}>
             <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={2.5}>
-              <Grid item lg={4} sm={4} xs={12}>
+              <Grid item xs={12}>
                 <Card sx={{ px: 1, pt: 1 }}>
                   <CardHeader
                     sx={{ pb: 0 }}
@@ -300,7 +301,7 @@ const PlayerStats = ({ playerId: pplayerId }) => {
                   </CardContent>
                 </Card>
               </Grid>
-              <Grid item lg={4} sm={4} xs={12}>
+              <Grid item xs={12}>
                 <Card sx={{ px: 1, pt: 1 }}>
                   <CardHeader
                     sx={{ pb: 0 }}
@@ -330,7 +331,7 @@ const PlayerStats = ({ playerId: pplayerId }) => {
                   </CardContent>
                 </Card>
               </Grid>
-              <Grid item lg={4} sm={4} xs={12}>
+              <Grid item xs={12}>
                 <Card sx={{ px: 1, pt: 1 }}>
                   <CardHeader
                     sx={{ pb: 0 }}

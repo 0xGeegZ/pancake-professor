@@ -576,9 +576,10 @@ const PlayersList: FC = () => {
                     {_order.text}
                   </MenuItem>
                 ))}
-              </Menu>{' '}
+              </Menu>
               <Button
                 size="small"
+                sx={{ ml: 2 }}
                 variant="outlined"
                 ref={actionRef2}
                 onClick={() => setOpenMenuFilters(true)}
