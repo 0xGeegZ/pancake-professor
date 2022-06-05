@@ -54,7 +54,7 @@ model Strategie {
   player     String
   generated  String   @unique
   private    String   @unique
-  betAmountPercent  Float @default(0.0) //TODO
+  betAmountPercent Float @default(0.0) //TODO
   increaseAmount  Float? @default(0.0) //TODO
   decreaseAmount  Float? @default(0.0) //TODO
   startedAmount   Float

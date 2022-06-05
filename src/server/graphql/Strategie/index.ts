@@ -113,30 +113,36 @@ const mutations = extendType({
         const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`
         const randomName = args.name ? args.name : Math.random().toString(36).substring(2, 12)
 
-        const strategie = await prisma.strategie.create({
-          data: {
-            player: args.player,
-            name: randomName,
-            color: randomColor,
-            generated: walletInitial.address.toLowerCase(),
-            private: encrypt(walletInitial.privateKey),
-            betAmountPercent: args.betAmountPercent,
-            increaseAmount: args.increaseAmount,
-            decreaseAmount: args.decreaseAmount,
-            takeProfit: args.takeProfit,
-            stopLoss: args.stopLoss,
-            isTrailing: args.isTrailing,
-            startedAmount: args.startedAmount,
-            currentAmount: args.startedAmount,
-            maxLooseAmount: args.maxLooseAmount,
-            minWinAmount: args.minWinAmount,
-            user: {
-              connect: {
-                id: ctx.user.id,
+        let strategie = null
+        try {
+          strategie = await prisma.strategie.create({
+            data: {
+              player: args.player,
+              name: randomName,
+              color: randomColor,
+              generated: walletInitial.address.toLowerCase(),
+              private: encrypt(walletInitial.privateKey),
+              betAmountPercent: args.betAmountPercent,
+              increaseAmount: args.increaseAmount,
+              decreaseAmount: args.decreaseAmount,
+              takeProfit: args.takeProfit,
+              stopLoss: args.stopLoss,
+              isTrailing: args.isTrailing,
+              startedAmount: args.startedAmount,
+              currentAmount: args.startedAmount,
+              maxLooseAmount: args.maxLooseAmount,
+              minWinAmount: args.minWinAmount,
+              user: {
+                connect: {
+                  id: ctx.user.id,
+                },
               },
             },
-          },
-        })
+          })
+        } catch (error) {
+          console.log('🚀 ~ file: index.ts ~ line 166 ~ resolve: ~ error', error)
+          throw new Error(error)
+        }
 
         const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
 

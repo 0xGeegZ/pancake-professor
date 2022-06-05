@@ -250,7 +250,7 @@ const PlayerStats = ({ playerId: pplayerId }) => {
 
           <Grid item lg={2} xs={12}>
             <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={2.5}>
-              <Grid item lg={12}>
+              <Grid item lg={4} sm={4} xs={12}>
                 <Card sx={{ px: 1, pt: 1 }}>
                   <CardHeader
                     sx={{ pb: 0 }}
@@ -300,7 +300,7 @@ const PlayerStats = ({ playerId: pplayerId }) => {
                   </CardContent>
                 </Card>
               </Grid>
-              <Grid item lg={12}>
+              <Grid item lg={4} sm={4} xs={12}>
                 <Card sx={{ px: 1, pt: 1 }}>
                   <CardHeader
                     sx={{ pb: 0 }}
@@ -330,7 +330,7 @@ const PlayerStats = ({ playerId: pplayerId }) => {
                   </CardContent>
                 </Card>
               </Grid>
-              <Grid item lg={12}>
+              <Grid item lg={4} sm={4} xs={12}>
                 <Card sx={{ px: 1, pt: 1 }}>
                   <CardHeader
                     sx={{ pb: 0 }}

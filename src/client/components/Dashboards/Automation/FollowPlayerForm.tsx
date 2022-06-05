@@ -257,9 +257,10 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
       isTrailing
     )
 
-    const name = `${Math.round(+player.winRate)}% WR - ${player.totalBets} bets - ${Math.round(+player.netBNB)} BNB ${
-      Math.round(+player.netBNB) > 0 ? 'Won' : 'Loose'
-    }`
+    const name = `${Math.round(+player.winRate)}% WR - ${player.totalBets} bets - ${Math.round(+player.netBNB)}BNB`
+    // ${
+    //   Math.round(+player.netBNB) > 0 ? 'Won' : 'Loose'
+    // }
 
     // const amount = getAvailableBankroll()
     const amount = +((+gauge * user.generatedBalance) / 100).toFixed(4)
