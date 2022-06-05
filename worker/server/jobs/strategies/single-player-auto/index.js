@@ -426,13 +426,14 @@ const run = async () => {
     const lastGame = [...range(lastFinishedEpoch - 5, lastFinishedEpoch)]
 
     const isPLaying = !!(await checkPlayer(strategie.playerData.id, lastGame))
+
     console.log('🚀 ~ ~ lastLooseCount', strategie.lastLooseCount)
     console.log('🚀 ~ previousLastLooseCount', strategie.previousLastLooseCount)
     console.log(
       'playsCount',
       strategie.playsCount,
       'lastFive',
-      strategie.lastFive,
+      strategie.playerData.lastFive,
       'roundsCountForActualPlayer',
       strategie.roundsCountForActualPlayer,
       'isPLaying',
