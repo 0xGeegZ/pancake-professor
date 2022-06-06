@@ -6,7 +6,12 @@ const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTI
   // credentials: 'include',
   headers: {
     // 'Access-Control-Allow-Origin': 'http://localhost:3000',
+    // "Access-Control-Allow-Origin": "*"
+    // 'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+    // complete
     // 'Access-Control-Allow-Origin': '*',
+    // 'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+    // 'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With',
   },
   // errorPolicy: 'all',
 })

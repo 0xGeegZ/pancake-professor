@@ -389,7 +389,7 @@ const run = async (payload) => {
       strategie.roundsCount % 5
     )
 
-    if ((strategie.roundsCount % 5 === 0 || !strategie.isTrailing) && strategie.playedEpochs.length > 1)
+    if ((strategie.roundsCount % 5 === 0 || !strategie.isTrailing) && strategie.playedEpochs.length >= 1)
       await claimLastEpochs(epoch, 6)
 
     // if (strategie.playedEpochs.length >= 3) {

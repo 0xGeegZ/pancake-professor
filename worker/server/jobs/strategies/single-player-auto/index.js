@@ -382,22 +382,24 @@ const run = async () => {
       await stopStrategie({ epoch })
     }
 
-    if (strategie.errorCount >= 5) {
-      logger.error('[AUTO-PLAYING] Strategie had 5 error consecutively. Stopping it.')
-      await stopStrategie({ epoch })
-    }
+    // TODO not necessary
+    // if (strategie.errorCount >= 5) {
+    //   logger.error('[AUTO-PLAYING] Strategie had 5 error consecutively. Stopping it.')
+    //   await stopStrategie({ epoch })
+    // }
 
-    if (isUpdatedStrategie.isNeedRestart) {
-      logger.error('[AUTO-PLAYING] Strategie need to be restarted.')
-      await prisma.strategie.update({
-        where: { id: strategie.id },
-        data: {
-          isNeedRestart: false,
-        },
-      })
-      logger.error('[AUTO-PLAYING] RESTARTING STRATEGIE')
-      process.exit(0)
-    }
+    // TODO check if really not necessary
+    // if (isUpdatedStrategie.isNeedRestart) {
+    //   logger.error('[AUTO-PLAYING] Strategie need to be restarted.')
+    //   await prisma.strategie.update({
+    //     where: { id: strategie.id },
+    //     data: {
+    //       isNeedRestart: false,
+    //     },
+    //   })
+    //   logger.error('[AUTO-PLAYING] RESTARTING STRATEGIE')
+    //   process.exit(0)
+    // }
 
     // if (!isUpdatedStrategie.isActive || isUpdatedStrategie.isError || isUpdatedStrategie.isDeleted) {
     //   logger.error('[AUTO-PLAYING] Strategie was updated by user (stopped or deleted) and need to be stoped.')
@@ -444,9 +446,13 @@ const run = async () => {
     )
 
     if (
+      // if current player have been selected for 3 games but have not played
       (strategie.playsCount === 0 && strategie.roundsCountForActualPlayer >= 3) ||
-      // (strategie.roundsCountForActualPlayer >= 3 && strategie.lastLooseCount - strategie.previousLastLooseCount >= 3) ||
+      // if current player have cumuled 3 errors (due to late time bet)
+      strategie.errorCount >= 3 ||
+      // if current player have been selected for at least 2 games (important) and if he has done 2 errors or more
       (strategie.roundsCountForActualPlayer > 2 && strategie.lastLooseCount - strategie.previousLastLooseCount >= 2) ||
+      // if user is not playing (more than 25% game played during the last two hours)
       !isPLaying
     ) {
       console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
@@ -477,6 +483,7 @@ const run = async () => {
       strategie.roundsCountForActualPlayer = 0
       strategie.playsCountForActualPlayer = 0
       strategie.playsCount = 0
+      strategie.errorCount = 0
       console.log('XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX')
     }
   }
@@ -592,33 +599,37 @@ const run = async () => {
   //   return player
   // }
   const findBestPlayer = (bestPlayers) => {
+    // TODO v0.0.4 filter by winrate local ??
     let filtereds = bestPlayers.filter((player) => Math.round(+player.winRateRecents) >= 50)
 
     if (filtereds.length === 0) filtereds = bestPlayers
+
+    // let filtereds = bestPlayers
 
     filtereds = bestPlayers.filter((player) => !strategie.alreadyPlayeds.includes(player.id))
 
     bestPlayers = filtereds.sort((a, b) => {
       if (Math.round(+a.winRateRecents) === Math.round(+b.winRateRecents) && a.recentGames === b.recentGames) {
-        return a.lastFive > b.lastFive ? -1 : 1
+        // return a.lastFive > b.lastFive ? -1 : 1
+        return a.averageBetsByDayCurrentPeriod > b.averageBetsByDayCurrentPeriod ? -1 : 1
       }
 
       if (a.recentGames === b.recentGames) {
         return Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) ? -1 : 1
       }
 
-      if (a.recentGames === b.recentGames + 1 || a.recentGames + 1 === b.recentGames) {
-        return Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) ? -1 : 1
-      }
-      if (a.recentGames === b.recentGames + 2 || a.recentGames + 2 === b.recentGames) {
-        return Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) ? -1 : 1
-      }
-      if (a.recentGames === b.recentGames + 3 || a.recentGames + 3 === b.recentGames) {
-        return Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) ? -1 : 1
-      }
-      if (a.recentGames === b.recentGames + 4 || a.recentGames + 4 === b.recentGames) {
-        return Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) ? -1 : 1
-      }
+      // if (a.recentGames === b.recentGames + 1 || a.recentGames + 1 === b.recentGames) {
+      //   return Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) ? -1 : 1
+      // }
+      // if (a.recentGames === b.recentGames + 2 || a.recentGames + 2 === b.recentGames) {
+      //   return Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) ? -1 : 1
+      // }
+      // if (a.recentGames === b.recentGames + 3 || a.recentGames + 3 === b.recentGames) {
+      //   return Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) ? -1 : 1
+      // }
+      // if (a.recentGames === b.recentGames + 4 || a.recentGames + 4 === b.recentGames) {
+      //   return Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) ? -1 : 1
+      // }
 
       if (Math.round(+a.winRateRecents) > Math.round(+b.winRateRecents) && a.recentGames > b.recentGames) return -1
 

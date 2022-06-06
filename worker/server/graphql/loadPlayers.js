@@ -1,5 +1,6 @@
 const { GraphQLClient, gql } = require('graphql-request')
 const { range, finder } = require('../utils/utils')
+const gini = require('gini')
 
 // const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
 const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT, {
@@ -16,6 +17,31 @@ const WIN_RATE_INITIAL = 56
 
 let TOTAL_BETS = TOTAL_BETS_INITIAL
 let WIN_RATE = WIN_RATE_INITIAL
+
+// Group by time period - By 'day' | 'week' | 'month' | 'year'
+// ------------------------------------------------------------
+const groupByTimePeriod = (obj, timestamp, period) => {
+  const objPeriod = {}
+  const oneDay = 24 * 60 * 60 * 1000 // hours * minutes * seconds * milliseconds
+  for (let i = 0; i < obj?.length; i++) {
+    let d = new Date(obj[i][timestamp] * 1000)
+    if (period == 'day') {
+      d = Math.floor(d.getTime() / oneDay)
+    } else if (period == 'week') {
+      d = Math.floor(d.getTime() / (oneDay * 7))
+    } else if (period == 'month') {
+      d = (d.getFullYear() - 1970) * 12 + d.getMonth()
+    } else if (period == 'year') {
+      d = d.getFullYear()
+    } else {
+      console.log('groupByTimePeriod: You have to set a period! day | week | month | year')
+    }
+    // define object key
+    objPeriod[d] = objPeriod[d] || []
+    objPeriod[d].push(obj[i])
+  }
+  return objPeriod
+}
 
 const checkIfPlaying = (player, lastGame) => {
   let results = player.bets
@@ -53,8 +79,16 @@ const checkIfPlaying = (player, lastGame) => {
   player.winRateRecents = winRateRecents
 
   // TODO v0.0.3
-  console.log('recentGames', recentGames, ' lastGame.length', lastGame.length, 'lastFive', lastFive)
   // if (recentGames >= lastGame.length / 4 && lastFive >= 1) return player
+  // console.log(
+  //   '🚀 ~ file: loadPlayers.js ~ line 84 ~ checkIfPlaying ~ recentGames',
+  //   recentGames,
+  //   'lastGame.length',
+  //   lastGame.length,
+  //   'result:',
+  //   recentGames >= lastGame.length / 4
+  // )
+
   if (recentGames >= lastGame.length / 4) return player
 
   // return player
@@ -99,7 +133,9 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
 
     // const first = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 250 : 100
     const first = orderBy === 'default' ? 500 : orderBy === 'mostActiveLastHour' ? 1000 : 100
-    const firstBets = orderBy === 'default' ? 12 * 24 : orderBy === 'mostActiveLastHour' ? 24 : 1
+    // const firstBets = orderBy === 'default' ? 12 * 24 : orderBy === 'mostActiveLastHour' ? 24 : 1
+    const firstBets = orderBy === 'default' ? 12 * 24 : orderBy === 'mostActiveLastHour' ? 500 : 1
+
     const epochGT = orderBy === 'default' ? epoch - 12 * 24 : orderBy === 'mostActiveLastHour' ? epoch - 24 : 1
     const query = gql`
       query getUsers(
@@ -177,31 +213,111 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
 
       return await loadPlayers({ epoch, orderBy })
     }
+
     TOTAL_BETS = TOTAL_BETS_INITIAL
     WIN_RATE = WIN_RATE_INITIAL
 
-    bestPlayers = bestPlayers.sort((a, b) => {
-      if (a.recentGames && b.recentGames && +a.winRate > +b.winRate && a.recentGames > b.recentGames) return -1
-      if (a.recentGames && b.recentGames && +a.winRate < +b.winRate && a.recentGames < b.recentGames) return 1
+    // TODO Filter by Gini Score
+    const calculateGiniCoefficientForPlayer = (player) => {
+      const groupeds = groupByTimePeriod(player?.bets, 'createdAt', 'day')
 
-      if (a.recentGames && b.recentGames && a.recentGames > b.recentGames) return -1
-      if (a.recentGames && b.recentGames && a.recentGames < b.recentGames) return 1
+      const now = new Date()
+      const oneDay = 24 * 60 * 60 * 1000
+      const timestamp = Math.floor(now.getTime() / oneDay)
 
-      if (a.winRate && b.winRate && +a.winRate > +b.winRate) return -1
-      if (a.winRate && b.winRate && +a.winRate < +b.winRate) return 1
+      const entries = Object.entries(groupeds).filter((element) => {
+        // get games for the last 30 days
+        // return +element[0] > timestamp - 30
+        // get games for the last 7 days
+        return +element[0] > timestamp - 7
+      })
 
-      return 0
-    })
+      const totalPlayed = entries
+        .map((element) => {
+          return element[1]
+        })
+        .map((element) => {
+          const reduced = element.reduce((accu, bet) => {
+            return +accu + 1
+          }, 0)
+          return parseFloat(reduced).toFixed(4)
+        })
+
+      const totalWon = entries
+        .map((element) => {
+          return element[1]
+        })
+        .map((element) => {
+          const reduced = element.reduce((accu, bet) => {
+            if (bet?.position === bet?.round?.position) return +accu + 1
+            return +accu
+          }, 0)
+          // return parseFloat(reduced).toFixed(4)
+          return reduced
+        })
+
+      const totalLoss = entries
+        .map((element) => {
+          return element[1]
+        })
+        .map((element) => {
+          const reduced = element.reduce((accu, bet) => {
+            if (bet?.position !== bet?.round?.position) return +accu + 1
+            return +accu
+          }, 0)
+          // return parseFloat(reduced).toFixed(4)
+          return +reduced
+        })
+
+      const totalPlayedCount = totalPlayed.reduce((accu, value) => {
+        return +accu + +value
+      }, 0)
+      const totalWonCount = totalWon.reduce((accu, value) => {
+        return +accu + +value
+      }, 0)
+
+      // const totalLossCount = totalLoss.reduce((accu, value) => {
+      //   return +accu + +value
+      // }, 0)
+
+      // const winRateCurrentPeriod = (totalWonCount * 100) / totalPlayedCount
+
+      const totalBetsCurrentPeriod = totalPlayedCount
+      // const totalWonCurrentPeriod = totalWonCount
+      player.averageBetsByDayCurrentPeriod = totalBetsCurrentPeriod / entries.length
+
+      const totalGamesArray = []
+
+      for (let i = 0; i < totalWon.length; i += 1) {
+        // gini
+        // totalGamesArray.push(totalWon[i] / (totalWon[i] + totalLoss[i]))
+        totalGamesArray.push((totalWon[i] * 100) / totalPlayed[i])
+      }
+
+      if (totalGamesArray.length) {
+        const giniCoefficient = gini.unordered(totalGamesArray)
+        console.log('🚀 ~ file: index.tsx ~ line 270 ~ giniCoefficient', giniCoefficient, 'player', player.id)
+        player.giniCoefficient = giniCoefficient
+      }
+
+      return player
+    }
+
+    bestPlayers = bestPlayers.map(calculateGiniCoefficientForPlayer)
+    console.log('BEFORE GINI COEFFICIENT FILTER', bestPlayers.length)
+    // bestPlayers = bestPlayers.filter((player) => player.giniCoefficient > 0 && player.giniCoefficient <= 0.15)
+    bestPlayers = bestPlayers.filter((player) => player.giniCoefficient <= 0.15)
+    console.log('AFTER GINI COEFFICIENT FILTER', bestPlayers.length)
 
     // bestPlayers = bestPlayers.sort((a, b) => {
-    //   if (+a.winRate > +b.winRate && a.recentGames > b.recentGames) return -1
-    //   if (+a.winRate < +b.winRate && a.recentGames < b.recentGames) return 1
+    //   if (a.recentGames && b.recentGames && +a.winRate > +b.winRate && a.recentGames > b.recentGames) return -1
+    //   if (a.recentGames && b.recentGames && +a.winRate < +b.winRate && a.recentGames < b.recentGames) return 1
 
-    //   if (a.recentGames > b.recentGames) return -1
-    //   if (a.recentGames < b.recentGames) return 1
+    //   if (a.recentGames && b.recentGames && a.recentGames > b.recentGames) return -1
+    //   if (a.recentGames && b.recentGames && a.recentGames < b.recentGames) return 1
 
-    //   if (+a.winRate > +b.winRate) return -1
-    //   if (+a.winRate < +b.winRate) return 1
+    //   if (a.winRate && b.winRate && +a.winRate > +b.winRate) return -1
+    //   if (a.winRate && b.winRate && +a.winRate < +b.winRate) return 1
 
     //   return 0
     // })

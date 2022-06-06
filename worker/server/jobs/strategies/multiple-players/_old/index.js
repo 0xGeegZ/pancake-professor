@@ -133,7 +133,8 @@ const run = async () => {
       gasLimit: ethers.utils.hexlify(350000),
       // gasPrice,
       gasPrice: ethers.utils.parseUnits(config.SAFE_GAS_PRICE.toString(), 'gwei').toString(),
-      nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+      // nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+      nonce: new Date().getTime(),
     })
 
     try {
@@ -388,7 +389,7 @@ const run = async () => {
       // isSecureMode &&
       // totalPlayers > 1 &&
       (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
-      betBullCount.length >= betBearCount.length &&
+      betBullCount.length > betBearCount.length &&
       +isBullBetterAdjusted > +isBearBetterAdjusted
       // (+isBullBetterAdjusted > +isBearBetterAdjusted ||
       //   Math.round(+isBullBetter) > Math.round(+isBearBetter))
@@ -415,7 +416,7 @@ const run = async () => {
       // isSecureMode &&
       // totalPlayers > 1 &&
       (totalPlayers > 1 || Math.round(+isBearBetter) >= 57) &&
-      betBearCount.length >= betBullCount.length &&
+      betBearCount.length > betBullCount.length &&
       +isBearBetterAdjusted > +isBullBetterAdjusted
       // (+isBearBetterAdjusted > +isBullBetterAdjusted ||
       //   Math.round(+isBearBetter) > Math.round(+isBullBetter))
@@ -441,7 +442,6 @@ const run = async () => {
     } else logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NOT PLAYING`)
 
     console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
-
     players.map((p) => {
       blocknative.unsubscribe(p.id)
     })
@@ -451,15 +451,15 @@ const run = async () => {
   const processRound = async (transaction, player) => {
     const epoch = await preditionContract.currentEpoch()
 
-    // logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
+    logger.info(`[LISTEN] Transaction pending detected for playerAddress ${strategie.player} and epoch ${epoch}`)
 
     if (transaction.from.toLowerCase() !== player.id) {
-      // logger.error(`[LISTEN] Incoming transaction.`)
+      logger.error(`[LISTEN] Incoming transaction.`)
       return
     }
 
     if (transaction.to.toLowerCase() !== process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS) {
-      // logger.info(`[LISTEN] Not a transaction with pancake contract.`)
+      logger.info(`[LISTEN] Not a transaction with pancake contract.`)
       return
     }
 
@@ -467,12 +467,12 @@ const run = async () => {
       !transaction.input.includes(config.BET_BULL_METHOD_ID) &&
       !transaction.input.includes(config.BET_BEAR_METHOD_ID)
     ) {
-      // logger.info(`[LISTEN] Not a bull or bear transaction.`)
+      logger.info(`[LISTEN] Not a bull or bear transaction.`)
       return
     }
 
     if (transaction.input.includes(config.CLAIM_BEAR_METHOD_ID)) {
-      // logger.info(`[LISTEN] Claim transaction.`)
+      logger.info(`[LISTEN] Claim transaction.`)
       return
     }
 
@@ -481,8 +481,7 @@ const run = async () => {
       return
     }
 
-    logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
-    // logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash}`)
+    logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash}`)
 
     // TODO DECODE FUNCTION (see pending.js)
     const betBull = transaction.input.includes(config.BET_BULL_METHOD_ID)
@@ -511,22 +510,10 @@ const run = async () => {
 
     logger.info(`[ROUND:${+epoch}:${user.id}:${strategie.roundsCount}] Reloading players for epoch ${+epoch}`)
 
-    players.map((p) => {
-      blocknative.unsubscribe(p.id)
-    })
-    if (emitter) emitter.off('txPool')
-
-    strategie.plays = []
-
     // players = await loadPlayers({ epoch, orderBy: 'default' })
     players = await loadPlayers({ epoch, orderBy: 'mostActiveLastHour' })
-    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ players BEFORE', players.length)
-    players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
-    // const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
-    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ players AFTER', players.length)
-    // console.log(players)
 
-    // blocknative = new BlocknativeSdk(blockNativeOptions)
+    blocknative = new BlocknativeSdk(blockNativeOptions)
     await Promise.all(players.map(waitForTransaction))
 
     const stop = Date.now()
@@ -552,7 +539,7 @@ const run = async () => {
     strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
 
     logger.info(
-      `[ROUND:${+epoch}:${user.id}:${strategie.roundsCount}] Round finished for epoch ${+epoch} : played ${
+      `[ROUND:${+epoch}:${strategie.player}:${strategie.roundsCount}] Round finished for epoch ${+epoch} : played ${
         strategie.playsCount
       }/${strategie.roundsCount} games. Current bankroll amount ${strategie.currentAmount}`
     )
@@ -915,8 +902,8 @@ const run = async () => {
 
     // TODO v0.0.4
     // const timer = secondsLeftUntilNextEpoch - 15
-    const timer = secondsLeftUntilNextEpoch - 10
-    // const timer = secondsLeftUntilNextEpoch - 8
+    // const timer = secondsLeftUntilNextEpoch - 10
+    const timer = secondsLeftUntilNextEpoch - 5
 
     if (timer <= 60) {
       players.map((p) => {
@@ -1018,12 +1005,7 @@ const run = async () => {
     )
 
     // players = await loadPlayers({ epoch, orderBy: 'default' })
-    players = await loadPlayers({ epoch, orderBy: 'mostActiveLastHour' })
-    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ players BEFORE', players.length)
-    players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
-    // const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
-    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ players AFTER', players.length)
-    // console.log(players)
+    const players = await loadPlayers({ epoch, orderBy: 'mostActiveLastHour' })
 
     logger.info(`[LISTEN] Starting for user ${strategie.generated} copy ${players.length} players`)
 
@@ -1039,7 +1021,7 @@ const run = async () => {
   await listen()
   // } catch (error) {
   // logger.error(
-  //   `[ERROR] Stopping strategie for user ${strategie.generated} copy betting player ${strategie.generated}: ${error}`
+  //   `[ERROR] Stopping strategie for user ${strategie.generated} copy betting player ${strategie.player}: ${error}`
   // )
   // await stopStrategie()
   //   throw new Error(error)

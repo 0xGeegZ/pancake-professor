@@ -127,7 +127,7 @@ function PlayerHistoryStatistics({ player, updateDataForPeriod, multiplier }) {
           ))}
         </Menu>
 
-        <Box height={250} sx={{ py: 3, px: { lg: 2 } }}>
+        <Box height={320} sx={{ py: 3, px: { lg: 2 } }}>
           <PlayerHistoryStatisticsChartWrapper data={data} labels={labels} />
         </Box>
       </CardContent>

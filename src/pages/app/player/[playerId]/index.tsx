@@ -1,5 +1,7 @@
 import 'moment-timezone'
 
+import gini from 'gini'
+
 import moment from 'moment'
 import { Box, Grid, Zoom, Card, CardContent, CardHeader, IconButton, Tooltip, Typography } from '@mui/material'
 import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone'
@@ -73,6 +75,7 @@ const PlayerStats = ({ playerId: pplayerId }) => {
         totalWonCurrentPeriod: 0,
         averageBetsByDayCurrentPeriod: 0,
         daysPlayedCurrentPeriod: 0,
+        giniCoefficient: '-',
       }
 
       const groupeds = groupByTimePeriod(pplayer?.bets, 'createdAt', 'day')
@@ -115,7 +118,8 @@ const PlayerStats = ({ playerId: pplayerId }) => {
             if (bet?.position === bet?.round?.position) return +accu + 1
             return +accu
           }, 0)
-          return parseFloat(reduced).toFixed(4)
+          // return parseFloat(reduced).toFixed(4)
+          return reduced
         })
 
       statistics.totalLoss = entries
@@ -127,7 +131,8 @@ const PlayerStats = ({ playerId: pplayerId }) => {
             if (bet?.position !== bet?.round?.position) return +accu + 1
             return +accu
           }, 0)
-          return parseFloat(reduced).toFixed(4)
+          // return parseFloat(reduced).toFixed(4)
+          return +reduced
         })
 
       statistics.weekLabels = entries.map(([element]) => {
@@ -142,6 +147,10 @@ const PlayerStats = ({ playerId: pplayerId }) => {
       const totalWonCount = statistics.totalWon.reduce((accu, value) => {
         return +accu + +value
       }, 0)
+
+      // const totalLossCount = statistics.totalLoss.reduce((accu, value) => {
+      //   return +accu + +value
+      // }, 0)
 
       statistics.winRateCurrentPeriod = (totalWonCount * 100) / totalPlayedCount
 
@@ -174,7 +183,96 @@ const PlayerStats = ({ playerId: pplayerId }) => {
         console.log('🚀 ~ file: index.tsx ~ line 164 ~ daysTotal', daysTotal)
         console.log('🚀 ~ file: index.tsx ~ line 164 ~ entries.length', entries.length)
         console.log('🚀 ~ file: index.tsx ~ line 177 ~ pmultiplier', pmultiplier)
+        // TODO error if player has no more game before date inside current range
         statistics.daysPlayedCurrentPeriod = (entries.length * 100) / (pmultiplier < 50 ? pmultiplier : daysTotal)
+      }
+
+      // const minMaxScalling = (val, max, min) => {
+      //   return (val - min) / (max - min)
+      // }
+
+      // const normalize = (list) => {
+      //   const minMax = list.reduce(
+      //     (acc, value) => {
+      //       if (value < acc.min) {
+      //         acc.min = value
+      //       }
+
+      //       if (value > acc.max) {
+      //         acc.max = value
+      //       }
+
+      //       return acc
+      //     },
+      //     { min: Number.POSITIVE_INFINITY, max: Number.NEGATIVE_INFINITY }
+      //   )
+
+      //   return list.map((value) => {
+      //     // Verify that you're not about to divide by zero
+      //     if (minMax.max === minMax.min) {
+      //       return 1 / list.length
+      //     }
+
+      //     const diff = minMax.max - minMax.min
+      //     return (value - minMax.min) / diff
+      //   })
+      // }
+
+      // Shannon entropy in bits per symbol.
+      // const entropy = (array) => {
+      //   // const len = str.length
+      //   const len = array.length
+
+      //   // // Build a frequency map from the string.
+      //   // const frequencies = Array.from(str).reduce((freq, c) => (freq[c] = (freq[c] || 0) + 1) && freq, {})
+
+      //   // Sum the frequency of each character.
+      //   // return Object.values(frequencies).reduce((sum, f) => sum - (f / len) * Math.log2(f / len), 0)
+      //   return array.reduce((sum, f) => sum - (f / len) * Math.log2(f / len), 0)
+      // }
+
+      // const entropyV2 = (str) => {
+      //   const len = str.length
+
+      //   // Build a frequency map from the string.
+      //   const frequencies = Array.from(str).reduce((freq, c) => (freq[c] = (freq[c] || 0) + 1) && freq, {})
+
+      //   // Sum the frequency of each character.
+      //   return Object.values(frequencies).reduce((sum, f) => sum - (f / len) * Math.log2(f / len), 0)
+      // }
+
+      console.log('AAAAAAAAAAAAAAAAAAAAAAA')
+
+      const totalGamesArray = []
+
+      console.log('🚀 ~ file: index.tsx ~ line 200 ~ statistics.totalWon ', statistics.totalWon)
+      console.log('🚀 ~ file: index.tsx ~ line 200 ~ statistics.totalLoss ', statistics.totalLoss)
+
+      for (let i = 0; i < statistics.totalWon.length; i += 1) {
+        // classic list
+        // totalGamesArray.push(+statistics.totalWon[i])
+        // // totalGamesArray.push(+statistics.totalLoss[i])
+        // divisition
+        // totalGamesArray.push(+statistics.totalWon[i] / +statistics.totalLoss[i])
+        // minMaxScalling
+        // totalGamesArray.push(statistics.totalWon[i])
+        // totalGamesArray.push(+statistics.totalLoss[i])
+        // totalGamesArray.push(statistics.totalLoss[i] * -1)
+        // gini
+        // totalGamesArray.push(statistics.totalWon[i] / (statistics.totalWon[i] + statistics.totalLoss[i]))
+        totalGamesArray.push((statistics.totalWon[i] * 100) / statistics.totalPlayed[i])
+      }
+      console.log('🚀 ~ file: index.tsx ~ line 194 ~ totalGamesArray', totalGamesArray)
+
+      // const normalized = normalize(totalGamesArray)
+      // console.log('🚀 ~ file: index.tsx ~ line 229 ~ normalized', normalized)
+
+      // const test = entropyV2(normalized.join())
+      // console.log('🚀 ~ file: loadPlayers.js ~ line 69 ~ checkIfPlaying ~ test', test)
+      if (totalGamesArray.length > 1) {
+        statistics.giniCoefficient = gini.unordered(totalGamesArray)
+        statistics.giniCoefficient = parseFloat(`${statistics.giniCoefficient}`).toFixed(4)
+        console.log('🚀 ~ file: index.tsx ~ line 270 ~ statistics.giniCoefficient', statistics.giniCoefficient)
       }
 
       setPlayer({
@@ -188,6 +286,8 @@ const PlayerStats = ({ playerId: pplayerId }) => {
   const initialize = useCallback(async () => {
     try {
       if (!playerId) return
+
+      console.log('🚀 ~ file: index.tsx ~ line 288 ~ initialize ~ playerId', playerId)
 
       const pplayer = await loadPlayer(playerId)
 
@@ -210,6 +310,7 @@ const PlayerStats = ({ playerId: pplayerId }) => {
 
   useEffect(() => {
     if (isLoading) return
+    // if (!playerId) return
 
     setIsLoading(true)
 
@@ -226,7 +327,7 @@ const PlayerStats = ({ playerId: pplayerId }) => {
 
       initialize()
     }
-  }, [initialize, isLoading, isMountedRef, enqueueSnackbar, t])
+  }, [initialize, isLoading, isMountedRef, enqueueSnackbar, t, playerId])
 
   const updateDataForPeriod = (pmultiplier) => {
     setMultiplier(pmultiplier)
@@ -250,9 +351,9 @@ const PlayerStats = ({ playerId: pplayerId }) => {
           </Grid>
 
           <Grid item lg={2} xs={12}>
-            <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={2.5}>
+            <Grid container direction="row" justifyContent="center" alignItems="stretch" spacing={2}>
               <Grid item xs={12}>
-                <Card sx={{ px: 1, pt: 1 }}>
+                <Card sx={{ px: 0, pt: 0 }}>
                   <CardHeader
                     sx={{ pb: 0 }}
                     titleTypographyProps={{
@@ -302,7 +403,7 @@ const PlayerStats = ({ playerId: pplayerId }) => {
                 </Card>
               </Grid>
               <Grid item xs={12}>
-                <Card sx={{ px: 1, pt: 1 }}>
+                <Card sx={{ px: 0, pt: 0 }}>
                   <CardHeader
                     sx={{ pb: 0 }}
                     titleTypographyProps={{
@@ -332,7 +433,7 @@ const PlayerStats = ({ playerId: pplayerId }) => {
                 </Card>
               </Grid>
               <Grid item xs={12}>
-                <Card sx={{ px: 1, pt: 1 }}>
+                <Card sx={{ px: 0, pt: 0 }}>
                   <CardHeader
                     sx={{ pb: 0 }}
                     titleTypographyProps={{
@@ -358,6 +459,39 @@ const PlayerStats = ({ playerId: pplayerId }) => {
                     <Typography variant="h4">
                       {parseFloat(player?.statistics?.daysPlayedCurrentPeriod || 0).toFixed(2)}%
                     </Typography>
+                  </CardContent>
+                </Card>
+              </Grid>
+              <Grid item xs={12}>
+                <Card sx={{ px: 0, pt: 0 }}>
+                  <CardHeader
+                    sx={{ pb: 0 }}
+                    titleTypographyProps={{
+                      variant: 'subtitle2',
+                      fontWeight: 'bold',
+                      color: 'textSecondary',
+                    }}
+                    action={
+                      <Tooltip
+                        placement="top"
+                        arrow
+                        title={t(
+                          'A score of 0 means that the player won more than he loose every days he plays. Under 0.1 is a good indicator.'
+                        )}>
+                        <IconButton size="small" color="secondary">
+                          <HelpOutlineTwoToneIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    }
+                    title={t('Gini coefficient')}
+                  />
+                  <CardContent
+                    sx={{
+                      display: 'flex',
+                      alignItems: 'center',
+                      justifyContent: 'space-between',
+                    }}>
+                    <Typography variant="h4">{player?.statistics?.giniCoefficient || 0}</Typography>
                   </CardContent>
                 </Card>
               </Grid>
@@ -493,7 +627,6 @@ const PlayerStats = ({ playerId: pplayerId }) => {
 }
 
 export default PlayerStats
-
 PlayerStats.getLayout = function getLayout(page: ReactElement) {
   return <MainLayout>{page}</MainLayout>
 }

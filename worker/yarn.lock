@@ -1491,6 +1491,11 @@ get-uri@3:
     fs-extra "^8.1.0"
     ftp "^0.3.10"
 
+gini@^1.1.7:
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/gini/-/gini-1.1.7.tgz#4a8ed2449ef8b0bc4227ab55f17a5cef803646bb"
+  integrity sha512-7iVE/tVaNuNuHXQII5Qp8fTEjcn2d4OeL/XHQd0f3jnjQrPFJoYaPGM1PMHm69h+TzwzeEmayAoMAF79L7gV/w==
+
 git-node-fs@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/git-node-fs/-/git-node-fs-1.0.0.tgz#49b215e242ebe43aa4c7561bbba499521752080f"
