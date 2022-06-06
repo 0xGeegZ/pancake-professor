@@ -382,6 +382,13 @@ const run = async (payload) => {
     )
 
     // TODO v0.03 : if isTrailing, claim for each epoch.
+    console.log('🚀 ~ file: index.js ~ line 386 ~ roundEndListenner ~ strategie.playedEpochs', strategie.playedEpochs)
+    console.log('🚀 ~ file: index.js ~ line 388 ~ roundEndListenner ~ strategie.isTrailing', strategie.isTrailing)
+    console.log(
+      '🚀 ~ file: index.js ~ line 388 ~ roundEndListenner ~ strategie.roundsCount % 5',
+      strategie.roundsCount % 5
+    )
+
     if ((strategie.roundsCount % 5 === 0 || !strategie.isTrailing) && strategie.playedEpochs.length > 1)
       await claimLastEpochs(epoch, 6)
 
