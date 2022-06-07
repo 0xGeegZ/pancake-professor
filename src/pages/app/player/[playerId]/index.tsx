@@ -301,7 +301,7 @@ const PlayerStats = ({ playerId: pplayerId }) => {
       } else setPlayer(pplayer)
     } catch (error) {
       console.error(error)
-      enqueueSnackbar(t(`[ERROR] Error when getting smart contract round data. Starting colleting data from now`), {
+      enqueueSnackbar(t(`[ERROR] Error when getting player history`), {
         variant: 'error',
         TransitionComponent: Zoom,
       })

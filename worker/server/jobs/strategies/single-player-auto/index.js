@@ -133,7 +133,7 @@ const run = async () => {
     const gasPrice = await provider.getGasPrice()
 
     const tx = await preditionContract.claim(claimablesEpochs, {
-      gasLimit: ethers.utils.hexlify(350000),
+      gasLimit: ethers.utils.hexlify(config.HEXLIFY_SAFE),
       // gasLimit: ethers.utils.hexlify(gasLimit),
       // gasPrice,
       gasPrice: ethers.utils.parseUnits(config.SAFE_GAS_PRICE.toString(), 'gwei').toString(),
@@ -714,8 +714,8 @@ const run = async () => {
     strategie.playedEpochs = []
 
     strategie.gasPrice = ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString()
-    // strategie.gasLimit = ethers.utils.hexlify(250000)
-    strategie.gasLimit = ethers.utils.hexlify(350000)
+    // strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_SAFE)
+    strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_SAFE)
 
     // TODO REACTIVATE AFTER TEST
     // optimizeBetAmount()

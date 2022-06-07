@@ -159,10 +159,10 @@ const run = async (payload) => {
 
     // const gasPrice = await provider.getGasPrice()
 
-    const gasLimit = 350000 + 350000 * Math.round(claimablesEpochs.length / 5)
+    const gasLimit = config.HEXLIFY_SAFE + config.HEXLIFY_SAFE * Math.round(claimablesEpochs.length / 5)
 
     const tx = await preditionContract.claim(claimablesEpochs, {
-      // gasLimit: ethers.utils.hexlify(350000),
+      // gasLimit: ethers.utils.hexlify(config.HEXLIFY_SAFE),
       gasLimit: ethers.utils.hexlify(gasLimit),
       // gasPrice,
       gasPrice: ethers.utils.parseUnits(config.SAFE_GAS_PRICE.toString(), 'gwei').toString(),
@@ -560,7 +560,7 @@ const run = async (payload) => {
     // strategie.gasLimit = ethers.utils.hexlify(gasLimit)
 
     // strategie.gasLimit = ethers.utils.hexlify(250000)
-    strategie.gasLimit = ethers.utils.hexlify(350000)
+    strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_SAFE)
 
     calculateBetAmount()
 

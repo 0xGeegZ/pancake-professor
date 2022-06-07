@@ -89,7 +89,8 @@ const checkIfPlaying = (player, lastGame) => {
   //   recentGames >= lastGame.length / 4
   // )
 
-  if (recentGames >= lastGame.length / 4) return player
+  // if (recentGames >= lastGame.length / 4) return player
+  if (recentGames >= lastGame.length / 6) return player
 
   // return player
 }
@@ -201,22 +202,6 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
     bestPlayers = bestPlayers.filter((p) => p.recentGames > 0)
     // }
 
-    if (bestPlayers.length <= 2) {
-      if (WIN_RATE < 54) {
-        return []
-      }
-      if (TOTAL_BETS >= 60) {
-        TOTAL_BETS -= 5
-      } else {
-        WIN_RATE -= 1
-      }
-
-      return await loadPlayers({ epoch, orderBy })
-    }
-
-    TOTAL_BETS = TOTAL_BETS_INITIAL
-    WIN_RATE = WIN_RATE_INITIAL
-
     // TODO Filter by Gini Score
     const calculateGiniCoefficientForPlayer = (player) => {
       const groupeds = groupByTimePeriod(player?.bets, 'createdAt', 'day')
@@ -308,6 +293,22 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
     // bestPlayers = bestPlayers.filter((player) => player.giniCoefficient > 0 && player.giniCoefficient <= 0.15)
     bestPlayers = bestPlayers.filter((player) => player.giniCoefficient <= 0.15)
     console.log('AFTER GINI COEFFICIENT FILTER', bestPlayers.length)
+
+    if (bestPlayers.length < 2) {
+      if (WIN_RATE < 54) {
+        return []
+      }
+      if (TOTAL_BETS >= 60) {
+        TOTAL_BETS -= 5
+      } else {
+        WIN_RATE -= 1
+      }
+
+      return await loadPlayers({ epoch, orderBy })
+    }
+
+    TOTAL_BETS = TOTAL_BETS_INITIAL
+    WIN_RATE = WIN_RATE_INITIAL
 
     // bestPlayers = bestPlayers.sort((a, b) => {
     //   if (a.recentGames && b.recentGames && +a.winRate > +b.winRate && a.recentGames > b.recentGames) return -1

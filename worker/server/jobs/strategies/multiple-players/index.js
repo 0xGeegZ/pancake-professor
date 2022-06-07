@@ -15,7 +15,7 @@ const config = require('../../../providers/pancakeswap/config')
 // const run = async (payload) => {
 const run = async () => {
   const blockNativeOptions = {
-    dappId: process.env.BLOCKNATIVE_API_KEY_LimonX,
+    dappId: process.env.BLOCKNATIVE_API_KEY_KISI,
     networkId: +process.env.BINANCE_SMART_CHAIN_ID,
     ws: WebSocket,
     onerror: (error) => {
@@ -130,7 +130,7 @@ const run = async () => {
     const gasPrice = await provider.getGasPrice()
 
     const tx = await preditionContract.claim(claimablesEpochs, {
-      gasLimit: ethers.utils.hexlify(350000),
+      gasLimit: ethers.utils.hexlify(config.HEXLIFY_SAFE),
       // gasPrice,
       gasPrice: ethers.utils.parseUnits(config.SAFE_GAS_PRICE.toString(), 'gwei').toString(),
       nonce: provider.getTransactionCount(strategie.generated, 'latest'),
@@ -192,7 +192,7 @@ const run = async () => {
       const tx = await preditionContract[betBullOrBear](epoch.toString(), {
         value: ethers.utils.parseEther(amount),
         // nonce: new Date().getTime(),
-        nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+        nonce: strategie.nonce,
         gasPrice: strategie.gasPrice,
         gasLimit: strategie.gasLimit,
         // gasPrice: ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString(),
@@ -245,8 +245,6 @@ const run = async () => {
     // })
     // if (emitter) emitter.off("txPool")
 
-    logger.info(`[INFO] Listenning adresses stopped`)
-
     let betBullCount = strategie.plays.filter((p) => p.betBull)
     let betBearCount = strategie.plays.filter((p) => !p.betBull)
 
@@ -260,16 +258,24 @@ const run = async () => {
     //     .reduce((acc, winRate) => acc + winRate, 0) || 0
     // isBullBetter = parseFloat(isBullBetter).toFixed(2)
 
+    const totalBetsForRound = [...betBullCount, ...betBearCount]
+      .map((p) => +p.player.totalBets)
+      .reduce((acc, num) => acc + num, 0)
+    console.log('🚀 ~ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', totalBetsForRound)
+
     //TODO GUIGUI WIP
     let isBullBetterAdjusted =
       betBullCount
         // .map(p => +p.player.winRate * (+p.player.totalBets / 100))
         .map((p) => {
-          const ratio = (+p.player.totalBets / 100).toString().replace('.', '')
-          const multiplier = `${+p.player.totalBets > 1000 ? '2' : '1'}.${ratio}`
+          // const ratio = (+p.player.totalBets / 100).toString().replace('.', '')
+          // const multiplier = `${+p.player.totalBets > 1000 ? '2' : '1'}.${ratio}`
           // console.log("🚀 ~ ratio", ratio)
           // console.log("🚀 ~ multiplier", multiplier)
-          return +p.player.winRate * parseFloat(multiplier).toFixed(4)
+          // OLD VERSION
+          // return +p.player.winRate * parseFloat(multiplier).toFixed(4)
+          // END OLD VERSION
+
           // return +p.player.winRate * (+p.player.totalBets / 100)
           // return +p.player.winRate / +p.player.totalBets
           // return +p.player.totalBets / +p.player.winRate
@@ -277,6 +283,10 @@ const run = async () => {
           //   +p.player.winRate / +p.player.totalBets +
           //   +p.player.totalBets / +p.player.winRate
           // )
+          // TODO v0.0.4 should have bet bear
+          const newCoeff = parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound))
+          console.log('🚀 ~ BBBBBBBBBBBBBBBBBBBBBBBB ~ newCoeff', newCoeff)
+          return newCoeff
         })
         .reduce((acc, winRate) => acc + winRate, 0) / betBullCount.length || 0
     isBullBetterAdjusted = parseFloat(isBullBetterAdjusted).toFixed(2)
@@ -293,11 +303,13 @@ const run = async () => {
       betBearCount
         // .map(p => +p.player.winRate * (+p.player.totalBets / 100))
         .map((p) => {
-          const ratio = (+p.player.totalBets / 100).toString().replace('.', '')
-          const multiplier = `${+p.player.totalBets > 1000 ? '2' : '1'}.${ratio}`
+          // const ratio = (+p.player.totalBets / 100).toString().replace('.', '')
+          // const multiplier = `${+p.player.totalBets > 1000 ? '2' : '1'}.${ratio}`
           // console.log("🚀 ~ ratio", ratio)
           // console.log("🚀  ~ multiplier", multiplier)
-          return +p.player.winRate * parseFloat(multiplier).toFixed(4)
+          // OLD VERSION
+          // return +p.player.winRate * parseFloat(multiplier).toFixed(4)
+          // END OLD VERSION
           // return +p.player.winRate * (+p.player.totalBets / 100)
           // return +p.player.winRate / +p.player.totalBets
           // return +p.player.totalBets / +p.player.winRate
@@ -305,6 +317,10 @@ const run = async () => {
           //   +p.player.winRate / +p.player.totalBets +
           //   +p.player.totalBets / +p.player.winRate
           // )
+          // TODO v0.0.4 should have bet bear
+          const newCoeff = parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound))
+          console.log('🚀 ~ BBBBBBBBBBBBBBBBBBBBBBBB ~ newCoeff', newCoeff)
+          return newCoeff
         })
         .reduce((acc, winRate) => acc + winRate, 0) / betBearCount.length || 0
     isBearBetterAdjusted = parseFloat(isBearBetterAdjusted).toFixed(2)
@@ -319,25 +335,6 @@ const run = async () => {
     //     user.id
     //   }:${strategie.roundsCount}:${+epoch}] Last game results : lastBullsCount ${lastBullsCount}  lastBearsCount ${lastBearsCount}`
     // )
-
-    logger.info(
-      `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING : betBullCount ${
-        betBullCount.length
-      }, betBearCount ${betBearCount.length} - totalPlayers ${totalPlayers}`
-    )
-
-    logger.info(
-      `[ROUND-${user.id}:${
-        strategie.roundsCount
-      }:${+epoch}] PLAYING : isBullBetterAdjusted ${isBullBetterAdjusted}, isBearBetterAdjusted ${isBearBetterAdjusted} --> isDifferenceAdjustedEfficient ${isDifferenceAdjustedEfficient}`
-    )
-
-    logger.info(
-      `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] (isBullBetter ${Math.round(
-        isBullBetter
-      )}, isBearBetter ${Math.round(isBearBetter)})`
-      // }:${strategie.roundsCount}:${+epoch}] (isBullBetter ${isBullBetter}, isBearBetter ${isBearBetter})`
-    )
 
     // && isDifferenceAdjustedEfficient >= 30
     // if (
@@ -387,7 +384,8 @@ const run = async () => {
     if (
       // isSecureMode &&
       // totalPlayers > 1 &&
-      (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
+      (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
+      // (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
       betBullCount.length >= betBearCount.length &&
       +isBullBetterAdjusted > +isBearBetterAdjusted
       // (+isBullBetterAdjusted > +isBearBetterAdjusted ||
@@ -408,13 +406,14 @@ const run = async () => {
       //   +isBullBetterAdjusted >= 70 ||
       //   lastBearsCount === 0)
     ) {
-      console.log('///////////////////////// BULL /////////////////////////////////')
+      logger.info('///////////////////////// BULL /////////////////////////////////')
       await betRound({ epoch, betBull: true, betAmount: strategie.betAmount })
-      console.log('//////////////////////////////////////////////////////////')
+      logger.info('//////////////////////////////////////////////////////////')
     } else if (
       // isSecureMode &&
       // totalPlayers > 1 &&
-      (totalPlayers > 1 || Math.round(+isBearBetter) >= 57) &&
+      (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
+      // (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
       betBearCount.length >= betBullCount.length &&
       +isBearBetterAdjusted > +isBullBetterAdjusted
       // (+isBearBetterAdjusted > +isBullBetterAdjusted ||
@@ -435,10 +434,29 @@ const run = async () => {
       //   +isBearBetterAdjusted >= 70 ||
       //   lastBullsCount === 0)
     ) {
-      console.log('////////////////////////// BEAR ////////////////////////////////')
+      logger.info('////////////////////////// BEAR ////////////////////////////////')
       await betRound({ epoch, betBull: false, betAmount: strategie.betAmount })
-      console.log('//////////////////////////////////////////////////////////')
+      logger.info('//////////////////////////////////////////////////////////')
     } else logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NOT PLAYING`)
+
+    logger.info(
+      `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING : betBullCount ${
+        betBullCount.length
+      }, betBearCount ${betBearCount.length} - totalPlayers ${totalPlayers}`
+    )
+
+    logger.info(
+      `[ROUND-${user.id}:${
+        strategie.roundsCount
+      }:${+epoch}] PLAYING : isBullBetterAdjusted ${isBullBetterAdjusted}, isBearBetterAdjusted ${isBearBetterAdjusted} --> isDifferenceAdjustedEfficient ${isDifferenceAdjustedEfficient}`
+    )
+
+    logger.info(
+      `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] (isBullBetter ${Math.round(
+        isBullBetter
+      )}, isBearBetter ${Math.round(isBearBetter)})`
+      // }:${strategie.roundsCount}:${+epoch}] (isBullBetter ${isBullBetter}, isBearBetter ${isBearBetter})`
+    )
 
     console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
 
@@ -446,6 +464,7 @@ const run = async () => {
       blocknative.unsubscribe(p.id)
     })
     if (emitter) emitter.off('txPool')
+    logger.info(`[INFO] Listenning adresses stopped`)
   }
 
   const processRound = async (transaction, player) => {
@@ -481,7 +500,6 @@ const run = async () => {
       return
     }
 
-    logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
     // logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash}`)
 
     // TODO DECODE FUNCTION (see pending.js)
@@ -491,6 +509,8 @@ const run = async () => {
     if (!isAlreadyTracked) {
       strategie.plays.push({ betBull, player })
       strategie.playedHashs.push(transaction.hash)
+
+      logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
 
       logger.info(
         `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
@@ -517,14 +537,14 @@ const run = async () => {
     if (emitter) emitter.off('txPool')
 
     strategie.plays = []
+    strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
 
     // players = await loadPlayers({ epoch, orderBy: 'default' })
     players = await loadPlayers({ epoch, orderBy: 'mostActiveLastHour' })
     console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ players BEFORE', players.length)
-    players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
-    // const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
-    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ players AFTER', players.length)
-    // console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ filtereds AFTER', filtereds.length)
+    // players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
+    const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
+    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ filtereds AFTER', filtereds.length)
     // console.log(players)
 
     // TODO test next line, see https://github.com/blocknative/sdk/issues/187
@@ -532,15 +552,42 @@ const run = async () => {
     // blocknative = new BlocknativeSdk(blockNativeOptions)
     await Promise.all(players.map(waitForTransaction))
 
-    const stop = Date.now()
-    const executionTime = parseFloat((stop - start) / 1000).toFixed(2)
-    const secondsLeftUntilNextEpoch = 60 * 5 - executionTime
+    // const stop = Date.now()
+    // const executionTime = parseFloat((stop - start) / 1000).toFixed(2)
+    // const secondsLeftUntilNextEpoch = 60 * 5 - executionTime
+
+    // const minutesLeft = secondsLeftUntilNextEpoch < 60 ? 0 : Math.trunc(secondsLeftUntilNextEpoch / 60)
+    // const secondsLeft = secondsLeftUntilNextEpoch - minutesLeft * 60
+
+    // logger.info(
+    //   `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
+    // )
+
+    // // TODO v0.0.4
+    // // const timer = secondsLeftUntilNextEpoch - 20
+    // // const timer = secondsLeftUntilNextEpoch - 15
+    // // const timer = secondsLeftUntilNextEpoch - 14
+    // const timer = secondsLeftUntilNextEpoch - 12
+
+    const { startTimestamp } = await preditionContract.rounds(epoch)
+
+    const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
+
+    const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
+
+    const minutesLeft = secondsLeftUntilNextEpoch < 60 ? 0 : Math.trunc(secondsLeftUntilNextEpoch / 60)
+    const secondsLeft = secondsLeftUntilNextEpoch - minutesLeft * 60
+
+    logger.info(
+      `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
+    )
 
     // TODO v0.0.4
-    // const timer = secondsLeftUntilNextEpoch - 20
     // const timer = secondsLeftUntilNextEpoch - 15
-    // const timer = secondsLeftUntilNextEpoch - 14
-    const timer = secondsLeftUntilNextEpoch - 13
+    // const timer = secondsLeftUntilNextEpoch - 10
+    // const timer = secondsLeftUntilNextEpoch - 9 // works
+    // const timer = secondsLeftUntilNextEpoch - 8.5 // error
+    const timer = secondsLeftUntilNextEpoch - 8.5
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
 
@@ -562,7 +609,7 @@ const run = async () => {
       }/${strategie.roundsCount} games. Current bankroll amount ${strategie.currentAmount}`
     )
 
-    if (strategie.roundsCount % 5 === 0 && strategie.playedEpochs.length > 1) {
+    if (strategie.roundsCount % 5 === 0 && strategie.playedEpochs.length >= 1) {
       const lastEpochs = [...range(+epoch - 5, +epoch)]
       // await claimPlayedEpochs([...new Set([...lastEpochs, ...strategie.playedEpochs])])
       await claimPlayedEpochs(lastEpochs)
@@ -599,12 +646,12 @@ const run = async () => {
     //   await stopStrategie({ epoch })
     // }
 
-    if (strategie.currentAmount >= isUpdatedStrategie.minWinAmount) {
-      logger.info(
-        `[PLAYING] Take Profit activated for player ${user.id} : current amount ${strategie.currentAmount} --> TAKE PROFIT : ${isUpdatedStrategie.minWinAmount}`
-      )
-      await stopStrategie({ epoch })
-    }
+    // if (strategie.currentAmount >= isUpdatedStrategie.minWinAmount) {
+    //   logger.info(
+    //     `[PLAYING] Take Profit activated for player ${user.id} : current amount ${strategie.currentAmount} --> TAKE PROFIT : ${isUpdatedStrategie.minWinAmount}`
+    //   )
+    //   await stopStrategie({ epoch })
+    // }
 
     if (strategie.errorCount >= 5) {
       logger.error('[PLAYING] Strategie had 5 error consecutively. Stopping it.')
@@ -918,12 +965,14 @@ const run = async () => {
       }:${+currentEpoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    // TODO v0.0.4
+    // TODO v0.0.4 one block = 3000
     // const timer = secondsLeftUntilNextEpoch - 15
-    const timer = secondsLeftUntilNextEpoch - 10
-    // const timer = secondsLeftUntilNextEpoch - 8
+    // const timer = secondsLeftUntilNextEpoch - 10
+    // const timer = secondsLeftUntilNextEpoch - 9 // works
+    // const timer = secondsLeftUntilNextEpoch - 8.5 // error
+    const timer = secondsLeftUntilNextEpoch - 8.5
 
-    if (timer <= 60) {
+    if (timer <= 30) {
       players.map((p) => {
         blocknative.unsubscribe(p.id)
       })
@@ -936,6 +985,7 @@ const run = async () => {
         strategie.roundsCount
       }:${+currentEpoch}] Waiting ${timer} seconds to play epoch ${currentEpoch}`
     )
+
     await sleep(timer * 1000)
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+currentEpoch}] timer ended, playing round`)
@@ -990,7 +1040,8 @@ const run = async () => {
     strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
     strategie.stepBankroll = strategie.startedAmount
     // strategie.betAmount = +(strategie.currentAmount / 15).toFixed(4)
-    strategie.betAmount = config.MIN_BET_AMOUNT
+    // strategie.betAmount = config.MIN_BET_AMOUNT
+    strategie.betAmount = config.BET_AMOUNT
     // strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
     strategie.plays = []
     strategie.playedHashs = []
@@ -999,7 +1050,10 @@ const run = async () => {
 
     strategie.gasPrice = ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString()
     // strategie.gasLimit = ethers.utils.hexlify(250000)
-    strategie.gasLimit = ethers.utils.hexlify(350000)
+
+    // TODO v0.0.4
+    strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_FAST)
+    strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
 
     // TODO REACTIVATE AFTER TEST
     // optimizeBetAmount()
@@ -1025,10 +1079,9 @@ const run = async () => {
     // players = await loadPlayers({ epoch, orderBy: 'default' })
     players = await loadPlayers({ epoch, orderBy: 'mostActiveLastHour' })
     console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ players BEFORE', players.length)
-    players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
-    // const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
-    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ players AFTER', players.length)
-    // console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ filtereds AFTER', filtereds.length)
+    // players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
+    const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
+    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ filtereds AFTER', filtereds.length)
     // console.log(players)
 
     logger.info(`[LISTEN] Starting for user ${strategie.generated} copy ${players.length} players`)

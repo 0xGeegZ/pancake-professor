@@ -9,9 +9,11 @@ module.exports = {
 
   MAX_BET_AMOUNT: 0.1,
   MIN_BET_AMOUNT: 0.001,
+  BET_AMOUNT: 0.025,
 
   SAFE_GAS_PRICE: 5,
   FAST_GAS_PRICE: 6,
+  // FAST_GAS_PRICE: 6,
   // FAST_GAS_PRICE: 7,
 
   TOTAL_BETS_INITIAL: 80,
@@ -19,4 +21,7 @@ module.exports = {
 
   TOTAL_BETS: 80,
   WIN_RATE: 56,
+
+  HEXLIFY_SAFE: 300000,
+  HEXLIFY_FAST: 450000,
 }
