@@ -539,7 +539,7 @@ const run = async () => {
     // const timer = secondsLeftUntilNextEpoch - 20
     // const timer = secondsLeftUntilNextEpoch - 15
     // const timer = secondsLeftUntilNextEpoch - 14
-    const timer = secondsLeftUntilNextEpoch - 13
+    const timer = secondsLeftUntilNextEpoch - 12
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
 
