@@ -526,6 +526,8 @@ const run = async () => {
     console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ filtereds AFTER', filtereds.length)
     // console.log(players)
 
+    // TODO test next line, see https://github.com/blocknative/sdk/issues/187
+    // blocknative.destroy()
     // blocknative = new BlocknativeSdk(blockNativeOptions)
     await Promise.all(players.map(waitForTransaction))
 
@@ -536,7 +538,8 @@ const run = async () => {
     // TODO v0.0.4
     // const timer = secondsLeftUntilNextEpoch - 20
     // const timer = secondsLeftUntilNextEpoch - 15
-    const timer = secondsLeftUntilNextEpoch - 14
+    // const timer = secondsLeftUntilNextEpoch - 14
+    const timer = secondsLeftUntilNextEpoch - 13
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
 
