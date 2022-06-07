@@ -563,8 +563,8 @@ const run = async () => {
 
     if (strategie.roundsCount % 5 === 0 && strategie.playedEpochs.length > 1) {
       const lastEpochs = [...range(+epoch - 5, +epoch)]
-      // await claimPlayedEpochs(lastEpochs)
-      await claimPlayedEpochs([...new Set([...lastEpochs, ...strategie.playedEpochs])])
+      // await claimPlayedEpochs([...new Set([...lastEpochs, ...strategie.playedEpochs])])
+      await claimPlayedEpochs(lastEpochs)
 
       //wait for all transactions to completes
       // avoid error for stop loss if claim a lot of amount
