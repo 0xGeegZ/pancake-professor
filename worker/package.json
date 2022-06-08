@@ -7,6 +7,7 @@
   "license": "MIT",
   "scripts": {
     "launch:multiple:players": "cross-env node -e 'require(\"./server/jobs/strategies/multiple-players/index.js\").run()'",
+    "launch:multiple:favorited:players": "cross-env node -e 'require(\"./server/jobs/strategies/multiple-favorited-players/index.js\").run()'",
     "launch:single:auto": "cross-env node -e 'require(\"./server/jobs/strategies/single-player-auto/index.js\").run()'",
     "launch:strategies": "cross-env node -e 'require(\"./server/scripts/launch-strategies/index.js\").launchStrategies()'",
     "claim:strategies": "cross-env node -e 'require(\"./server/scripts/claim-strategies/index.js\").claimStrategies()'",
@@ -18,6 +19,7 @@
     "dev:pm2": "pm2 start \"yarn run 'stop:strategies' &&  yarn run 'launch:strategies'\"",
     "dev:pm2:auto": "pm2 start \"yarn run 'launch:single:auto'\"",
     "dev:pm2:multi": "pm2 start \"yarn run 'launch:multiple:players'\"",
+    "dev:pm2:favorited": "pm2 start \"yarn run 'launch:multiple:favorited:players'\"",
     "dev:pm2:logs": "(pm2 start \"yarn run 'stop:strategies' &&  yarn run 'launch:strategies'\" &) && yarn run 'pm2:logs'",
     "dev:start": "yarn run 'stop:strategies' &&  (yarn run 'launch:strategies' &)",
     "dev:stop": "killall node",

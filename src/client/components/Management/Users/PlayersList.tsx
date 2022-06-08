@@ -1164,6 +1164,8 @@ const PlayersList: FC = () => {
                                         <b>
                                           {user?.strategies.find((s) => s.player === player.id && s.isActive)
                                             ? t('Copied')
+                                            : user?.strategies.find((s) => s.player === player.id && s.isDeleted)
+                                            ? t('Copy again')
                                             : t('Copy')}
                                         </b>
                                       </Button>
