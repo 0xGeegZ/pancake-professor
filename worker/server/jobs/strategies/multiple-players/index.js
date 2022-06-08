@@ -261,7 +261,7 @@ const run = async () => {
     const totalBetsForRound = [...betBullCount, ...betBearCount]
       .map((p) => +p.player.totalBets)
       .reduce((acc, num) => acc + num, 0)
-    console.log('🚀 ~ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', totalBetsForRound)
+    // console.log('🚀 ~ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA', totalBetsForRound)
 
     //TODO GUIGUI WIP
     let isBullBetterAdjusted =
@@ -285,7 +285,7 @@ const run = async () => {
           // )
           // TODO v0.0.4 should have bet bear
           const newCoeff = parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound))
-          console.log('🚀 ~ BBBBBBBBBBBBBBBBBBBBBBBB ~ newCoeff', newCoeff)
+          // console.log('🚀 ~ BBBBBBBBBBBBBBBBBBBBBBBB ~ newCoeff', newCoeff)
           return newCoeff
         })
         .reduce((acc, winRate) => acc + winRate, 0) / betBullCount.length || 0
@@ -319,7 +319,7 @@ const run = async () => {
           // )
           // TODO v0.0.4 should have bet bear
           const newCoeff = parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound))
-          console.log('🚀 ~ BBBBBBBBBBBBBBBBBBBBBBBB ~ newCoeff', newCoeff)
+          // console.log('🚀 ~ BBBBBBBBBBBBBBBBBBBBBBBB ~ newCoeff', newCoeff)
           return newCoeff
         })
         .reduce((acc, winRate) => acc + winRate, 0) / betBearCount.length || 0

@@ -89,8 +89,8 @@ const checkIfPlaying = (player, lastGame) => {
   //   recentGames >= lastGame.length / 4
   // )
 
-  if (recentGames >= lastGame.length / 4) return player
-  // if (recentGames >= lastGame.length / 6) return player
+  // if (recentGames >= lastGame.length / 4) return player
+  if (recentGames >= lastGame.length / 6) return player
 
   // return player
 }
