@@ -15,7 +15,7 @@ const config = require('../../../providers/pancakeswap/config')
 // const run = async (payload) => {
 const run = async () => {
   const blockNativeOptions = {
-    dappId: process.env.BLOCKNATIVE_API_KEY_KISI,
+    dappId: process.env.BLOCKNATIVE_API_KEY_LimonX,
     networkId: +process.env.BINANCE_SMART_CHAIN_ID,
     ws: WebSocket,
     onerror: (error) => {
@@ -384,7 +384,7 @@ const run = async () => {
     if (
       // isSecureMode &&
       // totalPlayers > 1 &&
-      (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
+      (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
       // (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
       betBullCount.length >= betBearCount.length &&
       +isBullBetterAdjusted > +isBearBetterAdjusted
@@ -412,7 +412,7 @@ const run = async () => {
     } else if (
       // isSecureMode &&
       // totalPlayers > 1 &&
-      (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
+      (totalPlayers > 1 || Math.round(+isBearBetter) >= 57) &&
       // (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
       betBearCount.length >= betBullCount.length &&
       +isBearBetterAdjusted > +isBullBetterAdjusted
@@ -1057,6 +1057,14 @@ const run = async () => {
 
     // TODO REACTIVATE AFTER TEST
     // optimizeBetAmount()
+
+    if (strategie.currentAmount <= config.MIN_BET_AMOUNT) {
+      logger.error(
+        `[LISTEN] Bet amount error, current bankroll is ${strategie.currentAmount} Stopping strategie for now`
+      )
+      await stopStrategie({ epoch })
+      return
+    }
 
     // if (strategie.betAmount <= config.MIN_BET_AMOUNT || strategie.betAmount > config.MAX_BET_AMOUNT) {
     //   logger.error(`[LISTEN] Bet amount error, value is ${strategie.betAmount} Stopping strategie for now`)

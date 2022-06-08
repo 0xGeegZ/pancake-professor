@@ -26,6 +26,7 @@ const claimStrategies = async () => {
   // if()
   const strategies = await prisma.strategie.findMany({
     where: {
+      id: 'cl41i7emy6408v19k7z5dytih',
       // isActive: true,
       // isRunning: false,
       // isError: false,
