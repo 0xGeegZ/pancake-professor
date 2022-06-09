@@ -623,7 +623,7 @@ const run = async () => {
 
     players = await loadPlayers()
 
-    logger.info(`[LISTEN] Starting for user ${strategie.generated} copy ${players.length} players`)
+    logger.info(`[LISTEN] Starting for user ${strategie.generated} copy ${players?.length} players`)
 
     await Promise.all(players.map(waitForTransaction))
 

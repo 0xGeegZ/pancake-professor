@@ -541,7 +541,7 @@ const run = async () => {
 
     // players = await loadPlayers({ epoch, orderBy: 'default' })
     players = await loadPlayers({ epoch, orderBy: 'mostActiveLastHour' })
-    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ players BEFORE', players.length)
+    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ players BEFORE', players?.length)
     // players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
     const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
     console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ filtereds AFTER', filtereds.length)
@@ -1086,7 +1086,7 @@ const run = async () => {
 
     // players = await loadPlayers({ epoch, orderBy: 'default' })
     players = await loadPlayers({ epoch, orderBy: 'mostActiveLastHour' })
-    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ players BEFORE', players.length)
+    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ players BEFORE', players?.length)
     // players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
     const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
     console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ filtereds AFTER', filtereds.length)
