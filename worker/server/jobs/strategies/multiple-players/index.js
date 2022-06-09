@@ -541,12 +541,15 @@ const run = async () => {
 
     // players = await loadPlayers({ epoch, orderBy: 'default' })
     players = await loadPlayers({ epoch, orderBy: 'mostActiveLastHour' })
-    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ players BEFORE', players?.length)
-    // players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
-    const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
-    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ filtereds AFTER', filtereds.length)
-    // console.log(players)
+    const allPlayers = players?.length
+    players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
+    // const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
 
+    logger.info(
+      `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Reloaded ${
+        players?.length
+      }/${allPlayers} players for user ${strategie.generated}`
+    )
     // TODO test next line, see https://github.com/blocknative/sdk/issues/187
     // blocknative.destroy()
     // blocknative = new BlocknativeSdk(blockNativeOptions)
@@ -1086,13 +1089,11 @@ const run = async () => {
 
     // players = await loadPlayers({ epoch, orderBy: 'default' })
     players = await loadPlayers({ epoch, orderBy: 'mostActiveLastHour' })
-    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ players BEFORE', players?.length)
-    // players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
-    const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
-    console.log('🚀 ~ file: index.js ~ line 520 ~ roundStartListenner ~ filtereds AFTER', filtereds.length)
-    // console.log(players)
+    const allPlayers = players?.length
+    players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
+    // const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
 
-    logger.info(`[LISTEN] Starting for user ${strategie.generated} copy ${players.length} players`)
+    logger.info(`[LISTEN] Starting for user ${strategie.generated} copy ${players?.length}/${allPlayers} players`)
 
     await Promise.all(players.map(waitForTransaction))
 

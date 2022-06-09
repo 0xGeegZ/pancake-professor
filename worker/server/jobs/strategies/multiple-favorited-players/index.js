@@ -385,6 +385,11 @@ const run = async () => {
     strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
 
     players = await loadPlayers()
+    logger.info(
+      `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Reloaded ${players?.length} players for user ${
+        strategie.generated
+      }`
+    )
 
     await Promise.all(players.map(waitForTransaction))
 
