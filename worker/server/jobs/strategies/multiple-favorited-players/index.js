@@ -6,6 +6,7 @@ const logger = require('../../../utils/logger')
 const { GraphQLClient, gql } = require('graphql-request')
 const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
 const kelly = require('kelly')
+const { setTimeout } = require('timers/promises')
 
 const { loadPlayer } = require('../../../graphql/loadPlayer')
 
@@ -239,12 +240,13 @@ const run = async () => {
       console.log('🚀  ~ secondsLeft', secondsLeft)
 
       if (secondsLeft >= 15 && isAlreadyRetried === false)
-        await betRound({ epoch, betBull, betAmount, isAlreadyRetried: true })
-      // else {
-      //   strategie.playsCount += 1
-      // }
-      isError = true
-      strategie.errorCount += 1
+        return await betRound({ epoch, betBull, betAmount, isAlreadyRetried: true })
+      else {
+        isError = true
+        strategie.playsCount += 1
+      }
+      // isError = true
+      // strategie.errorCount += 1
     }
   }
 
@@ -266,7 +268,8 @@ const run = async () => {
     let isBullBetterAdjusted =
       betBullCount
         .map((p) => {
-          return parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound))
+          return parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound) * +p.player.winRate)
+          // return parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound))
         })
         .reduce((acc, winRate) => acc + winRate, 0) / betBullCount.length || 0
     isBullBetterAdjusted = parseFloat(isBullBetterAdjusted).toFixed(2)
@@ -277,7 +280,8 @@ const run = async () => {
     let isBearBetterAdjusted =
       betBearCount
         .map((p) => {
-          return parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound))
+          return parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound) * +p.player.winRate)
+          // return parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound))
         })
         .reduce((acc, winRate) => acc + winRate, 0) / betBearCount.length || 0
     isBearBetterAdjusted = parseFloat(isBearBetterAdjusted).toFixed(2)
@@ -334,8 +338,9 @@ const run = async () => {
     //   'strategie.betAmount',
     //   strategie.betAmount
     // )
-    // // console.log('🚀 ~ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC ~ player.winRate', strategie)
-    // prout
+    // console.log('🚀 ~ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC ~ player.winRate', strategie)
+
+    logger.info('//////////////////////////      ////////////////////////////////')
 
     if (strategie.plays.length === 0)
       return logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NO USERS PLAYED`)
@@ -375,6 +380,7 @@ const run = async () => {
         isBullBetter
       )}, isBearBetter ${Math.round(isBearBetter)})`
     )
+    logger.info('//////////////////////////      ////////////////////////////////')
 
     players.map((p) => {
       blocknative.unsubscribe(p.id)
@@ -476,11 +482,13 @@ const run = async () => {
       `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 8.5
+    const timer = secondsLeftUntilNextEpoch - 9
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
 
     await sleep(timer * 1000)
+    // await setTimeout(timer * 1000)
+
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] timer ended, playing round`)
 
     await playRound({ epoch })
@@ -586,7 +594,7 @@ const run = async () => {
       }:${+currentEpoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 8.5
+    const timer = secondsLeftUntilNextEpoch - 9
 
     if (timer <= 30) {
       players.map((p) => {
@@ -603,6 +611,7 @@ const run = async () => {
     )
 
     await sleep(timer * 1000)
+    // await setTimeout(timer * 1000)
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+currentEpoch}] timer ended, playing round`)
 

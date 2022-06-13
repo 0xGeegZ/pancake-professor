@@ -3,10 +3,11 @@ import { finder, range } from 'src/server/utils/utils'
 
 const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_GRAPHQL_ENDPOINT, {
   mode: 'cors',
-  // credentials: 'include',
+  credentials: 'omit',
   headers: {
+    Accept: 'application/json',
     // 'Access-Control-Allow-Origin': 'http://localhost:3000',
-    // "Access-Control-Allow-Origin": "*"
+    // 'Access-Control-Allow-Origin': '*',
     // 'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
     // complete
     // 'Access-Control-Allow-Origin': '*',
