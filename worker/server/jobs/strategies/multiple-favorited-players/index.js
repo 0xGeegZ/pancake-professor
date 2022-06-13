@@ -5,6 +5,7 @@ const prisma = require('../../../db/prisma')
 const logger = require('../../../utils/logger')
 const { GraphQLClient, gql } = require('graphql-request')
 const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
+const kelly = require('kelly')
 
 const { loadPlayer } = require('../../../graphql/loadPlayer')
 
@@ -18,7 +19,7 @@ const run = async () => {
   const strategyId = 'cl460tkxr9683os9kpmrv9yki'
 
   const blockNativeOptions = {
-    dappId: process.env.BLOCKNATIVE_API_KEY_KISI,
+    dappId: process.env.BLOCKNATIVE_API_KEY_LimonX,
     networkId: +process.env.BINANCE_SMART_CHAIN_ID,
     ws: WebSocket,
     onerror: (error) => {
@@ -66,21 +67,40 @@ const run = async () => {
     return await Promise.all(favorites.map((favorite) => loadPlayer(favorite.player)))
   }
 
-  const optimizeBetAmount = () => {
-    /* OPTIMIZE STRATEGIE BET AMOUNT */
-    if (strategie.currentAmount > strategie.stepBankroll * 1.2) {
-      const newBetAmount = parseFloat(strategie.betAmount * 1.1).toFixed(4)
-      logger.info(`[OPTIMIZE] Increasing bet amount from ${strategie.betAmount} to ${newBetAmount}`)
-      strategie.betAmount = newBetAmount
-      strategie.stepBankroll = strategie.currentAmount
+  const calculateBetAmount = () => {
+    let newBetAmount = 0.0
+    if (strategie.isTrailing) {
+      newBetAmount = parseFloat((strategie.startedAmount * strategie.betAmountPercent) / 100).toFixed(4)
+    } else {
+      newBetAmount = parseFloat((strategie.currentAmount * strategie.betAmountPercent) / 100).toFixed(4)
     }
 
-    if (strategie.currentAmount < strategie.stepBankroll / 1.2) {
-      const newBetAmount = parseFloat(strategie.betAmount / 1.1).toFixed(4)
-      logger.info(`[OPTIMIZE] Decreasing bet amount from ${strategie.betAmount} to ${newBetAmount}`)
-      strategie.betAmount = newBetAmount
-      strategie.stepBankroll = strategie.currentAmount
-    }
+    logger.info(
+      `[CALCULATE_BET_AMOUT] isTrailing ${strategie.isTrailing} bet amount is ${newBetAmount} : currentBankroll ${strategie.currentAmount} & betAmount ${strategie.betAmountPercent}%`
+    )
+
+    if (newBetAmount < config.MIN_BET_AMOUNT) newBetAmount = config.MIN_BET_AMOUNT
+
+    if (newBetAmount > config.MAX_BET_AMOUNT) newBetAmount = config.MAX_BET_AMOUNT
+
+    strategie.betAmount = newBetAmount
+
+    // OLD OPTIMIZATION --> TODO : Try to integrate in new approche
+
+    /* OPTIMIZE STRATEGIE BET AMOUNT */
+    // if (strategie.currentAmount > strategie.stepBankroll * 1.2) {
+    //   const newBetAmount = parseFloat(strategie.betAmount * 1.1).toFixed(4)
+    //   logger.info(`[OPTIMIZE] Increasing bet amount from ${strategie.betAmount} to ${newBetAmount}`)
+    //   strategie.betAmount = newBetAmount
+    //   strategie.stepBankroll = strategie.currentAmount
+    // }
+
+    // if (strategie.currentAmount < strategie.stepBankroll / 1.2) {
+    //   const newBetAmount = parseFloat(strategie.betAmount / 1.1).toFixed(4)
+    //   logger.info(`[OPTIMIZE] Decreasing bet amount from ${strategie.betAmount} to ${newBetAmount}`)
+    //   strategie.betAmount = newBetAmount
+    //   strategie.stepBankroll = strategie.currentAmount
+    // }
     /* OPTIMIZE STRATEGIE BET AMOUNT */
   }
 
@@ -231,9 +251,6 @@ const run = async () => {
   const playRound = async ({ epoch }) => {
     logger.info(`********** [ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING **********`)
 
-    if (strategie.plays.length === 0)
-      return logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NO USERS PLAYED`)
-
     let betBullCount = strategie.plays.filter((p) => p.betBull)
     let betBearCount = strategie.plays.filter((p) => !p.betBull)
 
@@ -269,6 +286,59 @@ const run = async () => {
       +isBullBetterAdjusted > +isBearBetterAdjusted
         ? +isBullBetterAdjusted - +isBearBetterAdjusted
         : +isBearBetterAdjusted - +isBullBetterAdjusted
+
+    // TODO 0.0.4 : Calculate KELLY CRITERION bet value
+    // const { bullAmount, bearAmount } = await preditionContract.rounds(epoch)
+
+    // const ratingUp = (
+    //   1 +
+    //   parseFloat(ethers.utils.formatEther(bearAmount)) / parseFloat(ethers.utils.formatEther(bullAmount))
+    // ).toFixed(2)
+    // const ratingDown = (
+    //   1 +
+    //   parseFloat(ethers.utils.formatEther(bullAmount)) / parseFloat(ethers.utils.formatEther(bearAmount))
+    // ).toFixed(2)
+    // // kelly(b, p)
+    // // b is the net odds received on the wager
+    // // p is the probability of winning,
+    // // returns the fraction of the current bankroll (as a Number).
+    // const kellyCriterionBull = kelly(ratingUp, 0.5)
+    // const kellyCriterionBear = kelly(ratingDown, 0.5)
+
+    // const kellyBetAmountBull =
+    //   kellyCriterionBull > 0.15 || kellyCriterionBull < 0
+    //     ? strategie.betAmount
+    //     : strategie.currentAmount * kellyCriterionBull
+    // const kellyBetAmountBear =
+    //   kellyCriterionBear > 0.15 || kellyCriterionBear < 0
+    //     ? strategie.betAmount
+    //     : strategie.currentAmount * kellyCriterionBear
+
+    // console.log(
+    //   '🚀 ~ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ~ kellyCriterionBull (%)',
+    //   kellyCriterionBull,
+    //   'ratingUp',
+    //   ratingUp,
+    //   'kellyBetAmountBull',
+    //   kellyBetAmountBull,
+    //   'strategie.betAmount',
+    //   strategie.betAmount
+    // )
+    // console.log(
+    //   '🚀 ~ BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB ~ kellyCriterionBear (%)',
+    //   kellyCriterionBear,
+    //   'ratingDown',
+    //   ratingDown,
+    //   'kellyBetAmountBear',
+    //   kellyBetAmountBear,
+    //   'strategie.betAmount',
+    //   strategie.betAmount
+    // )
+    // // console.log('🚀 ~ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC ~ player.winRate', strategie)
+    // prout
+
+    if (strategie.plays.length === 0)
+      return logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NO USERS PLAYED`)
 
     if (
       (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
@@ -381,15 +451,15 @@ const run = async () => {
     })
     if (emitter) emitter.off('txPool')
 
-    strategie.plays = []
-    strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
-
     players = await loadPlayers()
     logger.info(
       `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Reloaded ${players?.length} players for user ${
         strategie.generated
       }`
     )
+
+    strategie.plays = []
+    strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
 
     await Promise.all(players.map(waitForTransaction))
 
@@ -434,10 +504,11 @@ const run = async () => {
 
       await sleep(10 * 1000)
       strategie.playedEpochs = []
+      strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
     }
 
     // TODO REACTIVATE AFTER TEST
-    // optimizeBetAmount()
+    calculateBetAmount()
 
     const isUpdatedStrategie = await prisma.strategie.update({
       where: { id: strategie.id },
@@ -470,17 +541,17 @@ const run = async () => {
       await stopStrategie({ epoch })
     }
 
-    // if (isUpdatedStrategie.isNeedRestart) {
-    //   logger.error('[PLAYING] Strategie need to be restarted.')
-    //   await prisma.strategie.update({
-    //     where: { id: strategie.id },
-    //     data: {
-    //       isNeedRestart: false,
-    //     },
-    //   })
-    //   logger.error('[PLAYING] RESTARTING STRATEGIE')
-    //   process.exit(0)
-    // }
+    if (isUpdatedStrategie.isNeedRestart) {
+      logger.error('[PLAYING] Strategie need to be restarted.')
+      await prisma.strategie.update({
+        where: { id: strategie.id },
+        data: {
+          isNeedRestart: false,
+        },
+      })
+      logger.error('[PLAYING] RESTARTING STRATEGIE')
+      process.exit(0)
+    }
 
     // if (!isUpdatedStrategie.isActive || isUpdatedStrategie.isError || isUpdatedStrategie.isDeleted) {
     //   logger.error('[PLAYING] Strategie was updated by user (stopped or deleted) and need to be stoped.')
@@ -583,10 +654,6 @@ const run = async () => {
     const initialBankrollBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
     strategie.stepBankroll = strategie.startedAmount
-    // strategie.betAmount = +(strategie.currentAmount / 15).toFixed(4)
-    strategie.betAmount = config.MIN_BET_AMOUNT
-    // strategie.betAmount = config.BET_AMOUNT
-    // strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
     strategie.plays = []
     strategie.playedHashs = []
     strategie.playedEpochs = []
@@ -598,7 +665,11 @@ const run = async () => {
     strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
 
     // TODO REACTIVATE AFTER TEST
-    // optimizeBetAmount()
+    calculateBetAmount()
+    // strategie.betAmount = +(strategie.currentAmount / 15).toFixed(4)
+    // strategie.betAmount = config.MIN_BET_AMOUNT
+    // strategie.betAmount = config.BET_AMOUNT
+    // strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
 
     if (strategie.currentAmount <= config.MIN_BET_AMOUNT) {
       logger.error(

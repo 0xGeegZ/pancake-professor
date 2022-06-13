@@ -299,7 +299,7 @@ function FollowPlayerForm({ user, handleCloseCreateForm, player }) {
       return
     }
 
-    if (+takeProfit <= 110) {
+    if (+takeProfit < 110) {
       enqueueSnackbar(t('Take Profit need to be greather than 110%.'), {
         variant: 'error',
       })
