@@ -220,7 +220,7 @@ const run = async () => {
       })
 
       await tx.wait()
-      logger.error(`[PLAYING] Transaction OK`)
+      logger.info(`[PLAYING] Transaction OK`)
 
       strategie.playedEpochs.push(epoch.toString())
       strategie.playsCount += 1
@@ -311,25 +311,17 @@ const run = async () => {
     const kellyCriterionBear = (ratingDown * currentWinRate - (1 - currentWinRate)) / ratingDown
     // const kellyCriterionBear = (ratingDown * 0.55 - 0.45) / ratingDown
 
-    const kellyBetAmountBull = strategie.currentAmount * (kellyCriterionBull / 3)
+    const kellyBetAmountBull = strategie.currentAmount * (kellyCriterionBull / 4)
 
-    const kellyBetAmountBear = strategie.currentAmount * (kellyCriterionBear / 3)
+    const kellyBetAmountBear = strategie.currentAmount * (kellyCriterionBear / 4)
 
     const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
-
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
-
-    // const minutesLeft = secondsLeftUntilNextEpoch < 60 ? 0 : Math.trunc(secondsLeftUntilNextEpoch / 60)
-    // const secondsLeft = secondsLeftUntilNextEpoch - minutesLeft * 60
-
-    // logger.info(
-    //   `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
-    // )
 
     const timer = secondsLeftUntilNextEpoch - 7
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
-
+    // TODO : Temporise if timer is more than one second
     // // kelly(b, p)
     // // b is the net odds received on the wager
     // // p is the probability of winning,
