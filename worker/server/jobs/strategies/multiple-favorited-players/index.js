@@ -5,7 +5,6 @@ const prisma = require('../../../db/prisma')
 const logger = require('../../../utils/logger')
 const { GraphQLClient, gql } = require('graphql-request')
 const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
-const kelly = require('kelly')
 const { setTimeout } = require('timers/promises')
 
 const { loadPlayer } = require('../../../graphql/loadPlayer')
@@ -255,6 +254,17 @@ const run = async () => {
   const playRound = async ({ epoch }) => {
     logger.info(`********** [ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING **********`)
 
+    // TODO 0.0.4 : Calculate KELLY CRITERION bet value
+    // https://dqydj.com/kelly-criterion-bet-calculator/
+    const { bullAmount, bearAmount, startTimestamp } = await preditionContract.rounds(epoch)
+
+    const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
+    const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
+
+    const timer = secondsLeftUntilNextEpoch - 7
+
+    logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
+
     let betBullCount = strategie.plays.filter((p) => p.betBull)
     let betBearCount = strategie.plays.filter((p) => !p.betBull)
 
@@ -293,10 +303,6 @@ const run = async () => {
         ? +isBullBetterAdjusted - +isBearBetterAdjusted
         : +isBearBetterAdjusted - +isBullBetterAdjusted
 
-    // TODO 0.0.4 : Calculate KELLY CRITERION bet value
-    // https://dqydj.com/kelly-criterion-bet-calculator/
-    const { bullAmount, bearAmount, startTimestamp } = await preditionContract.rounds(epoch)
-
     const ratingUp = (
       1 +
       parseFloat(ethers.utils.formatEther(bearAmount)) / parseFloat(ethers.utils.formatEther(bullAmount))
@@ -317,31 +323,7 @@ const run = async () => {
     const kellyCriterionBear = (ratingDown * averageWinRateBear - (1 - averageWinRateBear)) / ratingDown
 
     const kellyBetAmountBull = strategie.startedAmount * (kellyCriterionBull / 4)
-
     const kellyBetAmountBear = strategie.startedAmount * (kellyCriterionBear / 4)
-
-    const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
-    const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
-
-    const timer = secondsLeftUntilNextEpoch - 7
-
-    logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
-    // TODO : Temporise if timer is more than one second
-    // // kelly(b, p)
-    // // b is the net odds received on the wager
-    // // p is the probability of winning,
-    // // returns the fraction of the current bankroll (as a Number).
-    // const kellyCriterionBull = kelly(ratingUp, 0.5)
-    // const kellyCriterionBear = kelly(ratingDown, 0.5)
-
-    // const kellyBetAmountBull =
-    //   kellyCriterionBull > 0.15 || kellyCriterionBull < 0
-    //     ? strategie.betAmount
-    //     : strategie.currentAmount * kellyCriterionBull
-    // const kellyBetAmountBear =
-    //   kellyCriterionBear > 0.15 || kellyCriterionBear < 0
-    //     ? strategie.betAmount
-    //     : strategie.currentAmount * kellyCriterionBear
 
     console.log(
       '🚀 ~ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ~ kellyCriterionBull (%)',
@@ -368,7 +350,6 @@ const run = async () => {
       strategie.betAmount
     )
     // console.log('🚀 ~ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC ~ player.winRate', strategie)
-
     logger.info('//////////////////////////      ////////////////////////////////')
 
     if (strategie.plays.length === 0)
