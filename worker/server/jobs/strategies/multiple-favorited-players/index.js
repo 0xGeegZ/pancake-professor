@@ -20,7 +20,7 @@ const run = async () => {
   const strategyId = 'cl460tkxr9683os9kpmrv9yki'
 
   const blockNativeOptions = {
-    dappId: process.env.BLOCKNATIVE_API_KEY_KISI,
+    dappId: process.env.BLOCKNATIVE_API_KEY_LimonX,
     networkId: +process.env.BINANCE_SMART_CHAIN_ID,
     ws: WebSocket,
     onerror: (error) => {
@@ -306,14 +306,19 @@ const run = async () => {
       parseFloat(ethers.utils.formatEther(bullAmount)) / parseFloat(ethers.utils.formatEther(bearAmount))
     ).toFixed(2)
 
-    const currentWinRate = 0.55
-    const kellyCriterionBull = (ratingUp * currentWinRate - (1 - currentWinRate)) / ratingUp
-    const kellyCriterionBear = (ratingDown * currentWinRate - (1 - currentWinRate)) / ratingDown
-    // const kellyCriterionBear = (ratingDown * 0.55 - 0.45) / ratingDown
+    // const currentWinRate = 0.55
+    const averageWinRateBull = isBullBetter / 100
+    const averageWinRateBear = isBearBetter / 100
 
-    const kellyBetAmountBull = strategie.currentAmount * (kellyCriterionBull / 4)
+    // const kellyCriterionBull = (ratingUp * currentWinRate - (1 - currentWinRate)) / ratingUp
+    // const kellyCriterionBear = (ratingDown * currentWinRate - (1 - currentWinRate)) / ratingDown
 
-    const kellyBetAmountBear = strategie.currentAmount * (kellyCriterionBear / 4)
+    const kellyCriterionBull = (ratingUp * averageWinRateBull - (1 - averageWinRateBull)) / ratingUp
+    const kellyCriterionBear = (ratingDown * averageWinRateBear - (1 - averageWinRateBear)) / ratingDown
+
+    const kellyBetAmountBull = strategie.startedAmount * (kellyCriterionBull / 4)
+
+    const kellyBetAmountBear = strategie.startedAmount * (kellyCriterionBear / 4)
 
     const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
@@ -343,8 +348,9 @@ const run = async () => {
       kellyCriterionBull,
       'ratingUp',
       ratingUp,
+      'averageWinRateBull',
+      averageWinRateBull,
       'kellyBetAmountBull',
-      // kellyCriterionBull / 3,
       kellyBetAmountBull,
       'strategie.betAmount',
       strategie.betAmount
@@ -354,8 +360,9 @@ const run = async () => {
       kellyCriterionBear,
       'ratingDown',
       ratingDown,
+      'averageWinRateBear',
+      averageWinRateBear,
       'kellyBetAmountBear',
-      // kellyCriterionBear / 3,
       kellyBetAmountBear,
       'strategie.betAmount',
       strategie.betAmount

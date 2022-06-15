@@ -8,12 +8,12 @@ import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import LoadingButton from '@mui/lab/LoadingButton'
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
+// import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
 import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt'
 
 import ThumbDownIcon from '@mui/icons-material/ThumbDown'
-import ThumbUpIcon from '@mui/icons-material/ThumbUp'
-import StickyNote2Icon from '@mui/icons-material/StickyNote2'
+// import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+// import StickyNote2Icon from '@mui/icons-material/StickyNote2'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Alert,

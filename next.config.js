@@ -37,11 +37,11 @@ module.exports = withImages(
     //   // !! WARN !!
     //   ignoreBuildErrors: true,
     // },
-    // eslint: {
-    //   // Warning: This allows production builds to successfully complete even if
-    //   // your project has ESLint errors.
-    //   ignoreDuringBuilds: true,
-    // },
+    eslint: {
+      // Warning: This allows production builds to successfully complete even if
+      // your project has ESLint errors.
+      ignoreDuringBuilds: true,
+    },
     // Necessary for next-on-netlify to work correctly
     target: process.env.NETLIFY ? 'experimental-serverless-trace' : undefined,
     webpackDevMiddleware: (pconfig) => {
