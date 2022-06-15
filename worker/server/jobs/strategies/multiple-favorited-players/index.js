@@ -306,9 +306,9 @@ const run = async () => {
       parseFloat(ethers.utils.formatEther(bullAmount)) / parseFloat(ethers.utils.formatEther(bearAmount))
     ).toFixed(2)
 
-    // const currentWinRate = 0.55
-    const averageWinRateBull = isBullBetter / 100
-    const averageWinRateBear = isBearBetter / 100
+    const currentWinRate = 0.55
+    const averageWinRateBull = isBullBetter ? isBullBetter / 100 : currentWinRate
+    const averageWinRateBear = isBearBetter ? isBearBetter / 100 : currentWinRate
 
     // const kellyCriterionBull = (ratingUp * currentWinRate - (1 - currentWinRate)) / ratingUp
     // const kellyCriterionBear = (ratingDown * currentWinRate - (1 - currentWinRate)) / ratingDown
