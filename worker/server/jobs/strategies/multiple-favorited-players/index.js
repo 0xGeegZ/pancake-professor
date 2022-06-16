@@ -20,27 +20,26 @@ const run = async () => {
 
   const keys = [
     process.env.BLOCKNATIVE_API_KEY,
+    process.env.BLOCKNATIVE_API_KEY_KISI,
     process.env.BLOCKNATIVE_API_KEY_GLANUM,
     process.env.BLOCKNATIVE_API_KEY_LimonX,
-    process.env.BLOCKNATIVE_API_KEY_KISI,
   ]
-  let key = keys[1]
+  let key = keys[0]
 
   const onBlockNativeError = (error) => {
-    logger.error(error)
+    logger.error(`[BLOCKNATIVE] ERROR : ${error}`)
     if (
       error.message ===
       'You have reached your event rate limit for today. See explorer.blocknative.com/account for details.'
     ) {
       const index = keys.indexOf(key)
       let newIndex = index
-      if (index >= keys.length) newIndex = 0
+      if (index >= keys.length - 1) newIndex = 0
       else newIndex += 1
 
       key = keys[newIndex]
       logger.error(`[BLOCKNATIVE] Key rate limit for today, using another key. old key ${index}, new index ${newIndex}`)
       blockNativeOptions = {
-        // dappId: process.env.BLOCKNATIVE_API_KEY_GLANUM,
         dappId: key,
         networkId: +process.env.BINANCE_SMART_CHAIN_ID,
         ws: WebSocket,
@@ -711,7 +710,7 @@ const run = async () => {
 
     strategie.gasPrice = ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString()
 
-    strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_FAST)
+    strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_SAFE)
     strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
 
     // TODO REACTIVATE AFTER TEST
