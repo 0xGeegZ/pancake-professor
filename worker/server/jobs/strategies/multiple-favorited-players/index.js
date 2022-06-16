@@ -19,7 +19,7 @@ const run = async () => {
   const strategyId = 'cl460tkxr9683os9kpmrv9yki'
 
   const blockNativeOptions = {
-    dappId: process.env.BLOCKNATIVE_API_KEY_GLANUM,
+    dappId: process.env.BLOCKNATIVE_API_KEY,
     networkId: +process.env.BINANCE_SMART_CHAIN_ID,
     ws: WebSocket,
     onerror: (error) => {
