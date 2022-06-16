@@ -18,14 +18,45 @@ const run = async () => {
   const userId = 'cl3n5i8vj0011a59k4fyf2k5h'
   const strategyId = 'cl460tkxr9683os9kpmrv9yki'
 
-  const blockNativeOptions = {
-    dappId: process.env.BLOCKNATIVE_API_KEY,
+  const keys = [
+    process.env.BLOCKNATIVE_API_KEY,
+    process.env.BLOCKNATIVE_API_KEY_GLANUM,
+    process.env.BLOCKNATIVE_API_KEY_LimonX,
+    process.env.BLOCKNATIVE_API_KEY_KISI,
+  ]
+  let key = keys[1]
+
+  const onBlockNativeError = (error) => {
+    logger.error(error)
+    if (
+      error.message ===
+      'You have reached your event rate limit for today. See explorer.blocknative.com/account for details.'
+    ) {
+      const index = keys.indexOf(key)
+      let newIndex = index
+      if (index >= keys.length) newIndex = 0
+      else newIndex += 1
+
+      key = keys[newIndex]
+      logger.error(`[BLOCKNATIVE] Key rate limit for today, using another key. old key ${index}, new index ${newIndex}`)
+      blockNativeOptions = {
+        // dappId: process.env.BLOCKNATIVE_API_KEY_GLANUM,
+        dappId: key,
+        networkId: +process.env.BINANCE_SMART_CHAIN_ID,
+        ws: WebSocket,
+        onerror: onBlockNativeError,
+      }
+      blocknative.destroy()
+      blocknative = new BlocknativeSdk(blockNativeOptions)
+    }
+  }
+
+  let blockNativeOptions = {
+    // dappId: process.env.BLOCKNATIVE_API_KEY_GLANUM,
+    dappId: key,
     networkId: +process.env.BINANCE_SMART_CHAIN_ID,
     ws: WebSocket,
-    onerror: (error) => {
-      // You have reached your event rate limit for today. See explorer.blocknative.com/account for details.
-      logger.error(error)
-    },
+    onerror: onBlockNativeError,
   }
 
   const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
