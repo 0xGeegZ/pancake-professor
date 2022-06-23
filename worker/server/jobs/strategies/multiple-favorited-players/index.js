@@ -20,14 +20,14 @@ const run = async () => {
 
   const keys = [
     process.env.BLOCKNATIVE_API_KEY,
-    process.env.BLOCKNATIVE_API_KEY_KISI,
-    process.env.BLOCKNATIVE_API_KEY_GLANUM,
-    process.env.BLOCKNATIVE_API_KEY_LimonX,
+    // process.env.BLOCKNATIVE_API_KEY_KISI,
+    // process.env.BLOCKNATIVE_API_KEY_GLANUM,
+    // process.env.BLOCKNATIVE_API_KEY_LimonX,
   ]
   let key = keys[0]
 
   const onBlockNativeError = (error) => {
-    logger.error(`[BLOCKNATIVE] ERROR : ${error}`)
+    logger.error(`[BLOCKNATIVE] ERROR : ${error.message}`)
     if (
       error.message ===
       'You have reached your event rate limit for today. See explorer.blocknative.com/account for details.'
