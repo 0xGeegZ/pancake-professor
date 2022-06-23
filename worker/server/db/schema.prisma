@@ -7,6 +7,24 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum FavoriteType {
+  LIKE
+  DISLIKE
+}
+
+//TODO
+model Favorite {
+  id         String    @id @default(cuid())
+  createdAt  DateTime  @default(now())
+  modifiedAt DateTime  @default(now())
+  player     String    
+  type       FavoriteType
+  comment    String?
+  note       Int?
+  user       User      @relation(fields: [userId], references: [id])
+  userId     String
+}
+
 model User {
   id         String    @id @default(cuid())
   registeredAt  DateTime  @default(now())
@@ -18,34 +36,44 @@ model User {
   generated  String    @unique
   private    String    @unique
   name       String?
-  isActivated   Boolean  @default(false)
-  strategies Strategie[]
+  isActivated Boolean  @default(false)
+  strategies  Strategie[]
+  favorites   Favorite[] //TODO
   projects Project[]
-  referrals  User[]    @relation("UserToUser")
-  User       User?     @relation("UserToUser", fields: [userId], references: [id])
-  userId     String?
+  referrals   User[]    @relation("UserToUser")
+  User        User?     @relation("UserToUser", fields: [userId], references: [id])
+  userId      String?
 }
 
 model Strategie {
   id         String   @id @default(cuid())
   createdAt  DateTime @default(now())
   modifiedAt DateTime @default(now())
+  name       String?   @default("") //TODO
+  color      String?   @default("") //TODO
   player     String
-  generated  String    @unique
-  private    String    @unique
+  generated  String   @unique
+  private    String   @unique
+  betAmountPercent  Float @default(0.0) //TODO
+  increaseAmount  Int? @default(0) //TODO
+  decreaseAmount  Int? @default(0) //TODO
   startedAmount   Float
   currentAmount   Float
-  maxLooseAmount  Float @default(0.0)
-  minWinAmount    Float @default(0.0)
-  roundsCount          Int @default(0) 
-  playsCount           Int @default(0)
+  maxLooseAmount  Float? @default(0.0) //TODO DELETE AFTER UPDATE
+  minWinAmount    Float? @default(0.0) //TODO DELETE AFTER UPDATE
+  stopLoss        Int? @default(0) //TODO
+  takeProfit      Int? @default(0) //TODO
+  isTrailing      Boolean @default(false) //TODO
+  roundsCount     Int @default(0) 
+  playsCount      Int @default(0)
   isActive        Boolean @default(true)
   isDeleted       Boolean @default(false)
-  isError       Boolean @default(false)
+  isError         Boolean @default(false)
   isRunning       Boolean @default(false)
-  isNeedRestart       Boolean @default(false)
-  user            User         @relation(fields: [userId], references: [id])
+  isNeedRestart   Boolean @default(false)
+  user            User    @relation(fields: [userId], references: [id])
   userId          String
+  history         String[] //TODO
 }
 
 model Project {

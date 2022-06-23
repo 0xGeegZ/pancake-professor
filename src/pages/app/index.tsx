@@ -137,7 +137,8 @@ function Dashboard() {
             <ActiveStrategiesOverview strategies={user?.strategies} />
           </Grid> */}
           <Grid item xs={12}>
-            <ActiveStrategies strategies={user?.strategies} fetching={fetching} />
+            <ActiveStrategies user={user} fetching={fetching} />
+            {/* <ActiveStrategies strategies={user?.strategies} favorites={user?.favorites} fetching={fetching} /> */}
           </Grid>
           {/* <Grid item md={6} xs={12}>
             <AllStrategiesResume />

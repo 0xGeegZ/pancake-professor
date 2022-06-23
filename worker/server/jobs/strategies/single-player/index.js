@@ -1,42 +1,32 @@
 const BlocknativeSdk = require('bnc-sdk')
 const { ethers } = require('ethers')
 const WebSocket = require('ws')
-const { sleep } = require('../../utils/utils')
+const { PromisePool } = require('@supercharge/promise-pool')
 
-const { PREDICTION_CONTRACT_ABI } = require('../../../../src/contracts/abis/pancake-prediction-abi-v3')
-// const { PREDICTION_CONTRACT_ABI } = require('../../../../src/contracts/abis/pancake-prediction-abi-v3')
+const prisma = require('../../../db/prisma')
+const logger = require('../../../utils/logger')
 
-const { decrypt } = require('../../utils/crpyto')
-const prisma = require('../../db/prisma')
-const logger = require('../../utils/logger')
-// import { PREDICTION_CONTRACT_ABI } from 'src/contracts/abis/pancake-prediction-abi-v3'
-// import { decrypt } from 'src/server/utils/crpyto'
-// import logger from 'src/server/utils/logger'
-const BET_BULL_METHOD_ID = '0x57fb096f'
-const BET_BEAR_METHOD_ID = '0xaa6b873a'
-const CLAIM_BEAR_METHOD_ID = '0x6ba4c138'
+const { sleep, range } = require('../../../utils/utils')
+const { decrypt } = require('../../../utils/crpyto')
 
-const MAX_BET_AMOUNT = 0.1
-const MIN_BET_AMOUNT = 0.001
+const config = require('../../../providers/pancakeswap/config')
 
-const SAFE_GAS_PRICE = 6
-const FAST_GAS_PRICE = 6
-// const FAST_GAS_PRICE = 8.5
+const run = async (payload) => {
+  // multiples providers
+  const JSON_RPC_PROVIDERS = [
+    // 'https://bsc-dataseed.binance.org/',
+    'https://bsc-dataseed1.defibit.io/',
+    'https://bsc-dataseed1.ninicoin.io/',
+  ]
+  const providers = JSON_RPC_PROVIDERS.map((provider) => new ethers.providers.JsonRpcProvider(provider))
+  const provider = new ethers.providers.FallbackProvider(
+    providers.map((provider, index) => {
+      return { provider: provider, stallTimeout: 500 + 500 * index, priority: index + 1 }
+    })
+  )
 
-let range = (start, end) => Array.from(Array(end + 1).keys()).slice(start)
-
-const launchStrategie = async (payload) => {
-  const options = {
-    dappId: process.env.BLOCKNATIVE_API_KEY,
-    networkId: 56,
-    ws: WebSocket,
-    onerror: (error) => {
-      logger.error(error)
-    },
-  }
-
-  // const provider = new ethers.providers.JsonRpcProvider(process.env.QUICK_NODE_RCP_PROVIDER)
-  const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
+  // single provider
+  // const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
 
   const { user, strategie } = payload
   let preditionContract
@@ -48,10 +38,147 @@ const launchStrategie = async (payload) => {
 
   if (!user) throw new Error('No user given')
   if (!strategie) throw new Error('No strategie given')
-  if (strategie.running) throw new Error('Strategie is running')
+  if (strategie.running) throw new Error('Strategie is already running')
 
-  logger.info(`[LAUNCHING] Job launching job for strategie ${strategie.id} and address ${strategie.generated}`)
-  const blocknative = new BlocknativeSdk(options)
+  logger.info(
+    `[LAUNCHING] Job launching job SINGLE PLAYER for strategie ${strategie.id} and address ${strategie.generated}`
+  )
+
+  const blockNativeOptions = {
+    dappId: process.env.BLOCKNATIVE_API_KEY,
+    networkId: +process.env.BINANCE_SMART_CHAIN_ID,
+    ws: WebSocket,
+    onerror: (error) => {
+      logger.error(error)
+      // TODO v0.0.3 restart strategie
+      logger.error('[PLAYING] Blocknative listenner error', error.toString())
+      process.exit(0)
+      // await stopStrategie({ epoch: -1 })
+    },
+  }
+  const blocknative = new BlocknativeSdk(blockNativeOptions)
+
+  const calculateBetAmount = () => {
+    let newBetAmount = 0.0
+    if (strategie.isTrailing) {
+      newBetAmount = parseFloat((strategie.startedAmount * strategie.betAmountPercent) / 100).toFixed(4)
+    } else {
+      newBetAmount = parseFloat((strategie.currentAmount * strategie.betAmountPercent) / 100).toFixed(4)
+    }
+
+    logger.info(
+      `[CALCULATE_BET_AMOUT] isTrailing ${strategie.isTrailing} bet amount is ${newBetAmount} : currentBankroll ${strategie.currentAmount} & betAmount ${strategie.betAmountPercent}%`
+    )
+
+    if (newBetAmount < config.MIN_BET_AMOUNT) newBetAmount = config.MIN_BET_AMOUNT
+
+    if (newBetAmount > config.MAX_BET_AMOUNT) newBetAmount = config.MAX_BET_AMOUNT
+
+    strategie.betAmount = newBetAmount
+
+    // OLD OPTIMIZATION --> TODO : Try to integrate in new approche
+
+    /* OPTIMIZE STRATEGIE BET AMOUNT */
+    // if (strategie.currentAmount > strategie.stepBankroll * 1.2) {
+    //   const newBetAmount = parseFloat(strategie.betAmount * 1.1).toFixed(4)
+    //   logger.info(`[OPTIMIZE] Increasing bet amount from ${strategie.betAmount} to ${newBetAmount}`)
+    //   strategie.betAmount = newBetAmount
+    //   strategie.stepBankroll = strategie.currentAmount
+    // }
+
+    // if (strategie.currentAmount < strategie.stepBankroll / 1.2) {
+    //   const newBetAmount = parseFloat(strategie.betAmount / 1.1).toFixed(4)
+    //   logger.info(`[OPTIMIZE] Decreasing bet amount from ${strategie.betAmount} to ${newBetAmount}`)
+    //   strategie.betAmount = newBetAmount
+    //   strategie.stepBankroll = strategie.currentAmount
+    // }
+    /* OPTIMIZE STRATEGIE BET AMOUNT */
+  }
+
+  const checkIfClaimable = async (epoch) => {
+    try {
+      const [claimable, refundable, { claimed, amount }] = await Promise.all([
+        preditionContract.claimable(epoch, signer.address),
+        preditionContract.refundable(epoch, signer.address),
+        preditionContract.ledger(epoch, signer.address),
+      ])
+
+      return {
+        epoch,
+        isPlayed: amount.toString() !== '0',
+        isClaimable: (claimable || refundable) && !claimed && amount.toString() !== '0',
+        // isWon: claimable || refundable || (amount.toString() !== "0" && claimed)
+        isWon: claimable || refundable || claimed,
+      }
+    } catch (error) {
+      logger.error(`[CLAIM] checkIfClaimable error for user ${user.id} and epoch ${epoch}`)
+      // logger.error(error.message)
+
+      return {
+        epoch,
+        isPlayed: false,
+        isClaimable: false,
+        isWon: false,
+      }
+    }
+  }
+
+  const claimPlayedEpochs = async (epochs) => {
+    // logger.info(`[CLAIM] try to claim ${epochs.length} last epochs : ${epochs}`)
+    logger.info(`[CLAIM] try to claim ${epochs.length} last epochs`)
+
+    // const claimables = await Promise.all(epochs.map(checkIfClaimable))
+
+    const { results: claimables, errors } = await PromisePool.for(epochs).withConcurrency(12).process(checkIfClaimable)
+
+    if (errors.length) {
+      logger.error(`[CLAIM] claimPlayedEpochs error for user ${user.id} when claiming ${epochs.length} last epochs`)
+      logger.error(errors)
+    }
+
+    const played = claimables.filter((c) => c.isPlayed)
+
+    const wins = played.filter((c) => c.isWon)?.length
+
+    const losss = played.filter((c) => !c.isWon)?.length
+
+    logger.info(
+      `[WIN/LOSS] Win/Loss ratio for player ${strategie.generated} and ${
+        claimables.length
+      } last games : ${wins}W/${losss}L for ${played.length} played games (${parseFloat(
+        (wins * 100) / played.length
+      ).toFixed(2)}% Winrate) `
+    )
+
+    // const claimablesEpochs = claimables.filter((c) => c.isClaimable).map((c) => c.epoch)
+    const claimablesEpochs = [...new Set(claimables.filter((c) => c.isClaimable).map((c) => +c.epoch))]
+
+    if (claimablesEpochs.length === 0) return logger.info('[CLAIM] Nothing to claim')
+
+    logger.info(`[CLAIM] claimables epochs : ${claimablesEpochs}`)
+
+    // const gasPrice = await provider.getGasPrice()
+
+    const gasLimit = config.HEXLIFY_SAFE + config.HEXLIFY_SAFE * Math.round(claimablesEpochs.length / 5)
+
+    const tx = await preditionContract.claim(claimablesEpochs, {
+      // gasLimit: ethers.utils.hexlify(config.HEXLIFY_SAFE),
+      gasLimit: ethers.utils.hexlify(gasLimit),
+      // gasPrice,
+      gasPrice: ethers.utils.parseUnits(config.SAFE_GAS_PRICE.toString(), 'gwei').toString(),
+      nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+      // nonce: new Date().getTime(),
+    })
+
+    try {
+      await tx.wait()
+      // //Wait for last transaction to be proceed.
+      // await sleep(10 * 1000)
+    } catch (error) {
+      logger.error(`[CLAIM] Claim Tx Error for user ${user.id} and epochs ${claimablesEpochs}`)
+      logger.error(error.message)
+    }
+  }
 
   const stopStrategie = async ({ epoch }) => {
     logger.error(`[PLAYING] Stopping strategie ${strategie.id} for user ${user.id}`)
@@ -73,6 +200,7 @@ const launchStrategie = async (payload) => {
     //TODO reactivate for production
     process.exit(0)
   }
+
   // const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
   const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
     if (strategie.currentAmount === 0) {
@@ -80,29 +208,24 @@ const launchStrategie = async (payload) => {
       await stopStrategie({ epoch })
     }
 
-    if (betAmount < MIN_BET_AMOUNT) betAmount = MIN_BET_AMOUNT
-
-    if (betAmount > MAX_BET_AMOUNT) betAmount = MAX_BET_AMOUNT
-
-    const amount = parseFloat(betAmount).toFixed(4)
-    const betBullOrBear = betBull ? 'betBull' : 'betBear'
-
-    if (!(+amount != 0)) {
+    if (!(strategie.betAmount != 0)) {
       logger.error('[PLAYING] Bet amount is 0')
       await stopStrategie({ epoch })
     }
+
+    const betBullOrBear = betBull ? 'betBull' : 'betBear'
 
     let isError = false
     try {
       // const gasPrice = await provider.getGasPrice()
 
       const tx = await preditionContract[betBullOrBear](epoch.toString(), {
-        value: ethers.utils.parseEther(amount),
+        value: ethers.utils.parseEther(betAmount),
         // nonce: new Date().getTime(),
         nonce: provider.getTransactionCount(strategie.generated, 'latest'),
         gasPrice: strategie.gasPrice,
         gasLimit: strategie.gasLimit,
-        // gasPrice: ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString(),
+        // gasPrice: ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString(),
         // gasLimit: ethers.utils.hexlify(250000),
         // gasPrice,
       })
@@ -135,6 +258,7 @@ const launchStrategie = async (payload) => {
       // }
       isError = true
       strategie.errorCount += 1
+      throw new Error(error)
     }
     // TODO save bet to database
     // const bet = { epoch, betBull, betAmount, isError, strategieId: strategie.id, userId : user.id, hash : strategie.playedHashs[strategie.playedHashs.lenght-1], isClaimed : false}
@@ -143,7 +267,7 @@ const launchStrategie = async (payload) => {
   const processRound = async (transaction) => {
     const epoch = await preditionContract.currentEpoch()
 
-    logger.info(`[LISTEN] Transaction pending detected for playerAddress ${strategie.player} and epoch ${epoch}`)
+    // logger.info(`[LISTEN] Transaction pending detected for playerAddress ${strategie.player} and epoch ${epoch}`)
 
     if (transaction.from.toLowerCase() !== strategie.player) {
       logger.error(`[LISTEN] Incoming transaction.`)
@@ -155,12 +279,15 @@ const launchStrategie = async (payload) => {
       return
     }
 
-    if (!transaction.input.includes(BET_BULL_METHOD_ID) && !transaction.input.includes(BET_BEAR_METHOD_ID)) {
+    if (
+      !transaction.input.includes(config.BET_BULL_METHOD_ID) &&
+      !transaction.input.includes(config.BET_BEAR_METHOD_ID)
+    ) {
       logger.info(`[LISTEN] Not a bull or bear transaction.`)
       return
     }
 
-    if (transaction.input.includes(CLAIM_BEAR_METHOD_ID)) {
+    if (transaction.input.includes(config.CLAIM_BEAR_METHOD_ID)) {
       logger.info(`[LISTEN] Claim transaction.`)
       return
     }
@@ -169,8 +296,6 @@ const launchStrategie = async (payload) => {
       logger.info(`[LISTEN] Already played transaction hash.`)
       return
     }
-
-    logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash}`)
 
     // TODO ANALYSE BET % FREQUENCY IN HISTORIE TO SEE IF IT'S A RISKED BET
     // --> (Some players bet really smaller amount when they are trying to play a market flip)
@@ -181,7 +306,7 @@ const launchStrategie = async (payload) => {
     // balance = ethers.utils.formatEther(balance)
 
     // TODO DECODE FUNCTION (see pending.js)
-    const betBull = transaction.input.includes(BET_BULL_METHOD_ID)
+    const betBull = transaction.input.includes(config.BET_BULL_METHOD_ID)
 
     const { betAmount } = strategie
     // const playerBetAmount = ethers.utils.formatEther(transaction.value)
@@ -210,33 +335,38 @@ const launchStrategie = async (payload) => {
     //   betAmount = betAmount * 1.25
     // }
 
-    logger.info('------------------------------------------------------------')
-    logger.info('------------------------------------------------------------')
-    logger.info(`[PLAYING] Betting on ${betBull ? 'BULL' : 'BEAR'} with ${betAmount} BNB amount for epoch ${epoch}`)
+    try {
+      await betRound({ epoch, betBull, betAmount })
 
-    strategie.playedHashs.push(transaction.hash)
+      logger.info('------------------------------------------------------------')
+      logger.info('------------------------------------------------------------')
+      logger.info(`[PLAYING] Betting on ${betBull ? 'BULL' : 'BEAR'} with ${betAmount} BNB amount for epoch ${epoch}`)
 
-    await betRound({ epoch, betBull, betAmount })
-    logger.info('------------------------------------------------------------')
-    logger.info('------------------------------------------------------------')
+      // await betRound({ epoch, betBull, betAmount })
+
+      logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash}`)
+      strategie.playedHashs.push(transaction.hash)
+
+      logger.info('------------------------------------------------------------')
+      logger.info('------------------------------------------------------------')
+    } catch (error) {
+      //
+    }
   }
 
-  const optimizeBetAmount = () => {
-    /* OPTIMIZE STRATEGIE BET AMOUNT */
-    if (strategie.currentAmount > strategie.stepBankroll * 1.2) {
-      const newBetAmount = parseFloat(strategie.betAmount * 1.1).toFixed(4)
-      logger.info(`[OPTIMIZE] Increasing bet amount from ${strategie.betAmount} to ${newBetAmount}`)
-      strategie.betAmount = newBetAmount
-      strategie.stepBankroll = strategie.currentAmount
-    }
+  const claimLastEpochs = async (epoch, to) => {
+    const lastEpochs = [...range(+epoch - to, +epoch)]
 
-    if (strategie.currentAmount < strategie.stepBankroll / 1.2) {
-      const newBetAmount = parseFloat(strategie.betAmount / 1.1).toFixed(4)
-      logger.info(`[OPTIMIZE] Decreasing bet amount from ${strategie.betAmount} to ${newBetAmount}`)
-      strategie.betAmount = newBetAmount
-      strategie.stepBankroll = strategie.currentAmount
-    }
-    /* OPTIMIZE STRATEGIE BET AMOUNT */
+    if (!lastEpochs.length) return logger.error(`[ERROR] Error during claiming for last epochs : no epochs findeds`)
+
+    // await claimPlayedEpochs(lastEpochs)
+    // await claimPlayedEpochs([...new Set([...lastEpochs, ...strategie.playedEpochs])])
+    await claimPlayedEpochs(lastEpochs)
+
+    //wait for all transactions to completes
+    // avoid error for stop loss if claim a lot of amount
+    await sleep(10 * 1000)
+    strategie.playedEpochs = []
   }
 
   const roundEndListenner = async (epoch) => {
@@ -251,20 +381,23 @@ const launchStrategie = async (payload) => {
       }/${strategie.roundsCount} games. Current bankroll amount ${strategie.currentAmount}`
     )
 
-    if (strategie.roundsCount % 5 === 0) {
-      const lastEpochs = [...range(+epoch - 6, +epoch)]
-      await claimPlayedEpochs(lastEpochs)
+    // TODO v0.03 : if isTrailing, claim for each epoch.
+    console.log('🚀 ~ file: index.js ~ line 386 ~ roundEndListenner ~ strategie.playedEpochs', strategie.playedEpochs)
+    console.log('🚀 ~ file: index.js ~ line 388 ~ roundEndListenner ~ strategie.isTrailing', strategie.isTrailing)
+    console.log(
+      '🚀 ~ file: index.js ~ line 388 ~ roundEndListenner ~ strategie.roundsCount % 5',
+      strategie.roundsCount % 5
+    )
 
-      //wait for all transactions to completes
-      // avoid error for stop loss if claim a lot of amount
-      await sleep(10 * 1000)
-    }
+    if ((strategie.roundsCount % 5 === 0 || !strategie.isTrailing) && strategie.playedEpochs.length >= 1)
+      await claimLastEpochs(epoch, 6)
+
     // if (strategie.playedEpochs.length >= 3) {
     // await claimPlayedEpochs(strategie.playedEpochs)
     // strategie.playedEpochs = []
     // }
 
-    optimizeBetAmount()
+    calculateBetAmount()
 
     const isUpdatedStrategie = await prisma.strategie.update({
       where: { id: strategie.id },
@@ -277,22 +410,32 @@ const launchStrategie = async (payload) => {
 
     // Check if stop loss or take profit
     if (strategie.currentAmount <= isUpdatedStrategie.startedAmount - isUpdatedStrategie.maxLooseAmount) {
-      logger.info(
-        `[PLAYING] Stop Loss activated for player ${user.id} : current amount ${
-          strategie.currentAmount
-        } --> STOP LOSS : ${isUpdatedStrategie.startedAmount - isUpdatedStrategie.maxLooseAmount}`
-      )
-      await stopStrategie({ epoch })
+      await claimLastEpochs(epoch, 12 * 24)
+      const currentAmountBigInt = await provider.getBalance(signer.address)
+      strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
+
+      if (strategie.currentAmount <= isUpdatedStrategie.startedAmount - isUpdatedStrategie.maxLooseAmount) {
+        logger.info(
+          `[PLAYING] Stop Loss activated for player ${user.id} : current amount ${
+            strategie.currentAmount
+          } --> STOP LOSS : ${isUpdatedStrategie.startedAmount - isUpdatedStrategie.maxLooseAmount}`
+        )
+        await stopStrategie({ epoch })
+      }
     }
 
     if (strategie.currentAmount >= isUpdatedStrategie.minWinAmount) {
-      logger.info(
-        `[PLAYING] Take Profit activated for player ${user.id} : current amount ${strategie.currentAmount} --> TAKE PROFIT : ${isUpdatedStrategie.minWinAmount}`
-      )
-      await stopStrategie({ epoch })
+      await claimLastEpochs(epoch, 6)
+      if (strategie.currentAmount >= isUpdatedStrategie.minWinAmount) {
+        logger.info(
+          `[PLAYING] Take Profit activated for player ${user.id} : current amount ${strategie.currentAmount} --> TAKE PROFIT : ${isUpdatedStrategie.minWinAmount}`
+        )
+        await stopStrategie({ epoch })
+      }
     }
 
     if (strategie.errorCount >= 5) {
+      await claimLastEpochs(epoch, 6)
       logger.error('[PLAYING] Strategie had 5 error consecutively. Stopping it.')
       await stopStrategie({ epoch })
     }
@@ -315,77 +458,6 @@ const launchStrategie = async (payload) => {
     }
   }
 
-  const checkIfClaimable = async (epoch) => {
-    try {
-      const [claimable, refundable, { claimed, amount }] = await Promise.all([
-        preditionContract.claimable(epoch, signer.address),
-        preditionContract.refundable(epoch, signer.address),
-        preditionContract.ledger(epoch, signer.address),
-      ])
-
-      return {
-        epoch,
-        isPlayed: amount.toString() !== '0',
-        isClaimable: (claimable || refundable) && !claimed && amount.toString() !== '0',
-        // isWon: claimable || refundable || (amount.toString() !== "0" && claimed)
-        isWon: claimable || refundable || claimed,
-      }
-    } catch (error) {
-      logger.error(`[CLAIM] checkIfClaimable error for user ${user.id} and epoch ${epoch}`)
-      return {
-        epoch,
-        isPlayed: false,
-        isClaimable: false,
-        isWon: false,
-      }
-    }
-  }
-
-  const claimPlayedEpochs = async (epochs) => {
-    logger.info(`[CLAIM] try to claim ${epochs.length} epochs : ${epochs}`)
-
-    const claimables = await Promise.all(epochs.map(checkIfClaimable))
-
-    const played = claimables.filter((c) => c.isPlayed)
-
-    const wins = played.filter((c) => c.isWon)?.length
-
-    const losss = played.filter((c) => !c.isWon)?.length
-
-    logger.info(
-      `[WIN/LOSS] Win/Loss ratio for player ${strategie.generated} and ${
-        claimables.length
-      } last games : ${wins}W/${losss}L for ${played.length} played games (${parseFloat(
-        (wins * 100) / played.length
-      ).toFixed(2)}% Winrate) `
-    )
-
-    const claimablesEpochs = claimables.filter((c) => c.isClaimable).map((c) => c.epoch)
-
-    if (claimablesEpochs.length === 0) return logger.info('[CLAIM] Nothing to claim')
-
-    logger.info(`[CLAIM] claimables epochs : ${claimablesEpochs}`)
-
-    const gasPrice = await provider.getGasPrice()
-
-    const tx = await preditionContract.claim(claimablesEpochs, {
-      gasLimit: ethers.utils.hexlify(350000),
-      // gasPrice,
-      gasPrice: ethers.utils.parseUnits(SAFE_GAS_PRICE.toString(), 'gwei').toString(),
-      // nonce: provider.getTransactionCount(strategie.generated, 'latest'),
-      nonce: new Date().getTime(),
-    })
-
-    try {
-      await tx.wait()
-      // //Wait for last transaction to be proceed.
-      // await sleep(10 * 1000)
-    } catch (error) {
-      logger.error(`[CLAIM] Claim Tx Error for user ${user.id} and epochs ${claimablesEpochs}`)
-      logger.error(error.message)
-    }
-  }
-
   const listen = async () => {
     const privateKey = decrypt(strategie.private)
     signer = new ethers.Wallet(privateKey, provider)
@@ -394,10 +466,13 @@ const launchStrategie = async (payload) => {
     // strategie.initialBankroll = ethers.utils.formatEther(initialBankrollBigInt)
     // strategie.bankroll = strategie.initialBankroll
     // strategie.startedBalance = strategie.initialBankroll
+    strategie.playedHashs = []
+    strategie.playedEpochs = []
+    strategie.errorCount = 0
 
     preditionContract = new ethers.Contract(
       process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
-      PREDICTION_CONTRACT_ABI,
+      config.PREDICTION_CONTRACT_ABI,
       signer
     )
 
@@ -406,6 +481,7 @@ const launchStrategie = async (payload) => {
         where: { id: strategie.id },
         data: {
           isRunning: true,
+          isNeedRestart: false,
         },
       })
       const isPaused = await preditionContract.paused()
@@ -429,32 +505,30 @@ const launchStrategie = async (payload) => {
 
       const epoch = await preditionContract.currentEpoch()
 
-      // TODO try to claim all played epoch ??
-      const lastEpochs = [...range(+epoch - 12, +epoch)]
-      await claimPlayedEpochs(lastEpochs)
-      // claimPlayedEpochs(lastEpochs)
+      // await claimLastEpochs(epoch, 12 * 24)
+      await claimLastEpochs(epoch, 12)
     } catch (error) {
       logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)
     }
+
+    const epoch = await preditionContract.currentEpoch()
+
     // return
     const initialBankrollBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
-    strategie.stepBankroll = strategie.startedAmount
+    // strategie.stepBankroll = strategie.startedAmount
     // strategie.betAmount = +(strategie.currentAmount / 15).toFixed(4)
-    strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
-    strategie.playedHashs = []
-    strategie.playedEpochs = []
-    strategie.errorCount = 0
+    // strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
 
-    strategie.gasPrice = ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString()
+    strategie.gasPrice = ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString()
     // strategie.gasPrice = await provider.getGasPrice()
     // console.log(
     //   '🚀 ~ file: index.js ~ line 420 ~ listen ~ await provider.getGasPrice()',
     //   await (await provider.getGasPrice()).toString()
     // )
     // console.log(
-    //   "🚀 ~ file: index.js ~ line 419 ~ listen ~ ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString()",
-    //   ethers.utils.parseUnits(FAST_GAS_PRICE.toString(), 'gwei').toString()
+    //   "🚀 ~ file: index.js ~ line 419 ~ listen ~ ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString()",
+    //   ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString()
     // )
 
     // Raw Transaction
@@ -486,11 +560,12 @@ const launchStrategie = async (payload) => {
     // strategie.gasLimit = ethers.utils.hexlify(gasLimit)
 
     // strategie.gasLimit = ethers.utils.hexlify(250000)
-    strategie.gasLimit = ethers.utils.hexlify(350000)
+    strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_SAFE)
 
-    optimizeBetAmount()
+    calculateBetAmount()
 
-    if (strategie.betAmount <= MIN_BET_AMOUNT || strategie.betAmount > MAX_BET_AMOUNT) {
+    // should never append
+    if (strategie.betAmount < config.MIN_BET_AMOUNT || strategie.betAmount > config.MAX_BET_AMOUNT) {
       logger.error(`[LISTEN] Bet amount error, value is ${strategie.betAmount} Stopping strategie for now`)
       await stopStrategie({ epoch })
       return
@@ -522,12 +597,13 @@ const launchStrategie = async (payload) => {
   try {
     await listen()
   } catch (error) {
+    console.log('🚀 ~ file: index.js ~ line 582 ~ //betRound ~ error', error)
     logger.error(
       `[ERROR] Stopping strategie for user ${strategie.generated} copy betting player ${strategie.player}: ${error}`
     )
-    await stopStrategie()
+    await stopStrategie({ epoch: -1 })
     throw new Error(error)
   }
 }
 
-module.exports = { launchStrategie }
+module.exports = { run }

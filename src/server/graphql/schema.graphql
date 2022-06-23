@@ -4,18 +4,39 @@
 
 scalar DateTime
 
+type Favorite {
+  comment: String
+  createdAt: DateTime!
+  id: String!
+  modifiedAt: DateTime!
+  note: Int
+  player: String!
+  type: FavoriteType!
+  user: User!
+}
+
+enum FavoriteType {
+  DISLIKE
+  LIKE
+}
+
+input FavoriteWhereUniqueInput {
+  id: String
+}
+
 type Mutation {
   createFriend(id: String!): User
   createProject(name: String!, slug: String): Project
-  createStrategie(maxLooseAmount: Float, minWinAmount: Float, player: String!, startedAmount: Float!): Strategie
+  createStrategie(betAmountPercent: Float!, color: String, decreaseAmount: Float, increaseAmount: Float, isTrailing: Boolean, maxLooseAmount: Float, minWinAmount: Float, name: String, player: String!, startedAmount: Float!, stopLoss: Int, takeProfit: Int): Strategie
   createStripeCheckoutBillingPortalUrl(projectId: String!): String
   createStripeCheckoutSession(plan: PaidPlan!, projectId: String!): String
   deleteStrategie(id: String!): Strategie
   inviteToProject(email: String!, projectId: String!): Boolean
   removeFunds(id: String!, value: String!): User
   toogleActivateStrategie(id: String!): Strategie
+  toogleFavoritePlayer(isNeedToFavorite: Boolean!, player: String!, type: String!): User
   toogleIsActivated(id: String!): User
-  updateStrategie(id: String!, isActive: Boolean, isDeleted: Boolean, isError: Boolean, isRunning: Boolean, maxLooseAmount: Float, minWinAmount: Float, player: String, playsCount: Int, roundsCount: Int): Strategie
+  updateStrategie(betAmountPercent: Float, color: String, decreaseAmount: Float, id: String!, increaseAmount: Float, isActive: Boolean, isDeleted: Boolean, isError: Boolean, isRunning: Boolean, isTrailing: Boolean, maxLooseAmount: Float, minWinAmount: Float, name: String, player: String, playsCount: Int, roundsCount: Int, stopLoss: Int, takeProfit: Int): Strategie
   updateUser(address: String!, email: String, id: String!, name: String): User
 }
 
@@ -33,6 +54,9 @@ type Project {
 
 type Query {
   currentUser: User
+  getAllFavorites: [Favorite]
+  getFavorite(id: String!): Favorite
+  getFavorites: [Favorite]
   getUsers: [User]
   project(id: String, slug: String): Project
   strategie(id: String!): Strategie
@@ -40,23 +64,32 @@ type Query {
 }
 
 type Strategie {
+  betAmountPercent: Float!
+  color: String
   createdAt: DateTime!
   currentAmount: Float!
+  decreaseAmount: Float
   generated: String!
+  history: [String!]!
   id: String!
+  increaseAmount: Float
   isActive: Boolean!
   isDeleted: Boolean!
   isError: Boolean!
   isNeedRestart: Boolean!
   isRunning: Boolean!
-  maxLooseAmount: Float!
-  minWinAmount: Float!
+  isTrailing: Boolean!
+  maxLooseAmount: Float
+  minWinAmount: Float
   modifiedAt: DateTime!
+  name: String
   player: String!
   playsCount: Int!
   private: String!
   roundsCount: Int!
   startedAmount: Float!
+  stopLoss: Int
+  takeProfit: Int
   user: User!
 }
 
@@ -70,6 +103,7 @@ type User {
   address: String!
   createdAt: DateTime!
   email: String
+  favorites(after: FavoriteWhereUniqueInput, before: FavoriteWhereUniqueInput, first: Int, last: Int): [Favorite!]!
   generated: String!
   id: String!
   isActivated: Boolean!

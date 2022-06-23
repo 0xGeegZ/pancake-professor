@@ -25,6 +25,11 @@ module.exports.createClient = function(options) {
   return createClientOriginal(optionsCopy)
 }
 
+module.exports.enumFavoriteType = {
+  DISLIKE: 'DISLIKE',
+  LIKE: 'LIKE',
+}
+
 module.exports.enumPaidPlan = {
   pro: 'pro',
 }

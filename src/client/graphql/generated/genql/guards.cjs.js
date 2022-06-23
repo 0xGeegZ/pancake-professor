@@ -1,4 +1,12 @@
 
+var Favorite_possibleTypes = ['Favorite']
+module.exports.isFavorite = function(obj) {
+  if (!obj || !obj.__typename) throw new Error('__typename is missing in "isFavorite"')
+  return Favorite_possibleTypes.includes(obj.__typename)
+}
+
+
+
 var Mutation_possibleTypes = ['Mutation']
 module.exports.isMutation = function(obj) {
   if (!obj || !obj.__typename) throw new Error('__typename is missing in "isMutation"')

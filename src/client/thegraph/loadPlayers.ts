@@ -1,7 +1,21 @@
 import { gql, GraphQLClient } from 'graphql-request'
 import { finder, range } from 'src/server/utils/utils'
 
-const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
+const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_GRAPHQL_ENDPOINT, {
+  mode: 'cors',
+  credentials: 'omit',
+  headers: {
+    Accept: 'application/json',
+    // 'Access-Control-Allow-Origin': 'http://localhost:3000',
+    // 'Access-Control-Allow-Origin': '*',
+    // 'Access-Control-Allow-Headers': 'Origin, X-Requested-With, Content-Type, Accept',
+    // complete
+    // 'Access-Control-Allow-Origin': '*',
+    // 'Access-Control-Allow-Methods': 'DELETE, POST, GET, OPTIONS',
+    // 'Access-Control-Allow-Headers': 'Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With',
+  },
+  // errorPolicy: 'all',
+})
 
 const TOTAL_BETS_INITIAL = 80
 const WIN_RATE_INITIAL = 56
@@ -40,19 +54,32 @@ const checkIfPlaying = (pplayer, lastGame) => {
   return player
 }
 
-const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
+const loadPlayers = async ({
+  epoch,
+  orderBy = 'totalBets',
+  winRateMin = WIN_RATE,
+  winRateMax = 100,
+  netBnbMin = -100,
+  netBnbMax = 1000,
+  selecteds = [],
+}) => {
   try {
     const orderByFilter = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 'totalBets' : orderBy
+    // const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12
     const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12 * 2
 
     const first = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 250 : 100
     // const first = orderBy === 'default' ? 500 : orderBy === 'mostActiveLastHour' ? 1000 : 50
     const firstBets = orderBy === 'default' ? 12 * 24 : orderBy === 'mostActiveLastHour' ? 24 : 1
     const epochGT = orderBy === 'default' ? epoch - 12 * 24 : orderBy === 'mostActiveLastHour' ? epoch - 24 : 1
-    const query = gql`
+    const queryFiltered = gql`
       query getUsers(
+        $selecteds: [String!]!
         $totalBets: String!
-        $winRate: String!
+        $winRateMin: String!
+        $winRateMax: String!
+        $netBnbMin: String!
+        $netBnbMax: String!
         $orderBy: String!
         $first: Int!
         $firstBets: Int!
@@ -60,7 +87,14 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
       ) {
         users(
           first: $first
-          where: { totalBets_gt: $totalBets, winRate_gt: $winRate }
+          where: {
+            id_in: $selecteds
+            totalBets_gt: $totalBets
+            winRate_gte: $winRateMin
+            winRate_lte: $winRateMax
+            netBNB_gte: $netBnbMin
+            netBNB_lte: $netBnbMax
+          }
           orderBy: $orderBy
           orderDirection: desc
         ) {
@@ -82,19 +116,65 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
       }
     `
 
+    const query = gql`
+      query getUsers(
+        $totalBets: String!
+        $winRateMin: String!
+        $winRateMax: String!
+        $netBnbMin: String!
+        $netBnbMax: String!
+        $orderBy: String!
+        $first: Int!
+        $firstBets: Int!
+        $epochGT: Int!
+      ) {
+        users(
+          first: $first
+          where: {
+            totalBets_gt: $totalBets
+            winRate_gte: $winRateMin
+            winRate_lte: $winRateMax
+            netBNB_gte: $netBnbMin
+            netBNB_lte: $netBnbMax
+          }
+          orderBy: $orderBy
+          orderDirection: desc
+        ) {
+          id
+          totalBNB
+          totalBets
+          winRate
+          averageBNB
+          netBNB
+          bets(first: $firstBets, orderBy: createdAt, orderDirection: desc) {
+            position
+            createdAt
+            round(where: { epoch_gte: $epochGT }) {
+              epoch
+              position
+            }
+          }
+        }
+      }
+    `
     const lastFinishedEpoch = epoch - 1
 
     console.log(`Current betting epoch ${+lastFinishedEpoch}`)
 
     const variables = {
-      totalBets: TOTAL_BETS.toString(),
-      winRate: WIN_RATE.toString(),
+      // selecteds: `${selecteds}`,
+      selecteds,
+      totalBets: `${TOTAL_BETS}`,
+      winRateMin: `${winRateMin}`,
+      winRateMax: `${winRateMax}`,
+      netBnbMin: `${netBnbMin}`,
+      netBnbMax: `${netBnbMax}`,
       orderBy: orderByFilter,
       first,
       firstBets,
       epochGT,
     }
-    const data = await graphQLClient.request(query, variables)
+    const data = await graphQLClient.request(selecteds.length ? queryFiltered : query, variables)
 
     const { users } = data
 

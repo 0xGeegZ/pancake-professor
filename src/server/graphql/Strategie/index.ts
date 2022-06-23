@@ -11,10 +11,20 @@ const Strategie = objectType({
     t.model.createdAt()
     t.model.modifiedAt()
     t.model.player()
+    t.model.name()
+    t.model.color()
     t.model.generated()
     t.model.private()
+
+    t.model.betAmountPercent()
+    t.model.increaseAmount()
+    t.model.decreaseAmount()
+
     t.model.startedAmount()
     t.model.currentAmount()
+    t.model.stopLoss()
+    t.model.takeProfit()
+    t.model.isTrailing()
     t.model.roundsCount()
     t.model.playsCount()
     t.model.isActive()
@@ -25,6 +35,7 @@ const Strategie = objectType({
     t.model.maxLooseAmount()
     t.model.minWinAmount()
     t.model.user()
+    t.model.history()
   },
 })
 
@@ -66,6 +77,17 @@ const mutations = extendType({
       args: {
         player: nonNull(stringArg()),
         startedAmount: nonNull(floatArg()),
+        // betAmountPercent: floatArg(),
+        betAmountPercent: nonNull(floatArg()),
+        increaseAmount: floatArg(),
+        decreaseAmount: floatArg(),
+
+        name: stringArg(),
+        color: stringArg(),
+
+        takeProfit: intArg(),
+        stopLoss: intArg(),
+        isTrailing: booleanArg(),
         maxLooseAmount: floatArg(),
         minWinAmount: floatArg(),
       },
@@ -87,22 +109,40 @@ const mutations = extendType({
         // console.log('privateKey:', wallet.privateKey)
         // console.log('privateKey:', encrypt(wallet.privateKey))
 
-        const strategie = await prisma.strategie.create({
-          data: {
-            player: args.player,
-            generated: walletInitial.address.toLowerCase(),
-            private: encrypt(walletInitial.privateKey),
-            startedAmount: args.startedAmount,
-            currentAmount: args.startedAmount,
-            maxLooseAmount: args.maxLooseAmount,
-            minWinAmount: args.minWinAmount,
-            user: {
-              connect: {
-                id: ctx.user.id,
+        // TODO allow color selection from front end
+        const randomColor = `#${Math.floor(Math.random() * 16777215).toString(16)}`
+        const randomName = args.name ? args.name : Math.random().toString(36).substring(2, 12)
+
+        let strategie = null
+        try {
+          strategie = await prisma.strategie.create({
+            data: {
+              player: args.player,
+              name: randomName,
+              color: randomColor,
+              generated: walletInitial.address.toLowerCase(),
+              private: encrypt(walletInitial.privateKey),
+              betAmountPercent: args.betAmountPercent,
+              increaseAmount: args.increaseAmount,
+              decreaseAmount: args.decreaseAmount,
+              takeProfit: args.takeProfit,
+              stopLoss: args.stopLoss,
+              isTrailing: args.isTrailing,
+              startedAmount: args.startedAmount,
+              currentAmount: args.startedAmount,
+              maxLooseAmount: args.maxLooseAmount,
+              minWinAmount: args.minWinAmount,
+              user: {
+                connect: {
+                  id: ctx.user.id,
+                },
               },
             },
-          },
-        })
+          })
+        } catch (error) {
+          console.log('🚀 ~ file: index.ts ~ line 166 ~ resolve: ~ error', error)
+          throw new Error(error)
+        }
 
         const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
 
@@ -125,6 +165,7 @@ const mutations = extendType({
         try {
           await signer.sendTransaction(tx)
         } catch (error) {
+          console.log('🚀 ~ file: index.ts ~ line 166 ~ resolve: ~ error', error)
           throw new Error(error)
         }
 
@@ -136,7 +177,15 @@ const mutations = extendType({
       type: 'Strategie',
       args: {
         id: nonNull(stringArg()),
+        betAmountPercent: floatArg(),
         player: stringArg(),
+        increaseAmount: floatArg(),
+        decreaseAmount: floatArg(),
+        name: stringArg(),
+        color: stringArg(),
+        takeProfit: intArg(),
+        stopLoss: intArg(),
+        isTrailing: booleanArg(),
         roundsCount: intArg(),
         playsCount: intArg(),
         isActive: booleanArg(),
@@ -162,13 +211,105 @@ const mutations = extendType({
 
         if (!hasAccess) return null
 
-        return prisma.strategie.update({
+        let history = []
+
+        if (args.player && args.player !== hasAccess.player) {
+          const concat = (...arrays) => [].concat(...arrays.filter(Array.isArray))
+
+          const unique = (array) => [...new Set(array)]
+
+          const concated = concat([hasAccess.player], hasAccess.history)
+          // const uniqued = unique(concated)
+
+          history = unique(concated)
+          // args = {
+          //   ...args,
+          //   history: uniqued,
+          // }
+        }
+
+        // TODO update history if updating player
+        // if (hasAccess.player !== args.player) {
+        //   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        //   const { id: oldId, userId, ...newDeletedStrategie } = hasAccess
+
+        //   const strategie = await prisma.strategie.create({
+        //     data: {
+        //       ...newDeletedStrategie,
+        //       isDeleted: true,
+        //       isRunning: false,
+        //       isActive: false,
+        //       isError: false,
+        //       user: {
+        //         connect: {
+        //           id: ctx.user.id,
+        //         },
+        //       },
+        //     },
+        //   })
+        //   console.log('🚀 ~ file: index.ts ~ line 242 ~ resolve: ~ strategie', strategie)
+        // }
+
+        const difference = Object.keys(args).reduce((diff, key) => {
+          if (hasAccess[key] === args[key]) return diff
+          return {
+            ...diff,
+            [key]: args[key],
+          }
+        }, {})
+
+        delete difference?.color
+        delete difference?.name
+
+        const { increaseAmount, decreaseAmount, ...restArgs } = args
+
+        const data = {
+          // ...args,
+          ...restArgs,
+          history,
+          // isNeedRestart: true,
+          isNeedRestart: Object.keys(difference).length !== 0,
+          startedAmount: hasAccess.startedAmount,
+        }
+
+        if (increaseAmount || decreaseAmount) {
+          data.startedAmount = hasAccess.startedAmount + (increaseAmount || decreaseAmount)
+          // TODO recalculate stop loss and take profit
+        }
+        const updated = await prisma.strategie.update({
           where: { id },
-          data: {
-            ...args,
-            isNeedRestart: true,
-          },
+          data,
         })
+
+        if (!increaseAmount && !decreaseAmount) return updated
+
+        console.log('Increasing or Decrasing Strategie')
+        const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
+
+        const privateKey = decrypt(increaseAmount ? ctx.user.private : updated.private)
+
+        const wallet = new ethers.Wallet(privateKey)
+
+        const signer = wallet.connect(provider)
+
+        const gasPrice = await provider.getGasPrice()
+
+        const tx = {
+          to: increaseAmount ? updated.generated : ctx.user.generated,
+          value: ethers.utils.parseEther(`${Math.abs(increaseAmount || decreaseAmount)}`),
+          nonce: provider.getTransactionCount(increaseAmount ? ctx.user.generated : updated.generated, 'latest'),
+          gasPrice,
+          gasLimit: ethers.utils.hexlify(250000),
+        }
+
+        try {
+          await signer.sendTransaction(tx)
+        } catch (error) {
+          console.log('🚀 ~ file: index.ts ~ line 307 ~ resolve: ~ error', error)
+          throw new Error(error)
+        }
+
+        return updated
       },
     })
 
@@ -259,27 +400,26 @@ const mutations = extendType({
 
         try {
           const provider = new ethers.providers.JsonRpcProvider(process.env.JSON_RPC_PROVIDER)
-
           const privateKey = decrypt(strategie.private)
-
           const wallet = new ethers.Wallet(privateKey)
-
           const signer = wallet.connect(provider)
 
           const rawGasPrice = await provider.getGasPrice()
           const rawBalance = await provider.getBalance(strategie.generated)
-
           const balance = ethers.utils.formatUnits(rawBalance)
 
           if (balance !== '0.0') {
             const gasPrice = ethers.utils.formatUnits(rawGasPrice)
             const gasLimit = await provider.estimateGas({
               to: user.generated,
+              data: '0x',
               value: ethers.utils.parseEther(balance),
             })
+            // TODO ERROR IF NOT ADDING 0.5% (works)
+            const costs = +gasPrice * +gasLimit * 1.001
 
-            const costs = +gasPrice * +gasLimit
             const value = `${+balance - +costs}`
+
             const tx = {
               to: user.generated,
               value: ethers.utils.parseEther(value),
@@ -287,7 +427,6 @@ const mutations = extendType({
               gasPrice: rawGasPrice,
               gasLimit: ethers.utils.hexlify(gasLimit),
             }
-
             await signer.sendTransaction(tx)
           }
         } catch (error) {

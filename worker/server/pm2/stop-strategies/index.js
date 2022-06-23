@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
-const prisma = require('../../../db/prisma')
-const logger = require('../../../utils/logger')
+const prisma = require('../../db/prisma')
+const logger = require('../../utils/logger')
 
 const stopStrategie = async (strategie) => {
   const user = await prisma.user.findUnique({
@@ -21,7 +21,7 @@ const stopStrategie = async (strategie) => {
 }
 
 const stopStrategiesWithPM2 = async () => {
-  logger.info(`[STOPPING] Stopping strategies locally`)
+  logger.info(`[STOPPING] Stopping strategies`)
   const strategies = await prisma.strategie.findMany({
     where: {
       // isActive: true,

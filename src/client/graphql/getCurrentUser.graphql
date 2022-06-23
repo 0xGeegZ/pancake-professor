@@ -8,10 +8,22 @@ query GetCurrentUser {
     isActivated
     registeredAt
     loginAt
+    favorites {
+      id
+      createdAt
+      player
+      type
+      comment
+      note
+    }
     strategies {
       id
       player
-      generated
+      betAmountPercent
+      increaseAmount
+      decreaseAmount
+      name
+      color
       startedAmount
       currentAmount
       roundsCount
@@ -23,7 +35,10 @@ query GetCurrentUser {
       isNeedRestart
       maxLooseAmount
       minWinAmount
-      createdAt
+      takeProfit
+      stopLoss
+      isTrailing
+      history
     }
   }
 }

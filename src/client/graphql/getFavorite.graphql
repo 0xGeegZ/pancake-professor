@@ -1,0 +1,10 @@
+query getFavorite($id: String!) {
+  getFavorite(id: $id) {
+    id
+    player
+    type
+    comment
+    note
+    # user
+  }
+}

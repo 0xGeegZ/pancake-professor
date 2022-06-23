@@ -140,7 +140,7 @@ function Hero() {
     <Container maxWidth="lg">
       <Grid spacing={{ xs: 6, md: 10 }} justifyContent="center" alignItems="center" container>
         <Grid item md={6} pr={{ xs: 0, md: 3 }}>
-          <LabelWrapper color="success">{`${t('Version')} 0.0.2`}</LabelWrapper>
+          <LabelWrapper color="success">{`${t('Version')} 0.0.3`}</LabelWrapper>
           <TypographyH1 sx={{ mb: 2 }} variant="h1">
             {t('Pancake Professor')}
           </TypographyH1>

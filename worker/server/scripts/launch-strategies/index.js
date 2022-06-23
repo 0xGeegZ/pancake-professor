@@ -2,7 +2,7 @@ const prisma = require('../../db/prisma')
 const logger = require('../../utils/logger')
 const { sleep } = require('../../utils/utils')
 
-const { launchStrategie } = require('../launch-strategie')
+const { run } = require('../../jobs/strategies/single-player')
 
 const launch = async (strategie) => {
   const user = await prisma.user.findUnique({
@@ -13,7 +13,7 @@ const launch = async (strategie) => {
 
   logger.info(`[LAUNCHING] Launching strategie ${strategie?.id} for user ${user?.address}`)
 
-  await launchStrategie({ strategie, user })
+  await run({ strategie, user })
 }
 
 const launchStrategies = async () => {
@@ -35,10 +35,11 @@ const launchStrategies = async () => {
 
   await Promise.all(strategies.map(launch))
 
-  logger.info(`[WAITING] 5 minuts`)
-  await sleep(60 * 1000 * 5)
+  logger.info(`[WAITING] 2.5 minuts`)
+  await sleep(60 * 1000 * 2.5)
   logger.info(`[WAITING] waiting done`)
-  await launchStrategies()
+  // await launchStrategies()
+  return await launchStrategies()
 }
 
 module.exports = { launchStrategies }

@@ -57,6 +57,9 @@ export const GlobalStateProvider: FC = ({ children }: Props) => {
         strategies: {
           ...everything,
         },
+        favorites: {
+          ...everything,
+        },
       },
     })
 

@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { extendType, list, nonNull, objectType, stringArg } from 'nexus'
+import { extendType, list, nonNull, objectType, stringArg, booleanArg } from 'nexus'
 
 import prisma from '../../db/prisma'
 import { decrypt } from '../../utils/crpyto'
@@ -27,6 +27,22 @@ const User = objectType({
         })
 
         return strategies
+      },
+    })
+    t.model.favorites({
+      type: `Favorite`,
+      resolve: async (_, __, ctx) => {
+        if (!ctx.user?.id) return null
+        const favorites = await prisma.favorite.findMany({
+          where: {
+            user: {
+              is: {
+                id: ctx.user.id,
+              },
+            },
+          },
+        })
+        return favorites
       },
     })
     // t.model.strategies({
@@ -96,17 +112,18 @@ const queries = extendType({
       // },
       // resolve: (_, { id }, ctx) => {
       // resolve: (_, args, ctx) =>
-      resolve: () =>
-        // resolve: (_, __, ctx) => {
+      // resolve: () =>
+      resolve: async (_, __, ctx) => {
         // resolve() {
-        // if (!ctx.user?.id) return null
+        if (!ctx.user?.id) return null
 
         // return prisma.user.findMany({
-        prisma.user.findMany({
+        return prisma.user.findMany({
           // where: {
           //   id: ctx.user.id,
           // },
-        }),
+        })
+      },
     })
   },
 })
@@ -201,6 +218,7 @@ const mutations = extendType({
         const gasPrice = ethers.utils.formatUnits(rawGasPrice)
 
         let bnbValue = `${parseFloat(args.value).toFixed(10)}`
+        console.log('🚀 ~ file: index.ts ~ line 204 ~ resolve: ~ bnbValue', bnbValue)
 
         const gasLimit = await provider.estimateGas({
           to: userExists.generated,
@@ -210,8 +228,9 @@ const mutations = extendType({
         const rawBalance = await provider.getBalance(userExists.generated)
         const balance = ethers.utils.formatUnits(rawBalance)
 
-        if (balance === args.value) {
-          const costs = +gasPrice * +gasLimit
+        if (parseFloat(balance).toFixed(14) === parseFloat(args.value).toFixed(14)) {
+          // TODO ERROR IF NOT ADDING 0.5% (works)
+          const costs = +gasPrice * +gasLimit * 1.001
           bnbValue = `${+args.value - +costs}`
         }
 
@@ -254,6 +273,66 @@ const mutations = extendType({
             isActivated: !user.isActivated,
           },
         })
+      },
+    })
+
+    t.nullable.field('toogleFavoritePlayer', {
+      type: 'User',
+      args: {
+        player: nonNull(stringArg()),
+        isNeedToFavorite: nonNull(booleanArg()),
+        type: nonNull(stringArg()),
+      },
+      resolve: async (_, args, ctx) => {
+        if (!ctx.user?.id) return null
+
+        const userExists = await prisma.user.findUnique({
+          where: {
+            id: ctx.user.id,
+          },
+        })
+
+        if (!userExists) return null
+
+        if (!args.isNeedToFavorite) {
+          await prisma.favorite.deleteMany({
+            where: {
+              player: args.player,
+              user: {
+                is: {
+                  id: ctx.user.id,
+                },
+              },
+            },
+          })
+          return ctx.user
+        }
+
+        // const favoriteExists = await prisma.favorite.findFirst({
+        //   where: {
+        //     player: args.player,
+        //     user: {
+        //       is: {
+        //         id: ctx.user.id,
+        //       },
+        //     },
+        //   },
+        // })
+        // if (favoriteExists) return null
+
+        await prisma.favorite.create({
+          data: {
+            player: args.player,
+            type: args.type,
+            user: {
+              connect: {
+                id: ctx.user.id,
+              },
+            },
+          },
+        })
+
+        return ctx.user
       },
     })
   },
