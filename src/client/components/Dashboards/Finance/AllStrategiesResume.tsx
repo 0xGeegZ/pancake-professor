@@ -1,7 +1,18 @@
 import 'moment-timezone'
 
 import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
-import { Box, Card, CardContent, CardHeader, Divider, Grid, IconButton, Tooltip, Typography, useTheme } from '@mui/material'
+import {
+  Box,
+  Card,
+  CardContent,
+  CardHeader,
+  Divider,
+  Grid,
+  IconButton,
+  Tooltip,
+  Typography,
+  useTheme,
+} from '@mui/material'
 import { styled } from '@mui/material/styles'
 import moment from 'moment'
 import { useEffect, useState } from 'react'
@@ -120,6 +131,12 @@ function AllStrategies({ strategies }) {
           amountsPercent,
           amountsValue,
           backgroundColor: [
+            '#C32F27',
+            '#009EFA',
+            '#FF9671',
+            '#845EC2',
+            '#309975',
+            '#264e70',
             theme.palette.primary.main,
             theme.palette.success.main,
             theme.palette.warning.main,
@@ -127,6 +144,12 @@ function AllStrategies({ strategies }) {
             theme.palette.error.main,
           ],
           hoverBackgroundColor: [
+            '#d8572a',
+            '#00D2FC',
+            '#FFC75F',
+            '#D65DB1',
+            '#58b368',
+            '#679186',
             theme.palette.primary.light,
             theme.palette.success.light,
             theme.palette.warning.light,
@@ -134,6 +157,12 @@ function AllStrategies({ strategies }) {
             theme.palette.error.light,
           ],
           hoverBorderColor: [
+            '#DB7C26',
+            '#4FFBDF',
+            '#F9F871',
+            '#FF6F91',
+            '#dad873',
+            '#bbd4ce',
             theme.colors.primary.lighter,
             theme.colors.success.lighter,
             theme.colors.warning.lighter,
@@ -145,6 +174,7 @@ function AllStrategies({ strategies }) {
       // labels: [t('Bills'), t('Helath'), t('Education'), t('Entertainment'), t('Others')],
       labels,
     }
+
     setData(ldata)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data, strategies])

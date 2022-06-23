@@ -1,9 +1,30 @@
-mutation CreateStrategie($player: String!, $startedAmount: Float!, $maxLooseAmount: Float, $minWinAmount: Float) {
+mutation CreateStrategie(
+  $player: String!
+  $startedAmount: Float!
+  $betAmountPercent: Float!
+  $increaseAmount: Float
+  $decreaseAmount: Float
+  $name: String
+  $color: String
+  $maxLooseAmount: Float
+  $minWinAmount: Float
+  $takeProfit: Int
+  $stopLoss: Int
+  $isTrailing: Boolean
+) {
   createStrategie(
     player: $player
     startedAmount: $startedAmount
+    betAmountPercent: $betAmountPercent
+    increaseAmount: $increaseAmount
+    decreaseAmount: $decreaseAmount
+    name: $name
+    color: $color
     maxLooseAmount: $maxLooseAmount
     minWinAmount: $minWinAmount
+    takeProfit: $takeProfit
+    stopLoss: $stopLoss
+    isTrailing: $isTrailing
   ) {
     id
     isActive

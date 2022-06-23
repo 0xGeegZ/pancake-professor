@@ -1,7 +1,7 @@
 const pm2 = require('pm2')
 const prisma = require('./server/db/prisma')
 const logger = require('./server/utils/logger')
-const { stopStrategiesWithPM2 } = require('./server/scripts/pm2/stop-strategies/index')
+const { stopStrategiesWithPM2 } = require('./server/pm2/stop-strategies/index')
 const { sleep } = require('./server/utils/utils')
 
 const listLog = (error, list) => {
@@ -29,7 +29,7 @@ const startLogs = (error, data) => {
 const launchStrategieForUser = async (strategie) => {
   pm2.start(
     {
-      script: 'server/scripts/pm2/launch-strategie/index.js',
+      script: 'server/pm2/launch-strategie/index.js',
       name: `strategie_${strategie.id}`,
       instances: 1,
       args: `${strategie.id}`,
@@ -47,7 +47,7 @@ const launchStrategieForUser = async (strategie) => {
 const stopAllStrategies = async () => {
   // pm2.start(
   //   {
-  //     script: 'server/scripts/pm2/stop-strategies/index.js',
+  //     script: 'server/pm2/stop-strategies/index.js',
   //     name: 'stopStrategies',
   //     instances: 1,
   //     autorestart: false,
@@ -67,14 +67,14 @@ const stopAllStrategies = async () => {
 const launchAllStrategies = () => {
   pm2.start(
     {
-      script: 'server/scripts/pm2/launch-strategies/index.js',
+      script: 'server/pm2/launch-strategies/index.js',
       name: 'launchStrategies',
       instances: 1,
       autorestart: false,
       stop_exit_codes: [0],
       exec_mode: 'fork',
       // evety hour at 57' minuts https://crontab.guru/#57_*_*_*_*
-      cron_restart: '57 * * * *',
+      // cron_restart: '57 * * * *',
       output: './logs/pm2/launchStrategies/listen.log',
       error: './logs/pm2/launchStrategies/listen.error.log',
       log: './logs/pm2/launchStrategies/combined.listen.log',

@@ -5,7 +5,16 @@ import CloseIcon from '@mui/icons-material/Close'
 import InfoIcon from '@mui/icons-material/Info'
 import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
 import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import LoadingButton from '@mui/lab/LoadingButton'
+// import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt'
+
+import ThumbDownIcon from '@mui/icons-material/ThumbDown'
+// import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+// import StickyNote2Icon from '@mui/icons-material/StickyNote2'
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
   Alert,
   Avatar,
@@ -55,6 +64,7 @@ import { useUpdateStrategieMutation } from 'src/client/graphql/updateStrategie.g
 import { useGlobalStore } from 'src/client/store/swr'
 import loadPlayer from 'src/client/thegraph/loadPlayer'
 import * as Yup from 'yup'
+import { useToogleFavoritePlayerMutation } from 'src/client/graphql/toogleFavoritePlayer.generated'
 
 const CardAddAction = styled(Card)(
   ({ theme }) => `
@@ -241,7 +251,8 @@ const Transition = forwardRef((props: TransitionProps & { children?: ReactElemen
 ))
 /* eslint-enable */
 
-function ActiveStrategies({ strategies: pstrategies, fetching }) {
+// function ActiveStrategies({ strategies: pstrategies, favorites: pfavorites, fetching }) {
+function ActiveStrategies({ user: puser, fetching }) {
   const { t }: { t: any } = useTranslation()
   const theme = useTheme()
   const [, updateStrategie] = useUpdateStrategieMutation()
@@ -302,7 +313,9 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
   const [location, setLocation] = useState<string>(locations[0].text)
   const [locationValue, setLocationValue] = useState<string>(locations[0].value)
 
-  const [strategies, setStrategies] = useState<any[]>(null)
+  const [user, setUser] = useState<any>(null)
+  // const [strategies, setStrategies] = useState<any[]>(null)
+  // const [favorites, setFavorites] = useState<any[]>(null)
   const [withoutHistory, setWithoutHistory] = useState<any[]>(null)
   const [activeStrategie, setActiveStrategie] = useState<any>(null)
   // const [isLoadingHistory, setIsLoadingHistory] = useState<boolean>(false)
@@ -336,7 +349,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
   }
 
   const handleChange = (strategie) => async () => {
-    const updateds = strategies.map((s) => {
+    const updateds = user?.strategies.map((s) => {
       const updated = s
       if (updated.id === strategie.id) {
         updated.isActive = !updated.isActive
@@ -344,7 +357,10 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
       }
       return updated
     })
-    setStrategies(updateds)
+    // setStrategies(updateds)
+    const newUser = user
+    newUser.strategies = updateds
+    setUser(newUser)
 
     const { error } = await toogleActivateStrategie({ id: strategie.id })
 
@@ -362,7 +378,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
     mutate('currentUser')
   }
 
-  const loadStrategiesHistory = useCallback(async (plstrategies) => {
+  const loadStrategiesHistory = useCallback(async (ppuser) => {
     const loadHistoryForStrategie = async (strategie) => {
       try {
         const { bets, ...enriched } = await loadPlayer(strategie.generated)
@@ -379,8 +395,11 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
       }
     }
     try {
-      const updateds = await Promise.all(plstrategies.map(loadHistoryForStrategie))
-      setStrategies(updateds)
+      const updateds = await Promise.all(ppuser.strategies.map(loadHistoryForStrategie))
+
+      const newUser = ppuser
+      newUser.strategies = updateds
+      setUser(newUser)
     } catch (err) {
       console.error(err)
     }
@@ -391,29 +410,37 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
       return
     }
 
-    if (!pstrategies) {
+    // setFavorites(pfavorites)
+
+    if (!puser) {
       // setStrategies(null)
       return
     }
-    console.log('useEffect')
 
-    if (strategies) {
+    // if (user) return
+    // console.log('useEffect')
+
+    if (puser.strategies) {
       // check if strategies was updateds
       // console.log('IS SAME', JSON.stringify(pstrategies) === JSON.stringify(withoutHistory))
 
-      if (JSON.stringify(pstrategies) === JSON.stringify(withoutHistory)) return
+      if (
+        JSON.stringify(puser.strategies) === JSON.stringify(withoutHistory) &&
+        JSON.stringify(puser.favorites) === JSON.stringify(user.favorites)
+      )
+        return
 
       // console.log('pstrategies', pstrategies)
       // console.log('strategies', withoutHistory)
     }
 
     console.log('useEffect -> updating strategies')
-    setMobileOpen(false)
+    // setMobileOpen(false)
 
-    setStrategies(pstrategies)
-    setWithoutHistory(pstrategies)
+    setUser(puser)
+    setWithoutHistory(puser.strategies)
 
-    loadStrategiesHistory(pstrategies)
+    loadStrategiesHistory(puser)
 
     // const lstrategies = pstrategies.sort((x, y) => {
     //   // return x.isActive === y.isActive ? 0 : x.isActive ? -1 : 1
@@ -421,7 +448,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
     // })
     // setStrategies(lstrategies)
     // loadStrategiesHistory(lstrategies)
-  }, [fetching, pstrategies, strategies, loadStrategiesHistory, withoutHistory])
+  }, [fetching, loadStrategiesHistory, withoutHistory, puser, user])
 
   const getStrategieDuraction = (timestamp) => {
     const duration = moment.duration(moment().diff(moment(timestamp)))
@@ -455,13 +482,17 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
         })
         return
       }
-      const updateds = strategies.map((s) => {
+      const updateds = user.strategies.map((s) => {
         const updated = s
         if (updated.id === activeStrategie.id) updated.isDeleted = !updated.isDeleted
 
         return updated
       })
-      setStrategies(updateds)
+
+      const newUser = user
+      newUser.strategies = updateds
+      setUser(newUser)
+      // setStrategies(updateds)
 
       enqueueSnackbar(t(`Stratégie successfully deleted.`), {
         variant: 'success',
@@ -491,7 +522,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
   }
 
   const handleUpdateUserForStrategie = () => {
-    enqueueSnackbar(t('The user account was successfully updated'), {
+    enqueueSnackbar(t('The strategie was successfully updated'), {
       variant: 'success',
       anchorOrigin: {
         vertical: 'top',
@@ -505,7 +536,29 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
   }
 
   const onSubmit = async (_values, { resetForm, setErrors, setStatus, setSubmitting }) => {
-    const { player, stopLoss, takeProfit } = _values
+    const { player, stopLoss, takeProfit, name, color, betAmountPercent, isTrailing, bankrol } = _values
+    console.log('🚀 ~ file: ActiveStrategies.tsx ~ line 533 ~ onSubmit ~ bankrol', bankrol)
+    console.log(
+      '🚀 ~ file: ActiveStrategies.tsx ~ line 533 ~ onSubmit ~ activeStrategie.startedAmount',
+      activeStrategie.startedAmount
+    )
+    console.log(
+      '🚀 ~ file: ActiveStrategies.tsx ~ line 533 ~ onSubmit ~ bankrol - activeStrategie.stratedAmount',
+      bankrol - activeStrategie.startedAmount
+    )
+
+    let increaseAmount = 0.0
+    let decreaseAmount = 0.0
+
+    if (bankrol > 0) increaseAmount = bankrol
+    else if (bankrol < 0) decreaseAmount = bankrol
+    // else if (bankrol < 0) decreaseAmount = Math.abs(bankrol)
+
+    // if (bankrol - activeStrategie.startedAmount > 0) increaseAmount = bankrol - activeStrategie.startedAmount
+    // else if (bankrol - activeStrategie.startedAmount < 0) decreaseAmount = bankrol - activeStrategie.startedAmount
+
+    console.log('🚀 ~ file: ActiveStrategies.tsx ~ line 537 ~ onSubmit ~ increaseAmount', increaseAmount)
+    console.log('🚀 ~ file: ActiveStrategies.tsx ~ line 537 ~ onSubmit ~ decreaseAmount', decreaseAmount)
 
     try {
       ethers.utils.getAddress(player)
@@ -516,7 +569,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
       return
     }
 
-    if (+takeProfit <= 110) {
+    if (+takeProfit < 110) {
       enqueueSnackbar(t('Take Profit need to be greather than 110%.'), {
         variant: 'error',
       })
@@ -536,27 +589,48 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
     console.log('🚀 ~ file: ActiveStrategies.tsx ~ line 478 ~ onSubmit ~ minWinAmount', minWinAmount)
 
     try {
-      const { error } = await updateStrategie({ id: activeStrategie.id, player, maxLooseAmount, minWinAmount })
+      const { error, data } = await updateStrategie({
+        id: activeStrategie.id,
+        player,
+        maxLooseAmount,
+        minWinAmount,
+        betAmountPercent,
+        isTrailing,
+        name,
+        color,
+        increaseAmount,
+        decreaseAmount,
+      })
 
       if (error) throw new Error(error.message)
 
+      // const { updateStrategie: updated } = data
       resetForm()
       setStatus({ success: true })
       setSubmitting(false)
       handleUpdateUserForStrategie()
       // mutate('currentUser')
 
-      const updateds = strategies.map((s) => {
-        const updated = s
-        if (updated.id === activeStrategie.id) {
-          updated.player = player
-          updated.maxLooseAmount = maxLooseAmount
-          updated.minWinAmount = minWinAmount
+      // const updateds = strategies.map((strategie) => (strategie.id === activeStrategie.id ? updated : strategie))
+      const updateds = user.strategies.map((s) => {
+        const strategie = s
+        if (strategie.id === activeStrategie.id) {
+          strategie.player = player
+          strategie.name = name
+          strategie.color = color
+          strategie.isTrailing = isTrailing
+          strategie.betAmountPercent = betAmountPercent
+          strategie.maxLooseAmount = maxLooseAmount
+          strategie.minWinAmount = minWinAmount
+          strategie.isNeedRestart = data?.updateStrategie?.isNeedRestart || strategie.isNeedRestart
         }
 
-        return updated
+        return strategie
       })
-      setStrategies(updateds)
+
+      const newUser = user
+      newUser.strategies = updateds
+      setUser(newUser)
     } catch (err) {
       console.error(err)
       setStatus({ success: false })
@@ -591,11 +665,15 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
 
     // return currentAmountPercent
   }
+
   const getStrategieMarks = (strategie) => {
     // const stopLoss = parseInt(
     //   `${((strategie?.startedAmount - strategie?.maxLooseAmount) * 100) / strategie?.startedAmount}`,
     //   10
     // )
+
+    if (!strategie) return []
+
     const takeProfit = parseInt(`${(strategie?.minWinAmount * 100) / strategie?.startedAmount}`, 10)
     const currentAmountPercent = parseInt(`${(strategie?.currentAmount * 100) / strategie?.minWinAmount}`, 10)
     const currentAmount = parseFloat(`${strategie?.currentAmount}`).toFixed(4)
@@ -606,16 +684,18 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
       //   label: '0 BNB',
       // },
       {
+        id: 1,
         // value: 20,
         // value: stopLoss,
         value:
           strategie?.currentAmount <= strategie?.startedAmount - strategie?.maxLooseAmount
             ? currentAmountPercent + 30
-            : 20,
+            : 15,
         // value: currentAmountPercent + 30,
         label: `${parseFloat(`${strategie?.startedAmount - strategie?.maxLooseAmount}`).toFixed(4)}`,
       },
       {
+        id: 2,
         value: currentAmountPercent,
         // value:
         //   strategie?.currentAmount <= strategie?.startedAmount - strategie?.maxLooseAmount
@@ -624,18 +704,79 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
         label: `${currentAmount}`,
       },
       {
+        id: 3,
         // value: takeProfit - 10,
         value:
           strategie?.currentAmount > strategie?.minWinAmount ? takeProfit - currentAmountPercent - 10 : takeProfit - 10,
         label: `${parseFloat(`${strategie.minWinAmount}`).toFixed(4)}`,
       },
     ]
+
+    // const key = 'value'
+
+    // const filtereds = [...new Map(marks.map((item) => [item[key], item])).values()]
+
+    // if (filtereds.length !== marks.length) console.log('🚀 ~ filtereds', filtereds, 'marks', marks)
+
     return marks
+  }
+
+  const [, toogleFavoritePlayer] = useToogleFavoritePlayerMutation()
+
+  const handleToogleFavoritePlayer = async (player: any, favorite: any) => {
+    try {
+      const { error } = await toogleFavoritePlayer({ player, ...favorite })
+
+      if (error) throw new Error(error.message)
+
+      enqueueSnackbar(
+        t(
+          `Player successfully ${
+            favorite.type === 'LIKE'
+              ? favorite.isNeedToFavorite
+                ? 'favorited'
+                : 'unfavorited'
+              : favorite.isNeedToFavorite
+              ? 'disliked'
+              : 'undisliked'
+          }`
+        ),
+        {
+          variant: 'success',
+          TransitionComponent: Zoom,
+        }
+      )
+      mutate('currentUser')
+    } catch (err) {
+      console.error(err)
+      enqueueSnackbar(t('Unexpected error occurred when favoriting/unfavoriting player.'), {
+        variant: 'error',
+      })
+    }
   }
 
   // const valuetext = (value: number) => {
   //   return `${value} BNB`
   // }
+
+  // const getBnbForOneBet = ({ betAmountPercent, isTrailing, currentAmount, startedAmount }) => {
+  const getBnbForOneBet = ({ betAmountPercent, isTrailing }) => {
+    let betAmount
+    if (isTrailing) {
+      betAmount = parseFloat(`${(activeStrategie.startedAmount * betAmountPercent) / 100}`).toFixed(4)
+    } else {
+      betAmount = parseFloat(`${(activeStrategie.currentAmount * betAmountPercent) / 100}`).toFixed(4)
+    }
+
+    return betAmount < 0.001 ? 0.001 : betAmount
+  }
+
+  const getFeesRatioForOneBet = (values) => {
+    // TODO v0.04 calculate fees with provider
+    const fees = 0.000558792
+    const oneBetAmount = getBnbForOneBet(values)
+    return +((fees * 100) / oneBetAmount).toFixed(2)
+  }
 
   return (
     <>
@@ -677,15 +818,15 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
         </Box>
         <Grid container spacing={3}>
           {/* {fetching || !strategies?.length ? ( */}
-          {fetching && !strategies?.length ? (
+          {fetching && !user?.strategies?.length ? (
             <Grid sx={{ py: 11 }} container direction="row" justifyContent="center" alignItems="stretch" spacing={3}>
               <Grid item>
                 <CircularProgress color="secondary" size="1rem" />
               </Grid>
             </Grid>
-          ) : strategies?.length ? (
+          ) : user?.strategies?.length ? (
             <>
-              {strategies
+              {user?.strategies
                 .filter((strategie) => {
                   if (locationValue === 'all' && !strategie.isDeleted) return true
                   if (strategie.isActive && !strategie.isDeleted && locationValue === 'active') return true
@@ -698,11 +839,18 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                 })
                 .sort((x, y) => {
                   return x.isActive === y.isActive && x.isActive === true
-                    ? +x.currentAmount > +y.currentAmount
+                    ? +x.roundsCount > +y.roundsCount
                       ? -1
                       : 0
                     : 1
                 })
+                // .sort((x, y) => {
+                //   return x.isActive === y.isActive && x.isActive === true
+                //     ? +x.currentAmount > +y.currentAmount
+                //       ? -1
+                //       : 0
+                //     : 1
+                // })
                 .map((strategie) => (
                   <Grid item xs={12} xl={3} md={4} sm={6} key={strategie.id}>
                     <CardActiveStrategies
@@ -779,6 +927,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                             </List>
                           </Menu>
                         </Box>
+
                         {!strategie.isDeleted && (
                           <Box>
                             <Tooltip
@@ -800,17 +949,21 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                           {!strategie.isDeleted && (
                             <DotLegend
                               style={{
-                                background: strategie.isActive
-                                  ? theme.colors.success.main
-                                  : strategie.isError
-                                  ? theme.colors.error.main
-                                  : theme.colors.warning.main,
+                                background:
+                                  strategie.isActive && !strategie.isNeedRestart
+                                    ? theme.colors.success.main
+                                    : strategie.isError
+                                    ? theme.colors.error.main
+                                    : theme.colors.warning.main,
                               }}
                             />
                           )}
+
                           <Box sx={{ pl: 0.5 }}>
                             <Typography fontWeight="bold" variant="caption" color="primary">
-                              {strategie.isNeedRestart
+                              {strategie.isDeleted
+                                ? 'Deleted'
+                                : strategie.isNeedRestart
                                 ? t('Restarting')
                                 : strategie.isError
                                 ? strategie.currentAmount > strategie.minWinAmount
@@ -818,8 +971,6 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                                   : strategie.currentAmount < strategie.startedAmount - strategie.maxLooseAmount
                                   ? t('Stop Loss')
                                   : t('Error')
-                                : strategie.isDeleted
-                                ? 'Deleted'
                                 : strategie.isActive
                                 ? t('Active')
                                 : t('Innactive')}
@@ -829,8 +980,59 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
 
                         <Box sx={{ py: 1 }}>
                           <Grid spacing={2} container>
+                            {/* <Grid item xs={12}>
+                              <Typography variant="h4" noWrap sx={{ pt: 3 }}>
+                                {t('Player')}:{' '}
+                                <Link
+                                  variant="h5"
+                                  href={`https://bscscan.com/address/${strategie.player}`}
+                                  target="_blank">
+                                  {strategie.player.substring(0, 20)}
+                                </Link>
+                              </Typography>
+                            </Grid> */}
                             <Grid item xs={12}>
                               <Typography variant="h4" noWrap sx={{ pt: 3 }}>
+                                {t('Name')}: {strategie.name}{' '}
+                                {user?.favorites?.find((f) => f.player === strategie?.player) && (
+                                  <>
+                                    {user?.favorites?.find(
+                                      (f) => f.player === strategie?.player && f.type === 'LIKE'
+                                    ) ? (
+                                      <Tooltip placement="top" title={t('Current player is in favorites')} arrow>
+                                        <IconButton
+                                          size="small"
+                                          color="error"
+                                          // onClick={() => {
+                                          //   handleToogleFavoritePlayer(player.id, {
+                                          //     type: 'LIKE',
+                                          //     isNeedToFavorite: false,
+                                          //   })
+                                          // }}
+                                        >
+                                          <FavoriteIcon fontSize="small" />
+                                        </IconButton>
+                                      </Tooltip>
+                                    ) : (
+                                      <Tooltip placement="top" title={t('Current player is in unfavorites')} arrow>
+                                        <IconButton
+                                          size="small"
+                                          color="error"
+                                          // onClick={() => {
+                                          //   handleToogleFavoritePlayer(player.id, {
+                                          //     type: 'DISLIKE',
+                                          //     isNeedToFavorite: false,
+                                          //   })
+                                          // }}
+                                        >
+                                          <ThumbDownIcon fontSize="small" />
+                                        </IconButton>
+                                      </Tooltip>
+                                    )}
+                                  </>
+                                )}
+                              </Typography>
+                              <Typography variant="h4" noWrap sx={{ pt: 1 }}>
                                 {t('Player')}:{' '}
                                 <Link
                                   variant="h5"
@@ -900,19 +1102,39 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                               <Typography variant="h5" sx={{ pb: 1 }} component="div">
                                 {t('Winrate')}
                               </Typography>
-                              <Box>
-                                <Typography color="text.primary" variant="h3" sx={{ display: 'inline-flex' }}>
-                                  {/* {parseInt(`${strategie?.enriched?.winRate}`, 10) || '...'}% */}
-                                  {getWinrateForStrategie(strategie)}
-                                </Typography>
+                              <Box pl={0}>
+                                {/* <Typography color="text.primary" variant="h3" sx={{ display: 'inline-flex' }}>
+                                  {parseInt(`${strategie?.enriched?.winRate}`, 10) || '...'}%
+                                </Typography> */}
+                                {getWinrateForStrategie(strategie) === '...' ? (
+                                  <Tooltip
+                                    title={t(
+                                      'Winrate generaly start to be diplayed when adress have more than few hours.'
+                                    )}
+                                    arrow>
+                                    <Typography color="text.primary" variant="h3" sx={{ display: 'inline-flex' }}>
+                                      {getWinrateForStrategie(strategie)}
+                                    </Typography>
+                                  </Tooltip>
+                                ) : (
+                                  <Typography color="text.primary" variant="h3" sx={{ display: 'inline-flex' }}>
+                                    {getWinrateForStrategie(strategie)}
+                                  </Typography>
+                                )}
+                                {'  '}
                                 <DotLegend
                                   style={{
                                     background:
-                                      +strategie?.enriched?.winRate >= 55
+                                      +getWinrateForStrategie(strategie) >= 55
                                         ? theme.colors.success.main
-                                        : +strategie?.enriched?.winRate >= 50
+                                        : +getWinrateForStrategie(strategie) >= 50
                                         ? theme.colors.warning.main
                                         : theme.colors.error.main,
+                                    // +strategie?.enriched?.winRate >= 55
+                                    //   ? theme.colors.success.main
+                                    //   : +strategie?.enriched?.winRate >= 50
+                                    //   ? theme.colors.warning.main
+                                    //   : theme.colors.error.main,
                                   }}
                                 />
                               </Box>
@@ -929,7 +1151,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                                 {parseInt(`${(+strategie.currentAmount * 100) / strategie.startedAmount - 100}`, 10)}%)
                               </Typography>
                             </Grid>
-                            {strategie.maxLooseAmount && strategie.minWinAmount ? (
+                            {strategie.maxLooseAmount && strategie.minWinAmount && (
                               <Grid item xs={12}>
                                 {/* <Tooltip arrow placement="bottom" title={t('Share')}> */}
 
@@ -950,11 +1172,11 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                                 />
                                 {/* </Tooltip> */}
 
-                                <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
+                                <Typography variant="h5" sx={{ fontSize: '11px', pt: 1 }} component="div">
                                   {t('Started Amount ')} <b>{strategie.startedAmount} BNB</b>
                                 </Typography>
                                 {strategie.minWinAmount && (
-                                  <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
+                                  <Typography variant="h5" sx={{ fontSize: '11px', pt: 0.3 }} component="div">
                                     {t('Take profit if win more than ')} <b>{strategie.minWinAmount} BNB</b>
                                   </Typography>
                                 )}
@@ -962,7 +1184,7 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                                   // <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
                                   //   {t('Stop Loss if loose more than ')} <b>{strategie.maxLooseAmount} BNB</b>
                                   // </Typography>
-                                  <Typography variant="h5" sx={{ fontSize: '11px' }} component="div">
+                                  <Typography variant="h5" sx={{ fontSize: '11px', pt: 0.3 }} component="div">
                                     {t('Stop Loss if bankroll is less than ')}{' '}
                                     <b>
                                       {parseFloat(`${strategie?.startedAmount - strategie?.maxLooseAmount}`).toFixed(4)}{' '}
@@ -971,8 +1193,6 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                                   </Typography>
                                 )}
                               </Grid>
-                            ) : (
-                              <></>
                             )}
                           </Grid>
                         </Box>
@@ -1060,14 +1280,116 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
       </Box>
       <Dialog fullWidth maxWidth="sm" open={open} onClose={handleUpdateStrategieClose}>
         <DialogTitle sx={{ p: 3 }}>
-          <Typography variant="h4" gutterBottom>
-            {t('Update player')}
-          </Typography>
-          <Typography variant="subtitle2">{t('Update the player for current strategie')}</Typography>
+          <Grid container spacing={1}>
+            <Grid item md={10}>
+              <Typography variant="h4" gutterBottom>
+                {t('Update player')}
+              </Typography>
+              <Typography variant="subtitle2">{t('Update the player for current strategie')}</Typography>
+            </Grid>
+            <Grid item md={2}>
+              <Grid container spacing={1}>
+                {!user?.favorites?.find((f) => f.player === activeStrategie?.player) ? (
+                  <>
+                    <Grid item md={6}>
+                      <Tooltip placement="top" title={t('Favorite current player')} arrow>
+                        <IconButton
+                          size="small"
+                          color="error"
+                          onClick={() => {
+                            handleToogleFavoritePlayer(activeStrategie?.player, {
+                              type: 'LIKE',
+                              isNeedToFavorite: true,
+                            })
+                          }}>
+                          <FavoriteBorderIcon fontSize="small" />
+                          {/* <ThumbUpOffAltIcon fontSize="small" /> */}
+                        </IconButton>
+                      </Tooltip>
+                    </Grid>
+
+                    <Grid item md={6}>
+                      <Tooltip placement="top" title={t('Favorite current player')} arrow>
+                        <IconButton
+                          size="small"
+                          color="error"
+                          onClick={() => {
+                            handleToogleFavoritePlayer(activeStrategie?.player, {
+                              type: 'DISLIKE',
+                              isNeedToFavorite: true,
+                            })
+                          }}>
+                          <ThumbDownOffAltIcon fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Grid>
+                  </>
+                ) : (
+                  // <Tooltip placement="top" title={t('Unfavorite current player')} arrow>
+                  //   <IconButton
+                  //     size="small"
+                  //     color="error"
+                  //     onClick={() => {
+                  //       handleToogleFavoritePlayer(activeStrategie?.player, false)
+                  //     }}>
+                  //     <FavoriteIcon fontSize="small" />
+                  //   </IconButton>
+                  // </Tooltip>
+                  <>
+                    <Grid item md={6}>
+                      {user?.favorites?.find((f) => f.player === activeStrategie?.player && f.type === 'LIKE') ? (
+                        <IconButton
+                          size="small"
+                          color="error"
+                          onClick={() => {
+                            handleToogleFavoritePlayer(activeStrategie?.player, {
+                              type: 'LIKE',
+                              isNeedToFavorite: false,
+                            })
+                          }}>
+                          <FavoriteIcon fontSize="small" />
+                        </IconButton>
+                      ) : (
+                        <IconButton
+                          size="small"
+                          color="error"
+                          onClick={() => {
+                            handleToogleFavoritePlayer(activeStrategie?.player, {
+                              type: 'DISLIKE',
+                              isNeedToFavorite: false,
+                            })
+                          }}>
+                          <ThumbDownIcon fontSize="small" />
+                        </IconButton>
+                      )}
+                    </Grid>
+                    <Grid item md={6}>
+                      <IconButton
+                        size="small"
+                        color="secondary"
+                        onClick={() => {
+                          handleUpdateStrategieClose()
+                          handleDrawerToggle()
+                          handleDrawerSetPlayer(activeStrategie?.player)
+                        }}>
+                        <ExpandMoreIcon fontSize="small" />
+                      </IconButton>
+                    </Grid>
+                  </>
+                )}
+              </Grid>
+            </Grid>
+          </Grid>
         </DialogTitle>
         <Formik
           initialValues={{
             player: activeStrategie?.player || '',
+            // bankrol: activeStrategie?.startedAmount.toFixed(4),
+            bankrol: 0.0,
+            name: activeStrategie?.name || '',
+            color: activeStrategie?.color || '',
+            betAmountPercent: activeStrategie?.betAmountPercent || 5,
+            isTrailing: activeStrategie?.isTrailing,
             // player: '',
             // stopLoss: activeStrategie?.maxLooseAmount || 30,
             // takeProfit: activeStrategie?.minWinAmount || 150,
@@ -1081,6 +1403,17 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
           }}
           validationSchema={Yup.object().shape({
             player: Yup.string().max(255).required(t('The player field is required')),
+            bankrol: Yup.number()
+              // TODO beter management
+              // maximum amount is 95% of available balance
+              .max(+`${+user?.generatedBalance - +user?.generatedBalance / 20}`)
+              // max minimum amount is 50% of current amount
+              .min(+`${+(activeStrategie?.currentAmount / 2) * -1}`)
+              .required(t('The bankrol field is required')),
+            name: Yup.string().max(100),
+            color: Yup.string().max(7),
+            betAmountPercent: Yup.number().min(2).max(50).required(t('The betAmount field is required')),
+            isTrailing: Yup.boolean().required(t('The isTrailing field is required')),
             stopLoss: Yup.number().min(10).required(t('The stopLoss field is required')),
             takeProfit: Yup.number().min(110).required(t('The takeProfit field is required')),
           })}
@@ -1091,6 +1424,45 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <Grid container spacing={3}>
+                      <Grid item xs={8}>
+                        <Box sx={{ textAlign: 'center' }} py={1}>
+                          <TextField
+                            error={Boolean(touched.name && errors.name)}
+                            fullWidth
+                            type="string"
+                            helperText={touched.name && errors.name}
+                            label={t('Name')}
+                            name="name"
+                            onBlur={handleBlur}
+                            onChange={handleChangeForm}
+                            value={values.name}
+                            variant="outlined"
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                        </Box>
+                      </Grid>
+                      <Grid item xs={4}>
+                        <Box sx={{ textAlign: 'center' }} py={1}>
+                          <TextField
+                            error={Boolean(touched.color && errors.color)}
+                            fullWidth
+                            type="string"
+                            helperText={touched.color && errors.color}
+                            label={t('Color')}
+                            name="color"
+                            onBlur={handleBlur}
+                            onChange={handleChangeForm}
+                            value={values.color}
+                            variant="outlined"
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          />
+                        </Box>
+                      </Grid>
+
                       <Grid item xs={12}>
                         <TextField
                           error={Boolean(touched.player && errors.player)}
@@ -1104,6 +1476,132 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                           variant="outlined"
                         />
                       </Grid>
+
+                      <Grid item xs={6}>
+                        <Box sx={{ textAlign: 'center' }}>
+                          <TextField
+                            error={Boolean(touched.betAmountPercent && errors.betAmountPercent)}
+                            fullWidth
+                            type="number"
+                            helperText={touched.betAmountPercent && errors.betAmountPercent}
+                            label={t('Bet Amount')}
+                            name="betAmountPercent"
+                            onBlur={handleBlur}
+                            onChange={handleChangeForm}
+                            value={values.betAmountPercent}
+                            variant="outlined"
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                            InputProps={{
+                              endAdornment: <InputAdornment position="end">%</InputAdornment>,
+                            }}
+                          />
+                        </Box>
+                      </Grid>
+                      <Grid item xs={6}>
+                        <Box sx={{ textAlign: 'center' }}>
+                          {/* <TextField
+                            error={Boolean(touched.color && errors.color)}
+                            fullWidth
+                            type="string"
+                            helperText={touched.color && errors.color}
+                            label={t('Color')}
+                            name="color"
+                            onBlur={handleBlur}
+                            onChange={handleChangeForm}
+                            value={values.color}
+                            variant="outlined"
+                            InputLabelProps={{
+                              shrink: true,
+                            }}
+                          /> */}
+                          <Grid container display="flex" alignItems="center">
+                            <Grid item xs={4}>
+                              <Tooltip
+                                placement="left"
+                                title={`${t('Fixed : Bet amount will always be the same (more secure)')}`}
+                                arrow>
+                                <Typography>Fixed</Typography>
+                                {/* <InfoIcon fontSize="small" /> */}
+                              </Tooltip>
+                            </Grid>
+
+                            <Grid item xs={4}>
+                              <Tooltip
+                                placement="bottom-end"
+                                title={`${
+                                  values.isTrailing
+                                    ? t(
+                                        `Trailing : Bet amount will always be ${values.betAmountPercent}% of you balance (more volatile)`
+                                      )
+                                    : t('Fixed : Bet amount will always be the same (more secure)')
+                                }`}
+                                arrow>
+                                <Switch
+                                  checked={values.isTrailing}
+                                  value={values.isTrailing}
+                                  color="primary"
+                                  // // error={Boolean(touched.color && errors.color)}
+                                  // helperText={touched.color && errors.color}
+                                  // label={t('isTrailing')}
+                                  name="isTrailing"
+                                  onBlur={handleBlur}
+                                  onChange={handleChangeForm}
+                                  // variant="outlined"
+                                  // InputLabelProps={{
+                                  //   shrink: true,
+                                  // }}
+                                />
+                              </Tooltip>
+                            </Grid>
+                            <Grid item xs={4}>
+                              <Tooltip
+                                placement="right"
+                                title={`${t(
+                                  `Trailing : Bet amount will always be ${values.betAmountPercent}% of you balance (more volatile)`
+                                )}`}
+                                arrow>
+                                <Typography>Trailing</Typography>
+                              </Tooltip>
+                            </Grid>
+                          </Grid>
+                        </Box>
+                      </Grid>
+
+                      <Grid item xs={12}>
+                        {/* <Box sx={{ textAlign: 'center' }} pb={1}> */}
+                        <Typography
+                          sx={{ fontSize: `${theme.typography.pxToRem(10)}` }}
+                          variant="h6"
+                          color={
+                            getBnbForOneBet(values) <= 0.001
+                              ? 'error'
+                              : getBnbForOneBet(values) <= 0.005
+                              ? 'warning'
+                              : ''
+                          }>
+                          {t(`You'll bet ${getBnbForOneBet(values)} BNB for each game (${values.betAmountPercent}%).`)}
+                        </Typography>
+                        <Typography
+                          sx={{ fontSize: `${theme.typography.pxToRem(10)}` }}
+                          variant="h6"
+                          color={
+                            getFeesRatioForOneBet(values) >= 25
+                              ? 'error'
+                              : getFeesRatioForOneBet(values) >= 10.0
+                              ? 'warning'
+                              : ''
+                          }>
+                          {t(
+                            `Transaction costs will be approximatly ${getFeesRatioForOneBet(
+                              values
+                            )}% of your bet amount.`
+                          )}
+                        </Typography>
+                        {/* </Box> */}
+                      </Grid>
+
                       <Grid item xs={6}>
                         <Box sx={{ textAlign: 'center' }} py={1}>
                           <Grid container display="flex" alignItems="center">
@@ -1142,7 +1640,6 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                           </Grid>
                         </Box>
                       </Grid>
-
                       <Grid item xs={6}>
                         <Box sx={{ textAlign: 'center' }} py={1}>
                           <Grid container display="flex" alignItems="center">
@@ -1174,6 +1671,48 @@ function ActiveStrategies({ strategies: pstrategies, fetching }) {
                                 }% of started bankroll`}
                                 arrow>
                                 <IconButton color="secondary" size="small">
+                                  <InfoIcon fontSize="small" />
+                                </IconButton>
+                              </Tooltip>
+                            </Grid>
+                          </Grid>
+                        </Box>
+                      </Grid>
+
+                      <Grid item xs={12}>
+                        <Box sx={{ textAlign: 'center' }} py={1}>
+                          <Grid container display="flex" alignItems="center">
+                            <Grid item xs={11}>
+                              <TextField
+                                error={Boolean(touched.bankrol && errors.bankrol)}
+                                fullWidth
+                                type="number"
+                                helperText={touched.bankrol && errors.bankrol}
+                                label={t('Increase or decrease bankroll amount')}
+                                name="bankrol"
+                                onBlur={handleBlur}
+                                onChange={handleChangeForm}
+                                value={values.bankrol}
+                                variant="filled"
+                                InputLabelProps={{
+                                  shrink: true,
+                                }}
+                                inputProps={{
+                                  step: '0.05',
+                                }}
+                                // eslint-disable-next-line react/jsx-no-duplicate-props
+                                InputProps={{
+                                  endAdornment: <InputAdornment position="end">BNB</InputAdornment>,
+                                }}
+                              />
+                            </Grid>
+                            <Grid item xs={1}>
+                              <Tooltip
+                                placement="bottom-end"
+                                color="error"
+                                title={`${t('Increase amount alocated for this strategy')}`}
+                                arrow>
+                                <IconButton color="warning" size="small">
                                   <InfoIcon fontSize="small" />
                                 </IconButton>
                               </Tooltip>

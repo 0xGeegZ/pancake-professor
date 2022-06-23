@@ -160,7 +160,8 @@ function AddFundsForm({ user, handleCloseForm }) {
 
   const handleGaugeIncrease = (e: { preventDefault: () => void }, newValue: number | null) => {
     e.preventDefault()
-    if (gauge === 100) return
+    // if (gauge === 100) return
+    if (gauge >= 97) return
 
     // const updated = newValue || gauge + (gauge >= 80 || gauge <= 20 ? 1 : 2)
     const updated = newValue || gauge + 1
@@ -273,7 +274,8 @@ function AddFundsForm({ user, handleCloseForm }) {
                   // step={5}
                   // marks
                   min={0}
-                  max={100}
+                  // max={100}
+                  max={97}
                   onChange={handleChange}
                 />
               </Box>

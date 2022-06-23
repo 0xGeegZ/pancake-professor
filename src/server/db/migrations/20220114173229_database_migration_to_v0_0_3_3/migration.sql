@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Favorite" ALTER COLUMN "type" DROP DEFAULT,
+ALTER COLUMN "comment" DROP DEFAULT;

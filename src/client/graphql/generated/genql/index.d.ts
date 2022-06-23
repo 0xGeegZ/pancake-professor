@@ -53,6 +53,11 @@ export declare const generateMutationOp: (
   fields: MutationRequest & { __name?: string },
 ) => GraphqlOperation
 
+export declare const enumFavoriteType = {
+  DISLIKE: 'DISLIKE',
+  LIKE: 'LIKE',
+} as const
+
 export declare const enumPaidPlan = {
   pro: 'pro',
 } as const

@@ -4,9 +4,17 @@ import 'moment-timezone'
 import { PREDICTION_CONTRACT_ABI } from '@/contracts/abis/pancake-prediction-abi-v3'
 import CloseIcon from '@mui/icons-material/Close'
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt'
+import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
+import ThumbDownIcon from '@mui/icons-material/ThumbDown'
+import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 import GamepadIcon from '@mui/icons-material/Gamepad'
 import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone'
+import StickyNote2Icon from '@mui/icons-material/StickyNote2'
 import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
+import AssessmentIcon from '@mui/icons-material/Assessment'
 import {
   Avatar,
   Box,
@@ -21,8 +29,17 @@ import {
   IconButton,
   LinearProgress,
   Link,
+  List,
   Menu,
+  Slider,
   MenuItem,
+  FormControl,
+  ListItemIcon,
+  Checkbox,
+  ListItemButton,
+  ListItemText,
+  InputLabel,
+  Select,
   Slide,
   Table,
   TableBody,
@@ -47,6 +64,8 @@ import { useTranslation } from 'react-i18next'
 import FollowPlayerForm from 'src/client/components/Dashboards/Automation/FollowPlayerForm'
 import { useGlobalStore } from 'src/client/store/swr'
 import loadPlayers from 'src/client/thegraph/loadPlayers'
+import { useToogleFavoritePlayerMutation } from 'src/client/graphql/toogleFavoritePlayer.generated'
+import FilterAltTwoToneIcon from '@mui/icons-material/FilterAltTwoTone'
 
 import SidebarPlayerDrawer from './SidebarPlayerDrawer'
 
@@ -138,6 +157,14 @@ const LinearProgressWrapper = styled(LinearProgress)(
 `
 )
 
+const ListItemWrapper = styled(ListItemButton)(
+  () => `
+      &.MuiButtonBase-root {
+        border-radius: 0;
+      }
+  `
+)
+
 /* eslint-disable */
 const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (
   <Slide direction="down" ref={ref} {...props} />
@@ -158,104 +185,6 @@ const PlayersList: FC = () => {
   const [hasError, setHasError] = useState<boolean>(false)
   const [preditionContract, setPreditionContract] = useState<any>(null)
   const [denominatorValue, setDenominatorValue] = useState<number>(0)
-
-  const { user, mutate, fetching: userFetching } = useGlobalStore()
-
-  const getPlayers = useCallback(
-    async (ppreditionContract) => {
-      if (fetching) return
-
-      console.log('getPlayers')
-
-      setFetching(true)
-      try {
-        const lisPaused = await ppreditionContract.paused()
-        setIsPaused(lisPaused)
-        if (lisPaused) {
-          enqueueSnackbar(t(`Contract is actually paused`), {
-            variant: 'error',
-            TransitionComponent: Zoom,
-          })
-          // setFetching(false)
-          // return
-        }
-        const epoch = await ppreditionContract.currentEpoch()
-
-        const lplayers = await loadPlayers({ epoch })
-        // const lplayers = await loadAllPlayers({ epoch })
-
-        setPlayers(lplayers)
-        setFetching(false)
-      } catch (err) {
-        setHasError(true)
-        setFetching(false)
-      }
-    },
-    [fetching, enqueueSnackbar, t]
-  )
-
-  const refreshQuery = useCallback(
-    async ({ orderBy }) => {
-      console.log('refreshQuery')
-      const epoch = await preditionContract.currentEpoch()
-
-      setFetching(true)
-      setPlayers([])
-      players.length = 0
-
-      try {
-        const lplayers = await loadPlayers({ epoch, orderBy })
-        // const lplayers = await loadAllPlayers({ epoch, orderBy })
-        console.log('🚀 ~ file: PlayersList.tsx ~ line 205 ~ lplayers', lplayers.length)
-
-        setDenominatorValue(orderBy === 'default' ? 288 : orderBy === 'mostActiveLastHour' ? 12 : 0)
-        setPlayers(lplayers)
-
-        setFetching(false)
-      } catch (err) {
-        setHasError(true)
-        setFetching(false)
-      }
-    },
-    [players, preditionContract]
-  )
-
-  useEffect(() => {
-    if (preditionContract) return
-
-    // if (!user && !userFetching) {
-    //   enqueueSnackbar(t(`You need to be connected to have data fecthing for this view.`), {
-    //     variant: 'warning',
-    //     TransitionComponent: Zoom,
-    //   })
-    //   return
-    // }
-    if (!window.ethereum?.request) {
-      enqueueSnackbar(t(`You need to have metamask installed on your browser.`), {
-        variant: 'warning',
-        TransitionComponent: Zoom,
-      })
-      return
-    }
-
-    const lprovider = new ethers.providers.Web3Provider(window.ethereum)
-
-    const signer = lprovider.getSigner()
-
-    const lpreditionContract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS,
-      PREDICTION_CONTRACT_ABI,
-      signer
-    )
-
-    setPreditionContract(lpreditionContract)
-
-    try {
-      getPlayers(lpreditionContract)
-    } catch (err) {
-      setHasError(true)
-    }
-  }, [getPlayers, user, preditionContract, enqueueSnackbar, t, userFetching])
 
   const ordersBy = [
     {
@@ -286,10 +215,210 @@ const PlayersList: FC = () => {
 
   const actionRef1 = useRef<any>(null)
   const [openOrderBy, setOpenMenuOrderBy] = useState<boolean>(false)
-  const [orderBy, setOrderBy] = useState<string>(ordersBy[3].text)
+  // const [orderBy, setOrderBy] = useState<string>(ordersBy[3].text)
+  const [orderByText, setOrderByText] = useState<string>(ordersBy[3].text)
+  const [orderByValue, setOrderByValue] = useState<string>(ordersBy[3].value)
+
+  const { user, mutate, fetching: userFetching } = useGlobalStore()
+
+  // START FILTERS
+  const actionRef2 = useRef<any>(null)
+  const [openFilters, setOpenMenuFilters] = useState<boolean>(false)
+
+  // const [type, setType] = useState('')
+
+  // const handleType = (event) => {
+  //   setType(event.target.value)
+  // }
+
+  const playerTypesFilter = [
+    // {
+    //   id: 1,
+    //   name: 'All',
+    //   value: 'all',
+    // },
+    {
+      id: 1,
+      name: 'Liked',
+      value: 'liked',
+    },
+    {
+      id: 2,
+      name: 'Unliked',
+      value: 'unliked',
+    },
+    {
+      id: 3,
+      name: 'Others',
+      value: 'others',
+    },
+  ]
+
+  const [playerTypesChecked, setPlayerTypesChecked] = useState([1, 3])
+
+  const handleTogglePlayerTypes = (value: number) => () => {
+    const currentIndex = playerTypesChecked.indexOf(value)
+    const newChecked = [...playerTypesChecked]
+
+    if (currentIndex === -1) {
+      newChecked.push(value)
+    } else {
+      newChecked.splice(currentIndex, 1)
+    }
+
+    setPlayerTypesChecked(newChecked)
+  }
+
+  const [winrateRange, setWinrageRange] = useState<number[]>([55, 100])
+
+  const handleWinrageRangeChange = (_event: Event, newValue: number | number[]) => {
+    setWinrageRange(newValue as number[])
+  }
+
+  const [netbnbRange, setNetbnbRange] = useState<number[]>([-100, 1000])
+
+  const handleNetbnbRangeChange = (_event: Event, newValue: number | number[]) => {
+    setNetbnbRange(newValue as number[])
+  }
+
+  // END FILTERS
+
+  const getPlayers = useCallback(
+    async (ppreditionContract) => {
+      if (fetching) return
+
+      console.log('getPlayers')
+
+      setFetching(true)
+      try {
+        const lisPaused = await ppreditionContract.paused()
+        setIsPaused(lisPaused)
+        if (lisPaused) {
+          enqueueSnackbar(t(`Contract is actually paused`), {
+            variant: 'error',
+            TransitionComponent: Zoom,
+          })
+          // setFetching(false)
+          // return
+        }
+        const epoch = await ppreditionContract.currentEpoch()
+
+        let lplayers = await loadPlayers({ epoch })
+        // TODO v0.0.3 add filter like/unlike only in page filter
+        lplayers = lplayers.filter((p) => !user?.favorites.find((f) => f.player === p.id && f.type === 'DISLIKE'))
+        // lplayers = lplayers.sort((p) => (user?.favorites.find((f) => f.player === p.id && f.type === 'LIKE') ? -1 : 0))
+
+        setPlayers(lplayers)
+        setFetching(false)
+      } catch (err) {
+        setHasError(true)
+        setFetching(false)
+      }
+    },
+    [fetching, enqueueSnackbar, t, user]
+  )
+
+  const refreshQuery = useCallback(
+    async ({ orderBy }) => {
+      console.log('refreshQuery')
+
+      const epoch = await preditionContract.currentEpoch()
+
+      setFetching(true)
+      setPlayers([])
+      players.length = 0
+
+      const winRateMin = winrateRange[0]
+      const winRateMax = winrateRange[1]
+
+      const netBnbMin = netbnbRange[0]
+      const netBnbMax = netbnbRange[1]
+
+      console.log(user.favorites)
+      console.log(playerTypesChecked)
+
+      const isOnlyplayerTypesFilterSelected = !playerTypesChecked.includes(3)
+      const playerTypesFilterSelected = user.favorites
+        .filter((favorite) => {
+          if (favorite.type === 'LIKE' && playerTypesChecked.includes(1)) return true
+          if (favorite.type === 'DISLIKE' && playerTypesChecked.includes(2)) return true
+          return false
+        })
+        .map((f) => f.player)
+
+      try {
+        let lplayers = await loadPlayers({
+          epoch,
+          orderBy,
+          winRateMin,
+          winRateMax,
+          netBnbMin,
+          netBnbMax,
+          selecteds: isOnlyplayerTypesFilterSelected ? playerTypesFilterSelected : '',
+        })
+
+        if (!playerTypesChecked.includes(2))
+          lplayers = lplayers.filter((p) => !user.favorites.find((f) => f.player === p.id && f.type === 'DISLIKE'))
+
+        // TODO v0.0.4 add sortBy, SEE : http://localhost:3000/dashboards/monitoring
+        // if (playerTypesChecked.includes(1))
+        //   lplayers = lplayers.sort((p) =>
+        //     user?.favorites.find((f) => f.player === p.id && f.type === 'LIKE') ? -1 : 0
+        //   )
+
+        setDenominatorValue(orderBy === 'default' ? 288 : orderBy === 'mostActiveLastHour' ? 12 : 0)
+        setPlayers(lplayers)
+
+        setFetching(false)
+      } catch (err) {
+        setHasError(true)
+        setFetching(false)
+      }
+    },
+    [players, preditionContract, user, playerTypesChecked, orderByValue, netbnbRange, winrateRange]
+  )
+
+  useEffect(() => {
+    if (userFetching) return
+    if (preditionContract) return
+
+    // if (!user && !userFetching) {
+    //   enqueueSnackbar(t(`You need to be connected to have data fecthing for this view.`), {
+    //     variant: 'warning',
+    //     TransitionComponent: Zoom,
+    //   })
+    //   return
+    // }
+    if (!window.ethereum?.request) {
+      enqueueSnackbar(t(`You need to have metamask installed on your browser.`), {
+        variant: 'warning',
+        TransitionComponent: Zoom,
+      })
+      return
+    }
+
+    const lprovider = new ethers.providers.Web3Provider(window.ethereum)
+
+    // const signer = lprovider.getSigner()
+
+    const lpreditionContract = new ethers.Contract(
+      process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+      PREDICTION_CONTRACT_ABI,
+      // signer,
+      lprovider
+    )
+
+    setPreditionContract(lpreditionContract)
+
+    try {
+      getPlayers(lpreditionContract)
+    } catch (err) {
+      setHasError(true)
+    }
+  }, [getPlayers, user, preditionContract, enqueueSnackbar, t, userFetching])
 
   const [page, setPage] = useState<number>(0)
-  const [limit, setLimit] = useState<number>(10)
+  const [limit, setLimit] = useState<number>(15)
 
   const handlePageChange = (_event: any, newPage: number): void => {
     setPage(newPage)
@@ -351,7 +480,7 @@ const PlayersList: FC = () => {
     mutate('currentUser')
   }
 
-  const getStrategieDuraction = (timestamp) => {
+  const getStrategieDuration = (timestamp) => {
     const duration = moment.duration(moment().diff(moment(timestamp)))
 
     // Get Days
@@ -367,6 +496,40 @@ const PlayersList: FC = () => {
     const minutesFormatted = `${minutes}m`
 
     return [daysFormatted, hoursFormatted, minutesFormatted].join('')
+  }
+
+  const [, toogleFavoritePlayer] = useToogleFavoritePlayerMutation()
+
+  const handleToogleFavoritePlayer = async (player: any, favorite: any) => {
+    try {
+      const { error } = await toogleFavoritePlayer({ player, ...favorite })
+
+      if (error) throw new Error(error.message)
+
+      enqueueSnackbar(
+        t(
+          `Player successfully ${
+            favorite.type === 'LIKE'
+              ? favorite.isNeedToFavorite
+                ? 'favorited'
+                : 'unfavorited'
+              : favorite.isNeedToFavorite
+              ? 'disliked'
+              : 'undisliked'
+          }`
+        ),
+        {
+          variant: 'success',
+          TransitionComponent: Zoom,
+        }
+      )
+      mutate('currentUser')
+    } catch (err) {
+      console.error(err)
+      enqueueSnackbar(t('Unexpected error occurred when favoriting/unfavoriting player.'), {
+        variant: 'error',
+      })
+    }
   }
 
   return (
@@ -386,7 +549,7 @@ const PlayersList: FC = () => {
                 ref={actionRef1}
                 onClick={() => setOpenMenuOrderBy(true)}
                 endIcon={<ExpandMoreTwoToneIcon fontSize="small" />}>
-                {orderBy}
+                {orderByText}
               </Button>
               <Menu
                 anchorEl={actionRef1.current}
@@ -405,13 +568,112 @@ const PlayersList: FC = () => {
                     key={_order.value}
                     disabled={isPaused && _order.value === 'mostActiveLastHour'}
                     onClick={async () => {
-                      setOrderBy(_order.text)
+                      setOrderByText(_order.text)
+                      setOrderByValue(_order.value)
                       setOpenMenuOrderBy(false)
                       await refreshQuery({ orderBy: _order.value })
                     }}>
                     {_order.text}
                   </MenuItem>
                 ))}
+              </Menu>
+              <Button
+                size="small"
+                sx={{ ml: 2 }}
+                variant="outlined"
+                ref={actionRef2}
+                onClick={() => setOpenMenuFilters(true)}
+                endIcon={<FilterAltTwoToneIcon fontSize="small" />}>
+                {t('Filters')}
+              </Button>
+              <Menu
+                anchorEl={actionRef2.current}
+                onClose={() => setOpenMenuFilters(false)}
+                open={openFilters}
+                anchorOrigin={{
+                  vertical: 'bottom',
+                  horizontal: 'left',
+                }}
+                transformOrigin={{
+                  vertical: 'top',
+                  horizontal: 'left',
+                }}>
+                <Box sx={{ pt: 1, /* minWidth: '360px', */ outline: 'none' }}>
+                  <Grid container spacing={3}>
+                    {/* <Grid item md={6}>
+                      <FormControl fullWidth variant="outlined" size="small">
+                        <InputLabel>{t('Type')}</InputLabel>
+                        <Select label={t('Type')} value={type} onChange={handleType}>
+                          <MenuItem value={0}>{t('All types')}</MenuItem>
+                          <MenuItem value={1}>{t('Likes only')}</MenuItem>
+                          <MenuItem value={2}>{t('Unlike only')}</MenuItem>
+                        </Select>
+                      </FormControl>
+                    </Grid> */}
+                    <Grid item md={12}>
+                      <Typography variant="h5">{t('Winrate range')}</Typography>
+                      <Box sx={{ mx: 5, mt: 5 }}>
+                        <Slider
+                          value={winrateRange}
+                          step={0.25}
+                          min={50}
+                          max={100}
+                          onChange={handleWinrageRangeChange}
+                          valueLabelDisplay="on"
+                          valueLabelFormat={(value) => <div>{value}%</div>}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item md={12}>
+                      <Typography variant="h5">{t('Net BNB range')}</Typography>
+                      <Box sx={{ mx: 5, mt: 5 }}>
+                        <Slider
+                          value={netbnbRange}
+                          step={50}
+                          min={-100}
+                          max={1000}
+                          onChange={handleNetbnbRangeChange}
+                          valueLabelDisplay="on"
+                          valueLabelFormat={(value) => <div>{value} BNB</div>}
+                        />
+                      </Box>
+                    </Grid>
+                    <Grid item md={12}>
+                      <Typography variant="h5">{t('Players')}</Typography>
+
+                      <List component="div">
+                        {playerTypesFilter.map((value) => (
+                          <ListItemWrapper
+                            sx={{ py: 0, px: 2 }}
+                            key={value.id}
+                            onClick={handleTogglePlayerTypes(value.id)}>
+                            <ListItemIcon sx={{ minWidth: 32 }}>
+                              <Checkbox
+                                edge="start"
+                                checked={playerTypesChecked.indexOf(value.id) !== -1}
+                                tabIndex={-1}
+                                disableRipple
+                              />
+                            </ListItemIcon>
+                            <ListItemText primary={value.name} primaryTypographyProps={{ variant: 'body1' }} />
+                          </ListItemWrapper>
+                        ))}
+                      </List>
+                    </Grid>
+                  </Grid>
+                  <Divider sx={{ mb: 2, mt: 2 }} />
+                  <Box pb={1} display="flex" alignItems="center" justifyContent="center">
+                    <Button
+                      onClick={async () => {
+                        setOpenMenuFilters(false)
+                        await refreshQuery({ orderBy: orderByValue })
+                      }}
+                      variant="contained"
+                      size="small">
+                      {t('Filter results')}
+                    </Button>
+                  </Box>
+                </Box>
               </Menu>
             </>
           }
@@ -431,7 +693,7 @@ const PlayersList: FC = () => {
           <Divider />
 
           {paginatedPlayers.length === 0 ? (
-            fetching ? (
+            fetching || userFetching ? (
               <>
                 <Grid
                   sx={{ py: 10 }}
@@ -503,7 +765,7 @@ const PlayersList: FC = () => {
                           )}
                           <TableCell>
                             <Box display="flex" alignItems="center">
-                              {!player.recentGames ? (
+                              {!player.recentGames && (
                                 <DotLegend
                                   style={{
                                     background:
@@ -514,8 +776,6 @@ const PlayersList: FC = () => {
                                         : theme.colors.error.main,
                                   }}
                                 />
-                              ) : (
-                                <></>
                               )}
                               <Box>{parseFloat(player.winRate).toFixed(2)}%</Box>
                             </Box>
@@ -587,7 +847,7 @@ const PlayersList: FC = () => {
                   onRowsPerPageChange={handleLimitChange}
                   page={page}
                   rowsPerPage={limit}
-                  rowsPerPageOptions={[5, 10, 15]}
+                  rowsPerPageOptions={[5, 10, 15, 20]}
                 />
               </Box>
             </>
@@ -597,7 +857,7 @@ const PlayersList: FC = () => {
       {toggleView === 'grid_view' && (
         <>
           {paginatedPlayers.length === 0 ? (
-            fetching ? (
+            fetching || userFetching ? (
               <>
                 <Card>
                   <Box display="flex" alignItems="center" justifyContent="space-between">
@@ -669,7 +929,7 @@ const PlayersList: FC = () => {
                   page={page}
                   rowsPerPage={limit}
                   labelRowsPerPage=""
-                  rowsPerPageOptions={[5, 10, 15]}
+                  rowsPerPageOptions={[5, 10, 15, 20]}
                 />
               </Card>
               <Grid container spacing={3}>
@@ -710,7 +970,7 @@ const PlayersList: FC = () => {
                                     <Typography sx={{ fontSize: `${theme.typography.pxToRem(10)}` }} variant="h6">
                                       {t('Last Play')}
                                       {' : '}
-                                      {getStrategieDuraction(+player.bets[0].createdAt * 1000)}
+                                      {getStrategieDuration(+player.bets[0].createdAt * 1000)}
                                       {/* <Moment local>{moment(+player.bets[0].createdAt * 1000)}</Moment> */}
                                       {/* {formatDistance(
                                         subDays(new Date(+player.bets[0].createdAt * 1000), 1),
@@ -776,7 +1036,7 @@ const PlayersList: FC = () => {
                                       </Box>
                                     </Grid>
 
-                                    {player.recentGames ? (
+                                    {player.recentGames && (
                                       <>
                                         <Grid item xs={12} sm={7}>
                                           <Typography variant="caption" sx={{ pb: 1 }} component="div">
@@ -861,8 +1121,6 @@ const PlayersList: FC = () => {
                                           </Box>
                                         </Grid>
                                       </>
-                                    ) : (
-                                      <></>
                                     )}
                                   </Grid>
                                 </Box>
@@ -870,8 +1128,8 @@ const PlayersList: FC = () => {
 
                               <Divider />
                               <Box px={3} py={2}>
-                                <Grid container spacing={3}>
-                                  <Grid item md={6}>
+                                <Grid container spacing={1}>
+                                  <Grid item md={5}>
                                     {!user ? (
                                       <Tooltip
                                         placement="top"
@@ -886,14 +1144,13 @@ const PlayersList: FC = () => {
                                         placement="top"
                                         title={t('Need to have positive balance in secondary address to copy player')}
                                         arrow>
-                                        {/* TODO : Remove handleClick for production */}
+                                        {/* TODO 0.0.3 : Remove handleClick for production */}
                                         <Button
                                           size="small"
                                           fullWidth
                                           variant="outlined"
                                           color="warning"
-                                          // onClick={handleOpenCreateForm(player.id)}
-                                        >
+                                          onClick={handleOpenCreateForm(player.id)}>
                                           <b> {t('Copy')}</b>
                                         </Button>
                                       </Tooltip>
@@ -901,18 +1158,20 @@ const PlayersList: FC = () => {
                                       <Button
                                         size="small"
                                         fullWidth
-                                        disabled={!!user?.strategies.find((s) => s.player === player.id)}
+                                        disabled={!!user?.strategies.find((s) => s.player === player.id && s.isActive)}
                                         variant="contained"
                                         onClick={handleOpenCreateForm(player.id)}>
                                         <b>
-                                          {user?.strategies.find((s) => s.player === player.id)
+                                          {user?.strategies.find((s) => s.player === player.id && s.isActive)
                                             ? t('Copied')
+                                            : user?.strategies.find((s) => s.player === player.id && s.isDeleted)
+                                            ? t('Copy again')
                                             : t('Copy')}
                                         </b>
                                       </Button>
                                     )}
                                   </Grid>
-                                  <Grid item md={6}>
+                                  <Grid item md={4}>
                                     <Button
                                       size="small"
                                       // disabled
@@ -923,8 +1182,97 @@ const PlayersList: FC = () => {
                                         handleDrawerToggle()
                                         handleDrawerSetPlayer(player.id)
                                       }}>
-                                      {t('View details')}
+                                      {t('Details')}
                                     </Button>
+                                  </Grid>
+                                  {!user?.favorites?.find((f) => f.player === player.id) ? (
+                                    <>
+                                      <Grid item md={1}>
+                                        <IconButton
+                                          size="small"
+                                          color="error"
+                                          onClick={() => {
+                                            handleToogleFavoritePlayer(player.id, {
+                                              type: 'LIKE',
+                                              isNeedToFavorite: true,
+                                            })
+                                          }}>
+                                          <FavoriteBorderIcon fontSize="small" />
+                                          {/* <ThumbUpOffAltIcon fontSize="small" /> */}
+                                        </IconButton>
+                                      </Grid>
+
+                                      <Grid item md={1}>
+                                        <IconButton
+                                          size="small"
+                                          color="error"
+                                          onClick={() => {
+                                            handleToogleFavoritePlayer(player.id, {
+                                              type: 'DISLIKE',
+                                              isNeedToFavorite: true,
+                                            })
+                                          }}>
+                                          <ThumbDownOffAltIcon fontSize="small" />
+                                        </IconButton>
+                                      </Grid>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Grid item md={1}>
+                                        {user?.favorites?.find((f) => f.player === player.id && f.type === 'LIKE') ? (
+                                          <IconButton
+                                            size="small"
+                                            color="error"
+                                            onClick={() => {
+                                              handleToogleFavoritePlayer(player.id, {
+                                                type: 'LIKE',
+                                                isNeedToFavorite: false,
+                                              })
+                                            }}>
+                                            <FavoriteIcon fontSize="small" />
+                                          </IconButton>
+                                        ) : (
+                                          <IconButton
+                                            size="small"
+                                            color="error"
+                                            onClick={() => {
+                                              handleToogleFavoritePlayer(player.id, {
+                                                type: 'DISLIKE',
+                                                isNeedToFavorite: false,
+                                              })
+                                            }}>
+                                            <ThumbDownIcon fontSize="small" />
+                                          </IconButton>
+                                        )}
+                                      </Grid>
+                                      <Grid item md={1}>
+                                        <IconButton
+                                          size="small"
+                                          color="secondary"
+                                          onClick={() => {
+                                            handleDrawerToggle()
+                                            handleDrawerSetPlayer(player.id)
+                                          }}>
+                                          <StickyNote2Icon fontSize="small" />
+                                        </IconButton>
+                                      </Grid>
+                                    </>
+                                  )}
+                                  <Grid item md={1}>
+                                    {/* <IconButton size="small" color="secondary"> */}
+                                    {/* <Link href={`/app/player/${player.id}`} variant="body2" underline="hover"> */}
+
+                                    <IconButton
+                                      size="small"
+                                      color="primary"
+                                      onClick={() => {
+                                        handleDrawerToggle()
+                                        handleDrawerSetPlayer(player.id)
+                                      }}>
+                                      <AssessmentIcon fontSize="small" />
+                                    </IconButton>
+                                    {/* </Link> */}
+                                    {/* </IconButton> */}
                                   </Grid>
                                 </Grid>
                               </Box>
@@ -958,7 +1306,7 @@ const PlayersList: FC = () => {
                   page={page}
                   rowsPerPage={limit}
                   labelRowsPerPage=""
-                  rowsPerPageOptions={[5, 10, 15]}
+                  rowsPerPageOptions={[5, 10, 15, 20]}
                 />
               </Card>
             </>

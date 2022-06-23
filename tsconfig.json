@@ -30,5 +30,13 @@
     "incremental": true
   },
   "exclude": ["node_modules", "cypress", "worker"],
-  "include": ["src", "next-env.d.ts", "**/*.ts", "**/*.tsx", "worker/utils/crpyto.js", "worker/db/prisma.js"]
+  "include": [
+    "src",
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "worker/utils/crpyto.js",
+    "worker/db/prisma.js",
+    "worker/server/graphql/loadPlayer.js"
+  ]
 }

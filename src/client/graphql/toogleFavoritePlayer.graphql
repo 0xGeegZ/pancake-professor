@@ -1,0 +1,5 @@
+mutation ToogleFavoritePlayer($player: String!, $isNeedToFavorite: Boolean!, $type: String!) {
+  toogleFavoritePlayer(player: $player, isNeedToFavorite: $isNeedToFavorite, type: $type) {
+    id
+  }
+}
