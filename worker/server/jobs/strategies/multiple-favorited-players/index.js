@@ -509,8 +509,9 @@ const run = async () => {
 
       logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash}`)
     } else if (strategie.isTimeEnded) {
-      // TODO v0.0.4 calculate bet amount dynamically
-      await betRound({ epoch, betBull, betAmount: strategie.betAmount })
+      strategie.isTimeEnded = false
+      // TODO v0.0.4 calculate bet amount dynamically and reactivate
+      // await betRound({ epoch, betBull, betAmount: strategie.betAmount })
     } else {
       logger.error(`[LISTEN] Already played transaction hash brow.`)
       return
