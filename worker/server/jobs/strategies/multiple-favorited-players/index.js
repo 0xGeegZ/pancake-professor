@@ -186,8 +186,11 @@ const run = async () => {
 
     logger.info(`[CLAIM] claimables epochs : ${claimablesEpochs}`)
 
+    const gasLimit = config.HEXLIFY_SAFE + config.HEXLIFY_SAFE * Math.round(claimablesEpochs.length / 5)
+
     const tx = await preditionContract.claim(claimablesEpochs, {
-      gasLimit: ethers.utils.hexlify(config.HEXLIFY_SAFE),
+      // gasLimit: ethers.utils.hexlify(config.HEXLIFY_SAFE),
+      gasLimit: ethers.utils.hexlify(gasLimit),
       gasPrice: ethers.utils.parseUnits(config.SAFE_GAS_PRICE.toString(), 'gwei').toString(),
       nonce: provider.getTransactionCount(strategie.generated, 'latest'),
     })
@@ -270,9 +273,11 @@ const run = async () => {
 
       console.log('🚀  ~ secondsLeft', secondsLeft)
 
-      if (secondsLeft >= 15 && isAlreadyRetried === false)
+      if (secondsLeft >= 7 && isAlreadyRetried === false) {
+        strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
+
         return await betRound({ epoch, betBull, betAmount, isAlreadyRetried: true })
-      else {
+      } else {
         isError = true
         strategie.playsCount += 1
       }
@@ -352,8 +357,11 @@ const run = async () => {
     const kellyCriterionBull = (ratingUp * averageWinRateBull - (1 - averageWinRateBull)) / ratingUp
     const kellyCriterionBear = (ratingDown * averageWinRateBear - (1 - averageWinRateBear)) / ratingDown
 
-    const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / 4)).toFixed(3)
-    const kellyBetAmountBear = parseFloat(strategie.startedAmount * (kellyCriterionBear / 4)).toFixed(3)
+    const bullDivider = ratingUp <= 1.3 ? 2 : ratingUp >= 2 ? 5 : 3
+    const bearDivider = ratingDown <= 1.3 ? 2 : ratingDown >= 2 ? 5 : 3
+
+    const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
+    const kellyBetAmountBear = parseFloat(strategie.startedAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
 
     console.log(
       '🚀 ~ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ~ kellyCriterionBull (%)',
@@ -365,7 +373,9 @@ const run = async () => {
       'kellyBetAmountBull',
       kellyBetAmountBull,
       'strategie.betAmount',
-      strategie.betAmount
+      strategie.betAmount,
+      'bullDivider',
+      bullDivider
     )
     console.log(
       '🚀 ~ BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB ~ kellyCriterionBear (%)',
@@ -377,7 +387,9 @@ const run = async () => {
       'kellyBetAmountBear',
       kellyBetAmountBear,
       'strategie.betAmount',
-      strategie.betAmount
+      strategie.betAmount,
+      'bearDivider',
+      bearDivider
     )
     // console.log('🚀 ~ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC ~ player.winRate', strategie)
     logger.info('//////////////////////////      ////////////////////////////////')
