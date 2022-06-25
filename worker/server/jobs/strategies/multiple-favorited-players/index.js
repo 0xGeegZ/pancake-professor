@@ -296,9 +296,13 @@ const run = async () => {
     const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
-    const timer = secondsLeftUntilNextEpoch - 7
+    const timer = secondsLeftUntilNextEpoch - 8
 
-    logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
+    logger.info(
+      `ZZZZZZZZZZZ --> [ROUND-${user.id}:${
+        strategie.roundsCount
+      }:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`
+    )
 
     let betBullCount = strategie.plays.filter((p) => p.betBull)
     let betBearCount = strategie.plays.filter((p) => !p.betBull)
@@ -392,6 +396,9 @@ const run = async () => {
       bearDivider
     )
     // console.log('🚀 ~ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC ~ player.winRate', strategie)
+
+    strategie.isTimeEnded = true
+
     logger.info('//////////////////////////      ////////////////////////////////')
 
     if (strategie.plays.length === 0)
@@ -442,7 +449,9 @@ const run = async () => {
   }
 
   const processRound = async (transaction, player) => {
-    const epoch = await preditionContract.currentEpoch()
+    // TODO get Epoch from Strategie
+    // const epoch = await preditionContract.currentEpoch()
+    const epoch = strategie.epoch
 
     // logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
 
@@ -479,7 +488,7 @@ const run = async () => {
     const betBull = transaction.input.includes(config.BET_BULL_METHOD_ID)
 
     const isAlreadyTracked = strategie.plays.find((p) => p.player.id === player.id)
-    if (!isAlreadyTracked) {
+    if (!isAlreadyTracked && !strategie.isTimeEnded) {
       strategie.plays.push({ betBull, player })
       strategie.playedHashs.push(transaction.hash)
 
@@ -492,6 +501,9 @@ const run = async () => {
       )
 
       logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash}`)
+    } else if (strategie.isTimeEnded) {
+      // TODO v0.0.4 calculate bet amount dynamically
+      await betRound({ epoch, betBull, betAmount: strategie.betAmount })
     } else {
       logger.error(`[LISTEN] Already played transaction hash brow.`)
       return
@@ -518,6 +530,8 @@ const run = async () => {
 
     strategie.plays = []
     strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
+    strategie.isTimeEnded = false
+    strategie.epoch = epoch
 
     await Promise.all(players.map(waitForTransaction))
 
@@ -534,7 +548,7 @@ const run = async () => {
       `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 9
+    const timer = secondsLeftUntilNextEpoch - 8.5
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
 
@@ -551,6 +565,7 @@ const run = async () => {
 
     const currentAmountBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
+    strategie.isTimeEnded = false
 
     logger.info(
       `[ROUND:${+epoch}:${user.id}:${strategie.roundsCount}] Round finished for epoch ${+epoch} : played ${
@@ -646,7 +661,7 @@ const run = async () => {
       }:${+currentEpoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 9
+    const timer = secondsLeftUntilNextEpoch - 8.5
 
     if (timer <= 30) {
       players.map((p) => {
@@ -719,6 +734,8 @@ const run = async () => {
     strategie.playedHashs = []
     strategie.playedEpochs = []
     strategie.errorCount = 0
+    strategie.isTimeEnded = false
+    strategie.epoch = epoch
 
     strategie.gasPrice = ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString()
 
