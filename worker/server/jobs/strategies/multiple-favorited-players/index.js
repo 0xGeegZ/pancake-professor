@@ -352,8 +352,8 @@ const run = async () => {
     const kellyCriterionBull = (ratingUp * averageWinRateBull - (1 - averageWinRateBull)) / ratingUp
     const kellyCriterionBear = (ratingDown * averageWinRateBear - (1 - averageWinRateBear)) / ratingDown
 
-    const kellyBetAmountBull = strategie.startedAmount * (kellyCriterionBull / 3.5)
-    const kellyBetAmountBear = strategie.startedAmount * (kellyCriterionBear / 3.5)
+    const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / 3)).toFixed(3)
+    const kellyBetAmountBear = parseFloat(strategie.startedAmount * (kellyCriterionBear / 3)).toFixed(3)
 
     console.log(
       '🚀 ~ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ~ kellyCriterionBull (%)',
