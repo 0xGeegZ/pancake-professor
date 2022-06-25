@@ -226,8 +226,15 @@ const run = async () => {
 
   const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
     if (strategie.currentAmount === 0) {
-      logger.error('[PLAYING] Not enought BNB')
+      logger.error(`[PLAYING] Not enought BNB to bet ${betAmount}, current amount is ${strategie.currentAmount}`)
       await stopStrategie({ epoch })
+    }
+
+    if (betAmount > strategie.currentAmount) {
+      logger.error(`[PLAYING] Not enought BNB to bet ${betAmount}, current amount is ${strategie.currentAmount}`)
+
+      betAmount = config.MIN_BET_AMOUNT
+      // await stopStrategie({ epoch })
     }
 
     if (betAmount < config.MIN_BET_AMOUNT) betAmount = config.MIN_BET_AMOUNT
@@ -565,6 +572,7 @@ const run = async () => {
 
     const currentAmountBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
+    strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
     strategie.isTimeEnded = false
 
     logger.info(
