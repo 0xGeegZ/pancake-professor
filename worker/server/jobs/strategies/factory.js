@@ -218,8 +218,11 @@ const betRound = async ({ epoch, betBull, isAlreadyRetried = false, strategie, c
 
     console.log('🚀  ~ secondsLeft', secondsLeft)
 
-    if (secondsLeft >= 15 && isAlreadyRetried === false)
+    if (secondsLeft >= 7 && isAlreadyRetried === false) {
+      strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
+
       strategie = await betRound({ epoch, betBull, isAlreadyRetried: true, strategie, contract })
+    }
     // else {
     //   strategie.playsCount += 1
     // }

@@ -20,14 +20,14 @@ const run = async () => {
 
   const keys = [
     process.env.BLOCKNATIVE_API_KEY,
-    process.env.BLOCKNATIVE_API_KEY_KISI,
-    process.env.BLOCKNATIVE_API_KEY_GLANUM,
-    process.env.BLOCKNATIVE_API_KEY_LimonX,
+    // process.env.BLOCKNATIVE_API_KEY_KISI,
+    // process.env.BLOCKNATIVE_API_KEY_GLANUM,
+    // process.env.BLOCKNATIVE_API_KEY_LimonX,
   ]
   let key = keys[0]
 
   const onBlockNativeError = (error) => {
-    logger.error(`[BLOCKNATIVE] ERROR : ${error}`)
+    logger.error(`[BLOCKNATIVE] ERROR : ${error.message}`)
     if (
       error.message ===
       'You have reached your event rate limit for today. See explorer.blocknative.com/account for details.'
@@ -186,8 +186,11 @@ const run = async () => {
 
     logger.info(`[CLAIM] claimables epochs : ${claimablesEpochs}`)
 
+    const gasLimit = config.HEXLIFY_SAFE + config.HEXLIFY_SAFE * Math.round(claimablesEpochs.length / 5)
+
     const tx = await preditionContract.claim(claimablesEpochs, {
-      gasLimit: ethers.utils.hexlify(config.HEXLIFY_SAFE),
+      // gasLimit: ethers.utils.hexlify(config.HEXLIFY_SAFE),
+      gasLimit: ethers.utils.hexlify(gasLimit),
       gasPrice: ethers.utils.parseUnits(config.SAFE_GAS_PRICE.toString(), 'gwei').toString(),
       nonce: provider.getTransactionCount(strategie.generated, 'latest'),
     })
@@ -223,8 +226,15 @@ const run = async () => {
 
   const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
     if (strategie.currentAmount === 0) {
-      logger.error('[PLAYING] Not enought BNB')
+      logger.error(`[PLAYING] Not enought BNB to bet ${betAmount}, current amount is ${strategie.currentAmount}`)
       await stopStrategie({ epoch })
+    }
+
+    if (betAmount > strategie.currentAmount) {
+      logger.error(`[PLAYING] Not enought BNB to bet ${betAmount}, current amount is ${strategie.currentAmount}`)
+
+      betAmount = config.MIN_BET_AMOUNT
+      // await stopStrategie({ epoch })
     }
 
     if (betAmount < config.MIN_BET_AMOUNT) betAmount = config.MIN_BET_AMOUNT
@@ -270,9 +280,11 @@ const run = async () => {
 
       console.log('🚀  ~ secondsLeft', secondsLeft)
 
-      if (secondsLeft >= 15 && isAlreadyRetried === false)
+      if (secondsLeft >= 7 && isAlreadyRetried === false) {
+        strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
+
         return await betRound({ epoch, betBull, betAmount, isAlreadyRetried: true })
-      else {
+      } else {
         isError = true
         strategie.playsCount += 1
       }
@@ -291,9 +303,13 @@ const run = async () => {
     const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
-    const timer = secondsLeftUntilNextEpoch - 7
+    const timer = secondsLeftUntilNextEpoch - 8
 
-    logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
+    logger.info(
+      `ZZZZZZZZZZZ --> [ROUND-${user.id}:${
+        strategie.roundsCount
+      }:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`
+    )
 
     let betBullCount = strategie.plays.filter((p) => p.betBull)
     let betBearCount = strategie.plays.filter((p) => !p.betBull)
@@ -352,8 +368,11 @@ const run = async () => {
     const kellyCriterionBull = (ratingUp * averageWinRateBull - (1 - averageWinRateBull)) / ratingUp
     const kellyCriterionBear = (ratingDown * averageWinRateBear - (1 - averageWinRateBear)) / ratingDown
 
-    const kellyBetAmountBull = strategie.startedAmount * (kellyCriterionBull / 4)
-    const kellyBetAmountBear = strategie.startedAmount * (kellyCriterionBear / 4)
+    const bullDivider = ratingUp <= 1.3 ? 2 : ratingUp >= 2 ? 5 : 3
+    const bearDivider = ratingDown <= 1.3 ? 2 : ratingDown >= 2 ? 5 : 3
+
+    const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
+    const kellyBetAmountBear = parseFloat(strategie.startedAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
 
     console.log(
       '🚀 ~ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ~ kellyCriterionBull (%)',
@@ -365,7 +384,9 @@ const run = async () => {
       'kellyBetAmountBull',
       kellyBetAmountBull,
       'strategie.betAmount',
-      strategie.betAmount
+      strategie.betAmount,
+      'bullDivider',
+      bullDivider
     )
     console.log(
       '🚀 ~ BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB ~ kellyCriterionBear (%)',
@@ -377,9 +398,14 @@ const run = async () => {
       'kellyBetAmountBear',
       kellyBetAmountBear,
       'strategie.betAmount',
-      strategie.betAmount
+      strategie.betAmount,
+      'bearDivider',
+      bearDivider
     )
     // console.log('🚀 ~ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC ~ player.winRate', strategie)
+
+    strategie.isTimeEnded = true
+
     logger.info('//////////////////////////      ////////////////////////////////')
 
     if (strategie.plays.length === 0)
@@ -430,7 +456,9 @@ const run = async () => {
   }
 
   const processRound = async (transaction, player) => {
-    const epoch = await preditionContract.currentEpoch()
+    // TODO get Epoch from Strategie
+    // const epoch = await preditionContract.currentEpoch()
+    const epoch = strategie.epoch
 
     // logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
 
@@ -467,7 +495,7 @@ const run = async () => {
     const betBull = transaction.input.includes(config.BET_BULL_METHOD_ID)
 
     const isAlreadyTracked = strategie.plays.find((p) => p.player.id === player.id)
-    if (!isAlreadyTracked) {
+    if (!isAlreadyTracked && !strategie.isTimeEnded) {
       strategie.plays.push({ betBull, player })
       strategie.playedHashs.push(transaction.hash)
 
@@ -480,6 +508,10 @@ const run = async () => {
       )
 
       logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash}`)
+    } else if (strategie.isTimeEnded) {
+      strategie.isTimeEnded = false
+      // TODO v0.0.4 calculate bet amount dynamically and reactivate
+      // await betRound({ epoch, betBull, betAmount: strategie.betAmount })
     } else {
       logger.error(`[LISTEN] Already played transaction hash brow.`)
       return
@@ -506,6 +538,8 @@ const run = async () => {
 
     strategie.plays = []
     strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
+    strategie.isTimeEnded = false
+    strategie.epoch = epoch
 
     await Promise.all(players.map(waitForTransaction))
 
@@ -539,6 +573,8 @@ const run = async () => {
 
     const currentAmountBigInt = await provider.getBalance(signer.address)
     strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
+    strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
+    strategie.isTimeEnded = false
 
     logger.info(
       `[ROUND:${+epoch}:${user.id}:${strategie.roundsCount}] Round finished for epoch ${+epoch} : played ${
@@ -707,6 +743,8 @@ const run = async () => {
     strategie.playedHashs = []
     strategie.playedEpochs = []
     strategie.errorCount = 0
+    strategie.isTimeEnded = false
+    strategie.epoch = epoch
 
     strategie.gasPrice = ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString()
 

@@ -129,12 +129,14 @@ const run = async () => {
 
     const gasPrice = await provider.getGasPrice()
 
+    // TODO v0.0.4 use it in all strategie
+    const gasLimit = config.HEXLIFY_SAFE + config.HEXLIFY_SAFE * Math.round(claimablesEpochs.length / 5)
+
     const tx = await preditionContract.claim(claimablesEpochs, {
-      gasLimit: ethers.utils.hexlify(350000),
-      // gasPrice,
+      // gasLimit: ethers.utils.hexlify(config.HEXLIFY_SAFE),
+      gasLimit: ethers.utils.hexlify(gasLimit),
       gasPrice: ethers.utils.parseUnits(config.SAFE_GAS_PRICE.toString(), 'gwei').toString(),
-      // nonce: provider.getTransactionCount(strategie.generated, 'latest'),
-      nonce: new Date().getTime(),
+      nonce: provider.getTransactionCount(strategie.generated, 'latest'),
     })
 
     try {
@@ -170,8 +172,15 @@ const run = async () => {
   // const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
   const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
     if (strategie.currentAmount === 0) {
-      logger.error('[PLAYING] Not enought BNB')
+      logger.error(`[PLAYING] Not enought BNB to bet ${betAmount}, current amount is ${strategie.currentAmount}`)
       await stopStrategie({ epoch })
+    }
+
+    if (betAmount > strategie.currentAmount) {
+      logger.error(`[PLAYING] Not enought BNB to bet ${betAmount}, current amount is ${strategie.currentAmount}`)
+
+      betAmount = config.MIN_BET_AMOUNT
+      // await stopStrategie({ epoch })
     }
 
     if (betAmount < config.MIN_BET_AMOUNT) betAmount = config.MIN_BET_AMOUNT
@@ -222,9 +231,11 @@ const run = async () => {
 
       console.log('🚀  ~ secondsLeft', secondsLeft)
 
-      if (secondsLeft >= 15 && isAlreadyRetried === false)
-        await betRound({ epoch, betBull, betAmount, isAlreadyRetried: true })
-      // else {
+      if (secondsLeft >= 7 && isAlreadyRetried === false) {
+        strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
+
+        return await betRound({ epoch, betBull, betAmount, isAlreadyRetried: true })
+      } // else {
       //   strategie.playsCount += 1
       // }
       isError = true
