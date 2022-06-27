@@ -259,7 +259,7 @@ const run = async () => {
       return
     }
 
-    if (transaction.to.toLowerCase() !== process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS) {
+    if (transaction.to.toLowerCase() !== process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB) {
       logger.info(`[LISTEN] Not a transaction with pancake contract.`)
       return
     }
@@ -668,7 +668,7 @@ const run = async () => {
     signer = new ethers.Wallet(privateKey, provider)
 
     preditionContract = new ethers.Contract(
-      process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+      process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
       config.PREDICTION_CONTRACT_ABI,
       signer
     )

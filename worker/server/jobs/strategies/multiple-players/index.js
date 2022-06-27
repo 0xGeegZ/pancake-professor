@@ -4,8 +4,8 @@ const WebSocket = require('ws')
 const prisma = require('../../../db/prisma')
 const logger = require('../../../utils/logger')
 const { loadPlayers } = require('../../../graphql/loadPlayers')
-const { GraphQLClient, gql } = require('graphql-request')
-const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
+// const { GraphQLClient, gql } = require('graphql-request')
+// const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB)
 
 const { sleep, range, finder } = require('../../../utils/utils')
 const { decrypt } = require('../../../utils/crpyto')
@@ -15,7 +15,7 @@ const config = require('../../../providers/pancakeswap/config')
 // const run = async (payload) => {
 const run = async () => {
   const blockNativeOptions = {
-    dappId: process.env.BLOCKNATIVE_API_KEY_LimonX,
+    dappId: process.env.BLOCKNATIVE_API_KEY,
     networkId: +process.env.BINANCE_SMART_CHAIN_ID,
     ws: WebSocket,
     onerror: (error) => {
@@ -41,6 +41,7 @@ const run = async () => {
 
   if (!user) throw new Error('No user given')
 
+  const isCake = true
   // const { user, strategie } = payload
   let preditionContract
   let signer
@@ -487,7 +488,11 @@ const run = async () => {
       return
     }
 
-    if (transaction.to.toLowerCase() !== process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS) {
+    if (
+      transaction.to.toLowerCase() !== isCake
+        ? process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_CAKE
+        : process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB
+    ) {
       // logger.info(`[LISTEN] Not a transaction with pancake contract.`)
       return
     }
@@ -550,7 +555,7 @@ const run = async () => {
     strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
 
     // players = await loadPlayers({ epoch, orderBy: 'default' })
-    players = await loadPlayers({ epoch, orderBy: 'mostActiveLastHour' })
+    players = await loadPlayers({ epoch, orderBy: 'mostActiveLastHour', isCake })
     const allPlayers = players?.length
     players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
     // const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
@@ -1011,7 +1016,9 @@ const run = async () => {
     signer = new ethers.Wallet(privateKey, provider)
 
     preditionContract = new ethers.Contract(
-      process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+      isCake
+        ? process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_CAKE
+        : process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
       config.PREDICTION_CONTRACT_ABI,
       signer
     )

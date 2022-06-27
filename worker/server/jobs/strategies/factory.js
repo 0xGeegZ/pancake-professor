@@ -246,7 +246,7 @@ const processRound = async ({ transaction, strategie, contract, emitter }) => {
     return
   }
 
-  if (transaction.to.toLowerCase() !== process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS) {
+  if (transaction.to.toLowerCase() !== process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB) {
     logger.info(`[LISTEN] Not a transaction with pancake contract.`)
     return
   }
@@ -477,20 +477,20 @@ const listenSinglePlayer = async ({ strategie, provider, signer, contract, emitt
   // Gas limit
   // let gasLimit = await provider.estimateGas(
   //   strategie.generated,
-  //   process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+  //   process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
   //   ethers.utils.parseEther(strategie.betAmount.toString()),
   //   rawTx
   // )
 
   // const estimate = await provider.estimateGas({
   //   from: strategie.generated,
-  //   to: process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+  //   to: process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
   //   value: ethers.utils.parseEther(strategie.betAmount.toString()),
   // })
   // console.log('🚀 ~ file: index.js ~ line 461 ~ listen ~ estimate', estimate).toString()
 
   // const gasLimit = await provider.estimateGas({
-  //   to: process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+  //   to: process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
   //   value: ethers.utils.parseEther(strategie.betAmount.toString()),
   // })
 

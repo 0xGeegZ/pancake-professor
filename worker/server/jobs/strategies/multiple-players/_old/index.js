@@ -5,7 +5,7 @@ const prisma = require('../../../db/prisma')
 const logger = require('../../../utils/logger')
 const { loadPlayers } = require('../../../graphql/loadPlayers')
 const { GraphQLClient, gql } = require('graphql-request')
-const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
+const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB)
 
 const { sleep, range, finder } = require('../../../utils/utils')
 const { decrypt } = require('../../../utils/crpyto')
@@ -469,7 +469,7 @@ const run = async () => {
       return
     }
 
-    if (transaction.to.toLowerCase() !== process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS) {
+    if (transaction.to.toLowerCase() !== process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB) {
       logger.info(`[LISTEN] Not a transaction with pancake contract.`)
       return
     }
@@ -941,7 +941,7 @@ const run = async () => {
     signer = new ethers.Wallet(privateKey, provider)
 
     preditionContract = new ethers.Contract(
-      process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+      process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
       config.PREDICTION_CONTRACT_ABI,
       signer
     )

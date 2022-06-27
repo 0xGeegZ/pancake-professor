@@ -45,7 +45,7 @@ const run = async (payload) => {
     const signer = new ethers.Wallet(privateKey, provider)
 
     const preditionContract = new ethers.Contract(
-      process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+      process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
       config.PREDICTION_CONTRACT_ABI,
       signer
     )
@@ -55,7 +55,7 @@ const run = async (payload) => {
     await bnbcallProvider.init()
 
     const preditionCallContract = new Contract(
-      process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+      process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
       config.PREDICTION_CONTRACT_ABI,
       signer
     )

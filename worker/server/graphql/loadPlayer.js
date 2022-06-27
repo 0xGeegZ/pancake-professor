@@ -1,6 +1,6 @@
 const { GraphQLClient, gql } = require('graphql-request')
 
-const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT, {
+const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB, {
   mode: 'cors',
   credentials: 'include',
   headers: {

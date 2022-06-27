@@ -402,7 +402,7 @@ const PlayersList: FC = () => {
     // const signer = lprovider.getSigner()
 
     const lpreditionContract = new ethers.Contract(
-      process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+      process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
       PREDICTION_CONTRACT_ABI,
       // signer,
       lprovider

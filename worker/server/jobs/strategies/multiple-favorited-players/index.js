@@ -3,8 +3,7 @@ const { ethers } = require('ethers')
 const WebSocket = require('ws')
 const prisma = require('../../../db/prisma')
 const logger = require('../../../utils/logger')
-const { GraphQLClient, gql } = require('graphql-request')
-const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
+
 const { setTimeout } = require('timers/promises')
 
 const { loadPlayer } = require('../../../graphql/loadPlayer')
@@ -17,7 +16,6 @@ const config = require('../../../providers/pancakeswap/config')
 const run = async () => {
   const userId = 'cl3n5i8vj0011a59k4fyf2k5h'
   const strategyId = 'cl460tkxr9683os9kpmrv9yki'
-
   const keys = [
     process.env.BLOCKNATIVE_API_KEY,
     // process.env.BLOCKNATIVE_API_KEY_KISI,
@@ -300,7 +298,8 @@ const run = async () => {
     // https://dqydj.com/kelly-criterion-bet-calculator/
     const { bullAmount, bearAmount, startTimestamp } = await preditionContract.rounds(epoch)
 
-    const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
+    const secondsFromEpoch = new Date().getTime() / 1000 - startTimestamp
+    // const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
     const timer = secondsLeftUntilNextEpoch - 8
@@ -368,8 +367,8 @@ const run = async () => {
     const kellyCriterionBull = (ratingUp * averageWinRateBull - (1 - averageWinRateBull)) / ratingUp
     const kellyCriterionBear = (ratingDown * averageWinRateBear - (1 - averageWinRateBear)) / ratingDown
 
-    const bullDivider = ratingUp <= 1.3 ? 2 : ratingUp >= 2 ? 5 : 3
-    const bearDivider = ratingDown <= 1.3 ? 2 : ratingDown >= 2 ? 5 : 3
+    const bullDivider = ratingUp <= 1.3 ? 3 : ratingUp >= 2 ? 5 : 4
+    const bearDivider = ratingDown <= 1.3 ? 3 : ratingDown >= 2 ? 5 : 4
 
     const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
     const kellyBetAmountBear = parseFloat(strategie.startedAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
@@ -414,7 +413,9 @@ const run = async () => {
     if (
       (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
       betBullCount.length >= betBearCount.length &&
-      +isBullBetterAdjusted > +isBearBetterAdjusted
+      +isBullBetterAdjusted > +isBearBetterAdjusted &&
+      ratingUp >= 1.3 &&
+      ratingUp <= 2.5
     ) {
       logger.info('///////////////////////// BULL /////////////////////////////////')
       await betRound({ epoch, betBull: true, betAmount: kellyBetAmountBull })
@@ -422,7 +423,9 @@ const run = async () => {
     } else if (
       (totalPlayers > 1 || Math.round(+isBearBetter) >= 57) &&
       betBearCount.length >= betBullCount.length &&
-      +isBearBetterAdjusted > +isBullBetterAdjusted
+      +isBearBetterAdjusted > +isBullBetterAdjusted &&
+      ratingDown >= 1.3 &&
+      ratingDown <= 2.5
     ) {
       logger.info('////////////////////////// BEAR ////////////////////////////////')
       await betRound({ epoch, betBull: false, betAmount: kellyBetAmountBear })
@@ -467,7 +470,7 @@ const run = async () => {
       return
     }
 
-    if (transaction.to.toLowerCase() !== process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS) {
+    if (transaction.to.toLowerCase() !== process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB) {
       // logger.info(`[LISTEN] Not a transaction with pancake contract.`)
       return
     }
@@ -556,7 +559,7 @@ const run = async () => {
       `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 9
+    const timer = secondsLeftUntilNextEpoch - 9.5
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
 
@@ -670,7 +673,7 @@ const run = async () => {
       }:${+currentEpoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 9
+    const timer = secondsLeftUntilNextEpoch - 9.5
 
     if (timer <= 30) {
       players.map((p) => {
@@ -699,7 +702,7 @@ const run = async () => {
     signer = new ethers.Wallet(privateKey, provider)
 
     preditionContract = new ethers.Contract(
-      process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS,
+      process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
       config.PREDICTION_CONTRACT_ABI,
       signer
     )

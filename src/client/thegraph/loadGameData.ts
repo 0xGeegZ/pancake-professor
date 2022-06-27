@@ -1,6 +1,8 @@
 import { gql, GraphQLClient } from 'graphql-request'
 
-const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_GRAPHQL_ENDPOINT, { mode: 'cors' })
+const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB, {
+  mode: 'cors',
+})
 
 const loadGameData = async ({ epoch }) => {
   try {

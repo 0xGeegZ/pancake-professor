@@ -1,7 +1,7 @@
 import { gql, GraphQLClient } from 'graphql-request'
 import { finder, range } from 'src/server/utils/utils'
 
-const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_GRAPHQL_ENDPOINT, {
+const graphQLClient = new GraphQLClient(process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB, {
   mode: 'cors',
   credentials: 'omit',
   headers: {
