@@ -1171,7 +1171,7 @@ const PlayersList: FC = () => {
                                       </Button>
                                     )}
                                   </Grid>
-                                  <Grid item md={4}>
+                                  <Grid item md={5}>
                                     <Button
                                       size="small"
                                       // disabled
@@ -1258,10 +1258,7 @@ const PlayersList: FC = () => {
                                       </Grid>
                                     </>
                                   )}
-                                  <Grid item md={1}>
-                                    {/* <IconButton size="small" color="secondary"> */}
-                                    {/* <Link href={`/app/player/${player.id}`} variant="body2" underline="hover"> */}
-
+                                  {/* <Grid item md={1}>
                                     <IconButton
                                       size="small"
                                       color="primary"
@@ -1271,9 +1268,7 @@ const PlayersList: FC = () => {
                                       }}>
                                       <AssessmentIcon fontSize="small" />
                                     </IconButton>
-                                    {/* </Link> */}
-                                    {/* </IconButton> */}
-                                  </Grid>
+                                  </Grid> */}
                                 </Grid>
                               </Box>
                             </>
