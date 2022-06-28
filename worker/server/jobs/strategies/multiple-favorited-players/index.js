@@ -269,7 +269,8 @@ const run = async () => {
       // Try to reenter
       const { startTimestamp, lockTimestamp } = await preditionContract.rounds(epoch)
 
-      const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
+      // const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
+      const secondsFromEpoch = new Date().getTime() / 1000 - startTimestamp
 
       const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
@@ -300,6 +301,7 @@ const run = async () => {
 
     const secondsFromEpoch = new Date().getTime() / 1000 - startTimestamp
     // const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
+
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
     const timer = secondsLeftUntilNextEpoch - 8
@@ -550,7 +552,8 @@ const run = async () => {
 
     const { startTimestamp } = await preditionContract.rounds(epoch)
 
-    const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
+    // const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
+    const secondsFromEpoch = new Date().getTime() / 1000 - startTimestamp
 
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
@@ -662,7 +665,8 @@ const run = async () => {
 
     const { startTimestamp } = await preditionContract.rounds(currentEpoch)
 
-    const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
+    // const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
+    const secondsFromEpoch = new Date().getTime() / 1000 - startTimestamp
 
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
