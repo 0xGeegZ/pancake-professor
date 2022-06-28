@@ -169,7 +169,7 @@ const run = async (payload) => {
     try {
       const epoch = await preditionContract.currentEpoch()
       // await claimLastEpochs(epoch, 12 * 24 * 10)
-      await claimLastEpochs(epoch, 12 * 24)
+      await claimLastEpochs(epoch, 12 * 6)
     } catch (error) {
       logger.error(`[ERROR] Error during claiming for last epochs : ${error.message}`)
     }
