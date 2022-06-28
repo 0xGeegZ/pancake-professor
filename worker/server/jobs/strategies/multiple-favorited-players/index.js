@@ -411,7 +411,8 @@ const run = async () => {
       return logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NO USERS PLAYED`)
 
     if (
-      (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
+      totalPlayers > 1 &&
+      // (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
       betBullCount.length >= betBearCount.length &&
       +isBullBetterAdjusted > +isBearBetterAdjusted &&
       ratingUp >= 1.5 &&
@@ -421,7 +422,8 @@ const run = async () => {
       await betRound({ epoch, betBull: true, betAmount: kellyBetAmountBull })
       logger.info('//////////////////////////////////////////////////////////')
     } else if (
-      (totalPlayers > 1 || Math.round(+isBearBetter) >= 57) &&
+      // (totalPlayers > 1 || Math.round(+isBearBetter) >= 57) &&
+      totalPlayers > 1 &&
       betBearCount.length >= betBullCount.length &&
       +isBearBetterAdjusted > +isBullBetterAdjusted &&
       ratingDown >= 1.5 &&
