@@ -417,8 +417,8 @@ const run = async () => {
       (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
       betBullCount.length >= betBearCount.length &&
       +isBullBetterAdjusted > +isBearBetterAdjusted &&
-      ratingUp >= 1.5 &&
-      ratingUp <= 2.7
+      ratingUp >= 1.3 &&
+      ratingUp <= 3
     ) {
       logger.info('///////////////////////// BULL /////////////////////////////////')
       await betRound({ epoch, betBull: true, betAmount: kellyBetAmountBull })
@@ -428,8 +428,8 @@ const run = async () => {
       // totalPlayers > 1 &&
       betBearCount.length >= betBullCount.length &&
       +isBearBetterAdjusted > +isBullBetterAdjusted &&
-      ratingDown >= 1.5 &&
-      ratingDown <= 2.7
+      ratingDown >= 1.3 &&
+      ratingDown <= 3
     ) {
       logger.info('////////////////////////// BEAR ////////////////////////////////')
       await betRound({ epoch, betBull: false, betAmount: kellyBetAmountBear })
@@ -564,7 +564,7 @@ const run = async () => {
       `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 9
+    const timer = secondsLeftUntilNextEpoch - 8.5
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
 
@@ -679,7 +679,7 @@ const run = async () => {
       }:${+currentEpoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 9
+    const timer = secondsLeftUntilNextEpoch - 8.5
 
     if (timer <= 30) {
       players.map((p) => {

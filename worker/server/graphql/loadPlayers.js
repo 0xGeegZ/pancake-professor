@@ -132,15 +132,15 @@ const checkPlayer = async (idPlayer, lastGame, isCake = false) => {
 const loadPlayers = async ({ epoch, orderBy = 'totalBets', isCake = false }) => {
   // const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB)
   const graphQLClient = new GraphQLClient(
-    isCake ? process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_CAKE : process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB,
-    {
-      mode: 'cors',
-      credentials: 'include',
-      headers: {
-        // 'Access-Control-Allow-Origin': 'http://localhost:3000',
-        'Access-Control-Allow-Origin': '*',
-      },
-    }
+    isCake ? process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_CAKE : process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB
+    // {
+    //   mode: 'cors',
+    //   credentials: 'include',
+    //   headers: {
+    //     // 'Access-Control-Allow-Origin': 'http://localhost:3000',
+    //     'Access-Control-Allow-Origin': '*',
+    //   },
+    // }
   )
 
   try {
@@ -149,7 +149,7 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets', isCake = false }) => 
     // const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12
 
     // const first = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 250 : 100
-    const first = orderBy === 'default' ? 500 : orderBy === 'mostActiveLastHour' ? 1000 : 100
+    const first = orderBy === 'default' ? 500 : orderBy === 'mostActiveLastHour' ? 800 : 100
     // const firstBets = orderBy === 'default' ? 12 * 24 : orderBy === 'mostActiveLastHour' ? 24 : 1
     const firstBets = orderBy === 'default' ? 12 * 24 : orderBy === 'mostActiveLastHour' ? 500 : 1
 
@@ -201,7 +201,6 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets', isCake = false }) => 
       epochGT,
     }
     const data = await graphQLClient.request(query, variables)
-    console.log('🚀 ~ file: loadPlayers.js ~ line 204 ~ loadPlayers ~ data', data)
 
     const { users } = data
 
