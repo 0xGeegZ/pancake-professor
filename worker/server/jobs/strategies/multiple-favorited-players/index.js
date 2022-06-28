@@ -367,8 +367,8 @@ const run = async () => {
     const kellyCriterionBull = (ratingUp * averageWinRateBull - (1 - averageWinRateBull)) / ratingUp
     const kellyCriterionBear = (ratingDown * averageWinRateBear - (1 - averageWinRateBear)) / ratingDown
 
-    const bullDivider = ratingUp <= 1.3 ? 3 : ratingUp >= 2 ? 5 : 4
-    const bearDivider = ratingDown <= 1.3 ? 3 : ratingDown >= 2 ? 5 : 4
+    const bullDivider = ratingUp <= 1.7 ? 3 : ratingUp >= 2 ? 5 : 4
+    const bearDivider = ratingDown <= 1.7 ? 3 : ratingDown >= 2 ? 5 : 4
 
     const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
     const kellyBetAmountBear = parseFloat(strategie.startedAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
