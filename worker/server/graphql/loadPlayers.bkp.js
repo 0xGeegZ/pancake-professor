@@ -2,16 +2,6 @@ const { GraphQLClient, gql } = require('graphql-request')
 const { range, finder } = require('../utils/utils')
 const gini = require('gini')
 
-// const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
-const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB, {
-  mode: 'cors',
-  credentials: 'include',
-  headers: {
-    // 'Access-Control-Allow-Origin': 'http://localhost:3000',
-    'Access-Control-Allow-Origin': '*',
-  },
-})
-
 const TOTAL_BETS_INITIAL = 80
 const WIN_RATE_INITIAL = 56
 
@@ -95,16 +85,29 @@ const checkIfPlaying = (player, lastGame) => {
   // return player
 }
 
-const checkPlayer = async (idPlayer, lastGame) => {
+const checkPlayer = async (idPlayer, lastGame, isCake = false) => {
+  // const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB)
+  const graphQLClient = new GraphQLClient(
+    isCake ? process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_CAKE : process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB,
+    {
+      mode: 'cors',
+      credentials: 'include',
+      headers: {
+        // 'Access-Control-Allow-Origin': 'http://localhost:3000',
+        'Access-Control-Allow-Origin': '*',
+      },
+    }
+  )
+
   const query = gql`
     query getPlayer($id: ID!) {
       users(first: 1, where: { id: $id }) {
         id
-        totalBNB
+        # totalBNB
         totalBets
         winRate
-        averageBNB
-        netBNB
+        # averageBNB
+        # netBNB
         bets(first: 1000, orderBy: createdAt, orderDirection: desc) {
           # bets(first: 500, orderBy: createdAt, orderDirection: desc) {
           round {
@@ -126,14 +129,27 @@ const checkPlayer = async (idPlayer, lastGame) => {
   return checkIfPlaying(user, lastGame)
 }
 
-const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
+const loadPlayers = async ({ epoch, orderBy = 'totalBets', isCake = false }) => {
+  // const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB)
+  const graphQLClient = new GraphQLClient(
+    isCake ? process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_CAKE : process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB
+    // {
+    //   mode: 'cors',
+    //   credentials: 'include',
+    //   headers: {
+    //     // 'Access-Control-Allow-Origin': 'http://localhost:3000',
+    //     'Access-Control-Allow-Origin': '*',
+    //   },
+    // }
+  )
+
   try {
     const orderByFilter = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 'totalBets' : orderBy
     const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12 * 2
     // const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12
 
     // const first = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 250 : 100
-    const first = orderBy === 'default' ? 500 : orderBy === 'mostActiveLastHour' ? 700 : 100
+    const first = orderBy === 'default' ? 500 : orderBy === 'mostActiveLastHour' ? 800 : 100
     // const firstBets = orderBy === 'default' ? 12 * 24 : orderBy === 'mostActiveLastHour' ? 24 : 1
     const firstBets = orderBy === 'default' ? 12 * 24 : orderBy === 'mostActiveLastHour' ? 500 : 1
 
@@ -155,11 +171,11 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
           orderDirection: desc
         ) {
           id
-          totalBNB
+          # totalBNB
           totalBets
           winRate
-          averageBNB
-          netBNB
+          # averageBNB
+          # netBNB
           bets(first: $firstBets, orderBy: createdAt, orderDirection: desc) {
             position
             createdAt

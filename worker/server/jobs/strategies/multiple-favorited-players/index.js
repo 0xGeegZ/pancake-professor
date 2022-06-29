@@ -49,8 +49,8 @@ const run = async () => {
   }
 
   let blockNativeOptions = {
-    // dappId: process.env.BLOCKNATIVE_API_KEY_GLANUM,
-    dappId: key,
+    dappId: process.env.BLOCKNATIVE_API_KEY,
+    // dappId: key,
     networkId: +process.env.BINANCE_SMART_CHAIN_ID,
     ws: WebSocket,
     onerror: onBlockNativeError,
