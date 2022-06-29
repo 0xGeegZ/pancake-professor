@@ -639,7 +639,7 @@ const PlayersList: FC = () => {
                       <Box sx={{ mx: 5, mt: 5 }}>
                         <Slider
                           value={netbnbRange}
-                          step={50}
+                          step={1}
                           min={-100}
                           max={1000}
                           onChange={handleNetbnbRangeChange}

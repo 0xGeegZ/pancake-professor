@@ -372,8 +372,10 @@ const run = async () => {
     const bullDivider = ratingUp <= 1.7 ? 3 : ratingUp >= 2 ? 5 : 4
     const bearDivider = ratingDown <= 1.7 ? 3 : ratingDown >= 2 ? 5 : 4
 
-    const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
-    const kellyBetAmountBear = parseFloat(strategie.startedAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
+    // const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
+    // const kellyBetAmountBear = parseFloat(strategie.startedAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
+    const kellyBetAmountBull = parseFloat(strategie.currentAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
+    const kellyBetAmountBear = parseFloat(strategie.currentAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
 
     console.log(
       '🚀 ~ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ~ kellyCriterionBull (%)',
@@ -566,7 +568,7 @@ const run = async () => {
       `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 9
+    const timer = secondsLeftUntilNextEpoch - 8
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
 
@@ -681,7 +683,7 @@ const run = async () => {
       }:${+currentEpoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 9
+    const timer = secondsLeftUntilNextEpoch - 8
 
     if (timer <= 30) {
       players.map((p) => {
