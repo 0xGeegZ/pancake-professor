@@ -416,9 +416,10 @@ const run = async () => {
       // totalPlayers > 1 &&
       (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
       betBullCount.length >= betBearCount.length &&
-      +isBullBetterAdjusted > +isBearBetterAdjusted &&
-      ratingUp >= 1.3 &&
-      ratingUp <= 3
+      +isBullBetterAdjusted > +isBearBetterAdjusted
+      //  &&
+      // ratingUp >= 1.3 &&
+      // ratingUp <= 3
     ) {
       logger.info('///////////////////////// BULL /////////////////////////////////')
       await betRound({ epoch, betBull: true, betAmount: kellyBetAmountBull })
@@ -427,9 +428,10 @@ const run = async () => {
       (totalPlayers > 1 || Math.round(+isBearBetter) >= 57) &&
       // totalPlayers > 1 &&
       betBearCount.length >= betBullCount.length &&
-      +isBearBetterAdjusted > +isBullBetterAdjusted &&
-      ratingDown >= 1.3 &&
-      ratingDown <= 3
+      +isBearBetterAdjusted > +isBullBetterAdjusted
+      //  &&
+      // ratingDown >= 1.3 &&
+      // ratingDown <= 3
     ) {
       logger.info('////////////////////////// BEAR ////////////////////////////////')
       await betRound({ epoch, betBull: false, betAmount: kellyBetAmountBear })
