@@ -362,6 +362,7 @@ const PlayersList: FC = () => {
       // TODO v0.0.4 add number of bet infilter
       // TODO v0.0.4 add filter by specific address
       // TODO v0.0.4 add filter by GINIE
+      // TODO v0.0.4 filter users address (do it when passing loading to back end)
       try {
         let lplayers = await loadPlayers({
           epoch,
