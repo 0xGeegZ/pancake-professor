@@ -256,6 +256,17 @@ const PlayersList: FC = () => {
 
   const [playerTypesChecked, setPlayerTypesChecked] = useState([1, 3])
 
+  const [page, setPage] = useState<number>(0)
+  const [limit, setLimit] = useState<number>(15)
+
+  const handlePageChange = (_event: any, newPage: number): void => {
+    setPage(newPage)
+  }
+
+  const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    setLimit(+event.target.value)
+  }
+
   const handleTogglePlayerTypes = (value: number) => () => {
     const currentIndex = playerTypesChecked.indexOf(value)
     const newChecked = [...playerTypesChecked]
@@ -336,8 +347,10 @@ const PlayersList: FC = () => {
 
       console.log(user.favorites)
       console.log(playerTypesChecked)
+      console.log(playerTypesChecked.length)
 
       const isOnlyplayerTypesFilterSelected = !playerTypesChecked.includes(3)
+
       const playerTypesFilterSelected = user.favorites
         .filter((favorite) => {
           if (favorite.type === 'LIKE' && playerTypesChecked.includes(1)) return true
@@ -346,6 +359,9 @@ const PlayersList: FC = () => {
         })
         .map((f) => f.player)
 
+      // TODO v0.0.4 add number of bet infilter
+      // TODO v0.0.4 add filter by specific address
+      // TODO v0.0.4 add filter by GINIE
       try {
         let lplayers = await loadPlayers({
           epoch,
@@ -360,12 +376,16 @@ const PlayersList: FC = () => {
         if (!playerTypesChecked.includes(2))
           lplayers = lplayers.filter((p) => !user.favorites.find((f) => f.player === p.id && f.type === 'DISLIKE'))
 
-        // TODO v0.0.4 add sortBy, SEE : http://localhost:3000/dashboards/monitoring
+        if (playerTypesChecked.includes(3) && playerTypesChecked.length === 1)
+          lplayers = lplayers.filter((p) => !user.favorites.find((f) => f.player === p.id))
+
+        // TODO v0.0.4 add sortBy component, SEE : http://localhost:3000/dashboards/monitoring
         // if (playerTypesChecked.includes(1))
         //   lplayers = lplayers.sort((p) =>
         //     user?.favorites.find((f) => f.player === p.id && f.type === 'LIKE') ? -1 : 0
         //   )
 
+        setPage(0)
         setDenominatorValue(orderBy === 'default' ? 288 : orderBy === 'mostActiveLastHour' ? 12 : 0)
         setPlayers(lplayers)
 
@@ -375,7 +395,7 @@ const PlayersList: FC = () => {
         setFetching(false)
       }
     },
-    [players, preditionContract, user, playerTypesChecked, orderByValue, netbnbRange, winrateRange]
+    [players, preditionContract, user, playerTypesChecked, orderByValue, netbnbRange, winrateRange, setPage]
   )
 
   useEffect(() => {
@@ -416,17 +436,6 @@ const PlayersList: FC = () => {
       setHasError(true)
     }
   }, [getPlayers, user, preditionContract, enqueueSnackbar, t, userFetching])
-
-  const [page, setPage] = useState<number>(0)
-  const [limit, setLimit] = useState<number>(15)
-
-  const handlePageChange = (_event: any, newPage: number): void => {
-    setPage(newPage)
-  }
-
-  const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
-    setLimit(+event.target.value)
-  }
 
   // const filteredPlayers = applyFilters(players, query, filters)
   const paginatedPlayers = applyPagination(players, page, limit)
