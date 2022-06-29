@@ -12,7 +12,7 @@ module.exports = {
   BET_AMOUNT: 0.025,
 
   SAFE_GAS_PRICE: 5,
-  FAST_GAS_PRICE: 6,
+  FAST_GAS_PRICE: 10,
   // FAST_GAS_PRICE: 6,
   // FAST_GAS_PRICE: 7,
 
@@ -23,5 +23,5 @@ module.exports = {
   WIN_RATE: 56,
 
   HEXLIFY_SAFE: 300000,
-  HEXLIFY_FAST: 450000,
+  HEXLIFY_FAST: 650000,
 }

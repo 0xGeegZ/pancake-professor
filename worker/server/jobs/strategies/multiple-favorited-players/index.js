@@ -327,8 +327,8 @@ const run = async () => {
     let isBullBetterAdjusted =
       betBullCount
         .map((p) => {
-          return parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound) * +p.player.winRate)
-          // return parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound))
+          // return parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound) * +p.player.winRate)
+          return parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound))
         })
         .reduce((acc, winRate) => acc + winRate, 0) / betBullCount.length || 0
     isBullBetterAdjusted = parseFloat(isBullBetterAdjusted).toFixed(2)
@@ -339,8 +339,8 @@ const run = async () => {
     let isBearBetterAdjusted =
       betBearCount
         .map((p) => {
-          return parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound) * +p.player.winRate)
-          // return parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound))
+          // return parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound) * +p.player.winRate)
+          return parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound))
         })
         .reduce((acc, winRate) => acc + winRate, 0) / betBearCount.length || 0
     isBearBetterAdjusted = parseFloat(isBearBetterAdjusted).toFixed(2)
@@ -372,6 +372,7 @@ const run = async () => {
     const bullDivider = ratingUp <= 1.7 ? 3 : ratingUp >= 2 ? 5 : 4
     const bearDivider = ratingDown <= 1.7 ? 3 : ratingDown >= 2 ? 5 : 4
 
+    // TODO v0.0.4 check if currentAmount is better than startedAmount
     // const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
     // const kellyBetAmountBear = parseFloat(strategie.startedAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
     const kellyBetAmountBull = parseFloat(strategie.currentAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
@@ -568,7 +569,7 @@ const run = async () => {
       `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 8
+    const timer = secondsLeftUntilNextEpoch - 8.5
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
 
@@ -683,9 +684,9 @@ const run = async () => {
       }:${+currentEpoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 8
+    const timer = secondsLeftUntilNextEpoch - 8.5
 
-    if (timer <= 30) {
+    if (timer <= 20) {
       players.map((p) => {
         blocknative.unsubscribe(p.id)
       })
@@ -761,7 +762,7 @@ const run = async () => {
 
     strategie.gasPrice = ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString()
 
-    strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_SAFE)
+    strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_FAST)
     strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
 
     // TODO REACTIVATE AFTER TEST
