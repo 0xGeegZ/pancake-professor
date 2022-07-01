@@ -1,7 +1,7 @@
 /* eslint-disable import/order */
 import 'moment-timezone'
 
-import { PREDICTION_CONTRACT_ABI } from '@/contracts/abis/pancake-prediction-abi-v3'
+import { PREDICTION_CONTRACT_ABI_BNB } from '@/contracts/abis/pancake-prediction-abi-v3'
 import CloseIcon from '@mui/icons-material/Close'
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 import FavoriteIcon from '@mui/icons-material/Favorite'
@@ -424,7 +424,7 @@ const PlayersList: FC = () => {
 
     const lpreditionContract = new ethers.Contract(
       process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
-      PREDICTION_CONTRACT_ABI,
+      PREDICTION_CONTRACT_ABI_BNB,
       // signer,
       lprovider
     )

@@ -1,4 +1,4 @@
-const PREDICTION_CONTRACT_ABI = [
+const PREDICTION_CONTRACT_ABI_BNB = [
   {
     anonymous: false,
     inputs: [
@@ -617,5 +617,5 @@ const PREDICTION_CONTRACT_ABI = [
 ]
 
 module.exports = {
-  PREDICTION_CONTRACT_ABI,
+  PREDICTION_CONTRACT_ABI_BNB,
 }

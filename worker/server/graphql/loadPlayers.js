@@ -4,12 +4,12 @@ const gini = require('gini')
 
 // const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT)
 const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB, {
-  mode: 'cors',
-  credentials: 'include',
-  headers: {
-    // 'Access-Control-Allow-Origin': 'http://localhost:3000',
-    'Access-Control-Allow-Origin': '*',
-  },
+  // mode: 'cors',
+  // credentials: 'include',
+  // headers: {
+  //   // 'Access-Control-Allow-Origin': 'http://localhost:3000',
+  //   'Access-Control-Allow-Origin': '*',
+  // },
 })
 
 const TOTAL_BETS_INITIAL = 80
@@ -126,7 +126,13 @@ const checkPlayer = async (idPlayer, lastGame) => {
   return checkIfPlaying(user, lastGame)
 }
 
-const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
+const loadPlayers = async ({ epoch, orderBy = 'totalBets', isCake = false }) => {
+  console.log('🚀 ~ file: loadPlayers.js ~ line 130 ~ loadPlayers ~ isCake', isCake)
+
+  const graphQLClient = new GraphQLClient(
+    isCake ? process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_CAKE : process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB
+  )
+
   try {
     const orderByFilter = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 'totalBets' : orderBy
     const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12 * 2
@@ -155,11 +161,11 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
           orderDirection: desc
         ) {
           id
-          totalBNB
+          # totalBNB
           totalBets
           winRate
-          averageBNB
-          netBNB
+          # averageBNB
+          # netBNB
           bets(first: $firstBets, orderBy: createdAt, orderDirection: desc) {
             position
             createdAt
@@ -304,7 +310,7 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets' }) => {
         WIN_RATE -= 1
       }
 
-      return await loadPlayers({ epoch, orderBy })
+      return await loadPlayers({ epoch, orderBy, isCake })
     }
 
     TOTAL_BETS = TOTAL_BETS_INITIAL

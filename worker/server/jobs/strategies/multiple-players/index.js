@@ -41,9 +41,10 @@ const run = async () => {
 
   if (!user) throw new Error('No user given')
 
-  const isCake = false
+  const isCake = true
   // const { user, strategie } = payload
   let preditionContract
+  let cakeContract
   let signer
   let emitter
   let players = []
@@ -178,15 +179,20 @@ const run = async () => {
     if (betAmount > strategie.currentAmount) {
       logger.error(`[PLAYING] Not enought BNB to bet ${betAmount}, current amount is ${strategie.currentAmount}`)
 
-      betAmount = config.MIN_BET_AMOUNT
+      betAmount = isCake ? config.MIN_BET_AMOUNT_CAKE : config.MIN_BET_AMOUNT_BNB
       // await stopStrategie({ epoch })
     }
 
-    if (betAmount < config.MIN_BET_AMOUNT) betAmount = config.MIN_BET_AMOUNT
+    if (!isCake && betAmount < config.MIN_BET_AMOUNT_BNB) betAmount = config.MIN_BET_AMOUNT_BNB
 
-    if (betAmount > config.MAX_BET_AMOUNT) betAmount = config.MAX_BET_AMOUNT
+    if (!isCake && betAmount > config.MAX_BET_AMOUNT_BNB) betAmount = config.MAX_BET_AMOUNT_BNB
+
+    if (isCake && betAmount < config.MIN_BET_AMOUNT_CAKE) betAmount = config.MIN_BET_AMOUNT_CAKE
+
+    if (isCake && betAmount > config.MAX_BET_AMOUNT_CAKE) betAmount = config.MAX_BET_AMOUNT_CAKE
 
     const amount = parseFloat(betAmount).toFixed(4)
+    console.log('🚀 ~ file: index.js ~ line 195 ~ betRound ~ amount', amount)
     const betBullOrBear = betBull ? 'betBull' : 'betBear'
 
     if (!(+amount != 0)) {
@@ -198,18 +204,29 @@ const run = async () => {
     try {
       // const gasPrice = await provider.getGasPrice()
 
-      const tx = await preditionContract[betBullOrBear](epoch.toString(), {
-        value: ethers.utils.parseEther(amount),
-        // nonce: new Date().getTime(),
-        nonce: strategie.nonce,
-        gasPrice: strategie.gasPrice,
-        gasLimit: strategie.gasLimit,
-        // gasPrice: ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString(),
-        // gasLimit: ethers.utils.hexlify(250000),
-        // gasPrice,
-      })
+      if (isCake) {
+        const tx = await preditionContract[betBullOrBear](epoch.toString(), ethers.utils.parseEther(amount), {
+          nonce: strategie.nonce,
+          // nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+          gasPrice: strategie.gasPrice,
+          gasLimit: strategie.gasLimit,
+        })
 
-      await tx.wait()
+        await tx.wait()
+      } else {
+        const tx = await preditionContract[betBullOrBear](epoch.toString(), {
+          value: ethers.utils.parseEther(amount),
+          nonce: strategie.nonce,
+          // nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+          gasPrice: strategie.gasPrice,
+          gasLimit: strategie.gasLimit,
+          // gasPrice: ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString(),
+          // gasLimit: ethers.utils.hexlify(250000),
+          // gasPrice,
+        })
+
+        await tx.wait()
+      }
 
       strategie.playedEpochs.push(epoch.toString())
       strategie.playsCount += 1
@@ -346,14 +363,15 @@ const run = async () => {
         ? +isBullBetterAdjusted - +isBearBetterAdjusted
         : +isBearBetterAdjusted - +isBullBetterAdjusted
 
-    const ratingUp = (
-      1 +
-      parseFloat(ethers.utils.formatEther(bearAmount)) / parseFloat(ethers.utils.formatEther(bullAmount))
-    ).toFixed(2)
-    const ratingDown = (
-      1 +
-      parseFloat(ethers.utils.formatEther(bullAmount)) / parseFloat(ethers.utils.formatEther(bearAmount))
-    ).toFixed(2)
+    const ratingUp =
+      (1 + parseFloat(ethers.utils.formatEther(bearAmount)) / parseFloat(ethers.utils.formatEther(bullAmount))).toFixed(
+        2
+      ) || 1
+
+    const ratingDown =
+      (1 + parseFloat(ethers.utils.formatEther(bullAmount)) / parseFloat(ethers.utils.formatEther(bearAmount))).toFixed(
+        2
+      ) || 1
 
     const currentWinRate = 0.55
     const averageWinRateBull = isBullBetter ? isBullBetter / 100 : currentWinRate
@@ -424,7 +442,7 @@ const run = async () => {
     //   console.log(
     //     "///////////////////////// BULL /////////////////////////////////"
     //   )
-    //    await betRound(epoch, true, BET_AMOUNT)
+    //    await betRound(epoch, true, BET_AMOUNT_BNB)
     //   data.position = POSITION_BULL
     //   data.isPlaying = true
     //   console.log("//////////////////////////////////////////////////////////")
@@ -445,7 +463,7 @@ const run = async () => {
     //   console.log(
     //     "////////////////////////// BEAR ////////////////////////////////"
     //   )
-    //    await betRound(epoch, false, BET_AMOUNT)
+    //    await betRound(epoch, false, BET_AMOUNT_BNB)
     //   data.position = POSITION_BEAR
     //   data.isPlaying = true
     //   console.log("//////////////////////////////////////////////////////////")
@@ -455,12 +473,14 @@ const run = async () => {
     if (
       // isSecureMode &&
       // totalPlayers > 1 &&
-      (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
-      // (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
+      // (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
+      (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
       betBullCount.length >= betBearCount.length &&
-      +isBullBetterAdjusted > +isBearBetterAdjusted &&
-      ratingUp >= 1.3 &&
-      ratingUp <= 3
+      +isBullBetterAdjusted > +isBearBetterAdjusted
+      //  &&
+      // ratingUp >= 1.3
+      // &&
+      // ratingUp <= 3
       // (+isBullBetterAdjusted > +isBearBetterAdjusted ||
       //   Math.round(+isBullBetter) > Math.round(+isBearBetter))
       // ||
@@ -486,12 +506,14 @@ const run = async () => {
     } else if (
       // isSecureMode &&
       // totalPlayers > 1 &&
-      (totalPlayers > 1 || Math.round(+isBearBetter) >= 57) &&
-      // (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
+      // (totalPlayers > 1 || Math.round(+isBearBetter) >= 57) &&
+      (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
       betBearCount.length >= betBullCount.length &&
-      +isBearBetterAdjusted > +isBullBetterAdjusted &&
-      ratingDown >= 1.3 &&
-      ratingDown <= 3
+      +isBearBetterAdjusted > +isBullBetterAdjusted
+      // &&
+      // ratingDown >= 1.3
+      // &&
+      // ratingDown <= 3
       // (+isBearBetterAdjusted > +isBullBetterAdjusted ||
       //   Math.round(+isBearBetter) > Math.round(+isBullBetter))
       // ||
@@ -547,32 +569,33 @@ const run = async () => {
   const processRound = async (transaction, player) => {
     const epoch = await preditionContract.currentEpoch()
 
-    // logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
+    logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
 
     if (transaction.from.toLowerCase() !== player.id) {
-      // logger.error(`[LISTEN] Incoming transaction.`)
+      logger.error(`[LISTEN] Incoming transaction.`)
       return
     }
 
     if (
-      transaction.to.toLowerCase() !== isCake
+      transaction.to.toLowerCase() !==
+      (isCake
         ? process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_CAKE
-        : process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB
+        : process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB)
     ) {
-      // logger.info(`[LISTEN] Not a transaction with pancake contract.`)
+      logger.info(`[LISTEN] Not a transaction with pancake contract.`)
       return
     }
 
     if (
-      !transaction.input.includes(config.BET_BULL_METHOD_ID) &&
-      !transaction.input.includes(config.BET_BEAR_METHOD_ID)
+      !transaction.input.includes(isCake ? config.BET_BULL_METHOD_ID_CAKE : config.BET_BULL_METHOD_ID_BNB) &&
+      !transaction.input.includes(isCake ? config.BET_BEAR_METHOD_ID_CAKE : config.BET_BEAR_METHOD_ID_BNB)
     ) {
-      // logger.info(`[LISTEN] Not a bull or bear transaction.`)
+      logger.info(`[LISTEN] Not a bull or bear transaction.`)
       return
     }
 
-    if (transaction.input.includes(config.CLAIM_BEAR_METHOD_ID)) {
-      // logger.info(`[LISTEN] Claim transaction.`)
+    if (transaction.input.includes(isCake ? config.CLAIM_METHOD_ID_CAKE : config.CLAIM_METHOD_ID_BNB)) {
+      logger.info(`[LISTEN] Claim transaction.`)
       return
     }
 
@@ -584,14 +607,14 @@ const run = async () => {
     // logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash}`)
 
     // TODO DECODE FUNCTION (see pending.js)
-    const betBull = transaction.input.includes(config.BET_BULL_METHOD_ID)
+    const betBull = transaction.input.includes(isCake ? config.BET_BULL_METHOD_ID_CAKE : config.BET_BULL_METHOD_ID_BNB)
 
     const isAlreadyTracked = strategie.plays.find((p) => p.player.id === player.id)
     if (!isAlreadyTracked) {
       strategie.plays.push({ betBull, player })
       strategie.playedHashs.push(transaction.hash)
 
-      logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
+      // logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
 
       logger.info(
         `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
@@ -668,11 +691,8 @@ const run = async () => {
     )
 
     // TODO v0.0.4
-    // const timer = secondsLeftUntilNextEpoch - 15
-    // const timer = secondsLeftUntilNextEpoch - 10
-    // const timer = secondsLeftUntilNextEpoch - 9 // works
-    // const timer = secondsLeftUntilNextEpoch - 8.5 // error
-    const timer = secondsLeftUntilNextEpoch - 8.5
+    // const timer = secondsLeftUntilNextEpoch - 8.5
+    const timer = secondsLeftUntilNextEpoch - 9
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
 
@@ -685,13 +705,20 @@ const run = async () => {
   const roundEndListenner = async (epoch) => {
     strategie.roundsCount += 1
 
-    const currentAmountBigInt = await provider.getBalance(signer.address)
-    strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
+    // const currentAmountBigInt = await provider.getBalance(signer.address)
+    // strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
+    if (isCake) {
+      const initialBankrollBigInt = await cakeContract.balanceOf(signer.address)
+      strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
+    } else {
+      const initialBankrollBigInt = await provider.getBalance(signer.address)
+      strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
+    }
 
     logger.info(
       `[ROUND:${+epoch}:${user.id}:${strategie.roundsCount}] Round finished for epoch ${+epoch} : played ${
         strategie.playsCount
-      }/${strategie.roundsCount} games. Current bankroll amount ${strategie.currentAmount}`
+      }/${strategie.roundsCount} games. Current bankroll amount ${strategie.currentAmount} ${isCake ? 'CAKE' : 'BNB'}`
     )
 
     if (strategie.roundsCount % 5 === 0 && strategie.playedEpochs.length >= 1) {
@@ -1052,13 +1079,9 @@ const run = async () => {
     )
 
     // TODO v0.0.4 one block = 3000
-    // const timer = secondsLeftUntilNextEpoch - 15
-    // const timer = secondsLeftUntilNextEpoch - 10
-    // const timer = secondsLeftUntilNextEpoch - 9 // works
-    // const timer = secondsLeftUntilNextEpoch - 8.5 // error
-    const timer = secondsLeftUntilNextEpoch - 8.5
+    const timer = secondsLeftUntilNextEpoch - 9
 
-    if (timer <= 30) {
+    if (timer <= 15) {
       players.map((p) => {
         blocknative.unsubscribe(p.id)
       })
@@ -1087,9 +1110,11 @@ const run = async () => {
       isCake
         ? process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_CAKE
         : process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
-      config.PREDICTION_CONTRACT_ABI,
+      isCake ? config.PREDICTION_CONTRACT_ABI_CAKE : config.PREDICTION_CONTRACT_ABI_BNB,
       signer
     )
+
+    cakeContract = new ethers.Contract(process.env.CAKE_CONTRACT_ADDRESS, config.CAKE_CONTRACT_ABI, signer)
 
     try {
       await prisma.strategie.update({
@@ -1124,12 +1149,23 @@ const run = async () => {
 
     const epoch = await preditionContract.currentEpoch()
 
-    const initialBankrollBigInt = await provider.getBalance(signer.address)
-    strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
-    strategie.stepBankroll = strategie.startedAmount
+    // TODO v0.0.4 if isCake, get balance for cake.
+    if (isCake) {
+      const initialBankrollBigInt = await cakeContract.balanceOf(signer.address)
+      strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
+      // TODO v0.0.4
+      // Define started startedAmount
+      strategie.startedAmount = 10 // 10 CAKE
+      strategie.stepBankroll = strategie.startedAmount
+    } else {
+      const initialBankrollBigInt = await provider.getBalance(signer.address)
+      strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
+      strategie.stepBankroll = strategie.startedAmount
+    }
+
     // strategie.betAmount = +(strategie.currentAmount / 15).toFixed(4)
-    strategie.betAmount = config.MIN_BET_AMOUNT
-    // strategie.betAmount = config.BET_AMOUNT
+    strategie.betAmount = isCake ? config.MIN_BET_AMOUNT_CAKE : config.MIN_BET_AMOUNT_BNB
+    // strategie.betAmount = config.BET_AMOUNT_BNB
     // strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
     strategie.plays = []
     strategie.playedHashs = []
@@ -1146,15 +1182,36 @@ const run = async () => {
     // TODO REACTIVATE AFTER TEST
     // optimizeBetAmount()
 
-    if (strategie.currentAmount <= config.MIN_BET_AMOUNT) {
+    // TODO v0.0.4 is allowance needed ?
+    // if (isCake) {
+    //   const askApprove = await preditionContract.approve(signer.address, amountInValue.toBigInt(), {
+    //     gasPrice: strategie.gasPrice,
+    //     gasLimit: strategie.gasLimit,
+    //   })
+    //   await askApprove.wait()
+    // }
+
+    if (!isCake && strategie.currentAmount <= config.MIN_BET_AMOUNT_BNB) {
       logger.error(
-        `[LISTEN] Bet amount error, current bankroll is ${strategie.currentAmount} Stopping strategie for now`
+        `[LISTEN] Bet amount error, current bankroll is ${strategie.currentAmount} ${
+          isCake ? 'CAKE' : 'BNB'
+        } Stopping strategie for now`
       )
       await stopStrategie({ epoch })
       return
     }
 
-    // if (strategie.betAmount <= config.MIN_BET_AMOUNT || strategie.betAmount > config.MAX_BET_AMOUNT) {
+    if (isCake && strategie.currentAmount <= config.MIN_BET_AMOUNT_CAKE) {
+      logger.error(
+        `[LISTEN] Bet amount error, current bankroll is ${strategie.currentAmount} ${
+          isCake ? 'CAKE' : 'BNB'
+        } Stopping strategie for now`
+      )
+      await stopStrategie({ epoch })
+      return
+    }
+
+    // if (strategie.betAmount <= config.MIN_BET_AMOUNT_BNB || strategie.betAmount > config.MAX_BET_AMOUNT_BNB) {
     //   logger.error(`[LISTEN] Bet amount error, value is ${strategie.betAmount} Stopping strategie for now`)
     //   await stopStrategie({ epoch })
     //   return
@@ -1169,11 +1226,13 @@ const run = async () => {
     })
 
     logger.info(
-      `[LISTEN] Stetting up bet amount to ${strategie.betAmount} for initial bankroll ${strategie.currentAmount}.`
+      `[LISTEN] Stetting up bet amount to ${strategie.betAmount} for initial bankroll ${strategie.currentAmount} ${
+        isCake ? 'CAKE' : 'BNB'
+      }.`
     )
 
     // players = await loadPlayers({ epoch, orderBy: 'default' })
-    players = await loadPlayers({ epoch, orderBy: 'mostActiveLastHour' })
+    players = await loadPlayers({ epoch, orderBy: 'mostActiveLastHour', isCake })
     const allPlayers = players?.length
     players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
     // const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)

@@ -46,7 +46,7 @@ const run = async (payload) => {
 
     const preditionContract = new ethers.Contract(
       process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
-      config.PREDICTION_CONTRACT_ABI,
+      config.PREDICTION_CONTRACT_ABI_BNB,
       signer
     )
 
@@ -56,7 +56,7 @@ const run = async (payload) => {
 
     const preditionCallContract = new Contract(
       process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
-      config.PREDICTION_CONTRACT_ABI,
+      config.PREDICTION_CONTRACT_ABI_BNB,
       signer
     )
 

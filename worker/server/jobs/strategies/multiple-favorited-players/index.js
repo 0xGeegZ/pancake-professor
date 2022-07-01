@@ -108,9 +108,9 @@ const run = async () => {
       `[CALCULATE_BET_AMOUT] isTrailing ${strategie.isTrailing} bet amount is ${newBetAmount} : currentBankroll ${strategie.currentAmount} & betAmount ${strategie.betAmountPercent}%`
     )
 
-    if (newBetAmount < config.MIN_BET_AMOUNT) newBetAmount = config.MIN_BET_AMOUNT
+    if (newBetAmount < config.MIN_BET_AMOUNT_BNB) newBetAmount = config.MIN_BET_AMOUNT_BNB
 
-    if (newBetAmount > config.MAX_BET_AMOUNT) newBetAmount = config.MAX_BET_AMOUNT
+    if (newBetAmount > config.MAX_BET_AMOUNT_BNB) newBetAmount = config.MAX_BET_AMOUNT_BNB
 
     strategie.betAmount = newBetAmount
 
@@ -231,13 +231,13 @@ const run = async () => {
     if (betAmount > strategie.currentAmount) {
       logger.error(`[PLAYING] Not enought BNB to bet ${betAmount}, current amount is ${strategie.currentAmount}`)
 
-      betAmount = config.MIN_BET_AMOUNT
+      betAmount = config.MIN_BET_AMOUNT_BNB
       // await stopStrategie({ epoch })
     }
 
-    if (betAmount < config.MIN_BET_AMOUNT) betAmount = config.MIN_BET_AMOUNT
+    if (betAmount < config.MIN_BET_AMOUNT_BNB) betAmount = config.MIN_BET_AMOUNT_BNB
 
-    if (betAmount > config.MAX_BET_AMOUNT) betAmount = config.MAX_BET_AMOUNT
+    if (betAmount > config.MAX_BET_AMOUNT_BNB) betAmount = config.MAX_BET_AMOUNT_BNB
 
     const amount = parseFloat(betAmount).toFixed(4)
     const betBullOrBear = betBull ? 'betBull' : 'betBear'
@@ -251,7 +251,8 @@ const run = async () => {
     try {
       const tx = await preditionContract[betBullOrBear](epoch.toString(), {
         value: ethers.utils.parseEther(amount),
-        nonce: strategie.nonce,
+        // nonce: strategie.nonce,
+        nonce: provider.getTransactionCount(strategie.generated, 'latest'),
         gasPrice: strategie.gasPrice,
         gasLimit: strategie.gasLimit,
       })
@@ -304,13 +305,20 @@ const run = async () => {
 
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
-    const timer = secondsLeftUntilNextEpoch - 8
+    // const timer = secondsLeftUntilNextEpoch - 8.5
+    const timer = secondsLeftUntilNextEpoch - 9
 
     logger.info(
       `ZZZZZZZZZZZ --> [ROUND-${user.id}:${
         strategie.roundsCount
       }:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`
     )
+
+    // TODO v0.0.4 : If timer < -0.5s (execution time), wait 500ms
+    // if (timer >= -0.5) {
+    //   console.log('WAITING WAITING WAITING WAITING')
+    //   await sleep(500)
+    // }
 
     let betBullCount = strategie.plays.filter((p) => p.betBull)
     let betBearCount = strategie.plays.filter((p) => !p.betBull)
@@ -373,10 +381,10 @@ const run = async () => {
     const bearDivider = ratingDown <= 1.7 ? 3 : ratingDown >= 2 ? 5 : 4
 
     // TODO v0.0.4 check if currentAmount is better than startedAmount
-    // const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
-    // const kellyBetAmountBear = parseFloat(strategie.startedAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
-    const kellyBetAmountBull = parseFloat(strategie.currentAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
-    const kellyBetAmountBear = parseFloat(strategie.currentAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
+    const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
+    const kellyBetAmountBear = parseFloat(strategie.startedAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
+    // const kellyBetAmountBull = parseFloat(strategie.currentAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
+    // const kellyBetAmountBear = parseFloat(strategie.currentAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
 
     console.log(
       '🚀 ~ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ~ kellyCriterionBull (%)',
@@ -425,6 +433,7 @@ const run = async () => {
       // ratingUp <= 3
     ) {
       logger.info('///////////////////////// BULL /////////////////////////////////')
+      // await betRound({ epoch, betBull: true, betAmount: config.MIN_BET_AMOUNT_BNB })
       await betRound({ epoch, betBull: true, betAmount: kellyBetAmountBull })
       logger.info('//////////////////////////////////////////////////////////')
     } else if (
@@ -437,6 +446,7 @@ const run = async () => {
       // ratingDown <= 3
     ) {
       logger.info('////////////////////////// BEAR ////////////////////////////////')
+      // await betRound({ epoch, betBull: false, betAmount: config.MIN_BET_AMOUNT_BNB })
       await betRound({ epoch, betBull: false, betAmount: kellyBetAmountBear })
       logger.info('//////////////////////////////////////////////////////////')
     } else logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NOT PLAYING`)
@@ -485,14 +495,14 @@ const run = async () => {
     }
 
     if (
-      !transaction.input.includes(config.BET_BULL_METHOD_ID) &&
-      !transaction.input.includes(config.BET_BEAR_METHOD_ID)
+      !transaction.input.includes(config.BET_BULL_METHOD_ID_BNB) &&
+      !transaction.input.includes(config.BET_BEAR_METHOD_ID_BNB)
     ) {
       // logger.info(`[LISTEN] Not a bull or bear transaction.`)
       return
     }
 
-    if (transaction.input.includes(config.CLAIM_BEAR_METHOD_ID)) {
+    if (transaction.input.includes(config.CLAIM_METHOD_ID_BNB)) {
       // logger.info(`[LISTEN] Claim transaction.`)
       return
     }
@@ -504,7 +514,7 @@ const run = async () => {
 
     // logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash}`)
 
-    const betBull = transaction.input.includes(config.BET_BULL_METHOD_ID)
+    const betBull = transaction.input.includes(config.BET_BULL_METHOD_ID_BNB)
 
     const isAlreadyTracked = strategie.plays.find((p) => p.player.id === player.id)
     if (!isAlreadyTracked && !strategie.isTimeEnded) {
@@ -569,7 +579,7 @@ const run = async () => {
       `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 8.5
+    const timer = secondsLeftUntilNextEpoch - 9
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
 
@@ -684,7 +694,7 @@ const run = async () => {
       }:${+currentEpoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 8.5
+    const timer = secondsLeftUntilNextEpoch - 9
 
     if (timer <= 20) {
       players.map((p) => {
@@ -714,7 +724,7 @@ const run = async () => {
 
     preditionContract = new ethers.Contract(
       process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
-      config.PREDICTION_CONTRACT_ABI,
+      config.PREDICTION_CONTRACT_ABI_BNB,
       signer
     )
 
@@ -768,11 +778,11 @@ const run = async () => {
     // TODO REACTIVATE AFTER TEST
     calculateBetAmount()
     // strategie.betAmount = +(strategie.currentAmount / 15).toFixed(4)
-    // strategie.betAmount = config.MIN_BET_AMOUNT
-    // strategie.betAmount = config.BET_AMOUNT
+    // strategie.betAmount = config.MIN_BET_AMOUNT_BNB
+    // strategie.betAmount = config.BET_AMOUNT_BNB
     // strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
 
-    if (strategie.currentAmount <= config.MIN_BET_AMOUNT) {
+    if (strategie.currentAmount <= config.MIN_BET_AMOUNT_BNB) {
       logger.error(
         `[LISTEN] Bet amount error, current bankroll is ${strategie.currentAmount} Stopping strategie for now`
       )
@@ -780,7 +790,7 @@ const run = async () => {
       return
     }
 
-    // if (strategie.betAmount <= config.MIN_BET_AMOUNT || strategie.betAmount > config.MAX_BET_AMOUNT) {
+    // if (strategie.betAmount <= config.MIN_BET_AMOUNT_BNB || strategie.betAmount > config.MAX_BET_AMOUNT_BNB) {
     //   logger.error(`[LISTEN] Bet amount error, value is ${strategie.betAmount} Stopping strategie for now`)
     //   await stopStrategie({ epoch })
     //   return

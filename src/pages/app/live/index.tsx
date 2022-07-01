@@ -21,7 +21,7 @@ import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
 import loadGameData from 'src/client/thegraph/loadGameData'
 import wait from 'src/client/utils/wait'
-import { PREDICTION_CONTRACT_ABI } from 'src/contracts/abis/pancake-prediction-abi-v3'
+import { PREDICTION_CONTRACT_ABI_BNB } from 'src/contracts/abis/pancake-prediction-abi-v3'
 
 import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
@@ -325,7 +325,7 @@ const LiveView = () => {
 
       const lpreditionContract = new ethers.Contract(
         process.env.NEXT_PUBLIC_PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
-        PREDICTION_CONTRACT_ABI,
+        PREDICTION_CONTRACT_ABI_BNB,
         // signer
         lprovider
       )

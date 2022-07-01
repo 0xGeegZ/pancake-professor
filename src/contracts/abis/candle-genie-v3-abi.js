@@ -1,4 +1,4 @@
-const PREDICTION_CONTRACT_ABI = [
+const PREDICTION_CONTRACT_ABI_BNB = [
   {
     inputs: [{ internalType: 'address', name: '_operatorAddress', type: 'address' }],
     stateMutability: 'nonpayable',
@@ -687,5 +687,5 @@ const PREDICTION_CONTRACT_ABI = [
 ]
 
 module.exports = {
-  PREDICTION_CONTRACT_ABI,
+  PREDICTION_CONTRACT_ABI_BNB,
 }

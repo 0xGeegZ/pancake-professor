@@ -64,7 +64,7 @@ export default PlayersView
 
 //   const preditionContract = new ethers.Contract(
 //     process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
-//     PREDICTION_CONTRACT_ABI,
+//     PREDICTION_CONTRACT_ABI_BNB,
 //     signer
 //   )
 

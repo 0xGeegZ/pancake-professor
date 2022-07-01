@@ -16,9 +16,9 @@ const calculateBetAmount = ({ strategie }) => {
     `[CALCULATE_BET_AMOUT] isTrailing ${strategie.isTrailing} bet amount is ${newBetAmount} : currentBankroll ${strategie.currentAmount} & betAmount ${strategie.betAmountPercent}%`
   )
 
-  if (newBetAmount < config.MIN_BET_AMOUNT) newBetAmount = config.MIN_BET_AMOUNT
+  if (newBetAmount < config.MIN_BET_AMOUNT_BNB) newBetAmount = config.MIN_BET_AMOUNT_BNB
 
-  if (newBetAmount > config.MAX_BET_AMOUNT) newBetAmount = config.MAX_BET_AMOUNT
+  if (newBetAmount > config.MAX_BET_AMOUNT_BNB) newBetAmount = config.MAX_BET_AMOUNT_BNB
 
   // OLD OPTIMIZATION --> TODO : Try to integrate in new approche
 
@@ -252,14 +252,14 @@ const processRound = async ({ transaction, strategie, contract, emitter }) => {
   }
 
   if (
-    !transaction.input.includes(config.BET_BULL_METHOD_ID) &&
-    !transaction.input.includes(config.BET_BEAR_METHOD_ID)
+    !transaction.input.includes(config.BET_BULL_METHOD_ID_BNB) &&
+    !transaction.input.includes(config.BET_BEAR_METHOD_ID_BNB)
   ) {
     logger.info(`[LISTEN] Not a bull or bear transaction.`)
     return
   }
 
-  if (transaction.input.includes(config.CLAIM_BEAR_METHOD_ID)) {
+  if (transaction.input.includes(config.CLAIM_METHOD_ID_BNB)) {
     logger.info(`[LISTEN] Claim transaction.`)
     return
   }
@@ -278,7 +278,7 @@ const processRound = async ({ transaction, strategie, contract, emitter }) => {
   // balance = ethers.utils.formatEther(balance)
 
   // TODO DECODE FUNCTION (see pending.js)
-  const betBull = transaction.input.includes(config.BET_BULL_METHOD_ID)
+  const betBull = transaction.input.includes(config.BET_BULL_METHOD_ID_BNB)
 
   // const playerBetAmount = ethers.utils.formatEther(transaction.value)
 
@@ -501,7 +501,7 @@ const listenSinglePlayer = async ({ strategie, provider, signer, contract, emitt
 
   strategie.betAmount = calculateBetAmount()
 
-  if (strategie.betAmount <= config.MIN_BET_AMOUNT || strategie.betAmount > config.MAX_BET_AMOUNT) {
+  if (strategie.betAmount <= config.MIN_BET_AMOUNT_BNB || strategie.betAmount > config.MAX_BET_AMOUNT_BNB) {
     logger.error(`[LISTEN] Bet amount error, value is ${strategie.betAmount} Stopping strategie for now`)
     await stopStrategie({ epoch, strategie, emitter, contract })
     return

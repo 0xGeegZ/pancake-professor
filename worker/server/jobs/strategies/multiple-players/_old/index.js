@@ -179,13 +179,13 @@ const run = async () => {
     if (betAmount > strategie.currentAmount) {
       logger.error(`[PLAYING] Not enought BNB to bet ${betAmount}, current amount is ${strategie.currentAmount}`)
 
-      betAmount = config.MIN_BET_AMOUNT
+      betAmount = config.MIN_BET_AMOUNT_BNB
       // await stopStrategie({ epoch })
     }
 
-    if (betAmount < config.MIN_BET_AMOUNT) betAmount = config.MIN_BET_AMOUNT
+    if (betAmount < config.MIN_BET_AMOUNT_BNB) betAmount = config.MIN_BET_AMOUNT_BNB
 
-    if (betAmount > config.MAX_BET_AMOUNT) betAmount = config.MAX_BET_AMOUNT
+    if (betAmount > config.MAX_BET_AMOUNT_BNB) betAmount = config.MAX_BET_AMOUNT_BNB
 
     const amount = parseFloat(betAmount).toFixed(4)
     const betBullOrBear = betBull ? 'betBull' : 'betBear'
@@ -368,7 +368,7 @@ const run = async () => {
     //   console.log(
     //     "///////////////////////// BULL /////////////////////////////////"
     //   )
-    //    await betRound(epoch, true, BET_AMOUNT)
+    //    await betRound(epoch, true, BET_AMOUNT_BNB)
     //   data.position = POSITION_BULL
     //   data.isPlaying = true
     //   console.log("//////////////////////////////////////////////////////////")
@@ -389,7 +389,7 @@ const run = async () => {
     //   console.log(
     //     "////////////////////////// BEAR ////////////////////////////////"
     //   )
-    //    await betRound(epoch, false, BET_AMOUNT)
+    //    await betRound(epoch, false, BET_AMOUNT_BNB)
     //   data.position = POSITION_BEAR
     //   data.isPlaying = true
     //   console.log("//////////////////////////////////////////////////////////")
@@ -475,14 +475,14 @@ const run = async () => {
     }
 
     if (
-      !transaction.input.includes(config.BET_BULL_METHOD_ID) &&
-      !transaction.input.includes(config.BET_BEAR_METHOD_ID)
+      !transaction.input.includes(config.BET_BULL_METHOD_ID_BNB) &&
+      !transaction.input.includes(config.BET_BEAR_METHOD_ID_BNB)
     ) {
       logger.info(`[LISTEN] Not a bull or bear transaction.`)
       return
     }
 
-    if (transaction.input.includes(config.CLAIM_BEAR_METHOD_ID)) {
+    if (transaction.input.includes(config.CLAIM_METHOD_ID_BNB)) {
       logger.info(`[LISTEN] Claim transaction.`)
       return
     }
@@ -495,7 +495,7 @@ const run = async () => {
     logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash}`)
 
     // TODO DECODE FUNCTION (see pending.js)
-    const betBull = transaction.input.includes(config.BET_BULL_METHOD_ID)
+    const betBull = transaction.input.includes(config.BET_BULL_METHOD_ID_BNB)
 
     const isAlreadyTracked = strategie.plays.find((p) => p.player.id === player.id)
     if (!isAlreadyTracked) {
@@ -942,7 +942,7 @@ const run = async () => {
 
     preditionContract = new ethers.Contract(
       process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB,
-      config.PREDICTION_CONTRACT_ABI,
+      config.PREDICTION_CONTRACT_ABI_BNB,
       signer
     )
 
@@ -983,7 +983,7 @@ const run = async () => {
     strategie.currentAmount = +ethers.utils.formatEther(initialBankrollBigInt)
     strategie.stepBankroll = strategie.startedAmount
     // strategie.betAmount = +(strategie.currentAmount / 15).toFixed(4)
-    strategie.betAmount = config.MIN_BET_AMOUNT
+    strategie.betAmount = config.MIN_BET_AMOUNT_BNB
     // strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
     strategie.plays = []
     strategie.playedHashs = []
@@ -997,7 +997,7 @@ const run = async () => {
     // TODO REACTIVATE AFTER TEST
     // optimizeBetAmount()
 
-    // if (strategie.betAmount <= config.MIN_BET_AMOUNT || strategie.betAmount > config.MAX_BET_AMOUNT) {
+    // if (strategie.betAmount <= config.MIN_BET_AMOUNT_BNB || strategie.betAmount > config.MAX_BET_AMOUNT_BNB) {
     //   logger.error(`[LISTEN] Bet amount error, value is ${strategie.betAmount} Stopping strategie for now`)
     //   await stopStrategie({ epoch })
     //   return
