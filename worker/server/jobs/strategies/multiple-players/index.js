@@ -569,10 +569,10 @@ const run = async () => {
   const processRound = async (transaction, player) => {
     const epoch = await preditionContract.currentEpoch()
 
-    logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
+    // logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
 
     if (transaction.from.toLowerCase() !== player.id) {
-      logger.error(`[LISTEN] Incoming transaction.`)
+      // logger.error(`[LISTEN] Incoming transaction.`)
       return
     }
 
@@ -582,7 +582,7 @@ const run = async () => {
         ? process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_CAKE
         : process.env.PANCAKE_PREDICTION_CONTRACT_ADDRESS_BNB)
     ) {
-      logger.info(`[LISTEN] Not a transaction with pancake contract.`)
+      // logger.info(`[LISTEN] Not a transaction with pancake contract.`)
       return
     }
 
@@ -590,12 +590,12 @@ const run = async () => {
       !transaction.input.includes(isCake ? config.BET_BULL_METHOD_ID_CAKE : config.BET_BULL_METHOD_ID_BNB) &&
       !transaction.input.includes(isCake ? config.BET_BEAR_METHOD_ID_CAKE : config.BET_BEAR_METHOD_ID_BNB)
     ) {
-      logger.info(`[LISTEN] Not a bull or bear transaction.`)
+      // logger.info(`[LISTEN] Not a bull or bear transaction.`)
       return
     }
 
     if (transaction.input.includes(isCake ? config.CLAIM_METHOD_ID_CAKE : config.CLAIM_METHOD_ID_BNB)) {
-      logger.info(`[LISTEN] Claim transaction.`)
+      // logger.info(`[LISTEN] Claim transaction.`)
       return
     }
 
