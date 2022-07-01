@@ -473,8 +473,8 @@ const run = async () => {
     if (
       // isSecureMode &&
       // totalPlayers > 1 &&
-      // (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
-      (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
+      (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
+      // (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
       betBullCount.length >= betBearCount.length &&
       +isBullBetterAdjusted > +isBearBetterAdjusted
       //  &&
@@ -506,8 +506,8 @@ const run = async () => {
     } else if (
       // isSecureMode &&
       // totalPlayers > 1 &&
-      // (totalPlayers > 1 || Math.round(+isBearBetter) >= 57) &&
-      (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
+      (totalPlayers > 1 || Math.round(+isBearBetter) >= 57) &&
+      // (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
       betBearCount.length >= betBullCount.length &&
       +isBearBetterAdjusted > +isBullBetterAdjusted
       // &&
