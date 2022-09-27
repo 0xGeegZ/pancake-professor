@@ -101,7 +101,7 @@
     "numeral": "2.0.6",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
-    "passport-magic-login": "1.0.7",
+    "passport-magic-login": "1.0.11",
     "passport-web3": "^0.1.7",
     "postmark": "^2.7.3",
     "prop-types": "^15.7.2",
