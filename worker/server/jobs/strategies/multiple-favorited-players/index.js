@@ -278,8 +278,6 @@ const run = async () => {
       const minutesLeft = secondsLeftUntilNextEpoch < 60 ? 0 : Math.trunc(secondsLeftUntilNextEpoch / 60)
       const secondsLeft = secondsLeftUntilNextEpoch - minutesLeft * 60
 
-      console.log('🚀  ~ secondsLeft', secondsLeft)
-
       if (secondsLeft >= 7 && isAlreadyRetried === false) {
         strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
 
@@ -308,28 +306,21 @@ const run = async () => {
     const timer = secondsLeftUntilNextEpoch - 8.5
     // const timer = secondsLeftUntilNextEpoch - 9
 
-    // logger.info(
-    //   `ZZZZZZZZZZZ --> [ROUND-${user.id}:${
-    //     strategie.roundsCount
-    //   }:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`
-    // )
-
-    // if (timer > 0 && !strategie.plays.length) {
     if (timer > 0) {
-      console.log('WAITING WAITING WAITING WAITING')
+      // logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING until -8.5 seconds`)
       await sleep(timer * 1000)
     }
 
     if (!strategie.plays.length) {
-      console.log('WAITING 1 MORE SECOND')
+      logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING 1 MORE SECOND`)
       await sleep(1000)
     }
 
-    // TODO v0.0.4 : If timer < -0.5s (execution time), wait 500ms
-    // if (timer >= -0.5) {
-    //   console.log('WAITING WAITING WAITING WAITING')
-    //   await sleep(500)
-    // }
+    if (!strategie.plays.length) {
+      logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING ANOTHER 0.5 SECOND MORE`)
+      await sleep(500)
+      // await sleep(1000)
+    }
 
     let betBullCount = strategie.plays.filter((p) => p.betBull)
     let betBearCount = strategie.plays.filter((p) => !p.betBull)
@@ -390,8 +381,8 @@ const run = async () => {
 
     // const bullDivider = ratingUp <= 1.7 ? 3 : ratingUp >= 2 ? 5 : 4
     // const bearDivider = ratingDown <= 1.7 ? 3 : ratingDown >= 2 ? 5 : 4
-    const bullDivider = ratingUp <= 1.7 ? 2.5 : ratingUp >= 2 ? 4.5 : 3.5
-    const bearDivider = ratingDown <= 1.7 ? 2.5 : ratingDown >= 2 ? 4.5 : 3.5
+    const bullDivider = ratingUp <= 1.4 ? 3 : ratingUp <= 1.7 ? 2.5 : ratingUp >= 2 ? 5 : 3.5
+    const bearDivider = ratingDown <= 1.4 ? 3 : ratingDown <= 1.7 ? 2.5 : ratingDown >= 2 ? 5 : 3.5
 
     // TODO v0.0.4 check if currentAmount is better than startedAmount
     const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
@@ -487,7 +478,7 @@ const run = async () => {
       blocknative.unsubscribe(p.id)
     })
     if (emitter) emitter.off('txPool')
-    logger.info(`[INFO] Listenning adresses stopped`)
+    // logger.info(`[INFO] Listenning adresses stopped`)
   }
 
   const processRound = async (transaction, player) => {
@@ -536,13 +527,13 @@ const run = async () => {
 
       // logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
 
-      // logger.info(
-      //   `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
-      //     2
-      //   )}% winRate and ${player.totalBets} bets.`
-      // )
+      logger.info(
+        `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
+          2
+        )}% winRate and ${player.totalBets} bets.`
+      )
 
-      // logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash} `)
+      logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash} `)
     } else if (strategie.isTimeEnded) {
       strategie.isTimeEnded = false
       // TODO v0.0.4 calculate bet amount dynamically and reactivate
@@ -602,7 +593,7 @@ const run = async () => {
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] timer ended, playing round`)
 
-    await playRound({ epoch })
+    return await playRound({ epoch })
   }
 
   const roundEndListenner = async (epoch) => {
@@ -730,7 +721,7 @@ const run = async () => {
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+currentEpoch}] timer ended, playing round`)
 
-    await playRound({ epoch: currentEpoch })
+    return await playRound({ epoch: currentEpoch })
   }
 
   const listen = async () => {

@@ -43,7 +43,7 @@
   "dependencies": {
     "@prisma/client": "^2.23.0",
     "@supercharge/promise-pool": "^2.2.0",
-    "bnc-sdk": "4.4.1",
+    "bnc-sdk": "4.6.0",
     "cross-env": "^7.0.3",
     "crypto": "^1.0.1",
     "ethers": "^5.6.8",
