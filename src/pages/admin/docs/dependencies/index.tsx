@@ -1,9 +1,8 @@
 import { Container, Divider, Grid, List, ListItem, ListItemText, Typography } from '@mui/material'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
 import PageHeader from 'src/client/components/PageHeaderDocs'
 import DocsLayout from 'src/client/layouts/DocsLayout'
-
-import type { ReactElement } from 'react'
 
 function Dependencies() {
   return (

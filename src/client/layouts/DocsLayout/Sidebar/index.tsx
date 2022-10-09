@@ -1,7 +1,7 @@
-import { Box, Typography, List, ListItem, ListItemText } from '@mui/material'
+import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
+import { Box, List, ListItem, ListItemText,Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { Scrollbars } from 'react-custom-scrollbars-2'
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
 import Link from 'src/client/components/Link'
 
 const SidebarWrapper = styled(Box)(

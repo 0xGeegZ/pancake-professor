@@ -1,7 +1,7 @@
 import { Box, Card, Grid, Typography } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 import { styled } from '@mui/material/styles'
 import numeral from 'numeral'
+import { useTranslation } from 'react-i18next'
 import Text from 'src/client/components/Text'
 
 const DotInfo = styled('span')(

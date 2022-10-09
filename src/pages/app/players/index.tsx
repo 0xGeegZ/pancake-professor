@@ -1,14 +1,13 @@
 import { Box, Grid } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
+// import passport from 'src/server//passport'
+import type { ReactElement } from 'react'
 import Footer from 'src/client/components/Footer'
 import PageHeader from 'src/client/components/Management/Users/PageHeader'
 import PlayersList from 'src/client/components/Management/Users/PlayersList'
 import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
 import MainLayout from 'src/client/layouts/MainLayout'
-
-// import passport from 'src/server//passport'
-import type { ReactElement } from 'react'
 
 const MainContentWrapper = styled(Box)(
   ({ theme }) => `

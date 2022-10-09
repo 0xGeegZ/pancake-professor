@@ -1,20 +1,18 @@
-import type { ReactElement } from 'react'
-import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
-
+import { Grid } from '@mui/material'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
+import AppointmentsAlt from 'src/client/components/Dashboards/Healthcare/hospital/AppointmentsAlt'
+import Departments from 'src/client/components/Dashboards/Healthcare/hospital/Departments'
+import Doctors from 'src/client/components/Dashboards/Healthcare/hospital/Doctors'
+import Notifications from 'src/client/components/Dashboards/Healthcare/hospital/Notifications'
+import OverallStatus from 'src/client/components/Dashboards/Healthcare/hospital/OverallStatus'
 import PageHeader from 'src/client/components/Dashboards/Healthcare/hospital/PageHeaderHospital'
+import RecentPatients from 'src/client/components/Dashboards/Healthcare/hospital/RecentPatients'
+import Surgeries from 'src/client/components/Dashboards/Healthcare/hospital/Surgeries'
+import UpcomingConsults from 'src/client/components/Dashboards/Healthcare/hospital/UpcomingConsults'
 import Footer from 'src/client/components/Footer'
 import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
-
-import { Grid } from '@mui/material'
-import OverallStatus from 'src/client/components/Dashboards/Healthcare/hospital/OverallStatus'
-import AppointmentsAlt from 'src/client/components/Dashboards/Healthcare/hospital/AppointmentsAlt'
-import Surgeries from 'src/client/components/Dashboards/Healthcare/hospital/Surgeries'
-import Doctors from 'src/client/components/Dashboards/Healthcare/hospital/Doctors'
-import Departments from 'src/client/components/Dashboards/Healthcare/hospital/Departments'
-import RecentPatients from 'src/client/components/Dashboards/Healthcare/hospital/RecentPatients'
-import Notifications from 'src/client/components/Dashboards/Healthcare/hospital/Notifications'
-import UpcomingConsults from 'src/client/components/Dashboards/Healthcare/hospital/UpcomingConsults'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 
 function DashboardHospitalView() {
   return (

@@ -1,6 +1,6 @@
 import { alpha, Box, Card, Typography, useTheme } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 import UsageChart from './UsageChart'
 

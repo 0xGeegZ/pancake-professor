@@ -1,4 +1,4 @@
-import { Button, Box, Typography } from '@mui/material'
+import { Box, Button, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
 function TopAgentsHeading() {

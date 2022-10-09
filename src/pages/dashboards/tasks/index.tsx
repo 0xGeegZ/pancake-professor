@@ -1,5 +1,6 @@
 import { Grid, Tab, Tabs } from '@mui/material'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
 import { ChangeEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Checklist from 'src/client/components/Dashboards/Tasks/Checklist'
@@ -14,8 +15,6 @@ import Footer from 'src/client/components/Footer'
 import Link from 'src/client/components/Link'
 import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
 import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
-
-import type { ReactElement } from 'react'
 
 function DashboardTasks() {
   const { t }: { t: any } = useTranslation()

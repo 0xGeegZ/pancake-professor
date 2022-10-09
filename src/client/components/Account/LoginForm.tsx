@@ -1,21 +1,19 @@
-import * as Yup from 'yup'
-import type { FC } from 'react'
-import { Formik } from 'formik'
-
 import {
   Box,
   Button,
-  FormHelperText,
-  TextField,
   Checkbox,
-  Typography,
-  Link,
-  FormControlLabel,
   CircularProgress,
+  FormControlLabel,
+  FormHelperText,
+  Link,
+  TextField,
+  Typography,
 } from '@mui/material'
-
-import useRefMounted from 'src/client/hooks/useRefMounted'
+import { Formik } from 'formik'
+import type { FC } from 'react'
 import { useTranslation } from 'react-i18next'
+import useRefMounted from 'src/client/hooks/useRefMounted'
+import * as Yup from 'yup'
 
 const LoginForm: FC = () => {
   const isMountedRef = useRefMounted()

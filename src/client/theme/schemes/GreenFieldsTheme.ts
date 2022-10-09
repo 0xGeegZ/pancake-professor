@@ -1,5 +1,6 @@
-import { alpha, createTheme, darken } from '@mui/material'
 import '@mui/lab/themeAugmentation'
+
+import { alpha, createTheme, darken } from '@mui/material'
 
 // import i18n from 'src/client/i18n/i18n';
 

@@ -1,10 +1,11 @@
-import { FC, ReactNode } from 'react'
-import PropTypes from 'prop-types'
-import Footer from 'src/client/components/Footer'
-import { styled } from '@mui/material/styles'
 import { Box, Card, Container } from '@mui/material'
-import Sidebar from './Sidebar'
+import { styled } from '@mui/material/styles'
+import PropTypes from 'prop-types'
+import { FC, ReactNode } from 'react'
+import Footer from 'src/client/components/Footer'
+
 import Header from './Header'
+import Sidebar from './Sidebar'
 
 interface DocsLayoutProps {
   children?: ReactNode

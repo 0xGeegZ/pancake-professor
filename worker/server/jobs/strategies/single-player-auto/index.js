@@ -601,7 +601,7 @@ const run = async () => {
 
   //   if (!bestPlayers.length) return logger.error('No player finded')
 
-  //   for (let i = 0; i < bestPlayers.length; i++) {
+  //   for (let i = 0; i < bestPlayers.length; i+=1) {
   //     delete bestPlayers[i].bets
   //   }
   //   console.log('🚀 ~ file: index.js ~ line 773 ~ bestPlayers=bestPlayers.sort ~ bestPlayers', bestPlayers)
@@ -650,7 +650,7 @@ const run = async () => {
 
     if (!bestPlayers.length) throw new Error('No player finded')
 
-    for (let i = 0; i < bestPlayers.length; i++) {
+    for (let i = 0; i < bestPlayers.length; i += 1) {
       delete bestPlayers[i].bets
     }
 

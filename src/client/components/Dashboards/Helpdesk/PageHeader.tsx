@@ -1,9 +1,8 @@
-import { Grid, Typography, Avatar } from '@mui/material'
-
-import { useTranslation } from 'react-i18next'
+import LiveHelpTwoToneIcon from '@mui/icons-material/LiveHelpTwoTone'
+import { Avatar,Grid, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { format } from 'date-fns'
-import LiveHelpTwoToneIcon from '@mui/icons-material/LiveHelpTwoTone'
+import { useTranslation } from 'react-i18next'
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `

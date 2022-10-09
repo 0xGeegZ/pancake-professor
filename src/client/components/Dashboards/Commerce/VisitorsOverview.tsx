@@ -1,6 +1,7 @@
-import { Card, Box, Grid, Typography } from '@mui/material'
-import { useTranslation } from 'react-i18next'
+import { Box, Card, Grid, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+
 import VisitorsOverviewChart from './VisitorsOverviewChart'
 
 const VisitorsOverviewChartWrapper = styled(VisitorsOverviewChart)(

@@ -19,14 +19,13 @@ import { styled } from '@mui/material/styles'
 import { TransitionProps } from '@mui/material/transitions'
 import { Formik } from 'formik'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
 import { forwardRef, Ref, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Logo from 'src/client/components/LogoSign'
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import BaseLayout from 'src/client/layouts/BaseLayout'
 import * as Yup from 'yup'
-
-import type { ReactElement } from 'react'
 
 /* eslint-disable */
 const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (

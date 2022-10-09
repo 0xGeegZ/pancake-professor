@@ -1,7 +1,6 @@
 import { Card, CardContent, Typography, useTheme } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-
 import dynamic from 'next/dynamic'
+import { useTranslation } from 'react-i18next'
 
 const GaugeChart = dynamic(() => import('react-gauge-chart'), { ssr: false })
 

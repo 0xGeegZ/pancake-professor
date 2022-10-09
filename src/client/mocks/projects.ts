@@ -1,6 +1,6 @@
-import { mock } from 'src/client/utils/axios'
-import type { Project } from 'src/client/models/project'
 import { subDays } from 'date-fns'
+import type { Project } from 'src/client/models/project'
+import { mock } from 'src/client/utils/axios'
 
 const projects: Project[] = [
   {

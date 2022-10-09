@@ -13,15 +13,15 @@ let WIN_RATE = WIN_RATE_INITIAL
 const groupByTimePeriod = (obj, timestamp, period) => {
   const objPeriod = {}
   const oneDay = 24 * 60 * 60 * 1000 // hours * minutes * seconds * milliseconds
-  for (let i = 0; i < obj?.length; i++) {
+  for (let i = 0; i < obj?.length; i += 1) {
     let d = new Date(obj[i][timestamp] * 1000)
-    if (period == 'day') {
+    if (period === 'day') {
       d = Math.floor(d.getTime() / oneDay)
-    } else if (period == 'week') {
+    } else if (period === 'week') {
       d = Math.floor(d.getTime() / (oneDay * 7))
-    } else if (period == 'month') {
+    } else if (period === 'month') {
       d = (d.getFullYear() - 1970) * 12 + d.getMonth()
-    } else if (period == 'year') {
+    } else if (period === 'year') {
       d = d.getFullYear()
     } else {
       console.log('groupByTimePeriod: You have to set a period! day | week | month | year')

@@ -26,10 +26,9 @@ import { formatDistance } from 'date-fns'
 import PropTypes from 'prop-types'
 import { FC, forwardRef, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import { useSelector } from 'src/client/store/redux'
-
-import type { Task as TaskType, List, Member } from 'src/client/models/projects_board'
+import type { List, Member,Task as TaskType } from 'src/client/models/projects_board'
 import type { RootState } from 'src/client/store/redux'
+import { useSelector } from 'src/client/store/redux'
 
 interface TaskProps {
   taskId: string

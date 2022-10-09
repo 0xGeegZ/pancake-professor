@@ -20,14 +20,13 @@ import {
 import { styled } from '@mui/material/styles'
 import { Field, Form, Formik, FormikConfig, FormikValues } from 'formik'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
 import { Children, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import { CheckboxWithLabel, TextField } from 'src/client/components/formik-material-ui'
 import Logo from 'src/client/components/LogoSign'
 import BaseLayout from 'src/client/layouts/BaseLayout'
 import * as Yup from 'yup'
-
-import type { ReactElement } from 'react'
 
 const MainContent = styled(Box)(
   () => `
@@ -178,7 +177,7 @@ function RegisterWizard() {
                     .max(255)
                     .required(t('The email field is required')),
                   first_name: Yup.string().max(255).required(t('The first name field is required')),
-                  last_name: Yup.string().max(255).required(t('The first name field is required')),
+                  last_name: Yup.string().max(255).required(t('The last name field is required')),
                   password: Yup.string().min(8).max(255).required(t('The password field is required')),
                   password_confirm: Yup.string()
                     .oneOf([Yup.ref('password')], t('Both password fields need to be the same'))

@@ -1,7 +1,7 @@
-import { Card, Box, Typography, Avatar, LinearProgress } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
 import LocalDrinkTwoToneIcon from '@mui/icons-material/LocalDrinkTwoTone'
+import { Avatar, Box, Card, LinearProgress,Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const AvatarWrapperWarning = styled(Avatar)(
   ({ theme }) => `

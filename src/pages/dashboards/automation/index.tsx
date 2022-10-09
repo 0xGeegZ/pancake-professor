@@ -1,21 +1,19 @@
-import type { ReactElement } from 'react'
-import BottomNavigationLayout from 'src/client/layouts/BottomNavigationLayout'
-
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
+import { Box, Grid, IconButton,Tooltip, Typography } from '@mui/material'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
 import { useTranslation } from 'react-i18next'
-
-import { Grid, Tooltip, Box, Typography, IconButton } from '@mui/material'
-import Weather from 'src/client/components/Dashboards/Automation/Weather'
 import Devices from 'src/client/components/Dashboards/Automation/Devices'
-import Scenes from 'src/client/components/Dashboards/Automation/Scenes'
-import VideoCameras from 'src/client/components/Dashboards/Automation/VideoCameras'
+import EnergySaving from 'src/client/components/Dashboards/Automation/EnergySaving'
 import PowerConsumption from 'src/client/components/Dashboards/Automation/PowerConsumption'
-import Users from 'src/client/components/Dashboards/Automation/Users'
+import Scenes from 'src/client/components/Dashboards/Automation/Scenes'
 import Search from 'src/client/components/Dashboards/Automation/Search'
 import Sensors from 'src/client/components/Dashboards/Automation/Sensors'
 import Thermostat from 'src/client/components/Dashboards/Automation/Thermostat'
-import EnergySaving from 'src/client/components/Dashboards/Automation/EnergySaving'
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
+import Users from 'src/client/components/Dashboards/Automation/Users'
+import VideoCameras from 'src/client/components/Dashboards/Automation/VideoCameras'
+import Weather from 'src/client/components/Dashboards/Automation/Weather'
+import BottomNavigationLayout from 'src/client/layouts/BottomNavigationLayout'
 
 function DashboardAutomation() {
   const { t }: { t: any } = useTranslation()

@@ -1,10 +1,11 @@
-import { useState, ChangeEvent } from 'react'
-import { Card, Box, CardContent, CardHeader, Typography, Divider, Avatar, Switch } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import Label from 'src/client/components/Label'
 import AttachMoneyTwoToneIcon from '@mui/icons-material/AttachMoneyTwoTone'
 import MonetizationOnTwoToneIcon from '@mui/icons-material/MonetizationOnTwoTone'
+import { Avatar, Box, Card, CardContent, CardHeader, Divider, Switch,Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { ChangeEvent,useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Label from 'src/client/components/Label'
+
 import InvestmentsChart from './InvestmentsChart'
 
 const AvatarLabelInfo = styled(Avatar)(

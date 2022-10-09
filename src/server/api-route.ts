@@ -1,8 +1,8 @@
 /* eslint-disable import/no-cycle */
 import cookieSession from 'cookie-session'
 import { NextApiRequest, NextApiResponse } from 'next'
-import nc from 'next-connect'
 import { error } from 'next/dist/build/output/log'
+import nc from 'next-connect'
 
 import passport from './passport'
 import { trustProxyMiddleware } from './trust-proxy-middleware'

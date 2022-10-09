@@ -1,6 +1,7 @@
 import { Box, Grid } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
 import { useEffect, useState } from 'react'
 import Footer from 'src/client/components/Footer'
 import AdminUsersList from 'src/client/components/Management/Users/AdminUsersList'
@@ -9,8 +10,6 @@ import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
 import { useGetUsersQuery } from 'src/client/graphql/getUsers.generated'
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
-
-import type { ReactElement } from 'react'
 
 const MainContentWrapper = styled(Box)(
   ({ theme }) => `
@@ -24,9 +23,7 @@ function ManagementUsers() {
   const [{ data, fetching }] = useGetUsersQuery()
 
   useEffect(() => {
-    if (isMountedRef.current && data) {
-      if (data?.getUsers) setUsers(data.getUsers)
-    }
+    if (isMountedRef.current && data && data?.getUsers) setUsers(data.getUsers)
   }, [data, isMountedRef])
 
   return (

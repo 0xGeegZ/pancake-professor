@@ -1,21 +1,20 @@
 import {
-  CardHeader,
-  Divider,
-  CardContent,
   Avatar,
   Box,
-  CardActions,
   Button,
-  Typography,
-  ListItemAvatar,
   Card,
-  ListItemText,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Divider,
   List,
   ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Typography,
 } from '@mui/material'
-
-import { useTranslation } from 'react-i18next'
 import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 import Label from 'src/client/components/Label'
 
 const AvatarLight = styled(Avatar)(

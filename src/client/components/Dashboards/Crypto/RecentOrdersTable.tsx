@@ -1,36 +1,35 @@
-import { FC, ChangeEvent, useState } from 'react'
-import { format } from 'date-fns'
-import numeral from 'numeral'
-import PropTypes from 'prop-types'
+import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
+import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
 import {
-  Tooltip,
-  Divider,
   Box,
-  FormControl,
-  InputLabel,
   Card,
+  CardHeader,
   Checkbox,
+  Divider,
+  FormControl,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
   TableHead,
   TablePagination,
   TableRow,
-  TableContainer,
-  Select,
-  MenuItem,
+  Tooltip,
   Typography,
   useTheme,
-  CardHeader,
 } from '@mui/material'
-
+import { format } from 'date-fns'
+import numeral from 'numeral'
+import PropTypes from 'prop-types'
+import { ChangeEvent, FC, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import BulkActions from 'src/client/components/BulkActions'
 import Label from 'src/client/components/Label'
 import { CryptoOrder, CryptoOrderStatus } from 'src/client/models/crypto_order'
-import { useTranslation } from 'react-i18next'
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
-import BulkActions from 'src/client/components/BulkActions'
 
 interface RecentOrdersTableProps {
   className?: string

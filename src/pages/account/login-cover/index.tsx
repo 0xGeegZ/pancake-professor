@@ -1,13 +1,12 @@
 import { Box, Card, Container, Hidden, Link, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars-2'
 import { useTranslation } from 'react-i18next'
 import LoginForm from 'src/client/components/Account/LoginForm'
 import Logo from 'src/client/components/Logo'
 import BaseLayout from 'src/client/layouts/BaseLayout'
-
-import type { ReactElement } from 'react'
 
 const Content = styled(Box)(
   () => `

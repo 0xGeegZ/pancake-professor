@@ -1,7 +1,7 @@
-import { Card, Box, Grid, Typography, Avatar, Badge, Tooltip, useTheme, LinearProgress } from '@mui/material'
-import { useTranslation } from 'react-i18next'
+import { Avatar, Badge, Box, Card, Grid, LinearProgress,Tooltip, Typography, useTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
-import { formatDistance, subDays, subMinutes, subHours } from 'date-fns'
+import { formatDistance, subDays, subHours,subMinutes } from 'date-fns'
+import { useTranslation } from 'react-i18next'
 import Text from 'src/client/components/Text'
 
 const DotLegend = styled('span')(

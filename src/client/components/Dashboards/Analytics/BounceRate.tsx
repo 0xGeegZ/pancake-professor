@@ -1,8 +1,7 @@
-import { Link, CardContent, Avatar, Box, Typography, ListItemAvatar, Card, ListItemText, ListItem } from '@mui/material'
-
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
 import SportsBasketballTwoToneIcon from '@mui/icons-material/SportsBasketballTwoTone'
+import { Avatar, Box, Card, CardContent, Link, ListItem,ListItemAvatar, ListItemText, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `

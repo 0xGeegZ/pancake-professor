@@ -1,7 +1,7 @@
 import { mock } from 'src/client/utils/axios'
-import wait from 'src/client/utils/wait'
-import { sign, decode, JWT_SECRET, JWT_EXPIRES_IN } from 'src/client/utils/jwt'
+import { decode, JWT_EXPIRES_IN,JWT_SECRET, sign } from 'src/client/utils/jwt'
 import randomId from 'src/client/utils/randomId'
+import wait from 'src/client/utils/wait'
 
 const users = [
   {

@@ -1,27 +1,27 @@
-import { FC, useState, useRef, ChangeEvent } from 'react'
-import type { Job } from 'src/client/models/job'
-import PropTypes from 'prop-types'
-import {
-  Grid,
-  Chip,
-  Typography,
-  Card,
-  Box,
-  IconButton,
-  Avatar,
-  Button,
-  MenuItem,
-  Menu,
-  Divider,
-  lighten,
-  TablePagination,
-} from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
-import { styled } from '@mui/material/styles'
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
-import ThumbUpTwoToneIcon from '@mui/icons-material/ThumbUpTwoTone'
+import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
 import ThumbDownTwoToneIcon from '@mui/icons-material/ThumbDownTwoTone'
+import ThumbUpTwoToneIcon from '@mui/icons-material/ThumbUpTwoTone'
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  Chip,
+  Divider,
+  Grid,
+  IconButton,
+  lighten,
+  Menu,
+  MenuItem,
+  TablePagination,
+  Typography,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import PropTypes from 'prop-types'
+import { ChangeEvent,FC, useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import type { Job } from 'src/client/models/job'
 
 interface ResultsProps {
   jobs: Job[]

@@ -1,7 +1,7 @@
-import { Card, Box, Typography, Avatar, LinearProgress } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
 import FastfoodTwoToneIcon from '@mui/icons-material/FastfoodTwoTone'
+import { Avatar, Box, Card, LinearProgress,Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const AvatarWrapperError = styled(Avatar)(
   ({ theme }) => `

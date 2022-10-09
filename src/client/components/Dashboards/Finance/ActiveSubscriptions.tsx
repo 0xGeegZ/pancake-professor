@@ -1,4 +1,4 @@
-import { Button, Card, Box, Grid, Typography } from '@mui/material'
+import { Box, Button, Card, Grid, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 import Label from 'src/client/components/Label'
 

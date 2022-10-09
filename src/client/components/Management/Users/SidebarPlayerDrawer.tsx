@@ -1,19 +1,12 @@
+import AssessmentIcon from '@mui/icons-material/Assessment'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import StickyNote2Icon from '@mui/icons-material/StickyNote2'
 import TrendingDown from '@mui/icons-material/TrendingDown'
 import TrendingUp from '@mui/icons-material/TrendingUp'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import StickyNote2Icon from '@mui/icons-material/StickyNote2'
-import AssessmentIcon from '@mui/icons-material/Assessment'
-import PlayerStats from 'src/pages/app/player/[playerId]'
-
 import {
-  Accordion,
-  AccordionDetails,
   AccordionSummary,
   Avatar,
-  AvatarGroup,
   Box,
-  Button,
   CardContent,
   CircularProgress,
   Divider,
@@ -31,30 +24,16 @@ import {
   Tooltip,
   Typography,
 } from '@mui/material'
-import ArchiveTwoToneIcon from '@mui/icons-material/ArchiveTwoTone'
-import ContentCopyTwoToneIcon from '@mui/icons-material/ContentCopyTwoTone'
-import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
-import DownloadTwoToneIcon from '@mui/icons-material/DownloadTwoTone'
-import DriveFileRenameOutlineTwoToneIcon from '@mui/icons-material/DriveFileRenameOutlineTwoTone'
-import EditTwoToneIcon from '@mui/icons-material/EditTwoTone'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
-import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone'
-import GradeTwoToneIcon from '@mui/icons-material/GradeTwoTone'
-import OpenInNewTwoToneIcon from '@mui/icons-material/OpenInNewTwoTone'
-import PictureAsPdfTwoToneIcon from '@mui/icons-material/PictureAsPdfTwoTone'
-import ReportTwoToneIcon from '@mui/icons-material/ReportTwoTone'
-import ShareTwoToneIcon from '@mui/icons-material/ShareTwoTone'
-import TextSnippetTwoToneIcon from '@mui/icons-material/TextSnippetTwoTone'
 import { styled } from '@mui/material/styles'
 import { formatDistance } from 'date-fns'
 import PropTypes from 'prop-types'
 import { ChangeEvent, SyntheticEvent, useCallback, useEffect, useState } from 'react'
-
 import { useTranslation } from 'react-i18next'
 import Link from 'src/client/components/Link'
 import Text from 'src/client/components/Text'
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import loadPlayer from 'src/client/thegraph/loadPlayer'
+import PlayerStats from 'src/pages/app/player/[playerId]'
 
 // const AvatarPrimary = styled(Avatar)(
 //   ({ theme }) => `

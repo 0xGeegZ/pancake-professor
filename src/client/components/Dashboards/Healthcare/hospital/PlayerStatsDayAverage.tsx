@@ -1,23 +1,23 @@
 import 'moment-timezone'
 
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 import {
   Box,
+  Button,
   Card,
   CardContent,
   CardHeader,
-  Menu,
-  MenuItem,
-  Button,
   CircularProgress,
   Divider,
   Grid,
+  Menu,
+  MenuItem,
   Typography,
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import moment from 'moment'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 
 import PlayerStatsDayAverageChart from './PlayerStatsDayAverageChart'
 

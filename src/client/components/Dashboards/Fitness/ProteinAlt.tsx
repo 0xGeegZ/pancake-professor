@@ -1,7 +1,7 @@
-import { Card, CardContent, CardHeader, LinearProgress, Typography, Avatar } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
 import FastfoodTwoToneIcon from '@mui/icons-material/FastfoodTwoTone'
+import { Avatar,Card, CardContent, CardHeader, LinearProgress, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 function ProteinAlt() {
   const { t }: { t: any } = useTranslation()

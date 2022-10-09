@@ -1,7 +1,8 @@
-import { Card, CardHeader, Typography, Avatar } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
 import FavoriteTwoToneIcon from '@mui/icons-material/FavoriteTwoTone'
+import { Avatar,Card, CardHeader, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+
 import ParametersChart from './ParametersChart'
 
 function HeartRate() {

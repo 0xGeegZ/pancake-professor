@@ -1,17 +1,17 @@
 import {
+  Avatar,
+  Box,
   Button,
   Card,
+  CardActions,
   CardContent,
   CardHeader,
-  CardActions,
-  Typography,
-  Box,
-  Avatar,
   Grid,
   Hidden,
+  Typography,
 } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 import { styled, useTheme } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const CardActionsWrapper = styled(CardActions)(
   ({ theme }) => `

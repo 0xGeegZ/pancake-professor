@@ -1,4 +1,4 @@
-import { booleanArg, extendType, floatArg, intArg, nonNull, objectType, list, stringArg } from 'nexus'
+import { extendType, list, nonNull, objectType, stringArg } from 'nexus'
 
 import prisma from '../../db/prisma'
 

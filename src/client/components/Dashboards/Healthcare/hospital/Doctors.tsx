@@ -1,24 +1,24 @@
+import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
+import GradeTwoToneIcon from '@mui/icons-material/GradeTwoTone'
 import {
+  Avatar,
+  Badge,
+  Box,
   Button,
   Card,
-  Box,
-  Badge,
-  CardHeader,
   CardActions,
-  Tooltip,
-  Typography,
-  Avatar,
+  CardHeader,
+  Divider,
   List,
   ListItem,
   ListItemAvatar,
   ListItemText,
-  Divider,
+  Tooltip,
+  Typography,
   useTheme,
 } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
 import { styled } from '@mui/material/styles'
-import GradeTwoToneIcon from '@mui/icons-material/GradeTwoTone'
+import { useTranslation } from 'react-i18next'
 
 const DotLegend = styled('span')(
   ({ theme }) => `

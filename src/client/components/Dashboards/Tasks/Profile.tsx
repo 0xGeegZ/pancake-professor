@@ -1,22 +1,22 @@
+import EmailTwoToneIcon from '@mui/icons-material/EmailTwoTone'
+import MessageTwoToneIcon from '@mui/icons-material/MessageTwoTone'
+import PhoneTwoToneIcon from '@mui/icons-material/PhoneTwoTone'
 import {
+  Avatar,
+  Box,
   Card,
   CardContent,
-  Typography,
-  Tooltip,
-  Rating,
-  IconButton,
   Divider,
-  Box,
+  IconButton,
+  List,
   ListItem,
   ListItemText,
-  List,
-  Avatar,
+  Rating,
+  Tooltip,
+  Typography,
   useTheme,
 } from '@mui/material'
 import { useTranslation } from 'react-i18next'
-import PhoneTwoToneIcon from '@mui/icons-material/PhoneTwoTone'
-import EmailTwoToneIcon from '@mui/icons-material/EmailTwoTone'
-import MessageTwoToneIcon from '@mui/icons-material/MessageTwoTone'
 
 function Profile() {
   const { t }: { t: any } = useTranslation()

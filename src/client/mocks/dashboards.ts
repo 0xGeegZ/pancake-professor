@@ -1,5 +1,5 @@
-import { mock } from 'src/client/utils/axios'
 import { Product } from 'src/client/models/dashboards'
+import { mock } from 'src/client/utils/axios'
 
 mock.onGet('/api/products/top').reply(() => {
   const products: Product[] = [

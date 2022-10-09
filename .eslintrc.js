@@ -4,14 +4,24 @@ module.exports = {
   parser: '@typescript-eslint/parser',
   parserOptions: {
     ecmaVersion: 2021,
-    // project: './tsconfig.json',
-    // tsconfigRootDir: __dirname,
+    project: './tsconfig.json',
+    tsconfigRootDir: __dirname,
     ecmaFeatures: {
       // Allows for the parsing of TSX ???
       tsx: true,
     },
   },
-  plugins: ['@typescript-eslint', 'import', 'react-hooks', 'prefer-arrow', 'import', 'jsx-a11y', 'prettier'],
+  plugins: [
+    '@typescript-eslint',
+    'import',
+    'react-hooks',
+    'prefer-arrow',
+    'unused-imports',
+    'simple-import-sort',
+    'sonarjs',
+    'jsx-a11y',
+    'prettier',
+  ],
   env: {
     browser: true,
     es6: true,
@@ -20,8 +30,8 @@ module.exports = {
   },
   extends: [
     'airbnb',
+    'airbnb-typescript',
     'eslint:recommended',
-    'plugin:import/typescript',
     'plugin:react/recommended',
     'plugin:@typescript-eslint/eslint-recommended',
     'plugin:@typescript-eslint/recommended',
@@ -31,11 +41,11 @@ module.exports = {
     'plugin:prettier/recommended',
     'plugin:import/errors',
     'plugin:import/warnings',
-    'plugin:import/typescript',
     'next',
     'next/core-web-vitals',
     'plugin:@next/next/recommended',
     'prettier',
+    'plugin:sonarjs/recommended',
   ],
   rules: {
     // allow debugger during development
@@ -86,6 +96,7 @@ module.exports = {
     'react/no-unescaped-entities': 0,
     /* Disallow imports from src/server/ in src/pages/ except for src/pages/api */
     /* (see the "overrides" section for the exception) */
+    /* Import rules */
     'import/no-restricted-paths': [
       'error',
       {
@@ -97,6 +108,20 @@ module.exports = {
         ],
       },
     ],
+    'simple-import-sort/imports': 'error',
+    'simple-import-sort/exports': 'error',
+    'import/first': 'error',
+    'import/newline-after-import': 'error',
+    'import/no-duplicates': 'error',
+    'unused-imports/no-unused-imports': 'error',
+    'unused-imports/no-unused-vars': [
+      'warn',
+      { vars: 'all', varsIgnorePattern: '^_', args: 'after-used', argsIgnorePattern: '^_' },
+    ],
+    /* SonarJs rules */
+    'sonarjs/no-duplicate-string': 1,
+    'sonarjs/cognitive-complexity': 1,
+    'sonarjs/no-nested-template-literals': 0,
   },
   settings: {
     react: {

@@ -1,23 +1,19 @@
-import type { ReactElement } from 'react'
-
-import BoxedSidebarLayout from 'src/client/layouts/BoxedSidebarLayout'
-
+import { Grid } from '@mui/material'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
+import ActiveServers from 'src/client/components/Dashboards/Monitoring/ActiveServers'
+import CpuUsage from 'src/client/components/Dashboards/Monitoring/CpuUsage'
+import DatacenterClusters from 'src/client/components/Dashboards/Monitoring/DatacenterClusters'
+import DataCenters from 'src/client/components/Dashboards/Monitoring/DataCenters'
+import HealthStatus from 'src/client/components/Dashboards/Monitoring/HealthStatus'
+import MemoryUsage from 'src/client/components/Dashboards/Monitoring/MemoryUsage'
 import PageHeader from 'src/client/components/Dashboards/Monitoring/PageHeader'
+import ResourcesAlarm from 'src/client/components/Dashboards/Monitoring/ResourcesAlarm'
+import StorageUsage from 'src/client/components/Dashboards/Monitoring/StorageUsage'
+import VirtualServers from 'src/client/components/Dashboards/Monitoring/VirtualServers'
 import Footer from 'src/client/components/Footer'
 import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
-
-import { Grid } from '@mui/material'
-
-import ResourcesAlarm from 'src/client/components/Dashboards/Monitoring/ResourcesAlarm'
-import HealthStatus from 'src/client/components/Dashboards/Monitoring/HealthStatus'
-import DatacenterClusters from 'src/client/components/Dashboards/Monitoring/DatacenterClusters'
-import VirtualServers from 'src/client/components/Dashboards/Monitoring/VirtualServers'
-import ActiveServers from 'src/client/components/Dashboards/Monitoring/ActiveServers'
-import DataCenters from 'src/client/components/Dashboards/Monitoring/DataCenters'
-import StorageUsage from 'src/client/components/Dashboards/Monitoring/StorageUsage'
-import MemoryUsage from 'src/client/components/Dashboards/Monitoring/MemoryUsage'
-import CpuUsage from 'src/client/components/Dashboards/Monitoring/CpuUsage'
+import BoxedSidebarLayout from 'src/client/layouts/BoxedSidebarLayout'
 
 function DashboardMonitoring() {
   return (

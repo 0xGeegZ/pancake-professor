@@ -1,11 +1,10 @@
 import { Container, Grid, Typography } from '@mui/material'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
 import { Prism } from 'react-syntax-highlighter'
 import a11yDark from 'react-syntax-highlighter/dist/cjs/styles/prism/a11y-dark'
 import PageHeader from 'src/client/components/PageHeaderDocs'
 import DocsLayout from 'src/client/layouts/DocsLayout'
-
-import type { ReactElement } from 'react'
 
 function Routing() {
   const routingExample = `├── account

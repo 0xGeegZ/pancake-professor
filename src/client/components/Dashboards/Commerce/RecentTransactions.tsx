@@ -1,21 +1,21 @@
+import CheckIcon from '@mui/icons-material/Check'
+import CloseIcon from '@mui/icons-material/Close'
+import TrendingDown from '@mui/icons-material/TrendingDown'
 import {
+  Avatar,
   Button,
   Card,
-  List,
   CardContent,
   CardHeader,
-  ListItemAvatar,
-  Avatar,
-  Link,
   Divider,
+  Link,
+  List,
   ListItem,
+  ListItemAvatar,
   ListItemText,
 } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 import { styled } from '@mui/material/styles'
-import TrendingDown from '@mui/icons-material/TrendingDown'
-import CloseIcon from '@mui/icons-material/Close'
-import CheckIcon from '@mui/icons-material/Check'
+import { useTranslation } from 'react-i18next'
 import Text from 'src/client/components/Text'
 
 function RecentTransactions() {

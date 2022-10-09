@@ -1,27 +1,27 @@
-import {
-  Button,
-  Card,
-  Box,
-  CardContent,
-  CardHeader,
-  CardActions,
-  Grid,
-  Typography,
-  Avatar,
-  IconButton,
-  Tooltip,
-  AvatarGroup,
-  LinearProgress,
-  Badge,
-} from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled, useTheme } from '@mui/material/styles'
-import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
-import Link from 'src/client/components/Link'
-import Text from 'src/client/components/Text'
 import CalendarTodayTwoToneIcon from '@mui/icons-material/CalendarTodayTwoTone'
 import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
 import StarTwoToneIcon from '@mui/icons-material/StarTwoTone'
+import {
+  Avatar,
+  AvatarGroup,
+  Badge,
+  Box,
+  Button,
+  Card,
+  CardActions,
+  CardContent,
+  CardHeader,
+  Grid,
+  IconButton,
+  LinearProgress,
+  Tooltip,
+  Typography,
+} from '@mui/material'
+import { styled, useTheme } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
+import Text from 'src/client/components/Text'
 
 const AvatarWrapperSuccess = styled(Avatar)(
   ({ theme }) => `

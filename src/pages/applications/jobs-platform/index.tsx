@@ -1,25 +1,20 @@
-import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
-
-import { useState, useEffect, useCallback } from 'react'
-import type { ReactElement } from 'react'
-
-import Head from 'next/head'
-import PageHeader from 'src/client/components/Applications/JobsPlatform/PageHeader'
-import Footer from 'src/client/components/Footer'
-import Sidebar from 'src/client/components/Applications/JobsPlatform/Sidebar'
-
-import { TextField, Divider, Card, Hidden, Box, Autocomplete, Grid, IconButton, Drawer } from '@mui/material'
-import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
-import { styled, useTheme } from '@mui/material/styles'
-import { useTranslation } from 'react-i18next'
-import axios from 'src/client/utils/axios'
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
-
-import useRefMounted from 'src/client/hooks/useRefMounted'
-import type { Job } from 'src/client/models/job'
-
-import Results from 'src/client/components/Applications/JobsPlatform/Results'
+import SearchTwoToneIcon from '@mui/icons-material/SearchTwoTone'
+import { Autocomplete, Box, Card, Divider, Drawer,Grid, Hidden, IconButton, TextField } from '@mui/material'
+import { styled, useTheme } from '@mui/material/styles'
+import Head from 'next/head'
+import type { ReactElement } from 'react'
+import { useCallback,useEffect, useState } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars-2'
+import { useTranslation } from 'react-i18next'
+import PageHeader from 'src/client/components/Applications/JobsPlatform/PageHeader'
+import Results from 'src/client/components/Applications/JobsPlatform/Results'
+import Sidebar from 'src/client/components/Applications/JobsPlatform/Sidebar'
+import Footer from 'src/client/components/Footer'
+import useRefMounted from 'src/client/hooks/useRefMounted'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
+import type { Job } from 'src/client/models/job'
+import axios from 'src/client/utils/axios'
 
 const sidebarContent = (
   <Scrollbars universal autoHide>

@@ -1,6 +1,5 @@
-import { mock } from 'src/client/utils/axios'
-
 import type { User } from 'src/client/models/user'
+import { mock } from 'src/client/utils/axios'
 
 const users: User[] = []
 

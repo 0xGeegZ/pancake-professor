@@ -1,6 +1,6 @@
 // Global setup for Jest, will run once per test file
-import { reseedDatabase } from './seed'
 import prisma from '../server/db/prisma'
+import { reseedDatabase } from './seed'
 
 beforeEach(async () => {
   await reseedDatabase()

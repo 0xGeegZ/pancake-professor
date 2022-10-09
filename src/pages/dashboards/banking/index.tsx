@@ -1,20 +1,18 @@
-import type { ReactElement } from 'react'
-import AccentSidebarLayout from 'src/client/layouts/AccentSidebarLayout'
-
-import Head from 'next/head'
-import PageHeader from 'src/client/components/Dashboards/Banking/PageHeader'
 import { Grid } from '@mui/material'
+import Head from 'next/head'
+import type { ReactElement } from 'react'
+import Bills from 'src/client/components/Dashboards/Banking/Bills'
+import Investments from 'src/client/components/Dashboards/Banking/Investments'
+import MainAccount from 'src/client/components/Dashboards/Banking/MainAccount'
+import PageHeader from 'src/client/components/Dashboards/Banking/PageHeader'
+import Payments from 'src/client/components/Dashboards/Banking/Payments'
+import Requests from 'src/client/components/Dashboards/Banking/Requests'
+import SecondaryAccounts from 'src/client/components/Dashboards/Banking/SecondaryAccounts'
+import TransactionsStatistics from 'src/client/components/Dashboards/Banking/TransactionsStatistics'
+import Transfers from 'src/client/components/Dashboards/Banking/Transfers'
 import Footer from 'src/client/components/Footer'
 import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
-
-import Transfers from 'src/client/components/Dashboards/Banking/Transfers'
-import Bills from 'src/client/components/Dashboards/Banking/Bills'
-import Requests from 'src/client/components/Dashboards/Banking/Requests'
-import Payments from 'src/client/components/Dashboards/Banking/Payments'
-import MainAccount from 'src/client/components/Dashboards/Banking/MainAccount'
-import SecondaryAccounts from 'src/client/components/Dashboards/Banking/SecondaryAccounts'
-import Investments from 'src/client/components/Dashboards/Banking/Investments'
-import TransactionsStatistics from 'src/client/components/Dashboards/Banking/TransactionsStatistics'
+import AccentSidebarLayout from 'src/client/layouts/AccentSidebarLayout'
 
 function DashboardBanking() {
   return (

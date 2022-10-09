@@ -1,7 +1,7 @@
-import { FC } from 'react'
-import PropTypes from 'prop-types'
-import { Line } from 'react-chartjs-2'
 import { alpha, useTheme } from '@mui/material'
+import PropTypes from 'prop-types'
+import { FC } from 'react'
+import { Line } from 'react-chartjs-2'
 
 interface WatchListColumn1ChartProps {
   data: any[]

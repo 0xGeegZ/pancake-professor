@@ -2,6 +2,7 @@ import { Box, Grid, Tab, Tabs } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import type { ReactElement } from 'react'
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Footer from 'src/client/components/Footer'
@@ -17,10 +18,8 @@ import RecentActivity from 'src/client/components/Management/Users/Single/Recent
 import SecurityTab from 'src/client/components/Management/Users/Single/SecurityTab'
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import BoxedSidebarLayout from 'src/client/layouts/BoxedSidebarLayout'
-import axios from 'src/client/utils/axios'
-
-import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
+import axios from 'src/client/utils/axios'
 
 const TabsWrapper = styled(Tabs)(
   () => `

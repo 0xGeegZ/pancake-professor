@@ -1,8 +1,9 @@
-import { useRef, useState } from 'react'
-import { Button, Card, Box, CardContent, CardHeader, Menu, MenuItem, Typography, Divider, Grid } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import { Box, Button, Card, CardContent, CardHeader, Divider, Menu, MenuItem, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import PlayerHistoryStatisticsChart from './PlayerHistoryStatisticsChart'
 
 const PlayerHistoryStatisticsChartWrapper = styled(PlayerHistoryStatisticsChart)(
@@ -33,7 +34,7 @@ const DotPrimary = styled('span')(
 `
 )
 
-function PlayerHistoryStatistics({ player, updateDataForPeriod, multiplier }) {
+function PlayerHistoryStatistics({ player, updateDataForPeriod /* , multiplier */ }) {
   const { t }: { t: any } = useTranslation()
 
   const data = {

@@ -1,9 +1,8 @@
-import { Typography, Box, Avatar, Card, CardContent } from '@mui/material'
-
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
 import AccountBalanceWalletTwoTone from '@mui/icons-material/AccountBalanceWalletTwoTone'
 import ArrowUpwardTwoTone from '@mui/icons-material/ArrowUpwardTwoTone'
+import { Avatar, Box, Card, CardContent,Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `

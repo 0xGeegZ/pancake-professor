@@ -1,5 +1,6 @@
 import { Box, Grid } from '@mui/material'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
 import TeamFolders from 'src/client/components/Applications/FileManager/TeamFolders'
 import Devices from 'src/client/components/Dashboards/Automation/Devices'
 import PowerConsumption from 'src/client/components/Dashboards/Automation/PowerConsumption'
@@ -34,8 +35,6 @@ import DatacenterClusters from 'src/client/components/Dashboards/Monitoring/Data
 import VirtualServers from 'src/client/components/Dashboards/Monitoring/VirtualServers'
 import Footer from 'src/client/components/Footer'
 import MainLayout from 'src/client/layouts/MainLayout'
-
-import type { ReactElement } from 'react'
 
 function DashboardCrypto() {
   return (

@@ -1,7 +1,8 @@
-import { Button, Card, CardContent, Box, Typography } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
 import BugReportTwoToneIcon from '@mui/icons-material/BugReportTwoTone'
+import { Box, Button, Card, CardContent, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+
 import HelpdeskChart from './HelpdeskChart'
 
 const IconWrapper = styled('div')(

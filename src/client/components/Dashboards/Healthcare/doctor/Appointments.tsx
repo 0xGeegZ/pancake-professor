@@ -1,26 +1,26 @@
 import {
+  Avatar,
+  AvatarGroup,
+  Box,
   Button,
   Card,
-  Box,
   CardHeader,
-  Typography,
-  Avatar,
-  Divider,
-  Tooltip,
-  AvatarGroup,
-  ListSubheader,
-  ListItem,
   Chip,
+  Divider,
   List,
+  ListItem,
+  ListSubheader,
+  Tooltip,
+  Typography,
   useTheme,
 } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { format, subDays } from 'date-fns'
+import { useSnackbar } from 'notistack'
 import { useTranslation } from 'react-i18next'
 import Label from 'src/client/components/Label'
-import Text from 'src/client/components/Text'
-import { styled } from '@mui/material/styles'
 import Link from 'src/client/components/Link'
-import { useSnackbar } from 'notistack'
-import { format, subDays } from 'date-fns'
+import Text from 'src/client/components/Text'
 
 const DotLegend = styled('span')(
   ({ theme }) => `

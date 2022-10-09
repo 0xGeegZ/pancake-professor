@@ -22,6 +22,7 @@ import {
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
 import Image from 'next/image'
+import type { ReactElement } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars-2'
 import { useTranslation } from 'react-i18next'
 import RegisterForm from 'src/client/components/Account/RegisterForm'
@@ -29,8 +30,6 @@ import Logo from 'src/client/components/LogoSign'
 import BaseLayout from 'src/client/layouts/BaseLayout'
 import SwiperCore, { Navigation, Pagination } from 'swiper'
 import { Swiper, SwiperSlide } from 'swiper/react'
-
-import type { ReactElement } from 'react'
 
 SwiperCore.use([Navigation, Pagination])
 

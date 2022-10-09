@@ -1,34 +1,32 @@
-import { MouseEvent, useState } from 'react'
-import {
-  Card,
-  Box,
-  Typography,
-  ToggleButton,
-  ToggleButtonGroup,
-  Grid,
-  AvatarGroup,
-  IconButton,
-  Table,
-  Avatar,
-  TableHead,
-  TableRow,
-  TableCell,
-  TableBody,
-  Tooltip,
-  TableContainer,
-} from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled, useTheme } from '@mui/material/styles'
-import { formatDistance, subDays, subMonths } from 'date-fns'
-
-import Link from 'src/client/components/Link'
-
-import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone'
-import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
-import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
-import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone'
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone'
 import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone'
+import LaunchTwoToneIcon from '@mui/icons-material/LaunchTwoTone'
+import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
+import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
+import ViewWeekTwoToneIcon from '@mui/icons-material/ViewWeekTwoTone'
+import {
+  Avatar,
+  AvatarGroup,
+  Box,
+  Card,
+  Grid,
+  IconButton,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  TableRow,
+  ToggleButton,
+  ToggleButtonGroup,
+  Tooltip,
+  Typography,
+} from '@mui/material'
+import { styled, useTheme } from '@mui/material/styles'
+import { formatDistance, subDays, subMonths } from 'date-fns'
+import { MouseEvent, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
 import Text from 'src/client/components/Text'
 
 const AvatarPrimary = styled(Avatar)(

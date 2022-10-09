@@ -41,7 +41,8 @@ const run = async () => {
 
   if (!user) throw new Error('No user given')
 
-  const isCake = true
+  // const isCake = true
+  const isCake = false
   // const { user, strategie } = payload
   let preditionContract
   let cakeContract
@@ -191,7 +192,11 @@ const run = async () => {
 
     if (isCake && betAmount > config.MAX_BET_AMOUNT_CAKE) betAmount = config.MAX_BET_AMOUNT_CAKE
 
+    // TODO 09//22
+    // const amount = parseFloat(isCake ? config.MIN_BET_AMOUNT_CAKE : config.MIN_BET_AMOUNT_BNB).toFixed(4)
     const amount = parseFloat(betAmount).toFixed(4)
+    // END TODO 09//22
+
     console.log('🚀 ~ file: index.js ~ line 195 ~ betRound ~ amount', amount)
     const betBullOrBear = betBull ? 'betBull' : 'betBear'
 
@@ -266,12 +271,23 @@ const run = async () => {
     console.log('++++++++++++++++++++++++++++++++++++++++++++++++++++++++++')
     logger.info(`********** [ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING **********`)
 
+    // TODO 09/22 TEST
+    // console.log('strategie.isWaitForTimeEnded', strategie.isWaitForTimeEnded)
+    // if (!strategie.isWaitForTimeEnded) return
+
+    // console.log('strategie.isTryToPlay', strategie.isTryToPlay)
+    // if (strategie.isTryToPlay) return
+    // TODO END 09/22 TEST
+
     // TODO 0.0.4 : Calculate KELLY CRITERION bet value
     // https://dqydj.com/kelly-criterion-bet-calculator/
     const { bullAmount, bearAmount, startTimestamp } = await preditionContract.rounds(epoch)
 
-    if (strategie.plays.length === 0)
-      return logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NO USERS PLAYED`)
+    if (strategie.plays.length === 0) {
+      logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NO USERS PLAYED`)
+      return
+    }
+    strategie.isTryToPlay = true
 
     // players.map(p => {
     //   blocknative.unsubscribe(p.id)
@@ -473,8 +489,8 @@ const run = async () => {
     if (
       // isSecureMode &&
       // totalPlayers > 1 &&
-      (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
-      // (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
+      // (totalPlayers > 1 || Math.round(+isBullBetter) >= 57) &&
+      (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
       betBullCount.length >= betBearCount.length &&
       +isBullBetterAdjusted > +isBearBetterAdjusted
       //  &&
@@ -506,8 +522,8 @@ const run = async () => {
     } else if (
       // isSecureMode &&
       // totalPlayers > 1 &&
-      (totalPlayers > 1 || Math.round(+isBearBetter) >= 57) &&
-      // (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
+      // (totalPlayers > 1 || Math.round(+isBearBetter) >= 57) &&
+      (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
       betBearCount.length >= betBullCount.length &&
       +isBearBetterAdjusted > +isBullBetterAdjusted
       // &&
@@ -623,6 +639,10 @@ const run = async () => {
       )
 
       logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash}`)
+
+      // TODO 09/22 TEST
+      // if (strategie.isWaitForTimeEnded) await playRound({ epoch })
+      // TODO END 09/22 TEST
     } else {
       logger.error(`[LISTEN] Already played transaction hash brow.`)
       return
@@ -643,10 +663,10 @@ const run = async () => {
     strategie.plays = []
     strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
 
-    // players = await loadPlayers({ epoch, orderBy: 'default' })
+    // players = await loadPlayers({ epoch, orderBy: 'default',  isCake })
     players = await loadPlayers({ epoch, orderBy: 'mostActiveLastHour', isCake })
     const allPlayers = players?.length
-    players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
+    // players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
     // const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
 
     logger.info(
@@ -691,19 +711,22 @@ const run = async () => {
     )
 
     // TODO v0.0.4
-    // const timer = secondsLeftUntilNextEpoch - 8.5
-    const timer = secondsLeftUntilNextEpoch - 9
+    const timer = secondsLeftUntilNextEpoch - 8.5
+    // const timer = secondsLeftUntilNextEpoch - 9
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
 
     await sleep(timer * 1000)
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] timer ended, playing round`)
 
+    strategie.isWaitForTimeEnded = true
     await playRound({ epoch })
   }
 
   const roundEndListenner = async (epoch) => {
     strategie.roundsCount += 1
+    strategie.isTryToPlay = false
+    strategie.isWaitForTimeEnded = false
 
     // const currentAmountBigInt = await provider.getBalance(signer.address)
     // strategie.currentAmount = +ethers.utils.formatEther(currentAmountBigInt)
@@ -1079,7 +1102,8 @@ const run = async () => {
     )
 
     // TODO v0.0.4 one block = 3000
-    const timer = secondsLeftUntilNextEpoch - 9
+    const timer = secondsLeftUntilNextEpoch - 8.5
+    // const timer = secondsLeftUntilNextEpoch - 9
 
     if (timer <= 15) {
       players.map((p) => {
@@ -1099,6 +1123,7 @@ const run = async () => {
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+currentEpoch}] timer ended, playing round`)
 
+    strategie.isWaitForTimeEnded = true
     await playRound({ epoch: currentEpoch })
   }
 
@@ -1165,12 +1190,15 @@ const run = async () => {
 
     // strategie.betAmount = +(strategie.currentAmount / 15).toFixed(4)
     strategie.betAmount = isCake ? config.MIN_BET_AMOUNT_CAKE : config.MIN_BET_AMOUNT_BNB
+    // strategie.betAmount = isCake ? config.BET_AMOUNT_CAKE : config.BET_AMOUNT_BNB
     // strategie.betAmount = config.BET_AMOUNT_BNB
     // strategie.betAmount = +(strategie.currentAmount / 13).toFixed(4)
     strategie.plays = []
     strategie.playedHashs = []
     strategie.playedEpochs = []
     strategie.errorCount = 0
+    strategie.isTryToPlay = false
+    strategie.isWaitForTimeEnded = false
 
     strategie.gasPrice = ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString()
     // strategie.gasLimit = ethers.utils.hexlify(250000)
@@ -1231,10 +1259,10 @@ const run = async () => {
       }.`
     )
 
-    // players = await loadPlayers({ epoch, orderBy: 'default' })
+    // players = await loadPlayers({ epoch, orderBy: 'default', isCake })
     players = await loadPlayers({ epoch, orderBy: 'mostActiveLastHour', isCake })
     const allPlayers = players?.length
-    players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
+    // players = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
     // const filtereds = players.filter((player) => Math.round(+player.winRateRecents) >= 50)
 
     logger.info(`[LISTEN] Starting for user ${strategie.generated} copy ${players?.length}/${allPlayers} players`)

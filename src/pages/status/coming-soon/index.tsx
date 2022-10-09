@@ -18,12 +18,11 @@ import {
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
 import Image from 'next/image'
+import type { ReactElement } from 'react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Logo from 'src/client/components/LogoSign'
 import BaseLayout from 'src/client/layouts/BaseLayout'
-
-import type { ReactElement } from 'react'
 
 const MainContent = styled(Box)(
   () => `

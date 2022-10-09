@@ -1,5 +1,6 @@
 import { Grid } from '@mui/material'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
 import ActiveSubscriptions from 'src/client/components/Dashboards/Finance/ActiveSubscriptions'
 import AllExpenses from 'src/client/components/Dashboards/Finance/AllExpenses'
 import Budget from 'src/client/components/Dashboards/Finance/Budget'
@@ -10,8 +11,6 @@ import UpgradeAccount from 'src/client/components/Dashboards/Finance/UpgradeAcco
 import Footer from 'src/client/components/Footer'
 import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
 import BoxedSidebarLayout from 'src/client/layouts/BoxedSidebarLayout'
-
-import type { ReactElement } from 'react'
 
 function DashboardFinance() {
   return (

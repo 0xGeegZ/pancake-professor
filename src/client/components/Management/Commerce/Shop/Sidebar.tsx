@@ -1,23 +1,22 @@
-import { useState } from 'react'
-
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import {
-  Typography,
   Accordion,
-  AccordionSummary,
   AccordionDetails,
-  Divider,
+  AccordionSummary,
   Card,
-  ListItemIcon,
-  Slider,
   Checkbox,
-  Rating,
+  Divider,
   List,
   ListItemButton,
+  ListItemIcon,
   ListItemText,
+  Rating,
+  Slider,
+  Typography,
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 
 const AccordionSummaryWrapper = styled(AccordionSummary)(
   () => `

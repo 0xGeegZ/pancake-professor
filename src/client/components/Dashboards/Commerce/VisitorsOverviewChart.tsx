@@ -1,7 +1,7 @@
-import { FC } from 'react'
-import PropTypes from 'prop-types'
-import { Bar } from 'react-chartjs-2'
 import { useTheme } from '@mui/material'
+import PropTypes from 'prop-types'
+import { FC } from 'react'
+import { Bar } from 'react-chartjs-2'
 
 interface VisitorsOverviewChartProps {
   className?: string

@@ -2,19 +2,18 @@ import 'moment-timezone'
 
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import CloseIcon from '@mui/icons-material/Close'
-import InfoIcon from '@mui/icons-material/Info'
-import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
-import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
-import FavoriteIcon from '@mui/icons-material/Favorite'
-import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import LoadingButton from '@mui/lab/LoadingButton'
-// import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
-import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt'
-
-import ThumbDownIcon from '@mui/icons-material/ThumbDown'
 // import ThumbUpIcon from '@mui/icons-material/ThumbUp'
 // import StickyNote2Icon from '@mui/icons-material/StickyNote2'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
+import FavoriteIcon from '@mui/icons-material/Favorite'
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
+import InfoIcon from '@mui/icons-material/Info'
+import MoreVertTwoToneIcon from '@mui/icons-material/MoreVertTwoTone'
+import ThumbDownIcon from '@mui/icons-material/ThumbDown'
+// import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt'
+import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
+import LoadingButton from '@mui/lab/LoadingButton'
 import {
   Alert,
   Avatar,
@@ -60,11 +59,11 @@ import { useTranslation } from 'react-i18next'
 import SidebarPlayerDrawer from 'src/client/components/Management/Users/SidebarPlayerDrawer'
 import { useDeleteStrategieMutation } from 'src/client/graphql/deleteStrategie.generated'
 import { useToogleActivateStrategieMutation } from 'src/client/graphql/toogleActivateStrategie.generated'
+import { useToogleFavoritePlayerMutation } from 'src/client/graphql/toogleFavoritePlayer.generated'
 import { useUpdateStrategieMutation } from 'src/client/graphql/updateStrategie.generated'
 import { useGlobalStore } from 'src/client/store/swr'
 import loadPlayer from 'src/client/thegraph/loadPlayer'
 import * as Yup from 'yup'
-import { useToogleFavoritePlayerMutation } from 'src/client/graphql/toogleFavoritePlayer.generated'
 
 const CardAddAction = styled(Card)(
   ({ theme }) => `
@@ -654,10 +653,9 @@ function ActiveStrategies({ user: puser, fetching }) {
   }
 
   const getStrategieValue = (strategie) => {
-    const currentAmountPercent = parseInt(`${(strategie?.currentAmount * 100) / strategie?.minWinAmount}`, 10)
     // const currentAmount = parseFloat(`${strategie?.currentAmount}`).toFixed(4)
 
-    return currentAmountPercent
+    return parseInt(`${(strategie?.currentAmount * 100) / strategie?.minWinAmount}`, 10)
     // currentAmountPercent =
     //   strategie?.currentAmount <= strategie?.startedAmount - strategie?.maxLooseAmount
     //     ? currentAmountPercent - 30
@@ -678,7 +676,13 @@ function ActiveStrategies({ user: puser, fetching }) {
     const currentAmountPercent = parseInt(`${(strategie?.currentAmount * 100) / strategie?.minWinAmount}`, 10)
     const currentAmount = parseFloat(`${strategie?.currentAmount}`).toFixed(4)
 
-    const marks = [
+    // const key = 'value'
+
+    // const filtereds = [...new Map(marks.map((item) => [item[key], item])).values()]
+
+    // if (filtereds.length !== marks.length) console.log('🚀 ~ filtereds', filtereds, 'marks', marks)
+
+    return [
       // {
       //   value: 0,
       //   label: '0 BNB',
@@ -711,14 +715,6 @@ function ActiveStrategies({ user: puser, fetching }) {
         label: `${parseFloat(`${strategie.minWinAmount}`).toFixed(4)}`,
       },
     ]
-
-    // const key = 'value'
-
-    // const filtereds = [...new Map(marks.map((item) => [item[key], item])).values()]
-
-    // if (filtereds.length !== marks.length) console.log('🚀 ~ filtereds', filtereds, 'marks', marks)
-
-    return marks
   }
 
   const [, toogleFavoritePlayer] = useToogleFavoritePlayerMutation()

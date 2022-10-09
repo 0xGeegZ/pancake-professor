@@ -1,5 +1,5 @@
-import { FC } from 'react'
 import PropTypes from 'prop-types'
+import { FC } from 'react'
 import { Doughnut } from 'react-chartjs-2'
 
 interface ChartProps {

@@ -1,5 +1,6 @@
 import { Grid } from '@mui/material'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 import Footer from 'src/client/components/Footer'
 import PageHeader from 'src/client/components/Management/Users/PageHeader'
@@ -7,10 +8,8 @@ import Results from 'src/client/components/Management/Users/UsersList'
 import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
-import axios from 'src/client/utils/axios'
-
-import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
+import axios from 'src/client/utils/axios'
 
 function ManagementUsers() {
   const isMountedRef = useRefMounted()

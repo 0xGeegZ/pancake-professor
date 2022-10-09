@@ -1,9 +1,9 @@
-import { Card, Box, Typography, Grid, Pagination, Avatar, CardActionArea } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone'
-import Text from 'src/client/components/Text'
 import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
+import FolderOpenTwoToneIcon from '@mui/icons-material/FolderOpenTwoTone'
+import { Avatar, Box, Card, CardActionArea,Grid, Pagination, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import Text from 'src/client/components/Text'
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `

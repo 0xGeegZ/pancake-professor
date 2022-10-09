@@ -1,20 +1,20 @@
 import {
+  Avatar,
+  Box,
   Button,
   Card,
   CardHeader,
+  Divider,
   List,
   ListItem,
-  Typography,
-  Divider,
-  Avatar,
-  Box,
-  ListItemText,
   ListItemAvatar,
+  ListItemText,
+  Typography,
   useTheme,
 } from '@mui/material'
+import { formatDistance, subDays, subHours, subMinutes } from 'date-fns'
 import { useTranslation } from 'react-i18next'
 import Label from 'src/client/components/Label'
-import { formatDistance, subDays, subHours, subMinutes } from 'date-fns'
 
 function Notifications() {
   const { t }: { t: any } = useTranslation()

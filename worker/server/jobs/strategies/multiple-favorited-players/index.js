@@ -305,14 +305,25 @@ const run = async () => {
 
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
-    // const timer = secondsLeftUntilNextEpoch - 8.5
-    const timer = secondsLeftUntilNextEpoch - 9
+    const timer = secondsLeftUntilNextEpoch - 8.5
+    // const timer = secondsLeftUntilNextEpoch - 9
 
-    logger.info(
-      `ZZZZZZZZZZZ --> [ROUND-${user.id}:${
-        strategie.roundsCount
-      }:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`
-    )
+    // logger.info(
+    //   `ZZZZZZZZZZZ --> [ROUND-${user.id}:${
+    //     strategie.roundsCount
+    //   }:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`
+    // )
+
+    // if (timer > 0 && !strategie.plays.length) {
+    if (timer > 0) {
+      console.log('WAITING WAITING WAITING WAITING')
+      await sleep(timer * 1000)
+    }
+
+    if (!strategie.plays.length) {
+      console.log('WAITING 1 MORE SECOND')
+      await sleep(1000)
+    }
 
     // TODO v0.0.4 : If timer < -0.5s (execution time), wait 500ms
     // if (timer >= -0.5) {
@@ -377,8 +388,10 @@ const run = async () => {
     const kellyCriterionBull = (ratingUp * averageWinRateBull - (1 - averageWinRateBull)) / ratingUp
     const kellyCriterionBear = (ratingDown * averageWinRateBear - (1 - averageWinRateBear)) / ratingDown
 
-    const bullDivider = ratingUp <= 1.7 ? 3 : ratingUp >= 2 ? 5 : 4
-    const bearDivider = ratingDown <= 1.7 ? 3 : ratingDown >= 2 ? 5 : 4
+    // const bullDivider = ratingUp <= 1.7 ? 3 : ratingUp >= 2 ? 5 : 4
+    // const bearDivider = ratingDown <= 1.7 ? 3 : ratingDown >= 2 ? 5 : 4
+    const bullDivider = ratingUp <= 1.7 ? 2.5 : ratingUp >= 2 ? 4.5 : 3.5
+    const bearDivider = ratingDown <= 1.7 ? 2.5 : ratingDown >= 2 ? 4.5 : 3.5
 
     // TODO v0.0.4 check if currentAmount is better than startedAmount
     const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
@@ -386,39 +399,39 @@ const run = async () => {
     // const kellyBetAmountBull = parseFloat(strategie.currentAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
     // const kellyBetAmountBear = parseFloat(strategie.currentAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
 
-    console.log(
-      '🚀 ~ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ~ kellyCriterionBull (%)',
-      kellyCriterionBull,
-      'ratingUp',
-      ratingUp,
-      'averageWinRateBull',
-      averageWinRateBull,
-      'kellyBetAmountBull',
-      kellyBetAmountBull,
-      'strategie.betAmount',
-      strategie.betAmount,
-      'bullDivider',
-      bullDivider
-    )
-    console.log(
-      '🚀 ~ BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB ~ kellyCriterionBear (%)',
-      kellyCriterionBear,
-      'ratingDown',
-      ratingDown,
-      'averageWinRateBear',
-      averageWinRateBear,
-      'kellyBetAmountBear',
-      kellyBetAmountBear,
-      'strategie.betAmount',
-      strategie.betAmount,
-      'bearDivider',
-      bearDivider
-    )
+    // console.log(
+    //   '🚀 ~ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ~ kellyCriterionBull (%)',
+    //   kellyCriterionBull,
+    //   'ratingUp',
+    //   ratingUp,
+    //   'averageWinRateBull',
+    //   averageWinRateBull,
+    //   'kellyBetAmountBull',
+    //   kellyBetAmountBull,
+    //   'strategie.betAmount',
+    //   strategie.betAmount,
+    //   'bullDivider',
+    //   bullDivider
+    // )
+    // console.log(
+    //   '🚀 ~ BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB ~ kellyCriterionBear (%)',
+    //   kellyCriterionBear,
+    //   'ratingDown',
+    //   ratingDown,
+    //   'averageWinRateBear',
+    //   averageWinRateBear,
+    //   'kellyBetAmountBear',
+    //   kellyBetAmountBear,
+    //   'strategie.betAmount',
+    //   strategie.betAmount,
+    //   'bearDivider',
+    //   bearDivider
+    // )
     // console.log('🚀 ~ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC ~ player.winRate', strategie)
 
     strategie.isTimeEnded = true
 
-    logger.info('//////////////////////////      ////////////////////////////////')
+    // logger.info('//////////////////////////      ////////////////////////////////')
 
     if (strategie.plays.length === 0)
       return logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NO USERS PLAYED`)
@@ -508,7 +521,7 @@ const run = async () => {
     }
 
     if (strategie.playedHashs.includes(transaction.hash)) {
-      logger.info(`[LISTEN] Already played transaction hash.`)
+      // logger.info(`[LISTEN] Already played transaction hash.`)
       return
     }
 
@@ -521,15 +534,15 @@ const run = async () => {
       strategie.plays.push({ betBull, player })
       strategie.playedHashs.push(transaction.hash)
 
-      logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
+      // logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
 
-      logger.info(
-        `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
-          2
-        )}% winRate and ${player.totalBets} bets.`
-      )
+      // logger.info(
+      //   `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
+      //     2
+      //   )}% winRate and ${player.totalBets} bets.`
+      // )
 
-      logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash}`)
+      // logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash} `)
     } else if (strategie.isTimeEnded) {
       strategie.isTimeEnded = false
       // TODO v0.0.4 calculate bet amount dynamically and reactivate
@@ -579,7 +592,8 @@ const run = async () => {
       `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 9
+    const timer = secondsLeftUntilNextEpoch - 10
+    // const timer = secondsLeftUntilNextEpoch - 9
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
 
@@ -694,7 +708,8 @@ const run = async () => {
       }:${+currentEpoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 9
+    const timer = secondsLeftUntilNextEpoch - 10
+    // const timer = secondsLeftUntilNextEpoch - 9
 
     if (timer <= 20) {
       players.map((p) => {

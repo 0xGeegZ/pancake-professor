@@ -1,27 +1,22 @@
 import 'moment-timezone'
 
-import gini from 'gini'
-
-import moment from 'moment'
-import { Box, Grid, Zoom, Card, CardContent, CardHeader, IconButton, Tooltip, Typography } from '@mui/material'
 import HelpOutlineTwoToneIcon from '@mui/icons-material/HelpOutlineTwoTone'
-import Label from 'src/client/components/Label'
-
+import { Box, Card, CardContent, CardHeader, Grid, IconButton, Tooltip, Typography, Zoom } from '@mui/material'
+import gini from 'gini'
+import moment from 'moment'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-// import Leaderboard from 'src/client/components/Dashboards/Learning/Leaderboard'
-import PlayerHistoryStatistics from 'src/client/components/Dashboards/Banking/PlayerHistoryStatistics'
-
 import { useSnackbar } from 'notistack'
+import type { ReactElement } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
+// import Leaderboard from 'src/client/components/Dashboards/Learning/Leaderboard'
+import PlayerHistoryStatistics from 'src/client/components/Dashboards/Banking/PlayerHistoryStatistics'
 import Footer from 'src/client/components/Footer'
-import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
+import Label from 'src/client/components/Label'
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
 import loadPlayer from 'src/client/thegraph/loadPlayer'
-import type { ReactElement } from 'react'
-import type { User } from 'src/client/models/user'
 
 const PlayerStats = ({ playerId: pplayerId }) => {
   const { enqueueSnackbar } = useSnackbar()
@@ -42,16 +37,17 @@ const PlayerStats = ({ playerId: pplayerId }) => {
   // ------------------------------------------------------------
   const groupByTimePeriod = (obj, timestamp, period) => {
     const objPeriod = {}
-    const oneDay = 24 * 60 * 60 * 1000 // hours * minutes * seconds * milliseconds
-    for (let i = 0; i < obj?.length; i++) {
+    // hours * minutes * seconds * milliseconds
+    const oneDay = 24 * 60 * 60 * 1000
+    for (let i = 0; i < obj?.length; i += 1) {
       let d = new Date(obj[i][timestamp] * 1000)
-      if (period == 'day') {
+      if (period === 'day') {
         d = Math.floor(d.getTime() / oneDay)
-      } else if (period == 'week') {
+      } else if (period === 'week') {
         d = Math.floor(d.getTime() / (oneDay * 7))
-      } else if (period == 'month') {
+      } else if (period === 'month') {
         d = (d.getFullYear() - 1970) * 12 + d.getMonth()
-      } else if (period == 'year') {
+      } else if (period === 'year') {
         d = d.getFullYear()
       } else {
         console.log('groupByTimePeriod: You have to set a period! day | week | month | year')
@@ -103,7 +99,7 @@ const PlayerStats = ({ playerId: pplayerId }) => {
           return element[1]
         })
         .map((element) => {
-          const reduced = element.reduce((accu, bet) => {
+          const reduced = element.reduce((accu) => {
             return +accu + 1
           }, 0)
           return parseFloat(reduced).toFixed(4)
@@ -114,12 +110,11 @@ const PlayerStats = ({ playerId: pplayerId }) => {
           return element[1]
         })
         .map((element) => {
-          const reduced = element.reduce((accu, bet) => {
+          // return parseFloat(reduced).toFixed(4)
+          return element.reduce((accu, bet) => {
             if (bet?.position === bet?.round?.position) return +accu + 1
             return +accu
           }, 0)
-          // return parseFloat(reduced).toFixed(4)
-          return reduced
         })
 
       statistics.totalLoss = entries

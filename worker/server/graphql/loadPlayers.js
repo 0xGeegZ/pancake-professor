@@ -23,15 +23,15 @@ let WIN_RATE = WIN_RATE_INITIAL
 const groupByTimePeriod = (obj, timestamp, period) => {
   const objPeriod = {}
   const oneDay = 24 * 60 * 60 * 1000 // hours * minutes * seconds * milliseconds
-  for (let i = 0; i < obj?.length; i++) {
+  for (let i = 0; i < obj?.length; i += 1) {
     let d = new Date(obj[i][timestamp] * 1000)
-    if (period == 'day') {
+    if (period === 'day') {
       d = Math.floor(d.getTime() / oneDay)
-    } else if (period == 'week') {
+    } else if (period === 'week') {
       d = Math.floor(d.getTime() / (oneDay * 7))
-    } else if (period == 'month') {
+    } else if (period === 'month') {
       d = (d.getFullYear() - 1970) * 12 + d.getMonth()
-    } else if (period == 'year') {
+    } else if (period === 'year') {
       d = d.getFullYear()
     } else {
       console.log('groupByTimePeriod: You have to set a period! day | week | month | year')
@@ -139,11 +139,11 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets', isCake = false }) => 
     // const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12
 
     // const first = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 250 : 100
-    const first = orderBy === 'default' ? 500 : orderBy === 'mostActiveLastHour' ? 700 : 100
+    const first = orderBy === 'default' ? 500 : orderBy === 'mostActiveLastHour' ? 500 : 100
     // const firstBets = orderBy === 'default' ? 12 * 24 : orderBy === 'mostActiveLastHour' ? 24 : 1
-    const firstBets = orderBy === 'default' ? 12 * 24 : orderBy === 'mostActiveLastHour' ? 500 : 1
-
+    const firstBets = orderBy === 'default' ? 12 * 24 : orderBy === 'mostActiveLastHour' ? 750 : 1
     const epochGT = orderBy === 'default' ? epoch - 12 * 24 : orderBy === 'mostActiveLastHour' ? epoch - 24 : 1
+
     const query = gql`
       query getUsers(
         $totalBets: String!
@@ -204,9 +204,9 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets', isCake = false }) => 
 
     bestPlayers = bestPlayers.filter(Boolean)
 
-    // if (orderBy === 'mostActiveLastHour') {
+    // // if (orderBy === 'mostActiveLastHour') {
     bestPlayers = bestPlayers.filter((p) => p.recentGames > 0)
-    // }
+    // // }
 
     // TODO Filter by Gini Score
     const calculateGiniCoefficientForPlayer = (player) => {
@@ -295,10 +295,10 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets', isCake = false }) => 
     }
 
     bestPlayers = bestPlayers.map(calculateGiniCoefficientForPlayer)
-    console.log('BEFORE GINI COEFFICIENT FILTER', bestPlayers.length)
-    // bestPlayers = bestPlayers.filter((player) => player.giniCoefficient > 0 && player.giniCoefficient <= 0.15)
-    bestPlayers = bestPlayers.filter((player) => player.giniCoefficient <= 0.15)
-    console.log('AFTER GINI COEFFICIENT FILTER', bestPlayers.length)
+    // console.log('BEFORE GINI COEFFICIENT FILTER', bestPlayers.length)
+    // // bestPlayers = bestPlayers.filter((player) => player.giniCoefficient > 0 && player.giniCoefficient <= 0.15)
+    // bestPlayers = bestPlayers.filter((player) => player.giniCoefficient <= 0.15)
+    // console.log('AFTER GINI COEFFICIENT FILTER', bestPlayers.length)
 
     if (bestPlayers.length < 2) {
       if (WIN_RATE < 54) {

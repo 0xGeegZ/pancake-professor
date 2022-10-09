@@ -1,7 +1,7 @@
 import { addDays } from 'date-fns'
 import _ from 'lodash'
-import { mock } from 'src/client/utils/axios'
 import type { Project } from 'src/client/models/projects_board'
+import { mock } from 'src/client/utils/axios'
 
 const project: Project = {
   lists: [

@@ -2,6 +2,8 @@ import { Box, Grid, Zoom } from '@mui/material'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
+// import { useGetUsersQuery } from 'src/client/graphql/getUsers.generated'
+import type { ReactElement } from 'react'
 import { useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Footer from 'src/client/components/Footer'
@@ -9,10 +11,6 @@ import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
 import menuItems from 'src/client/layouts/MainLayout/Sidebar/SidebarMenu/items'
 import { useGlobalStore } from 'src/client/store/swr'
-
-// import { useGetUsersQuery } from 'src/client/graphql/getUsers.generated'
-
-import type { ReactElement } from 'react'
 
 function UserView() {
   const { t }: { t: any } = useTranslation()

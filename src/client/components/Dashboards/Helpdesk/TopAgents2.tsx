@@ -1,7 +1,7 @@
-import { Card, Box, Typography, Avatar, Divider, Grid, LinearProgress } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled, useTheme } from '@mui/material/styles'
 import WorkTwoToneIcon from '@mui/icons-material/WorkTwoTone'
+import { Avatar, Box, Card, Divider, Grid, LinearProgress,Typography } from '@mui/material'
+import { styled, useTheme } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const AvatarWrapper = styled(Avatar)(
   ({ theme }) => `

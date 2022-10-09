@@ -27,4 +27,4 @@ const decrypt = (hash) => {
   return decrypted.toString()
 }
 
-export { encrypt, decrypt }
+export { decrypt,encrypt }

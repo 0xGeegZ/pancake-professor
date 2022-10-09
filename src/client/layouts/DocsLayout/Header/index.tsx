@@ -1,8 +1,7 @@
-import { Card, Box, Button } from '@mui/material'
+import { Box, Button,Card } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { useTranslation } from 'react-i18next'
 import Link from 'src/client/components/Link'
-
 import Logo from 'src/client/components/Logo'
 
 const HeaderWrapper = styled(Card)(

@@ -1,21 +1,18 @@
-import { useState, useEffect, useCallback } from 'react'
-import type { ReactElement } from 'react'
-import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import { Box, Drawer, Grid, Hidden, IconButton, useTheme } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
+import { useCallback,useEffect, useState } from 'react'
+import { Scrollbars } from 'react-custom-scrollbars-2'
 import Footer from 'src/client/components/Footer'
 import PageHeader from 'src/client/components/Management/Commerce/Shop/PageHeader'
-import Sidebar from 'src/client/components/Management/Commerce/Shop/Sidebar'
 import Results from 'src/client/components/Management/Commerce/Shop/Results'
-
-import { Hidden, Box, Grid, IconButton, Drawer, useTheme } from '@mui/material'
-import { styled } from '@mui/material/styles'
-import axios from 'src/client/utils/axios'
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
-
+import Sidebar from 'src/client/components/Management/Commerce/Shop/Sidebar'
 import useRefMounted from 'src/client/hooks/useRefMounted'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 import type { Product } from 'src/client/models/product'
-
-import { Scrollbars } from 'react-custom-scrollbars-2'
+import axios from 'src/client/utils/axios'
 
 const sidebarContent = (
   <Scrollbars universal autoHide>

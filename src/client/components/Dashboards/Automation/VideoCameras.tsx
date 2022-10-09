@@ -1,14 +1,13 @@
-import { useRef, useState } from 'react'
-
-import { Box, Typography, MenuItem, Menu, Card, Avatar, Button, IconButton, Tooltip, Grid } from '@mui/material'
-
-import { styled, useTheme } from '@mui/material/styles'
-import { useTranslation } from 'react-i18next'
-import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
-import MicNoneTwoToneIcon from '@mui/icons-material/MicNoneTwoTone'
-import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone'
-import PowerTwoToneIcon from '@mui/icons-material/PowerTwoTone'
 import BatteryCharging50TwoToneIcon from '@mui/icons-material/BatteryCharging50TwoTone'
+import LockOpenTwoToneIcon from '@mui/icons-material/LockOpenTwoTone'
+import MicNoneTwoToneIcon from '@mui/icons-material/MicNoneTwoTone'
+import PowerTwoToneIcon from '@mui/icons-material/PowerTwoTone'
+import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
+import { Avatar, Box, Button, Card, Grid,IconButton, Menu, MenuItem, Tooltip, Typography } from '@mui/material'
+import { styled, useTheme } from '@mui/material/styles'
+import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import VideoCamerasChart from './VideoCamerasChart'
 
 const CardCamera = styled(Card)(

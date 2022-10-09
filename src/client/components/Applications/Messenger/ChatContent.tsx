@@ -1,9 +1,8 @@
-import { Box, Avatar, Typography, Card, Divider } from '@mui/material'
-
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import { formatDistance, format, subDays, subHours, subMinutes } from 'date-fns'
 import ScheduleTwoToneIcon from '@mui/icons-material/ScheduleTwoTone'
+import { Avatar, Box, Card, Divider,Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { format, formatDistance, subDays, subHours, subMinutes } from 'date-fns'
+import { useTranslation } from 'react-i18next'
 
 const DividerWrapper = styled(Divider)(
   ({ theme }) => `

@@ -1,8 +1,9 @@
-import { Card, Box, Typography, Avatar } from '@mui/material'
-import { useTranslation } from 'react-i18next'
+import { Avatar,Box, Card, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 import Label from 'src/client/components/Label'
 import Text from 'src/client/components/Text'
+
 import WatchListColumn1Chart from './WatchListColumn1Chart'
 
 const AvatarWrapper = styled(Avatar)(

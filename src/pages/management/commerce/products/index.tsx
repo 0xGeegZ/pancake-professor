@@ -1,18 +1,15 @@
-import { useState, useEffect, useCallback } from 'react'
-import axios from 'src/client/utils/axios'
-import type { ReactElement } from 'react'
-import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
-
-import Head from 'next/head'
-import PageHeader from 'src/client/components/Management/Commerce/Products/PageHeader'
-import Footer from 'src/client/components/Footer'
-import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
-
 import { Grid } from '@mui/material'
-import useRefMounted from 'src/client/hooks/useRefMounted'
-import type { Product } from 'src/client/models/product'
-
+import Head from 'next/head'
+import type { ReactElement } from 'react'
+import { useCallback,useEffect, useState } from 'react'
+import Footer from 'src/client/components/Footer'
+import PageHeader from 'src/client/components/Management/Commerce/Products/PageHeader'
 import Results from 'src/client/components/Management/Commerce/Products/Results'
+import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
+import useRefMounted from 'src/client/hooks/useRefMounted'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
+import type { Product } from 'src/client/models/product'
+import axios from 'src/client/utils/axios'
 
 function ManagementProducts() {
   const isMountedRef = useRefMounted()

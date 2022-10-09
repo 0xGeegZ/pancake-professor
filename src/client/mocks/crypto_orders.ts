@@ -1,6 +1,6 @@
 import { subDays } from 'date-fns'
-import { mock } from 'src/client/utils/axios'
 import { CryptoOrder } from 'src/client/models/crypto_order'
+import { mock } from 'src/client/utils/axios'
 
 mock.onGet('/api/crypto-orders').reply(() => {
   const cryptoOrders: CryptoOrder[] = [

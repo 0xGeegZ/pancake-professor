@@ -1,7 +1,7 @@
-import { Card, CardContent, CardHeader, LinearProgress, Typography, Avatar } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
 import LocalPharmacyTwoToneIcon from '@mui/icons-material/LocalPharmacyTwoTone'
+import { Avatar,Card, CardContent, CardHeader, LinearProgress, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 function FatAlt() {
   const { t }: { t: any } = useTranslation()

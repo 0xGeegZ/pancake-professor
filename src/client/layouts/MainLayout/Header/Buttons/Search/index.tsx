@@ -25,10 +25,9 @@ import {
 } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { TransitionProps } from '@mui/material/transitions'
+import type { ReactElement } from 'react'
 import { ChangeEvent, forwardRef, Ref, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
-import type { ReactElement } from 'react'
 
 /* eslint-disable */
 const Transition = forwardRef((props: TransitionProps & { children?: ReactElement<any, any> }, ref: Ref<unknown>) => (

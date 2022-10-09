@@ -1,34 +1,34 @@
-import { useState, ChangeEvent } from 'react'
-import {
-  Card,
-  Box,
-  CardHeader,
-  List,
-  Avatar,
-  IconButton,
-  AvatarGroup,
-  Tooltip,
-  ListItem,
-  Typography,
-  Switch,
-  LinearProgress,
-  ListItemAvatar,
-  ListItemText,
-  alpha,
-} from '@mui/material'
-import Link from 'src/client/components/Link'
-
-import { useTranslation } from 'react-i18next'
-import { styled, useTheme } from '@mui/material/styles'
-import SwiperCore, { Navigation, Pagination } from 'swiper/core'
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
-import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
-import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/swiper.min.css'
 import 'swiper/components/navigation/navigation.min.css'
 import 'swiper/components/pagination/pagination.min.css'
+
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
+import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
+import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import {
+  alpha,
+  Avatar,
+  AvatarGroup,
+  Box,
+  Card,
+  CardHeader,
+  IconButton,
+  LinearProgress,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Switch,
+  Tooltip,
+  Typography,
+} from '@mui/material'
+import { styled, useTheme } from '@mui/material/styles'
+import { ChangeEvent,useState } from 'react'
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
+import SwiperCore, { Navigation, Pagination } from 'swiper/core'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 SwiperCore.use([Navigation, Pagination])
 

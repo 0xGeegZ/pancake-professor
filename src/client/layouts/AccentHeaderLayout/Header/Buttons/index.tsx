@@ -1,6 +1,7 @@
 import { Box } from '@mui/material'
-import HeaderNotifications from './Notifications'
+
 import LanguageSwitcher from './LanguageSwitcher'
+import HeaderNotifications from './Notifications'
 
 function HeaderButtons() {
   return (

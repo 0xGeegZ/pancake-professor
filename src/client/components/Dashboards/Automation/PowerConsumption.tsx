@@ -1,10 +1,11 @@
-import { useRef, useState } from 'react'
-import { Card, Typography, MenuItem, Menu, Button, IconButton, Box, Tooltip } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 import ElectricalServicesTwoToneIcon from '@mui/icons-material/ElectricalServicesTwoTone'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 import KeyboardArrowRightTwoToneIcon from '@mui/icons-material/KeyboardArrowRightTwoTone'
+import { Box, Button, Card, IconButton, Menu, MenuItem, Tooltip,Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import PowerConsumptionChart from './PowerConsumptionChart'
 
 const PowerConsumptionChartWrapper = styled(PowerConsumptionChart)(

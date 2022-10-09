@@ -1,8 +1,8 @@
-import Link from 'src/client/components/Link'
-import { Box, Grid, Typography, Button } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
 import ArrowBackTwoToneIcon from '@mui/icons-material/ArrowBackTwoTone'
+import { Box, Button,Grid, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import Link from 'src/client/components/Link'
 
 const RootWrapper = styled(Box)(
   () => `

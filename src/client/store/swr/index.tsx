@@ -10,14 +10,14 @@ import useSWR, { SWRConfig } from 'swr'
 
 // import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 
-type GlobalStateContext = {
+type GlobalStateContextType = {
   user: any
   mutate: any
   error: null
   fetching: boolean
 }
 
-export const GlobalStateContext = createContext<GlobalStateContext>({} as GlobalStateContext)
+export const GlobalStateContext = createContext<GlobalStateContextType>({} as GlobalStateContextType)
 
 type Props = {
   children: ReactNode

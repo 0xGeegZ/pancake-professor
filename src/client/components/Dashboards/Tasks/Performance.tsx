@@ -1,8 +1,8 @@
-import { Card, Box, CardContent, CardHeader, Typography, Avatar, LinearProgress } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
 import AssignmentTurnedInTwoToneIcon from '@mui/icons-material/AssignmentTurnedInTwoTone'
 import CancelPresentationTwoToneIcon from '@mui/icons-material/CancelPresentationTwoTone'
+import { Avatar, Box, Card, CardContent, CardHeader, LinearProgress,Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 const RootWrapper = styled(Card)(
   ({ theme }) => `

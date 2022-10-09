@@ -1,10 +1,10 @@
-import { useState } from 'react'
-import { Card, CardHeader, ListItemText, List, ListItem, Divider, Switch, ListItemAvatar, Avatar } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
+import EmailTwoToneIcon from '@mui/icons-material/EmailTwoTone'
 import LockTwoToneIcon from '@mui/icons-material/LockTwoTone'
 import PhoneLockedTwoToneIcon from '@mui/icons-material/PhoneLockedTwoTone'
-import EmailTwoToneIcon from '@mui/icons-material/EmailTwoTone'
+import { Avatar,Card, CardHeader, Divider, List, ListItem, ListItemAvatar, ListItemText, Switch } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import Text from 'src/client/components/Text'
 
 const AvatarWrapperError = styled(Avatar)(

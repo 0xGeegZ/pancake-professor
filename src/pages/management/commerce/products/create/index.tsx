@@ -1,17 +1,15 @@
-import { useState } from 'react'
-import type { ReactElement } from 'react'
-import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import { Box, Drawer, Grid, Hidden, IconButton,useTheme } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import Head from 'next/head'
-import PageHeader from 'src/client/components/Management/Commerce/Create/PageHeader'
-import { Box, Drawer, Grid, Hidden, useTheme, IconButton } from '@mui/material'
+import type { ReactElement } from 'react'
+import { useState } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars-2'
-
-import Sidebar from 'src/client/components/Management/Commerce/Create/Sidebar'
-
 import AdditionalInfo from 'src/client/components/Management/Commerce/Create/AdditionalInfo'
 import GeneralSection from 'src/client/components/Management/Commerce/Create/GeneralSection'
-import { styled } from '@mui/material/styles'
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import PageHeader from 'src/client/components/Management/Commerce/Create/PageHeader'
+import Sidebar from 'src/client/components/Management/Commerce/Create/Sidebar'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 
 const DrawerWrapper = styled(Drawer)(
   ({ theme }) => `

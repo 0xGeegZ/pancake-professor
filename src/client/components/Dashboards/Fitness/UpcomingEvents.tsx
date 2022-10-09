@@ -1,21 +1,21 @@
+import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
+import ControlPointTwoToneIcon from '@mui/icons-material/ControlPointTwoTone'
+import DateRangeTwoToneIcon from '@mui/icons-material/DateRangeTwoTone'
 import {
+  Avatar,
+  Box,
   Button,
   Card,
   CardContent,
   CardHeader,
-  Tooltip,
-  Box,
-  Typography,
-  Avatar,
   IconButton,
   List,
   ListItem,
+  Tooltip,
+  Typography,
 } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 import { styled } from '@mui/material/styles'
-import DateRangeTwoToneIcon from '@mui/icons-material/DateRangeTwoTone'
-import ControlPointTwoToneIcon from '@mui/icons-material/ControlPointTwoTone'
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
+import { useTranslation } from 'react-i18next'
 
 const AvatarPrimary = styled(Avatar)(
   ({ theme }) => `

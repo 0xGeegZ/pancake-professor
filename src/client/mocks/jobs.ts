@@ -1,6 +1,6 @@
 import { subDays } from 'date-fns'
-import { mock } from 'src/client/utils/axios'
 import { Job } from 'src/client/models/job'
+import { mock } from 'src/client/utils/axios'
 
 mock.onGet('/api/jobs').reply(() => {
   const jobs: Job[] = [

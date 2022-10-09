@@ -6,6 +6,7 @@ import { ethers } from 'ethers'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { useSnackbar } from 'notistack'
+import type { ReactElement } from 'react'
 import { useCallback, useEffect, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import ActiveTotalAmount from 'src/client/components/Dashboards/Commerce/ActiveTotalAmount'
@@ -19,12 +20,10 @@ import Footer from 'src/client/components/Footer'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
+import type { User } from 'src/client/models/user'
 import loadGameData from 'src/client/thegraph/loadGameData'
 import wait from 'src/client/utils/wait'
 import { PREDICTION_CONTRACT_ABI_BNB } from 'src/contracts/abis/pancake-prediction-abi-v3'
-
-import type { ReactElement } from 'react'
-import type { User } from 'src/client/models/user'
 
 const LinearProgressWrapper = styled(LinearProgress)(
   ({ theme }) => `

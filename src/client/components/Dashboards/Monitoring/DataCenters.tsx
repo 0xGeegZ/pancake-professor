@@ -1,6 +1,6 @@
-import { Card, CardHeader, Box, Typography, Divider, Tooltip, useTheme } from '@mui/material'
-import { useTranslation } from 'react-i18next'
+import { Box, Card, CardHeader, Divider, Tooltip, Typography, useTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 import { ComposableMap, Geographies, Geography, Marker } from 'react-simple-maps'
 
 const DotLegend = styled('span')(

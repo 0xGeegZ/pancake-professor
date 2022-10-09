@@ -1,18 +1,15 @@
-import type { ReactElement } from 'react'
-import dynamic from 'next/dynamic'
-
-import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
-
-import Head from 'next/head'
-import PageHeader from 'src/client/components/Dashboards/Learning/PageHeader'
-import Footer from 'src/client/components/Footer'
 import { Grid } from '@mui/material'
-import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
-
+import dynamic from 'next/dynamic'
+import Head from 'next/head'
+import type { ReactElement } from 'react'
+import Leaderboard from 'src/client/components/Dashboards/Learning/Leaderboard'
+import PageHeader from 'src/client/components/Dashboards/Learning/PageHeader'
+import RecentCourses from 'src/client/components/Dashboards/Learning/RecentCourses'
 import TimeSpent from 'src/client/components/Dashboards/Learning/TimeSpent'
 import TopTrainers from 'src/client/components/Dashboards/Learning/TopTrainers'
-import Leaderboard from 'src/client/components/Dashboards/Learning/Leaderboard'
-import RecentCourses from 'src/client/components/Dashboards/Learning/RecentCourses'
+import Footer from 'src/client/components/Footer'
+import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 
 const UpcomingConferences = dynamic(() => import('src/client/components/Dashboards/Learning/UpcomingConferences'), {
   ssr: true,

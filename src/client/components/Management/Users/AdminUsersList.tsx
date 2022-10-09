@@ -41,12 +41,11 @@ import clsx from 'clsx'
 import { formatDistance } from 'date-fns'
 import { useSnackbar } from 'notistack'
 import PropTypes from 'prop-types'
+import type { ReactElement } from 'react'
 import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, SyntheticEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
-
-import type { ReactElement } from 'react'
-
 import type { User, UserRole } from 'src/client/models/user'
+
 import BulkActions from './BulkActions'
 
 const DialogWrapper = styled(Dialog)(

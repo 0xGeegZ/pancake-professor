@@ -2,15 +2,14 @@
 import { Box, Grid } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
+// import BalanceHistory from 'src/client/components/Dashboards/Healthcare/hospital/BalanceHistory'
+import type { ReactElement } from 'react'
 import ActiveStrategies from 'src/client/components/Dashboards/Automation/ActiveStrategies'
 import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance'
 import AllStrategiesResume from 'src/client/components/Dashboards/Finance/AllStrategiesResume'
 import Footer from 'src/client/components/Footer'
 import MainLayout from 'src/client/layouts/MainLayout'
 import { useGlobalStore } from 'src/client/store/swr'
-
-// import BalanceHistory from 'src/client/components/Dashboards/Healthcare/hospital/BalanceHistory'
-import type { ReactElement } from 'react'
 
 const MainContentWrapper = styled(Box)(
   ({ theme }) => `
@@ -90,7 +89,7 @@ function Dashboard() {
   //   // setStrategies(updateds)
   //   // strategie.isActive = !strategie.isActive
 
-  //   // for (let i = 0; i < strategies.lenth; i++) {
+  //   // for (let i = 0; i < strategies.lenth; i+=1) {
   //   //   if (strategies[i].id === strategie.id) strategies[i].isActive = !strategies[i].isActive
   //   // }
   // }

@@ -1,23 +1,23 @@
+import CallMadeTwoToneIcon from '@mui/icons-material/CallMadeTwoTone'
+import CallReceivedTwoToneIcon from '@mui/icons-material/CallReceivedTwoTone'
 import {
+  Avatar,
+  Box,
   Button,
   Card,
-  Typography,
-  CardHeader,
   CardActions,
-  Box,
+  CardHeader,
   Divider,
+  List,
   ListItem,
   ListItemAvatar,
   ListItemText,
   ListSubheader,
-  List,
-  Avatar,
+  Typography,
 } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import CallReceivedTwoToneIcon from '@mui/icons-material/CallReceivedTwoTone'
-import CallMadeTwoToneIcon from '@mui/icons-material/CallMadeTwoTone'
 import { styled } from '@mui/material/styles'
 import { format, subDays } from 'date-fns'
+import { useTranslation } from 'react-i18next'
 import Text from 'src/client/components/Text'
 
 const AvatarWrapperError = styled(Avatar)(

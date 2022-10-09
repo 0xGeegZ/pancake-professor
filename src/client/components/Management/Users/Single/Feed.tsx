@@ -1,6 +1,6 @@
-import { Box, Typography, Card, CardHeader, Divider, Avatar, Grid, Button } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
+import { Avatar, Box, Button,Card, CardHeader, Divider, Grid, Typography } from '@mui/material'
+import { useTranslation } from 'react-i18next'
 
 function Feed() {
   const { t }: { t: any } = useTranslation()

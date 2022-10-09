@@ -1,27 +1,27 @@
-import { useCallback, useEffect, useState } from 'react'
-import numeral from 'numeral'
-import PropTypes from 'prop-types'
+import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
 import {
+  Avatar,
   Box,
   Button,
   Card,
   CardHeader,
   Divider,
-  TableHead,
   Table,
   TableBody,
   TableCell,
+  TableContainer,
+  TableHead,
   TableRow,
   Typography,
-  TableContainer,
-  Avatar,
 } from '@mui/material'
-import axios from 'src/client/utils/axios'
+import { useTheme } from '@mui/material/styles'
+import numeral from 'numeral'
+import PropTypes from 'prop-types'
+import { useCallback, useEffect, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import { Product } from 'src/client/models/dashboards'
-import { useTranslation } from 'react-i18next'
-import { useTheme } from '@mui/material/styles'
-import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
+import axios from 'src/client/utils/axios'
 
 function TopProducts() {
   const isMountedRef = useRefMounted()

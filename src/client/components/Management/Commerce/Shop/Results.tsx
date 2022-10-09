@@ -28,7 +28,6 @@ import { ChangeEvent, FC, MouseEvent, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Link from 'src/client/components/Link'
 import Text from 'src/client/components/Text'
-
 import type { Product } from 'src/client/models/product'
 
 interface ResultsProps {

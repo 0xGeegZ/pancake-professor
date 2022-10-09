@@ -34,14 +34,12 @@ import { TransitionProps } from '@mui/material/transitions'
 import { useSnackbar } from 'notistack'
 import numeral from 'numeral'
 import PropTypes from 'prop-types'
+import type { ChangeEvent, FC, ReactElement } from 'react'
 import { forwardRef, Ref, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import BulkActions from 'src/client/components/BulkActions'
 import Label from 'src/client/components/Label'
 import Text from 'src/client/components/Text'
-
-import type { FC, ChangeEvent, ReactElement } from 'react'
-
 import type { Product } from 'src/client/models/product'
 
 const DialogWrapper = styled(Dialog)(

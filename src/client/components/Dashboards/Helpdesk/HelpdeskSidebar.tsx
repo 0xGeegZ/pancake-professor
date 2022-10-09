@@ -1,7 +1,8 @@
-import { Box, Typography, Divider, LinearProgress, Avatar, useTheme } from '@mui/material'
-import { useTranslation } from 'react-i18next'
+import { Avatar, Box, Divider, LinearProgress, Typography, useTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 import Text from 'src/client/components/Text'
+
 import HelpdeskSidebarChart from './HelpdeskSidebarChart'
 
 const HelpdeskSidebarChartWrapper = styled(HelpdeskSidebarChart)(

@@ -20,7 +20,10 @@ import {
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
 import { useSnackbar } from 'notistack'
+/* eslint-disable react/jsx-props-no-spreading */
+import type { ReactElement } from 'react'
 import { ChangeEvent, Fragment, useEffect, useState } from 'react'
+import type { DropResult } from 'react-beautiful-dnd'
 import { DragDropContext } from 'react-beautiful-dnd'
 import { useTranslation } from 'react-i18next'
 import Footer from 'src/client/components/Footer'
@@ -31,11 +34,6 @@ import Results from 'src/client/components/ProjectsBoard/Results'
 import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 import { getBoard, moveTask } from 'src/client/slices/projects_board'
 import { useDispatch, useSelector } from 'src/client/store/redux'
-
-/* eslint-disable react/jsx-props-no-spreading */
-import type { ReactElement } from 'react'
-
-import type { DropResult } from 'react-beautiful-dnd'
 
 const TasksWrapper = styled(Box)(
   ({ theme }) => `

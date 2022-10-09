@@ -1,8 +1,9 @@
-import { useDispatch as useReduxDispatch, useSelector as useReduxSelector } from 'react-redux'
-import type { TypedUseSelectorHook } from 'react-redux'
-import type { ThunkAction } from 'redux-thunk'
-import { configureStore } from '@reduxjs/toolkit'
 import type { Action } from '@reduxjs/toolkit'
+import { configureStore } from '@reduxjs/toolkit'
+import type { TypedUseSelectorHook } from 'react-redux'
+import { useDispatch as useReduxDispatch, useSelector as useReduxSelector } from 'react-redux'
+import type { ThunkAction } from 'redux-thunk'
+
 import rootReducer from './rootReducer'
 
 const store = configureStore({

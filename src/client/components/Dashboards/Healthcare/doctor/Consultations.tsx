@@ -1,7 +1,8 @@
-import { Card, Box, Typography, useTheme } from '@mui/material'
-import { useTranslation } from 'react-i18next'
+import { Box, Card, Typography, useTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 import Label from 'src/client/components/Label'
+
 import ConsultationsChart from './ConsultationsChart'
 
 const ConsultationsChartWrapper = styled(ConsultationsChart)(

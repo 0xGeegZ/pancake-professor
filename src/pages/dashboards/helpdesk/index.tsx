@@ -1,26 +1,22 @@
-import type { ReactElement } from 'react'
-import CollapsedSidebarLayout from 'src/client/layouts/CollapsedSidebarLayout'
-
-import { useState } from 'react'
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import { Box, Drawer, Grid, Hidden, IconButton,useTheme } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import Head from 'next/head'
-import PageHeader from 'src/client/components/Dashboards/Helpdesk/PageHeader'
-
-import { Box, Drawer, Grid, Hidden, useTheme, IconButton } from '@mui/material'
+import type { ReactElement } from 'react'
+import { useState } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars-2'
-
-import HelpdeskSidebar from 'src/client/components/Dashboards/Helpdesk/HelpdeskSidebar'
-import UnresolvedTickets from 'src/client/components/Dashboards/Helpdesk/UnresolvedTickets'
-import PendingQuestions from 'src/client/components/Dashboards/Helpdesk/PendingQuestions'
-import UpdatedTickets from 'src/client/components/Dashboards/Helpdesk/UpdatedTickets'
 import AssignedTasks from 'src/client/components/Dashboards/Helpdesk/AssignedTasks'
+import HelpdeskSidebar from 'src/client/components/Dashboards/Helpdesk/HelpdeskSidebar'
+import PageHeader from 'src/client/components/Dashboards/Helpdesk/PageHeader'
+import PendingQuestions from 'src/client/components/Dashboards/Helpdesk/PendingQuestions'
 import PendingTickets from 'src/client/components/Dashboards/Helpdesk/PendingTickets'
 import RecentQuestions from 'src/client/components/Dashboards/Helpdesk/RecentQuestions'
-import TopAgentsHeading from 'src/client/components/Dashboards/Helpdesk/TopAgentsHeading'
 import TopAgents1 from 'src/client/components/Dashboards/Helpdesk/TopAgents1'
 import TopAgents2 from 'src/client/components/Dashboards/Helpdesk/TopAgents2'
-
-import { styled } from '@mui/material/styles'
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import TopAgentsHeading from 'src/client/components/Dashboards/Helpdesk/TopAgentsHeading'
+import UnresolvedTickets from 'src/client/components/Dashboards/Helpdesk/UnresolvedTickets'
+import UpdatedTickets from 'src/client/components/Dashboards/Helpdesk/UpdatedTickets'
+import CollapsedSidebarLayout from 'src/client/layouts/CollapsedSidebarLayout'
 
 const DrawerWrapper = styled(Drawer)(
   ({ theme }) => `

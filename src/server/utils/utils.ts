@@ -5,5 +5,5 @@ const range = (start, end) => Array.from(Array(end + 1).keys()).slice(start)
 
 const finder = (search, target) => search.map((val) => target.filter((e) => val === e).length)
 
-export { sleep, range, finder }
+export { finder,range, sleep }
 // export default { sleep, range, finder }

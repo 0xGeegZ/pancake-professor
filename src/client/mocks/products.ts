@@ -1,5 +1,5 @@
-import { mock } from 'src/client/utils/axios'
 import type { Product } from 'src/client/models/product'
+import { mock } from 'src/client/utils/axios'
 
 const products: Product[] = [
   {

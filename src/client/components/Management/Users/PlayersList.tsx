@@ -1,26 +1,24 @@
 /* eslint-disable import/order */
 import 'moment-timezone'
 
-import { PREDICTION_CONTRACT_ABI_BNB } from '@/contracts/abis/pancake-prediction-abi-v3'
 import CloseIcon from '@mui/icons-material/Close'
 import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 import FavoriteIcon from '@mui/icons-material/Favorite'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
-import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt'
-import ThumbUpOffAltIcon from '@mui/icons-material/ThumbUpOffAlt'
-import ThumbDownIcon from '@mui/icons-material/ThumbDown'
-import ThumbUpIcon from '@mui/icons-material/ThumbUp'
+import FilterAltTwoToneIcon from '@mui/icons-material/FilterAltTwoTone'
 import GamepadIcon from '@mui/icons-material/Gamepad'
 import GridViewTwoToneIcon from '@mui/icons-material/GridViewTwoTone'
 import StickyNote2Icon from '@mui/icons-material/StickyNote2'
 import TableRowsTwoToneIcon from '@mui/icons-material/TableRowsTwoTone'
-import AssessmentIcon from '@mui/icons-material/Assessment'
+import ThumbDownIcon from '@mui/icons-material/ThumbDown'
+import ThumbDownOffAltIcon from '@mui/icons-material/ThumbDownOffAlt'
 import {
   Avatar,
   Box,
   Button,
   Card,
   CardHeader,
+  Checkbox,
   CircularProgress,
   Dialog,
   Divider,
@@ -30,17 +28,13 @@ import {
   LinearProgress,
   Link,
   List,
-  Menu,
-  Slider,
-  MenuItem,
-  FormControl,
-  ListItemIcon,
-  Checkbox,
   ListItemButton,
+  ListItemIcon,
   ListItemText,
-  InputLabel,
-  Select,
+  Menu,
+  MenuItem,
   Slide,
+  Slider,
   Table,
   TableBody,
   TableCell,
@@ -59,20 +53,19 @@ import { TransitionProps } from '@mui/material/transitions'
 import { ethers } from 'ethers'
 import moment from 'moment'
 import { useSnackbar } from 'notistack'
+// import loadAllPlayers from 'src/client/thegraph/loadAllPlayers'
+import type { ReactElement } from 'react'
 import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import FollowPlayerForm from 'src/client/components/Dashboards/Automation/FollowPlayerForm'
+import { useToogleFavoritePlayerMutation } from 'src/client/graphql/toogleFavoritePlayer.generated'
+import type { Player } from 'src/client/models/player'
 import { useGlobalStore } from 'src/client/store/swr'
 import loadPlayers from 'src/client/thegraph/loadPlayers'
-import { useToogleFavoritePlayerMutation } from 'src/client/graphql/toogleFavoritePlayer.generated'
-import FilterAltTwoToneIcon from '@mui/icons-material/FilterAltTwoTone'
+
+import { PREDICTION_CONTRACT_ABI_BNB } from '@/contracts/abis/pancake-prediction-abi-v3'
 
 import SidebarPlayerDrawer from './SidebarPlayerDrawer'
-
-// import loadAllPlayers from 'src/client/thegraph/loadAllPlayers'
-import type { ReactElement } from 'react'
-
-import type { Player } from 'src/client/models/player'
 
 const DialogWrapper = styled(Dialog)(
   () => `
@@ -345,17 +338,16 @@ const PlayersList: FC = () => {
       const netBnbMin = netbnbRange[0]
       const netBnbMax = netbnbRange[1]
 
-      console.log(user.favorites)
-      console.log(playerTypesChecked)
-      console.log(playerTypesChecked.length)
+      // console.log(user.favorites)
+      // console.log(playerTypesChecked)
+      // console.log(playerTypesChecked.length)
 
       const isOnlyplayerTypesFilterSelected = !playerTypesChecked.includes(3)
 
       const playerTypesFilterSelected = user.favorites
         .filter((favorite) => {
           if (favorite.type === 'LIKE' && playerTypesChecked.includes(1)) return true
-          if (favorite.type === 'DISLIKE' && playerTypesChecked.includes(2)) return true
-          return false
+          return favorite.type === 'DISLIKE' && playerTypesChecked.includes(2)
         })
         .map((f) => f.player)
 
@@ -396,7 +388,7 @@ const PlayersList: FC = () => {
         setFetching(false)
       }
     },
-    [players, preditionContract, user, playerTypesChecked, orderByValue, netbnbRange, winrateRange, setPage]
+    [players, preditionContract, user, playerTypesChecked, netbnbRange, winrateRange, setPage]
   )
 
   useEffect(() => {

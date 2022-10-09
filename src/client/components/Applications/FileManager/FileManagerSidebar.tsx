@@ -1,28 +1,28 @@
-import {
-  Box,
-  Typography,
-  Divider,
-  Avatar,
-  List,
-  ListItemAvatar,
-  ListItem,
-  ListItemText,
-  Alert,
-  Button,
-} from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import Gauge from 'src/client/components/Gauge'
-import { buildStyles } from 'react-circular-progressbar'
-import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone'
-import ImageTwoToneIcon from '@mui/icons-material/ImageTwoTone'
-import VideocamTwoToneIcon from '@mui/icons-material/VideocamTwoTone'
-import TextSnippetTwoToneIcon from '@mui/icons-material/TextSnippetTwoTone'
-import { useDropzone } from 'react-dropzone'
-import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone'
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
 import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
+import CloudUploadTwoToneIcon from '@mui/icons-material/CloudUploadTwoTone'
+import ImageTwoToneIcon from '@mui/icons-material/ImageTwoTone'
 import SpeedTwoToneIcon from '@mui/icons-material/SpeedTwoTone'
+import TextSnippetTwoToneIcon from '@mui/icons-material/TextSnippetTwoTone'
+import VideocamTwoToneIcon from '@mui/icons-material/VideocamTwoTone'
+import WarningTwoToneIcon from '@mui/icons-material/WarningTwoTone'
+import {
+  Alert,
+  Avatar,
+  Box,
+  Button,
+  Divider,
+  List,
+  ListItem,
+  ListItemAvatar,
+  ListItemText,
+  Typography,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { buildStyles } from 'react-circular-progressbar'
+import { useDropzone } from 'react-dropzone'
+import { useTranslation } from 'react-i18next'
+import Gauge from 'src/client/components/Gauge'
 
 const WarningTwoToneIconWrapper = styled(WarningTwoToneIcon)(
   ({ theme }) => `

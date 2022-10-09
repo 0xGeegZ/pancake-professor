@@ -1,13 +1,12 @@
-import type { ReactNode } from 'react'
-
-import AnalyticsTwoToneIcon from '@mui/icons-material/AnalyticsTwoTone'
 import AccountBalanceTwoToneIcon from '@mui/icons-material/AccountBalanceTwoTone'
-import MonetizationOnTwoToneIcon from '@mui/icons-material/MonetizationOnTwoTone'
-import KitchenTwoToneIcon from '@mui/icons-material/KitchenTwoTone'
-import HealthAndSafetyTwoToneIcon from '@mui/icons-material/HealthAndSafetyTwoTone'
+import AnalyticsTwoToneIcon from '@mui/icons-material/AnalyticsTwoTone'
 import BackupTableTwoToneIcon from '@mui/icons-material/BackupTableTwoTone'
+import HealthAndSafetyTwoToneIcon from '@mui/icons-material/HealthAndSafetyTwoTone'
+import KitchenTwoToneIcon from '@mui/icons-material/KitchenTwoTone'
 import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import MonetizationOnTwoToneIcon from '@mui/icons-material/MonetizationOnTwoTone'
 import SchoolTwoToneIcon from '@mui/icons-material/SchoolTwoTone'
+import type { ReactNode } from 'react'
 
 export interface MenuItem {
   link?: string

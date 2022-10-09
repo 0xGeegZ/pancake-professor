@@ -1,9 +1,10 @@
-import { Card, CardHeader, Typography, Avatar, Box } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import Label from 'src/client/components/Label'
 import ArrowUpwardTwoToneIcon from '@mui/icons-material/ArrowUpwardTwoTone'
 import MedicalServicesTwoToneIcon from '@mui/icons-material/MedicalServicesTwoTone'
+import { Avatar, Box,Card, CardHeader, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import Label from 'src/client/components/Label'
+
 import AppointmentsAltChart from './AppointmentsAltChart'
 
 const AppointmentsAltChartWrapper = styled(AppointmentsAltChart)(

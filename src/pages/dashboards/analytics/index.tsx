@@ -1,6 +1,6 @@
 import { Grid } from '@mui/material'
-import type { ReactElement } from 'react'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
 import ActiveReferrals from 'src/client/components/Dashboards/Analytics/ActiveReferrals'
 import AudienceOverview from 'src/client/components/Dashboards/Analytics/AudienceOverview'
 import BounceRate from 'src/client/components/Dashboards/Analytics/BounceRate'

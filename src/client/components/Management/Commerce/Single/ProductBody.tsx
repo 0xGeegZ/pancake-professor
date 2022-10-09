@@ -31,10 +31,10 @@ import PropTypes from 'prop-types'
 import { ChangeEvent, FC, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Text from 'src/client/components/Text'
+import type { Product } from 'src/client/models/product'
 import SwiperCore, { Navigation, Thumbs } from 'swiper/core'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
-import type { Product } from 'src/client/models/product'
 import AdditionalInfoTab from './AdditionalInfoTab'
 import ReviewsTab from './ReviewsTab'
 

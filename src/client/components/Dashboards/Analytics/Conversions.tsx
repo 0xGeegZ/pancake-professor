@@ -1,11 +1,11 @@
-import { useTranslation } from 'react-i18next'
-import { CardHeader, Divider, CardContent, Avatar, Card, ListItemText, List, ListItem } from '@mui/material'
-import Gauge from 'src/client/components/Gauge'
-import { buildStyles } from 'react-circular-progressbar'
 import TrendingDown from '@mui/icons-material/TrendingDown'
-import TrendingUp from '@mui/icons-material/TrendingUp'
 import TrendingFlat from '@mui/icons-material/TrendingFlat'
+import TrendingUp from '@mui/icons-material/TrendingUp'
+import { Avatar, Card, CardContent, CardHeader, Divider, List, ListItem,ListItemText } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { buildStyles } from 'react-circular-progressbar'
+import { useTranslation } from 'react-i18next'
+import Gauge from 'src/client/components/Gauge'
 
 const AvatarWrapperError = styled(Avatar)(
   ({ theme }) => `

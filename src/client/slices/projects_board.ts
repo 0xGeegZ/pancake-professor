@@ -1,12 +1,11 @@
-import { createSlice } from '@reduxjs/toolkit'
-import _ from 'lodash'
-import axios from 'src/client/utils/axios'
-import objectArray from 'src/client/utils/objectArray'
-
 /* eslint-disable no-param-reassign */
 import type { PayloadAction } from '@reduxjs/toolkit'
-import type { Project, Task, List, Member } from 'src/client/models/projects_board'
+import { createSlice } from '@reduxjs/toolkit'
+import _ from 'lodash'
+import type { List, Member,Project, Task } from 'src/client/models/projects_board'
 import type { AppThunk } from 'src/client/store/redux'
+import axios from 'src/client/utils/axios'
+import objectArray from 'src/client/utils/objectArray'
 
 interface ProjectsBoardState {
   isLoaded: boolean

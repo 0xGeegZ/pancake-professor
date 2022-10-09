@@ -1,7 +1,7 @@
-import { FC } from 'react'
-import PropTypes from 'prop-types'
-import { Pie } from 'react-chartjs-2'
 import { useTheme } from '@mui/material'
+import PropTypes from 'prop-types'
+import { FC } from 'react'
+import { Pie } from 'react-chartjs-2'
 
 interface ChartProps {
   data: any

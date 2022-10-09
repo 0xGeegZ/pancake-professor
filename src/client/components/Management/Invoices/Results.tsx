@@ -36,14 +36,13 @@ import { format, formatDistance } from 'date-fns'
 import { useSnackbar } from 'notistack'
 import numeral from 'numeral'
 import PropTypes from 'prop-types'
+import type { ChangeEvent, FC, ReactElement } from 'react'
 import { forwardRef, Ref, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import Label from 'src/client/components/Label'
 import Link from 'src/client/components/Link'
-
-
-import type { FC, ChangeEvent, ReactElement } from 'react'
 import type { Invoice, InvoiceStatus } from 'src/client/models/invoice'
+
 import BulkActions from './BulkActions'
 
 const DialogWrapper = styled(Dialog)(

@@ -1,11 +1,11 @@
-import { Box, Card, Link, Typography, Container } from '@mui/material'
+import { Box, Card, Container,Link, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
 import Head from 'next/head'
 import type { ReactElement } from 'react'
-import BaseLayout from 'src/client/layouts/BaseLayout'
-import LoginForm from 'src/client/components/Account/LoginForm'
 import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
+import LoginForm from 'src/client/components/Account/LoginForm'
 import Logo from 'src/client/components/LogoSign'
+import BaseLayout from 'src/client/layouts/BaseLayout'
 
 const MainContent = styled(Box)(
   () => `

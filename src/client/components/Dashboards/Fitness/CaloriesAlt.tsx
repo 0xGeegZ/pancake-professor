@@ -1,7 +1,7 @@
-import { Card, CardContent, CardHeader, LinearProgress, Typography, Avatar } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
 import KitchenTwoToneIcon from '@mui/icons-material/KitchenTwoTone'
+import { Avatar,Card, CardContent, CardHeader, LinearProgress, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 function CaloriesAlt() {
   const { t }: { t: any } = useTranslation()

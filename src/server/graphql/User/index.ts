@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { extendType, list, nonNull, objectType, stringArg, booleanArg } from 'nexus'
+import { booleanArg, extendType, list, nonNull, objectType, stringArg } from 'nexus'
 
 import prisma from '../../db/prisma'
 import { decrypt } from '../../utils/crpyto'
@@ -15,7 +15,7 @@ const User = objectType({
       resolve: async (_, __, ctx) => {
         if (!ctx.user?.id) return null
 
-        const strategies = await prisma.strategie.findMany({
+        return prisma.strategie.findMany({
           where: {
             // isDeleted: false,
             user: {
@@ -25,15 +25,13 @@ const User = objectType({
             },
           },
         })
-
-        return strategies
       },
     })
     t.model.favorites({
       type: `Favorite`,
       resolve: async (_, __, ctx) => {
         if (!ctx.user?.id) return null
-        const favorites = await prisma.favorite.findMany({
+        return prisma.favorite.findMany({
           where: {
             user: {
               is: {
@@ -42,7 +40,6 @@ const User = objectType({
             },
           },
         })
-        return favorites
       },
     })
     // t.model.strategies({

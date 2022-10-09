@@ -85,7 +85,7 @@ var __assign = function () {
   __assign =
     Object.assign ||
     function __assign(t) {
-      for (var s, i = 1, n = arguments.length; i < n; i++) {
+      for (var s, i = 1, n = arguments.length; i < n; i += 1) {
         s = arguments[i];
         for (const p in s)
           if (Object.prototype.hasOwnProperty.call(s, p)) t[p] = s[p];
@@ -101,7 +101,7 @@ function __rest(s, e) {
     if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
       t[p] = s[p];
   if (s != null && typeof Object.getOwnPropertySymbols === 'function')
-    for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+    for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i += 1) {
       if (
         e.indexOf(p[i]) < 0 &&
         Object.prototype.propertyIsEnumerable.call(s, p[i])

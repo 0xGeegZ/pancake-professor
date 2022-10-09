@@ -1,22 +1,23 @@
+import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
+import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone'
 import {
+  Avatar,
+  Box,
   Button,
   Card,
   CardHeader,
-  Typography,
-  Box,
-  List,
-  ListItemText,
-  ListItem,
-  IconButton,
-  Avatar,
   Grid,
+  IconButton,
+  List,
+  ListItem,
+  ListItemText,
+  Typography,
 } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 import { styled } from '@mui/material/styles'
-import RefreshTwoToneIcon from '@mui/icons-material/RefreshTwoTone'
-import CloseTwoToneIcon from '@mui/icons-material/CloseTwoTone'
-import CheckTwoToneIcon from '@mui/icons-material/CheckTwoTone'
+import { useTranslation } from 'react-i18next'
 import Text from 'src/client/components/Text'
+
 import HealthStatusChart from './HealthStatusChart'
 
 const HealthStatusChartWrapper = styled(HealthStatusChart)(

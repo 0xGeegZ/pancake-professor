@@ -2,6 +2,7 @@ import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
 import { alpha, Box, Drawer, Grid, Hidden, IconButton, useTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
 import { useState } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars-2'
 import Appointments from 'src/client/components/Dashboards/Healthcare/doctor/Appointments'
@@ -13,8 +14,6 @@ import PrescriptionRequests from 'src/client/components/Dashboards/Healthcare/do
 import SoonAvailable from 'src/client/components/Dashboards/Healthcare/doctor/SoonAvailable'
 import Footer from 'src/client/components/Footer'
 import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
-
-import type { ReactElement } from 'react'
 
 const DrawerWrapper = styled(Drawer)(
   ({ theme }) => `

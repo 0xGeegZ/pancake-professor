@@ -7,7 +7,6 @@ import { styled } from '@mui/material/styles'
 import { useRouter } from 'next/router'
 import { FC } from 'react'
 import { useTranslation } from 'react-i18next'
-
 import type { User } from 'src/client/models/user'
 
 const Input = styled('input')({

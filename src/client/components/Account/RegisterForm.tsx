@@ -1,18 +1,17 @@
-import * as Yup from 'yup'
-import { Formik } from 'formik'
 import {
   Button,
   Checkbox,
+  CircularProgress,
+  FormControlLabel,
   FormHelperText,
+  Link,
   TextField,
   Typography,
-  FormControlLabel,
-  Link,
-  CircularProgress,
 } from '@mui/material'
-
-import useRefMounted from 'src/client/hooks/useRefMounted'
+import { Formik } from 'formik'
 import { useTranslation } from 'react-i18next'
+import useRefMounted from 'src/client/hooks/useRefMounted'
+import * as Yup from 'yup'
 
 function RegisterForm() {
   const isMountedRef = useRefMounted()

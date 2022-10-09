@@ -1,6 +1,6 @@
-import { Card, CardContent, CardHeader, Typography, Grid, Divider, useTheme, Box } from '@mui/material'
-import { useTranslation } from 'react-i18next'
+import { Box,Card, CardContent, CardHeader, Divider, Grid, Typography, useTheme } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 import SalesCategoryChart from './SalesCategoryChart'
 

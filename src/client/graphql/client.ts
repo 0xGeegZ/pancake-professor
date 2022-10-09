@@ -1,6 +1,6 @@
-import { createClient, dedupExchange, errorExchange, fetchExchange } from 'urql'
 import { cacheExchange } from '@urql/exchange-graphcache'
 import toast from 'react-hot-toast'
+import { createClient, dedupExchange, errorExchange, fetchExchange } from 'urql'
 
 /**
  * Consistently determine the API URL for the current client even when in a deploy preview or similar

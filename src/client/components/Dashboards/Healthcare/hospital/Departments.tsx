@@ -1,7 +1,7 @@
-import { Button, Card, CardHeader, CardActions, Typography, Divider, Hidden, Grid, Box } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
+import { Box,Button, Card, CardActions, CardHeader, Divider, Grid, Hidden, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 import DepartmentsChart from './DepartmentsChart'
 

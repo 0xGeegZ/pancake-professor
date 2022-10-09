@@ -1,11 +1,11 @@
-import { Avatar, Card, CardHeader, Grid, Typography, LinearProgress, Box } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import Text from 'src/client/components/Text'
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward'
 import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward'
 import MonetizationOnTwoToneIcon from '@mui/icons-material/MonetizationOnTwoTone'
 import ShoppingCartTwoToneIcon from '@mui/icons-material/ShoppingCartTwoTone'
+import { Avatar, Box,Card, CardHeader, Grid, LinearProgress, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import Text from 'src/client/components/Text'
 
 const AvatarWrapperError = styled(Avatar)(
   ({ theme }) => `

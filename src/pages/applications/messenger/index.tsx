@@ -1,18 +1,14 @@
-import { useEffect, useRef } from 'react'
-import type { ReactElement } from 'react'
-
-import Head from 'next/head'
-import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
-
-import TopBarContent from 'src/client/components/Applications/Messenger/TopBarContent'
-import BottomBarContent from 'src/client/components/Applications/Messenger/BottomBarContent'
-import SidebarContent from 'src/client/components/Applications/Messenger/SidebarContent'
-import ChatContent from 'src/client/components/Applications/Messenger/ChatContent'
-
-import { Scrollbars } from 'react-custom-scrollbars-2'
-
 import { Box } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import Head from 'next/head'
+import type { ReactElement } from 'react'
+import { useEffect, useRef } from 'react'
+import { Scrollbars } from 'react-custom-scrollbars-2'
+import BottomBarContent from 'src/client/components/Applications/Messenger/BottomBarContent'
+import ChatContent from 'src/client/components/Applications/Messenger/ChatContent'
+import SidebarContent from 'src/client/components/Applications/Messenger/SidebarContent'
+import TopBarContent from 'src/client/components/Applications/Messenger/TopBarContent'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 
 const RootWrapper = styled(Box)(
   () => `

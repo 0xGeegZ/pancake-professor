@@ -1,23 +1,22 @@
-import { useRef, useState } from 'react'
+import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
 import {
+  Avatar,
+  Box,
+  Button,
   Card,
   CardContent,
-  Grid,
-  Typography,
   CardHeader,
   Divider,
+  Grid,
   Hidden,
-  Avatar,
-  Button,
   Menu,
   MenuItem,
-  Box,
+  Typography,
 } from '@mui/material'
-import { useTranslation } from 'react-i18next'
 import { styled, useTheme } from '@mui/material/styles'
-
-import ExpandMoreTwoToneIcon from '@mui/icons-material/ExpandMoreTwoTone'
+import { useRef, useState } from 'react'
 import { buildStyles } from 'react-circular-progressbar'
+import { useTranslation } from 'react-i18next'
 import Gauge from 'src/client/components/Gauge'
 
 function ProfileGoals() {

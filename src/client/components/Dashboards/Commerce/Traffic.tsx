@@ -1,10 +1,11 @@
-import { Button, Card, Box, CardHeader, Grid, Typography, Divider } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
 import ArrowForwardTwoToneIcon from '@mui/icons-material/ArrowForwardTwoTone'
-import Label from 'src/client/components/Label'
-import TrendingUp from '@mui/icons-material/TrendingUp'
 import TrendingDown from '@mui/icons-material/TrendingDown'
+import TrendingUp from '@mui/icons-material/TrendingUp'
+import { Box, Button, Card, CardHeader, Divider,Grid, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import Label from 'src/client/components/Label'
+
 import TrafficChart from './TrafficChart'
 
 const ArrowTrendingUpWrapper = styled(TrendingUp)(

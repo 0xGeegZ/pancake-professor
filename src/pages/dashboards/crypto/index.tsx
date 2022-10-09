@@ -1,5 +1,6 @@
 import { Grid } from '@mui/material'
 import Head from 'next/head'
+import type { ReactElement } from 'react'
 import AccountBalance from 'src/client/components/Dashboards/Crypto/AccountBalance'
 import AccountSecurity from 'src/client/components/Dashboards/Crypto/AccountSecurity'
 import PageHeader from 'src/client/components/Dashboards/Crypto/PageHeader'
@@ -9,8 +10,6 @@ import WatchList from 'src/client/components/Dashboards/Crypto/WatchList'
 import Footer from 'src/client/components/Footer'
 import PageTitleWrapper from 'src/client/components/PageTitleWrapper'
 import BoxedSidebarLayout from 'src/client/layouts/BoxedSidebarLayout'
-
-import type { ReactElement } from 'react'
 
 function DashboardCrypto() {
   return (

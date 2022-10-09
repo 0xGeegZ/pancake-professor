@@ -1,20 +1,16 @@
-import { useState } from 'react'
-import type { ReactElement } from 'react'
-
-import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
-
-import Head from 'next/head'
-import PageHeader from 'src/client/components/Applications/FileManager/PageHeader'
+import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
 import { Box, Drawer, Grid, Hidden, IconButton } from '@mui/material'
+import { styled, useTheme } from '@mui/material/styles'
+import Head from 'next/head'
+import type { ReactElement } from 'react'
+import { useState } from 'react'
 import { Scrollbars } from 'react-custom-scrollbars-2'
-
+import AllFolders from 'src/client/components/Applications/FileManager/AllFolders'
 import FileManagerSidebar from 'src/client/components/Applications/FileManager/FileManagerSidebar'
+import PageHeader from 'src/client/components/Applications/FileManager/PageHeader'
 import QuickAccess from 'src/client/components/Applications/FileManager/QuickAccess'
 import TeamFolders from 'src/client/components/Applications/FileManager/TeamFolders'
-import AllFolders from 'src/client/components/Applications/FileManager/AllFolders'
-
-import { styled, useTheme } from '@mui/material/styles'
-import MenuTwoToneIcon from '@mui/icons-material/MenuTwoTone'
+import AccentHeaderLayout from 'src/client/layouts/AccentHeaderLayout'
 
 const DrawerWrapper = styled(Drawer)(
   ({ theme }) => `

@@ -1,12 +1,11 @@
-import { CardHeader, Divider, Card, LinearProgress, List, ListItem, Box, Typography } from '@mui/material'
-
-import { useTranslation } from 'react-i18next'
+import { Box, Card, CardHeader, Divider, LinearProgress, List, ListItem, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
+import cnFlag from 'country-flag-icons/3x2/CN.svg'
 import deFlag from 'country-flag-icons/3x2/DE.svg'
-import usFlag from 'country-flag-icons/3x2/US.svg'
 import esFlag from 'country-flag-icons/3x2/ES.svg'
 import frFlag from 'country-flag-icons/3x2/FR.svg'
-import cnFlag from 'country-flag-icons/3x2/CN.svg'
+import usFlag from 'country-flag-icons/3x2/US.svg'
+import { useTranslation } from 'react-i18next'
 
 const ImageWrapper = styled('img')(
   ({ theme }) => `

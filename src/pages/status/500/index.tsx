@@ -4,11 +4,10 @@ import { Box, Button, Container, Grid, Hidden, Typography } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import Head from 'next/head'
 import Image from 'next/image'
+import type { ReactElement } from 'react'
 import { useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import BaseLayout from 'src/client/layouts/BaseLayout'
-
-import type { ReactElement } from 'react'
 
 const GridWrapper = styled(Grid)(
   ({ theme }) => `

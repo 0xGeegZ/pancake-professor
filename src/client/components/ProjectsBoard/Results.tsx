@@ -9,12 +9,11 @@ import { ChangeEvent, FC, useState } from 'react'
 import { Draggable, Droppable } from 'react-beautiful-dnd'
 import { useTranslation } from 'react-i18next'
 import Label from 'src/client/components/Label'
+import type { List as ListType } from 'src/client/models/projects_board'
 import { updateList } from 'src/client/slices/projects_board'
 import { RootState, useDispatch, useSelector } from 'src/client/store/redux'
 
 import Task from './Task'
-
-import type { List as ListType } from 'src/client/models/projects_board'
 
 const ListColumnWrapper = styled(Card)(
   ({ theme }) => `

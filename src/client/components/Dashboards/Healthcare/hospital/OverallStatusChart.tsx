@@ -1,7 +1,7 @@
-import { FC } from 'react'
-import PropTypes from 'prop-types'
-import { Line } from 'react-chartjs-2'
 import { useTheme } from '@mui/material'
+import PropTypes from 'prop-types'
+import { FC } from 'react'
+import { Line } from 'react-chartjs-2'
 
 interface OverallStatusChartProps {
   className?: string

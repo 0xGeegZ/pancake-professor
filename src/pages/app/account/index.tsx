@@ -3,14 +3,13 @@ import 'moment-timezone'
 import { Box, CircularProgress, Grid } from '@mui/material'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
+import type { ReactElement } from 'react'
 import { useEffect, useState } from 'react'
 import Footer from 'src/client/components/Footer'
 import EditProfileTab from 'src/client/components/Management/Users/Single/EditProfileTab'
 import { useGetCurrentUserQuery } from 'src/client/graphql/getCurrentUser.generated'
 import useRefMounted from 'src/client/hooks/useRefMounted'
 import MainLayout from 'src/client/layouts/MainLayout'
-
-import type { ReactElement } from 'react'
 import type { User } from 'src/client/models/user'
 
 // const TabsWrapper = styled(Tabs)(

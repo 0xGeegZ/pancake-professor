@@ -1,11 +1,10 @@
-import { Card, CardContent, CardHeader, Typography, Avatar, Box } from '@mui/material'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-
-import Label from 'src/client/components/Label'
-
 import ArrowDownwardTwoToneIcon from '@mui/icons-material/ArrowDownwardTwoTone'
 import CalendarTodayTwoToneIcon from '@mui/icons-material/CalendarTodayTwoTone'
+import { Avatar, Box,Card, CardContent, CardHeader, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import Label from 'src/client/components/Label'
+
 import TimeSpentChart from './TimeSpentChart'
 
 const TimeSpentChartWrapper = styled(TimeSpentChart)(

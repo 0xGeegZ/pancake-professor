@@ -1,9 +1,10 @@
-import { useState } from 'react'
-import { Button, Card, CardContent, CardHeader, Alert, Collapse, IconButton, Divider, Box } from '@mui/material'
-import { useTranslation } from 'react-i18next'
+import CloseIcon from '@mui/icons-material/Close'
+import { Alert, Box,Button, Card, CardContent, CardHeader, Collapse, Divider, IconButton } from '@mui/material'
 import { styled } from '@mui/material/styles'
 import { formatDistance, subMinutes } from 'date-fns'
-import CloseIcon from '@mui/icons-material/Close'
+import { useState } from 'react'
+import { useTranslation } from 'react-i18next'
+
 import ResourcesAlarmChart from './ResourcesAlarmChart'
 
 const CardHeaderWrapper = styled(CardHeader)(

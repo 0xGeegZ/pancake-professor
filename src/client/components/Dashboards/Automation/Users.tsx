@@ -1,6 +1,5 @@
-import { Box, Typography, Card, Avatar, Stack, Tooltip, Divider, IconButton } from '@mui/material'
-
 import KeyboardArrowRightTwoToneIcon from '@mui/icons-material/KeyboardArrowRightTwoTone'
+import { Avatar, Box, Card, Divider, IconButton,Stack, Tooltip, Typography } from '@mui/material'
 import { useTranslation } from 'react-i18next'
 
 function Users() {

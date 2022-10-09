@@ -1,7 +1,6 @@
-import { Typography, Avatar, Grid } from '@mui/material'
-
-import { useTranslation } from 'react-i18next'
+import { Avatar, Grid,Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
 
 function PageHeader() {
   const { t }: { t: any } = useTranslation()

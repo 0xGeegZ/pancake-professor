@@ -1,14 +1,14 @@
-import { Card, CardHeader, Typography, CardActionArea, IconButton, Divider } from '@mui/material'
-
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import SwiperCore, { Navigation, Pagination } from 'swiper'
-import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
-import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
-import { Swiper, SwiperSlide } from 'swiper/react'
 import 'swiper/swiper.min.css'
 import 'swiper/components/navigation/navigation.min.css'
 import 'swiper/components/pagination/pagination.min.css'
+
+import ChevronLeftTwoToneIcon from '@mui/icons-material/ChevronLeftTwoTone'
+import ChevronRightTwoToneIcon from '@mui/icons-material/ChevronRightTwoTone'
+import { Card, CardActionArea, CardHeader, Divider,IconButton, Typography } from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useTranslation } from 'react-i18next'
+import SwiperCore, { Navigation, Pagination } from 'swiper'
+import { Swiper, SwiperSlide } from 'swiper/react'
 
 SwiperCore.use([Navigation, Pagination])
 

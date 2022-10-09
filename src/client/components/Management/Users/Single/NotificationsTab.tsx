@@ -1,5 +1,5 @@
-import { useState, ChangeEvent } from 'react'
-import { Box, Typography, Card, Grid, ListItem, List, ListItemText, Divider, Switch } from '@mui/material'
+import { Box, Card, Divider, Grid, List, ListItem, ListItemText, Switch,Typography } from '@mui/material'
+import { ChangeEvent,useState } from 'react'
 import { useTranslation } from 'react-i18next'
 
 function NotificationsTab() {

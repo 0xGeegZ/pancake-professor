@@ -1,30 +1,28 @@
-import { useRef, useState } from 'react'
-
-import {
-  Box,
-  Typography,
-  Tooltip,
-  Avatar,
-  Card,
-  Grid,
-  CardActionArea,
-  CardContent,
-  MenuItem,
-  Menu,
-  IconButton,
-  Button,
-  Switch,
-} from '@mui/material'
-import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
-
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import KitchenIcon from '@mui/icons-material/Kitchen'
 import LightbulbTwoToneIcon from '@mui/icons-material/LightbulbTwoTone'
 import RouterTwoToneIcon from '@mui/icons-material/RouterTwoTone'
-import WashTwoToneIcon from '@mui/icons-material/WashTwoTone'
-import { useTranslation } from 'react-i18next'
-import { styled } from '@mui/material/styles'
-import AddTwoToneIcon from '@mui/icons-material/AddTwoTone'
 import SmartButtonTwoToneIcon from '@mui/icons-material/SmartButtonTwoTone'
+import UnfoldMoreTwoToneIcon from '@mui/icons-material/UnfoldMoreTwoTone'
+import WashTwoToneIcon from '@mui/icons-material/WashTwoTone'
+import {
+  Avatar,
+  Box,
+  Button,
+  Card,
+  CardActionArea,
+  CardContent,
+  Grid,
+  IconButton,
+  Menu,
+  MenuItem,
+  Switch,
+  Tooltip,
+  Typography,
+} from '@mui/material'
+import { styled } from '@mui/material/styles'
+import { useRef, useState } from 'react'
+import { useTranslation } from 'react-i18next'
 
 const CardAddAction = styled(Card)(
   ({ theme }) => `
