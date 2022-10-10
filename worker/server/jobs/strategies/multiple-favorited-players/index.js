@@ -305,7 +305,7 @@ const run = async () => {
 
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
-    const timer = secondsLeftUntilNextEpoch - 8.5
+    const timer = secondsLeftUntilNextEpoch - 8
     // const timer = secondsLeftUntilNextEpoch - 8.5
     // const timer = secondsLeftUntilNextEpoch - 9
 
