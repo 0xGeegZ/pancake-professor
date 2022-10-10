@@ -305,8 +305,8 @@ const run = async () => {
 
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
-    const timer = secondsLeftUntilNextEpoch - 8
-    // const timer = secondsLeftUntilNextEpoch - 8.5
+    // const timer = secondsLeftUntilNextEpoch - 8
+    const timer = secondsLeftUntilNextEpoch - 8.5
     // const timer = secondsLeftUntilNextEpoch - 9
 
     if (timer > 0) {
@@ -316,6 +316,8 @@ const run = async () => {
 
     if (!strategie.plays.length) {
       logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING 1 MORE SECOND`)
+      // TODO V0.4 update HEXLIFY_FAST to HEXLIFY_EXTRA_FAST
+      strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_EXTRA_FAST)
       await sleep(1000)
     }
 
@@ -580,6 +582,7 @@ const run = async () => {
     )
 
     strategie.plays = []
+    strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_FAST)
     strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
     strategie.isTimeEnded = false
     strategie.epoch = epoch
