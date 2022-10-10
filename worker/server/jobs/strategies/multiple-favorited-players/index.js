@@ -224,8 +224,9 @@ const run = async () => {
 
   const betRound = async ({ epoch, betBull, betAmount, isAlreadyRetried = false }) => {
     if (strategie.currentAmount === 0) {
-      logger.error(`[PLAYING] Not enought BNB to bet ${betAmount}, current amount is ${strategie.currentAmount}`)
+      logger.error(`[PLAYING] No BNB to bet ${betAmount}, current amount is zero`)
       await stopStrategie({ epoch })
+      return
     }
 
     if (betAmount > strategie.currentAmount) {
@@ -233,6 +234,7 @@ const run = async () => {
 
       betAmount = config.MIN_BET_AMOUNT_BNB
       // await stopStrategie({ epoch })
+      // return
     }
 
     if (betAmount < config.MIN_BET_AMOUNT_BNB) betAmount = config.MIN_BET_AMOUNT_BNB
@@ -304,6 +306,7 @@ const run = async () => {
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
     const timer = secondsLeftUntilNextEpoch - 8.5
+    // const timer = secondsLeftUntilNextEpoch - 8.5
     // const timer = secondsLeftUntilNextEpoch - 9
 
     if (timer > 0) {
@@ -319,7 +322,6 @@ const run = async () => {
     if (!strategie.plays.length) {
       logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING ANOTHER 0.5 SECOND MORE`)
       await sleep(500)
-      // await sleep(1000)
     }
 
     let betBullCount = strategie.plays.filter((p) => p.betBull)
@@ -341,6 +343,14 @@ const run = async () => {
           return parseInt(+p.player.winRate * ((+p.player.totalBets * 100) / totalBetsForRound))
         })
         .reduce((acc, winRate) => acc + winRate, 0) / betBullCount.length || 0
+
+    // TODO v0.4 test ne approach for adjustement
+    // let bullAverageBets =
+    //   betBullCount.map((p) => +p.player.totalBets).reduce((acc, totalBets) => acc + totalBets, 0) /
+    //     betBullCount.length || 0
+
+    // let isBullBetterAdjusted = 0
+
     isBullBetterAdjusted = parseFloat(isBullBetterAdjusted).toFixed(2)
 
     let isBearBetter =
@@ -390,36 +400,6 @@ const run = async () => {
     // const kellyBetAmountBull = parseFloat(strategie.currentAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
     // const kellyBetAmountBear = parseFloat(strategie.currentAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
 
-    // console.log(
-    //   '🚀 ~ AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA ~ kellyCriterionBull (%)',
-    //   kellyCriterionBull,
-    //   'ratingUp',
-    //   ratingUp,
-    //   'averageWinRateBull',
-    //   averageWinRateBull,
-    //   'kellyBetAmountBull',
-    //   kellyBetAmountBull,
-    //   'strategie.betAmount',
-    //   strategie.betAmount,
-    //   'bullDivider',
-    //   bullDivider
-    // )
-    // console.log(
-    //   '🚀 ~ BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB ~ kellyCriterionBear (%)',
-    //   kellyCriterionBear,
-    //   'ratingDown',
-    //   ratingDown,
-    //   'averageWinRateBear',
-    //   averageWinRateBear,
-    //   'kellyBetAmountBear',
-    //   kellyBetAmountBear,
-    //   'strategie.betAmount',
-    //   strategie.betAmount,
-    //   'bearDivider',
-    //   bearDivider
-    // )
-    // console.log('🚀 ~ CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC ~ player.winRate', strategie)
-
     strategie.isTimeEnded = true
 
     // logger.info('//////////////////////////      ////////////////////////////////')
@@ -431,7 +411,11 @@ const run = async () => {
       // totalPlayers > 1 &&
       (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
       betBullCount.length >= betBearCount.length &&
-      +isBullBetterAdjusted > +isBearBetterAdjusted
+      (+isBullBetterAdjusted > +isBearBetterAdjusted ||
+        (totalPlayers > 1 && betBullCount.length % betBearCount.length === 0)) &&
+      ratingUp <= 2
+      // +isBullBetter > +isBearBetter
+      // +isBullBetterAdjusted > +isBearBetterAdjusted
       //  &&
       // ratingUp >= 1.3 &&
       // ratingUp <= 3
@@ -444,7 +428,11 @@ const run = async () => {
       (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
       // totalPlayers > 1 &&
       betBearCount.length >= betBullCount.length &&
-      +isBearBetterAdjusted > +isBullBetterAdjusted
+      (+isBearBetterAdjusted > +isBullBetterAdjusted ||
+        (totalPlayers > 1 && betBearCount.length % betBullCount.length === 0)) &&
+      ratingDown <= 2
+      // +isBearBetter > +isBullBetter
+      // +isBearBetterAdjusted > +isBullBetterAdjusted
       //  &&
       // ratingDown >= 1.3 &&
       // ratingDown <= 3
@@ -471,6 +459,35 @@ const run = async () => {
       `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] (isBullBetter ${Math.round(
         isBullBetter
       )}, isBearBetter ${Math.round(isBearBetter)})`
+    )
+
+    console.log(
+      '🚀 ~ BULL ~ kellyCriterionBull (%)',
+      kellyCriterionBull,
+      'ratingUp',
+      ratingUp,
+      'averageWinRateBull',
+      averageWinRateBull,
+      'kellyBetAmountBull',
+      kellyBetAmountBull,
+      'strategie.betAmount',
+      strategie.betAmount,
+      'bullDivider',
+      bullDivider
+    )
+    console.log(
+      '🚀 ~ BEAR ~ kellyCriterionBear (%)',
+      kellyCriterionBear,
+      'ratingDown',
+      ratingDown,
+      'averageWinRateBear',
+      averageWinRateBear,
+      'kellyBetAmountBear',
+      kellyBetAmountBear,
+      'strategie.betAmount',
+      strategie.betAmount,
+      'bearDivider',
+      bearDivider
     )
     logger.info('//////////////////////////      ////////////////////////////////')
 
