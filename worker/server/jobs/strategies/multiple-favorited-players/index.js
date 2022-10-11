@@ -315,15 +315,18 @@ const run = async () => {
     }
 
     if (!strategie.plays.length) {
-      logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING 1 MORE SECOND`)
+      logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING 0.5 SECOND MORE`)
       // TODO V0.4 update HEXLIFY_FAST to HEXLIFY_EXTRA_FAST
       strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_EXTRA_FAST)
-      await sleep(1000)
+      await sleep(500)
     }
 
     if (!strategie.plays.length) {
+      // logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING 1 MORE SECOND`)
       logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING ANOTHER 0.5 SECOND MORE`)
-      await sleep(500)
+      // // TODO V0.4 update HEXLIFY_FAST to HEXLIFY_EXTRA_FAST
+      // strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_EXTRA_FAST)
+      await sleep(1000)
     }
 
     let betBullCount = strategie.plays.filter((p) => p.betBull)
