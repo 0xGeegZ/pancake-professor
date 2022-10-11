@@ -44,6 +44,15 @@ enum PaidPlan {
   pro
 }
 
+type Player {
+  averageBNB: String!
+  id: String!
+  netBNB: String!
+  totalBNB: String!
+  totalBets: String!
+  winRate: String!
+}
+
 type Project {
   id: String!
   name: String!
@@ -58,6 +67,7 @@ type Query {
   getFavorite(id: String!): Favorite
   getFavorites: [Favorite]
   getUsers: [User]
+  loadPlayers: [Player]
   project(id: String, slug: String): Project
   strategie(id: String!): Strategie
   user(id: String!): User

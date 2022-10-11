@@ -3,6 +3,7 @@ import { nexusPrisma } from 'nexus-plugin-prisma'
 import path from 'path'
 
 import Favorite from './Favorite'
+import Player from './Player'
 import Project, { PaidPlan } from './Project'
 import Strategie from './Strategie'
 import User from './User'
@@ -12,7 +13,7 @@ import User from './User'
 const shouldGenerateArtifacts = process.env.NODE_ENV === 'development' || !!process.env.GENERATE
 
 export const schema = makeSchema({
-  types: [User, Project, PaidPlan, Strategie, Favorite],
+  types: [User, Project, PaidPlan, Strategie, Favorite, Player],
   plugins: [
     nexusPrisma({
       shouldGenerateArtifacts,

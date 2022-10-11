@@ -15,6 +15,14 @@ module.exports.isMutation = function(obj) {
 
 
 
+var Player_possibleTypes = ['Player']
+module.exports.isPlayer = function(obj) {
+  if (!obj || !obj.__typename) throw new Error('__typename is missing in "isPlayer"')
+  return Player_possibleTypes.includes(obj.__typename)
+}
+
+
+
 var Project_possibleTypes = ['Project']
 module.exports.isProject = function(obj) {
   if (!obj || !obj.__typename) throw new Error('__typename is missing in "isProject"')

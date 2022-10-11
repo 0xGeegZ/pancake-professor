@@ -1,0 +1,18 @@
+query LoadPlayers {
+  loadPlayers {
+    id
+    totalBNB
+    totalBets
+    winRate
+    averageBNB
+    netBNB
+    # bets {
+    #   position
+    #   createdAt
+    #   round {
+    #     epoch
+    #     position
+    #   }
+    # }
+  }
+}

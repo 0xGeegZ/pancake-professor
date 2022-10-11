@@ -33,7 +33,7 @@ module.exports = {
                 4
             ],
             "user": [
-                14
+                15
             ],
             "__typename": [
                 2
@@ -52,7 +52,7 @@ module.exports = {
         },
         "Mutation": {
             "createFriend": [
-                14,
+                15,
                 {
                     "id": [
                         2,
@@ -61,7 +61,7 @@ module.exports = {
                 }
             ],
             "createProject": [
-                10,
+                11,
                 {
                     "name": [
                         2,
@@ -73,7 +73,7 @@ module.exports = {
                 }
             ],
             "createStrategie": [
-                12,
+                13,
                 {
                     "betAmountPercent": [
                         7,
@@ -139,7 +139,7 @@ module.exports = {
                 }
             ],
             "deleteStrategie": [
-                12,
+                13,
                 {
                     "id": [
                         2,
@@ -161,7 +161,7 @@ module.exports = {
                 }
             ],
             "removeFunds": [
-                14,
+                15,
                 {
                     "id": [
                         2,
@@ -174,7 +174,7 @@ module.exports = {
                 }
             ],
             "toogleActivateStrategie": [
-                12,
+                13,
                 {
                     "id": [
                         2,
@@ -183,7 +183,7 @@ module.exports = {
                 }
             ],
             "toogleFavoritePlayer": [
-                14,
+                15,
                 {
                     "isNeedToFavorite": [
                         8,
@@ -200,7 +200,7 @@ module.exports = {
                 }
             ],
             "toogleIsActivated": [
-                14,
+                15,
                 {
                     "id": [
                         2,
@@ -209,7 +209,7 @@ module.exports = {
                 }
             ],
             "updateStrategie": [
-                12,
+                13,
                 {
                     "betAmountPercent": [
                         7
@@ -269,7 +269,7 @@ module.exports = {
                 }
             ],
             "updateUser": [
-                14,
+                15,
                 {
                     "address": [
                         2,
@@ -294,6 +294,29 @@ module.exports = {
         "Float": {},
         "Boolean": {},
         "PaidPlan": {},
+        "Player": {
+            "averageBNB": [
+                2
+            ],
+            "id": [
+                2
+            ],
+            "netBNB": [
+                2
+            ],
+            "totalBNB": [
+                2
+            ],
+            "totalBets": [
+                2
+            ],
+            "winRate": [
+                2
+            ],
+            "__typename": [
+                2
+            ]
+        },
         "Project": {
             "id": [
                 2
@@ -308,13 +331,13 @@ module.exports = {
                 2
             ],
             "users": [
-                14,
+                15,
                 {
                     "after": [
-                        15
+                        16
                     ],
                     "before": [
-                        15
+                        16
                     ],
                     "first": [
                         3
@@ -330,7 +353,7 @@ module.exports = {
         },
         "Query": {
             "currentUser": [
-                14
+                15
             ],
             "getAllFavorites": [
                 1
@@ -348,10 +371,13 @@ module.exports = {
                 1
             ],
             "getUsers": [
-                14
+                15
+            ],
+            "loadPlayers": [
+                10
             ],
             "project": [
-                10,
+                11,
                 {
                     "id": [
                         2
@@ -362,7 +388,7 @@ module.exports = {
                 }
             ],
             "strategie": [
-                12,
+                13,
                 {
                     "id": [
                         2,
@@ -371,7 +397,7 @@ module.exports = {
                 }
             ],
             "user": [
-                14,
+                15,
                 {
                     "id": [
                         2,
@@ -463,7 +489,7 @@ module.exports = {
                 3
             ],
             "user": [
-                14
+                15
             ],
             "__typename": [
                 2
@@ -532,13 +558,13 @@ module.exports = {
                 2
             ],
             "referrals": [
-                14,
+                15,
                 {
                     "after": [
-                        15
+                        16
                     ],
                     "before": [
-                        15
+                        16
                     ],
                     "first": [
                         3
@@ -552,13 +578,13 @@ module.exports = {
                 0
             ],
             "strategies": [
-                12,
+                13,
                 {
                     "after": [
-                        13
+                        14
                     ],
                     "before": [
-                        13
+                        14
                     ],
                     "first": [
                         3

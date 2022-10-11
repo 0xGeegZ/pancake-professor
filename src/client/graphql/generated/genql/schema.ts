@@ -41,6 +41,16 @@ export interface Mutation {
 
 export type PaidPlan = 'pro'
 
+export interface Player {
+    averageBNB: Scalars['String']
+    id: Scalars['String']
+    netBNB: Scalars['String']
+    totalBNB: Scalars['String']
+    totalBets: Scalars['String']
+    winRate: Scalars['String']
+    __typename: 'Player'
+}
+
 export interface Project {
     id: Scalars['String']
     name: Scalars['String']
@@ -56,6 +66,7 @@ export interface Query {
     getFavorite?: Favorite
     getFavorites?: (Favorite | undefined)[]
     getUsers?: (User | undefined)[]
+    loadPlayers?: (Player | undefined)[]
     project?: Project
     strategie?: Strategie
     user?: User
@@ -144,6 +155,17 @@ export interface MutationRequest{
     __scalar?: boolean | number
 }
 
+export interface PlayerRequest{
+    averageBNB?: boolean | number
+    id?: boolean | number
+    netBNB?: boolean | number
+    totalBNB?: boolean | number
+    totalBets?: boolean | number
+    winRate?: boolean | number
+    __typename?: boolean | number
+    __scalar?: boolean | number
+}
+
 export interface ProjectRequest{
     id?: boolean | number
     name?: boolean | number
@@ -160,6 +182,7 @@ export interface QueryRequest{
     getFavorite?: [{id: Scalars['String']},FavoriteRequest]
     getFavorites?: FavoriteRequest
     getUsers?: UserRequest
+    loadPlayers?: PlayerRequest
     project?: [{id?: (Scalars['String'] | null),slug?: (Scalars['String'] | null)},ProjectRequest] | ProjectRequest
     strategie?: [{id: Scalars['String']},StrategieRequest]
     user?: [{id: Scalars['String']},UserRequest]
@@ -235,6 +258,14 @@ const Mutation_possibleTypes = ['Mutation']
 export const isMutation = (obj?: { __typename?: any } | null): obj is Mutation => {
   if (!obj?.__typename) throw new Error('__typename is missing in "isMutation"')
   return Mutation_possibleTypes.includes(obj.__typename)
+}
+
+
+
+const Player_possibleTypes = ['Player']
+export const isPlayer = (obj?: { __typename?: any } | null): obj is Player => {
+  if (!obj?.__typename) throw new Error('__typename is missing in "isPlayer"')
+  return Player_possibleTypes.includes(obj.__typename)
 }
 
 
@@ -324,6 +355,24 @@ export interface MutationObservableChain{
     updateUser: ((args: {address: Scalars['String'],email?: (Scalars['String'] | null),id: Scalars['String'],name?: (Scalars['String'] | null)}) => UserObservableChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Observable<(FieldsSelection<User, R> | undefined)>})
 }
 
+export interface PlayerPromiseChain{
+    averageBNB: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Promise<Scalars['String']>}),
+    id: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Promise<Scalars['String']>}),
+    netBNB: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Promise<Scalars['String']>}),
+    totalBNB: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Promise<Scalars['String']>}),
+    totalBets: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Promise<Scalars['String']>}),
+    winRate: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Promise<Scalars['String']>})
+}
+
+export interface PlayerObservableChain{
+    averageBNB: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Observable<Scalars['String']>}),
+    id: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Observable<Scalars['String']>}),
+    netBNB: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Observable<Scalars['String']>}),
+    totalBNB: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Observable<Scalars['String']>}),
+    totalBets: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Observable<Scalars['String']>}),
+    winRate: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Observable<Scalars['String']>})
+}
+
 export interface ProjectPromiseChain{
     id: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Promise<Scalars['String']>}),
     name: ({get: (request?: boolean|number, defaultValue?: Scalars['String']) => Promise<Scalars['String']>}),
@@ -346,6 +395,7 @@ export interface QueryPromiseChain{
     getFavorite: ((args: {id: Scalars['String']}) => FavoritePromiseChain & {get: <R extends FavoriteRequest>(request: R, defaultValue?: (FieldsSelection<Favorite, R> | undefined)) => Promise<(FieldsSelection<Favorite, R> | undefined)>}),
     getFavorites: ({get: <R extends FavoriteRequest>(request: R, defaultValue?: ((FieldsSelection<Favorite, R> | undefined)[] | undefined)) => Promise<((FieldsSelection<Favorite, R> | undefined)[] | undefined)>}),
     getUsers: ({get: <R extends UserRequest>(request: R, defaultValue?: ((FieldsSelection<User, R> | undefined)[] | undefined)) => Promise<((FieldsSelection<User, R> | undefined)[] | undefined)>}),
+    loadPlayers: ({get: <R extends PlayerRequest>(request: R, defaultValue?: ((FieldsSelection<Player, R> | undefined)[] | undefined)) => Promise<((FieldsSelection<Player, R> | undefined)[] | undefined)>}),
     project: ((args?: {id?: (Scalars['String'] | null),slug?: (Scalars['String'] | null)}) => ProjectPromiseChain & {get: <R extends ProjectRequest>(request: R, defaultValue?: (FieldsSelection<Project, R> | undefined)) => Promise<(FieldsSelection<Project, R> | undefined)>})&(ProjectPromiseChain & {get: <R extends ProjectRequest>(request: R, defaultValue?: (FieldsSelection<Project, R> | undefined)) => Promise<(FieldsSelection<Project, R> | undefined)>}),
     strategie: ((args: {id: Scalars['String']}) => StrategiePromiseChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Promise<(FieldsSelection<Strategie, R> | undefined)>}),
     user: ((args: {id: Scalars['String']}) => UserPromiseChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Promise<(FieldsSelection<User, R> | undefined)>})
@@ -357,6 +407,7 @@ export interface QueryObservableChain{
     getFavorite: ((args: {id: Scalars['String']}) => FavoriteObservableChain & {get: <R extends FavoriteRequest>(request: R, defaultValue?: (FieldsSelection<Favorite, R> | undefined)) => Observable<(FieldsSelection<Favorite, R> | undefined)>}),
     getFavorites: ({get: <R extends FavoriteRequest>(request: R, defaultValue?: ((FieldsSelection<Favorite, R> | undefined)[] | undefined)) => Observable<((FieldsSelection<Favorite, R> | undefined)[] | undefined)>}),
     getUsers: ({get: <R extends UserRequest>(request: R, defaultValue?: ((FieldsSelection<User, R> | undefined)[] | undefined)) => Observable<((FieldsSelection<User, R> | undefined)[] | undefined)>}),
+    loadPlayers: ({get: <R extends PlayerRequest>(request: R, defaultValue?: ((FieldsSelection<Player, R> | undefined)[] | undefined)) => Observable<((FieldsSelection<Player, R> | undefined)[] | undefined)>}),
     project: ((args?: {id?: (Scalars['String'] | null),slug?: (Scalars['String'] | null)}) => ProjectObservableChain & {get: <R extends ProjectRequest>(request: R, defaultValue?: (FieldsSelection<Project, R> | undefined)) => Observable<(FieldsSelection<Project, R> | undefined)>})&(ProjectObservableChain & {get: <R extends ProjectRequest>(request: R, defaultValue?: (FieldsSelection<Project, R> | undefined)) => Observable<(FieldsSelection<Project, R> | undefined)>}),
     strategie: ((args: {id: Scalars['String']}) => StrategieObservableChain & {get: <R extends StrategieRequest>(request: R, defaultValue?: (FieldsSelection<Strategie, R> | undefined)) => Observable<(FieldsSelection<Strategie, R> | undefined)>}),
     user: ((args: {id: Scalars['String']}) => UserObservableChain & {get: <R extends UserRequest>(request: R, defaultValue?: (FieldsSelection<User, R> | undefined)) => Observable<(FieldsSelection<User, R> | undefined)>})

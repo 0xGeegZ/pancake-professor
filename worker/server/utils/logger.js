@@ -1,7 +1,17 @@
 const winston = require('winston')
 
 const logFormat = winston.format.printf(function (info) {
-  return `${new Date().toLocaleString('fr-FR')} - ${info.level} : ${JSON.stringify(info.message, null, 4)}`
+  const date = new Date()
+  const dateFormated = date.toLocaleString('fr-FR')
+  const milliseconds = date.getMilliseconds()
+  const millisecondsFormated =
+    +milliseconds.toString().length === 1
+      ? `00${milliseconds}`
+      : +milliseconds.toString().length === 2
+      ? `0${milliseconds}`
+      : milliseconds
+
+  return `${dateFormated}:${millisecondsFormated} - ${info.level} : ${JSON.stringify(info.message, null, 4)}`
 })
 
 const format = winston.format.combine(

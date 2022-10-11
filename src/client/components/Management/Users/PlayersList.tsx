@@ -58,6 +58,7 @@ import type { ReactElement } from 'react'
 import { ChangeEvent, FC, forwardRef, MouseEvent, Ref, useCallback, useEffect, useRef, useState } from 'react'
 import { useTranslation } from 'react-i18next'
 import FollowPlayerForm from 'src/client/components/Dashboards/Automation/FollowPlayerForm'
+import { useLoadPlayersQuery } from 'src/client/graphql/loadPlayers.generated'
 import { useToogleFavoritePlayerMutation } from 'src/client/graphql/toogleFavoritePlayer.generated'
 import type { Player } from 'src/client/models/player'
 import { useGlobalStore } from 'src/client/store/swr'
@@ -217,6 +218,14 @@ const PlayersList: FC = () => {
   // START FILTERS
   const actionRef2 = useRef<any>(null)
   const [openFilters, setOpenMenuFilters] = useState<boolean>(false)
+
+  const [{ data: loadPlayerData, fetching: isLoadPlayerFetching }] = useLoadPlayersQuery()
+
+  useEffect(() => {
+    if (isLoadPlayerFetching) return
+
+    console.log(loadPlayerData)
+  }, [isLoadPlayerFetching, loadPlayerData])
 
   // const [type, setType] = useState('')
 

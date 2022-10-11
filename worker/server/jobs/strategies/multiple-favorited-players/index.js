@@ -260,7 +260,7 @@ const run = async () => {
       })
 
       await tx.wait()
-      logger.info(`[PLAYING] Transaction OK`)
+      // logger.info(`[PLAYING] Transaction OK`)
 
       strategie.playedEpochs.push(epoch.toString())
       strategie.playsCount += 1
@@ -294,8 +294,6 @@ const run = async () => {
   }
 
   const playRound = async ({ epoch }) => {
-    logger.info(`********** [ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING **********`)
-
     // TODO 0.0.4 : Calculate KELLY CRITERION bet value
     // https://dqydj.com/kelly-criterion-bet-calculator/
     const { bullAmount, bearAmount, startTimestamp } = await preditionContract.rounds(epoch)
@@ -309,24 +307,29 @@ const run = async () => {
     const timer = secondsLeftUntilNextEpoch - 8.5
     // const timer = secondsLeftUntilNextEpoch - 9
 
+    logger.info(
+      `********** [ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING (timer ${timer.toFixed(4)}) **********`
+    )
+
     if (timer > 0) {
       // logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING until -8.5 seconds`)
       await sleep(timer * 1000)
+      // await setTimeout(timer * 1000)
     }
 
     if (!strategie.plays.length) {
       logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING 0.5 SECOND MORE`)
       // TODO V0.4 update HEXLIFY_FAST to HEXLIFY_EXTRA_FAST
+      strategie.gasPrice = ethers.utils.parseUnits(config.EXTRA_FAST_GAS_PRICE.toString(), 'gwei').toString()
       strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_EXTRA_FAST)
       await sleep(500)
+      // await setTimeout(500)
     }
 
     if (!strategie.plays.length) {
-      // logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING 1 MORE SECOND`)
+      // transaction should fail almost all the time if enter here
       logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING ANOTHER 0.5 SECOND MORE`)
-      // // TODO V0.4 update HEXLIFY_FAST to HEXLIFY_EXTRA_FAST
-      // strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_EXTRA_FAST)
-      await sleep(1000)
+      await sleep(500)
     }
 
     let betBullCount = strategie.plays.filter((p) => p.betBull)
@@ -396,8 +399,8 @@ const run = async () => {
 
     // const bullDivider = ratingUp <= 1.7 ? 3 : ratingUp >= 2 ? 5 : 4
     // const bearDivider = ratingDown <= 1.7 ? 3 : ratingDown >= 2 ? 5 : 4
-    const bullDivider = ratingUp <= 1.4 ? 3 : ratingUp <= 1.7 ? 2.5 : ratingUp >= 2 ? 5 : 3.5
-    const bearDivider = ratingDown <= 1.4 ? 3 : ratingDown <= 1.7 ? 2.5 : ratingDown >= 2 ? 5 : 3.5
+    const bullDivider = ratingUp <= 1.45 ? 3 : ratingUp <= 1.75 ? 2.5 : ratingUp >= 2.1 ? 6 : 3.5
+    const bearDivider = ratingDown <= 1.45 ? 3 : ratingDown <= 1.75 ? 2.5 : ratingDown >= 2.1 ? 6 : 3.5
 
     // TODO v0.0.4 check if currentAmount is better than startedAmount
     const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
@@ -416,9 +419,17 @@ const run = async () => {
       // totalPlayers > 1 &&
       (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
       betBullCount.length >= betBearCount.length &&
-      (+isBullBetterAdjusted > +isBearBetterAdjusted ||
-        (totalPlayers > 1 && betBullCount.length % betBearCount.length === 0)) &&
-      ratingUp <= 2
+      // (+isBullBetterAdjusted > +isBearBetterAdjusted ||
+      (+isBullBetter > +isBearBetter ||
+        (totalPlayers > 1 &&
+          betBullCount.length !== betBearCount.length &&
+          betBullCount.length % betBearCount.length === 0)) &&
+      //V0.5 TEST
+      (ratingUp <= 2.6 || (totalPlayers > 1 && betBearCount.length === 0))
+      // V0.4 LOOKS TO IMPROOVE PERFS
+      // ratingUp <= 2.6
+      // END
+      // ratingUp <= 2
       // +isBullBetter > +isBearBetter
       // +isBullBetterAdjusted > +isBearBetterAdjusted
       //  &&
@@ -428,14 +439,22 @@ const run = async () => {
       logger.info('///////////////////////// BULL /////////////////////////////////')
       // await betRound({ epoch, betBull: true, betAmount: config.MIN_BET_AMOUNT_BNB })
       await betRound({ epoch, betBull: true, betAmount: kellyBetAmountBull })
-      logger.info('//////////////////////////////////////////////////////////')
+      // logger.info('//////////////////////////////////////////////////////////')
     } else if (
       (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
       // totalPlayers > 1 &&
       betBearCount.length >= betBullCount.length &&
-      (+isBearBetterAdjusted > +isBullBetterAdjusted ||
-        (totalPlayers > 1 && betBearCount.length % betBullCount.length === 0)) &&
-      ratingDown <= 2
+      // (+isBearBetterAdjusted > +isBullBetterAdjusted ||
+      (+isBearBetter > +isBullBetter ||
+        (totalPlayers > 1 &&
+          betBullCount.length !== betBearCount.length &&
+          betBearCount.length % betBullCount.length === 0)) &&
+      //V0.5 TEST
+      (ratingDown <= 2.6 || (totalPlayers > 1 && betBullCount.length === 0))
+      // V0.4 LOOKS TO IMPROOVE PERFS
+      // ratingDown <= 2.6
+      //END
+      // ratingDown <= 2
       // +isBearBetter > +isBullBetter
       // +isBearBetterAdjusted > +isBullBetterAdjusted
       //  &&
@@ -445,7 +464,7 @@ const run = async () => {
       logger.info('////////////////////////// BEAR ////////////////////////////////')
       // await betRound({ epoch, betBull: false, betAmount: config.MIN_BET_AMOUNT_BNB })
       await betRound({ epoch, betBull: false, betAmount: kellyBetAmountBear })
-      logger.info('//////////////////////////////////////////////////////////')
+      // logger.info('//////////////////////////////////////////////////////////')
     } else logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NOT PLAYING`)
 
     logger.info(
@@ -457,43 +476,31 @@ const run = async () => {
     logger.info(
       `[ROUND-${user.id}:${
         strategie.roundsCount
-      }:${+epoch}] PLAYING : isBullBetterAdjusted ${isBullBetterAdjusted}, isBearBetterAdjusted ${isBearBetterAdjusted} --> isDifferenceAdjustedEfficient ${isDifferenceAdjustedEfficient}`
+      }:${+epoch}] PLAYING : isBullBetterAdjusted ${isBullBetterAdjusted}, isBearBetterAdjusted ${isBearBetterAdjusted} --> diff ${isDifferenceAdjustedEfficient}`
     )
 
     logger.info(
       `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] (isBullBetter ${Math.round(
         isBullBetter
-      )}, isBearBetter ${Math.round(isBearBetter)})`
+      )}, isBearBetter ${Math.round(isBearBetter)}) --> strategie.betAmount ${strategie.betAmount}`
     )
 
-    console.log(
-      '🚀 ~ BULL ~ kellyCriterionBull (%)',
-      kellyCriterionBull,
-      'ratingUp',
-      ratingUp,
-      'averageWinRateBull',
-      averageWinRateBull,
-      'kellyBetAmountBull',
-      kellyBetAmountBull,
-      'strategie.betAmount',
-      strategie.betAmount,
-      'bullDivider',
-      bullDivider
+    logger.info(
+      `[ROUND-${user.id}:${
+        strategie.roundsCount
+      }:${+epoch}] BULL VARS : ratingUp ${ratingUp}, bullDivider ${bullDivider}, kellyCriterionBull ${(
+        kellyCriterionBull * 100
+      ).toFixed(2)}%, averageWinRateBull ${averageWinRateBull}, kellyBetAmountBull ${kellyBetAmountBull}BNB`
     )
-    console.log(
-      '🚀 ~ BEAR ~ kellyCriterionBear (%)',
-      kellyCriterionBear,
-      'ratingDown',
-      ratingDown,
-      'averageWinRateBear',
-      averageWinRateBear,
-      'kellyBetAmountBear',
-      kellyBetAmountBear,
-      'strategie.betAmount',
-      strategie.betAmount,
-      'bearDivider',
-      bearDivider
+
+    logger.info(
+      `[ROUND-${user.id}:${
+        strategie.roundsCount
+      }:${+epoch}] BEAR VARS : ratingDown ${ratingDown}, bearDivider ${bearDivider}, kellyCriterionBear ${(
+        kellyCriterionBear * 100
+      ).toFixed(2)}%, averageWinRateBear ${averageWinRateBear}, kellyBetAmountBear ${kellyBetAmountBear}BNB`
     )
+
     logger.info('//////////////////////////      ////////////////////////////////')
 
     players.map((p) => {
@@ -549,13 +556,13 @@ const run = async () => {
 
       // logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
 
-      logger.info(
-        `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
-          2
-        )}% winRate and ${player.totalBets} bets.`
-      )
+      // logger.info(
+      //   `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
+      //     2
+      //   )}% winRate and ${player.totalBets} bets.`
+      // )
 
-      logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash} `)
+      // logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash} `)
     } else if (strategie.isTimeEnded) {
       strategie.isTimeEnded = false
       // TODO v0.0.4 calculate bet amount dynamically and reactivate
@@ -585,6 +592,7 @@ const run = async () => {
     )
 
     strategie.plays = []
+    strategie.gasPrice = ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString()
     strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_FAST)
     strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
     strategie.isTimeEnded = false
@@ -800,7 +808,6 @@ const run = async () => {
     strategie.epoch = epoch
 
     strategie.gasPrice = ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString()
-
     strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_FAST)
     strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
 
