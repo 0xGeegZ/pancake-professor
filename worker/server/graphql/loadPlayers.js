@@ -127,8 +127,6 @@ const checkPlayer = async (idPlayer, lastGame) => {
 }
 
 const loadPlayers = async ({ epoch, orderBy = 'totalBets', isCake = false }) => {
-  console.log('🚀 ~ file: loadPlayers.js ~ line 130 ~ loadPlayers ~ isCake', isCake)
-
   const graphQLClient = new GraphQLClient(
     isCake ? process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_CAKE : process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB
   )
@@ -180,7 +178,7 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets', isCake = false }) => 
 
     const lastFinishedEpoch = epoch - 1
 
-    console.log(`Current betting epoch ${+lastFinishedEpoch}`)
+    // console.log(`Current betting epoch ${+lastFinishedEpoch}`)
 
     const variables = {
       totalBets: TOTAL_BETS.toString(),
@@ -287,7 +285,7 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets', isCake = false }) => 
 
       if (totalGamesArray.length) {
         const giniCoefficient = gini.unordered(totalGamesArray)
-        console.log('🚀 ~ file: index.tsx ~ line 270 ~ giniCoefficient', giniCoefficient, 'player', player.id)
+        // console.log('🚀 ~ file: index.tsx ~ line 270 ~ giniCoefficient', giniCoefficient, 'player', player.id)
         player.giniCoefficient = giniCoefficient
       }
 
@@ -296,7 +294,7 @@ const loadPlayers = async ({ epoch, orderBy = 'totalBets', isCake = false }) => 
 
     bestPlayers = bestPlayers.map(calculateGiniCoefficientForPlayer)
     // console.log('BEFORE GINI COEFFICIENT FILTER', bestPlayers.length)
-    // // bestPlayers = bestPlayers.filter((player) => player.giniCoefficient > 0 && player.giniCoefficient <= 0.15)
+    // // // bestPlayers = bestPlayers.filter((player) => player.giniCoefficient > 0 && player.giniCoefficient <= 0.15)
     // bestPlayers = bestPlayers.filter((player) => player.giniCoefficient <= 0.15)
     // console.log('AFTER GINI COEFFICIENT FILTER', bestPlayers.length)
 

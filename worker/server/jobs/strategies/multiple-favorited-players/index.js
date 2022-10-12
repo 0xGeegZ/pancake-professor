@@ -423,10 +423,9 @@ const run = async () => {
       (+isBullBetter > +isBearBetter ||
         (totalPlayers > 1 &&
           betBullCount.length !== betBearCount.length &&
-          betBullCount.length % betBearCount.length === 0))
-      //      &&
+          betBullCount.length % betBearCount.length === 0)) &&
       // //V0.5 TEST
-      // (ratingUp <= 2.6 || (totalPlayers > 1 && betBearCount.length === 0))
+      (ratingUp <= 2.6 || (totalPlayers > 1 && betBearCount.length === 0))
       // V0.4 LOOKS TO IMPROOVE PERFS
       // ratingUp <= 2.6
       // END
@@ -449,10 +448,9 @@ const run = async () => {
       (+isBearBetter > +isBullBetter ||
         (totalPlayers > 1 &&
           betBullCount.length !== betBearCount.length &&
-          betBearCount.length % betBullCount.length === 0))
-      //      &&
+          betBearCount.length % betBullCount.length === 0)) &&
       // //V0.5 TEST
-      // (ratingDown <= 2.6 || (totalPlayers > 1 && betBullCount.length === 0))
+      (ratingDown <= 2.6 || (totalPlayers > 1 && betBullCount.length === 0))
       // V0.4 LOOKS TO IMPROOVE PERFS
       // ratingDown <= 2.6
       //END

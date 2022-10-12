@@ -14,8 +14,6 @@ import Highlights from 'src/client/components/Overview/Highlights'
 import BaseLayout from 'src/client/layouts/BaseLayout'
 import LanguageSwitcher from 'src/client/layouts/BoxedSidebarLayout/Header/Buttons/LanguageSwitcher'
 
-process.setMaxListeners(0)
-
 const HeaderWrapper = styled(Box)(
   ({ theme }) => `
     width: 100%;
