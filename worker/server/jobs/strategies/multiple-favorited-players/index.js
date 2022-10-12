@@ -399,8 +399,8 @@ const run = async () => {
 
     // const bullDivider = ratingUp <= 1.7 ? 3 : ratingUp >= 2 ? 5 : 4
     // const bearDivider = ratingDown <= 1.7 ? 3 : ratingDown >= 2 ? 5 : 4
-    const bullDivider = ratingUp <= 1.45 ? 3 : ratingUp <= 1.75 ? 2.5 : ratingUp >= 2.1 ? 6 : 3.5
-    const bearDivider = ratingDown <= 1.45 ? 3 : ratingDown <= 1.75 ? 2.5 : ratingDown >= 2.1 ? 6 : 3.5
+    const bullDivider = ratingUp <= 1.35 ? 3 : ratingUp <= 1.75 ? 2.5 : ratingUp >= 2.1 ? 6 : 3.5
+    const bearDivider = ratingDown <= 1.35 ? 3 : ratingDown <= 1.75 ? 2.5 : ratingDown >= 2.1 ? 6 : 3.5
 
     // TODO v0.0.4 check if currentAmount is better than startedAmount
     const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
@@ -423,9 +423,10 @@ const run = async () => {
       (+isBullBetter > +isBearBetter ||
         (totalPlayers > 1 &&
           betBullCount.length !== betBearCount.length &&
-          betBullCount.length % betBearCount.length === 0)) &&
-      //V0.5 TEST
-      (ratingUp <= 2.6 || (totalPlayers > 1 && betBearCount.length === 0))
+          betBullCount.length % betBearCount.length === 0))
+      //      &&
+      // //V0.5 TEST
+      // (ratingUp <= 2.6 || (totalPlayers > 1 && betBearCount.length === 0))
       // V0.4 LOOKS TO IMPROOVE PERFS
       // ratingUp <= 2.6
       // END
@@ -448,9 +449,10 @@ const run = async () => {
       (+isBearBetter > +isBullBetter ||
         (totalPlayers > 1 &&
           betBullCount.length !== betBearCount.length &&
-          betBearCount.length % betBullCount.length === 0)) &&
-      //V0.5 TEST
-      (ratingDown <= 2.6 || (totalPlayers > 1 && betBullCount.length === 0))
+          betBearCount.length % betBullCount.length === 0))
+      //      &&
+      // //V0.5 TEST
+      // (ratingDown <= 2.6 || (totalPlayers > 1 && betBullCount.length === 0))
       // V0.4 LOOKS TO IMPROOVE PERFS
       // ratingDown <= 2.6
       //END
