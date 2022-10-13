@@ -438,7 +438,8 @@ const run = async () => {
     ) {
       logger.info('///////////////////////// BULL /////////////////////////////////')
       // await betRound({ epoch, betBull: true, betAmount: config.MIN_BET_AMOUNT_BNB })
-      await betRound({ epoch, betBull: true, betAmount: kellyBetAmountBull })
+      // await betRound({ epoch, betBull: true, betAmount: kellyBetAmountBull })
+      await betRound({ epoch, betBull: true, betAmount: strategie.betAmount })
       // logger.info('//////////////////////////////////////////////////////////')
     } else if (
       (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
@@ -463,7 +464,8 @@ const run = async () => {
     ) {
       logger.info('////////////////////////// BEAR ////////////////////////////////')
       // await betRound({ epoch, betBull: false, betAmount: config.MIN_BET_AMOUNT_BNB })
-      await betRound({ epoch, betBull: false, betAmount: kellyBetAmountBear })
+      // await betRound({ epoch, betBull: false, betAmount: kellyBetAmountBear })
+      await betRound({ epoch, betBull: false, betAmount: strategie.betAmount })
       // logger.info('//////////////////////////////////////////////////////////')
     } else logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NOT PLAYING`)
 
