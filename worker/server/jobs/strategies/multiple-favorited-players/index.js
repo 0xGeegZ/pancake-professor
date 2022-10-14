@@ -420,11 +420,11 @@ const run = async () => {
       (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
       betBullCount.length >= betBearCount.length &&
       // (+isBullBetterAdjusted > +isBearBetterAdjusted ||
-      (+isBullBetter > +isBearBetter ||
+      (Math.round(+isBullBetter) > Math.round(+isBearBetter) ||
         (totalPlayers > 1 &&
           betBullCount.length !== betBearCount.length &&
           betBullCount.length % betBearCount.length === 0)) &&
-      // //V0.5 TEST
+      //V0.5 TEST
       (ratingUp <= 2.6 || (totalPlayers > 1 && betBearCount.length === 0))
       // V0.4 LOOKS TO IMPROOVE PERFS
       // ratingUp <= 2.6
@@ -446,11 +446,11 @@ const run = async () => {
       // totalPlayers > 1 &&
       betBearCount.length >= betBullCount.length &&
       // (+isBearBetterAdjusted > +isBullBetterAdjusted ||
-      (+isBearBetter > +isBullBetter ||
+      (Math.round(+isBearBetter) > Math.round(+isBullBetter) ||
         (totalPlayers > 1 &&
           betBullCount.length !== betBearCount.length &&
           betBearCount.length % betBullCount.length === 0)) &&
-      // //V0.5 TEST
+      //V0.5 TEST
       (ratingDown <= 2.6 || (totalPlayers > 1 && betBullCount.length === 0))
       // V0.4 LOOKS TO IMPROOVE PERFS
       // ratingDown <= 2.6
@@ -481,10 +481,15 @@ const run = async () => {
       }:${+epoch}] PLAYING : isBullBetterAdjusted ${isBullBetterAdjusted}, isBearBetterAdjusted ${isBearBetterAdjusted} --> diff ${isDifferenceAdjustedEfficient}`
     )
 
+    // logger.info(
+    //   `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] (isBullBetter ${Math.round(
+    //     isBullBetter
+    //   )}, isBearBetter ${Math.round(isBearBetter)}) --> strategie.betAmount ${strategie.betAmount}`
+    // )
     logger.info(
-      `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] (isBullBetter ${Math.round(
-        isBullBetter
-      )}, isBearBetter ${Math.round(isBearBetter)}) --> strategie.betAmount ${strategie.betAmount}`
+      `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] (isBullBetter ${isBullBetter.toFixed(
+        2
+      )}, isBearBetter ${isBearBetter.toFixed(2)}) --> strategie.betAmount ${strategie.betAmount}`
     )
 
     logger.info(
