@@ -98,11 +98,9 @@ const run = async () => {
 
   const calculateBetAmount = () => {
     let newBetAmount = 0.0
-    if (strategie.isTrailing) {
-      newBetAmount = parseFloat((strategie.startedAmount * strategie.betAmountPercent) / 100).toFixed(4)
-    } else {
+    if (strategie.isTrailing)
       newBetAmount = parseFloat((strategie.currentAmount * strategie.betAmountPercent) / 100).toFixed(4)
-    }
+    else newBetAmount = parseFloat((strategie.startedAmount * strategie.betAmountPercent) / 100).toFixed(4)
 
     logger.info(
       `[CALCULATE_BET_AMOUT] isTrailing ${strategie.isTrailing} bet amount is ${newBetAmount} : currentBankroll ${strategie.currentAmount} & betAmount ${strategie.betAmountPercent}%`
@@ -378,14 +376,15 @@ const run = async () => {
         ? +isBullBetterAdjusted - +isBearBetterAdjusted
         : +isBearBetterAdjusted - +isBullBetterAdjusted
 
-    const ratingUp = (
-      1 +
-      parseFloat(ethers.utils.formatEther(bearAmount)) / parseFloat(ethers.utils.formatEther(bullAmount))
-    ).toFixed(2)
-    const ratingDown = (
-      1 +
-      parseFloat(ethers.utils.formatEther(bullAmount)) / parseFloat(ethers.utils.formatEther(bearAmount))
-    ).toFixed(2)
+    const ratingUp =
+      (1 + parseFloat(ethers.utils.formatEther(bearAmount)) / parseFloat(ethers.utils.formatEther(bullAmount))).toFixed(
+        2
+      ) || 0
+
+    const ratingDown =
+      (1 + parseFloat(ethers.utils.formatEther(bullAmount)) / parseFloat(ethers.utils.formatEther(bearAmount))).toFixed(
+        2
+      ) || 0
 
     const currentWinRate = 0.55
     const averageWinRateBull = isBullBetter ? isBullBetter / 100 : currentWinRate
@@ -399,8 +398,23 @@ const run = async () => {
 
     // const bullDivider = ratingUp <= 1.7 ? 3 : ratingUp >= 2 ? 5 : 4
     // const bearDivider = ratingDown <= 1.7 ? 3 : ratingDown >= 2 ? 5 : 4
-    const bullDivider = ratingUp <= 1.35 ? 3 : ratingUp <= 1.75 ? 2.5 : ratingUp >= 2.1 ? 6 : 3.5
-    const bearDivider = ratingDown <= 1.35 ? 3 : ratingDown <= 1.75 ? 2.5 : ratingDown >= 2.1 ? 6 : 3.5
+    let bullDivider = ratingUp <= 1.35 ? 3 : ratingUp <= 1.75 ? 2.5 : ratingUp >= 2.1 ? 6 : 3.5
+    let bearDivider = ratingDown <= 1.35 ? 3 : ratingDown <= 1.75 ? 2.5 : ratingDown >= 2.1 ? 6 : 3.5
+
+    if (
+      totalPlayers > 1 &&
+      betBullCount.length !== betBearCount.length &&
+      (betBullCount.length % betBearCount.length === 0 || betBearCount.length === 0)
+    )
+      // bullDivider -= 1
+      bullDivider -= 0.5
+    else if (
+      totalPlayers > 1 &&
+      betBullCount.length !== betBearCount.length &&
+      (betBearCount.length % betBullCount.length === 0 || betBullCount.length === 0)
+    )
+      // bearDivider -= 1
+      bearDivider -= 0.5
 
     // TODO v0.0.4 check if currentAmount is better than startedAmount
     const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
@@ -438,8 +452,8 @@ const run = async () => {
     ) {
       logger.info('///////////////////////// BULL /////////////////////////////////')
       // await betRound({ epoch, betBull: true, betAmount: config.MIN_BET_AMOUNT_BNB })
-      // await betRound({ epoch, betBull: true, betAmount: kellyBetAmountBull })
-      await betRound({ epoch, betBull: true, betAmount: strategie.betAmount })
+      await betRound({ epoch, betBull: true, betAmount: kellyBetAmountBull })
+      // await betRound({ epoch, betBull: true, betAmount: strategie.betAmount })
       // logger.info('//////////////////////////////////////////////////////////')
     } else if (
       (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
@@ -464,8 +478,8 @@ const run = async () => {
     ) {
       logger.info('////////////////////////// BEAR ////////////////////////////////')
       // await betRound({ epoch, betBull: false, betAmount: config.MIN_BET_AMOUNT_BNB })
-      // await betRound({ epoch, betBull: false, betAmount: kellyBetAmountBear })
-      await betRound({ epoch, betBull: false, betAmount: strategie.betAmount })
+      await betRound({ epoch, betBull: false, betAmount: kellyBetAmountBear })
+      // await betRound({ epoch, betBull: false, betAmount: strategie.betAmount })
       // logger.info('//////////////////////////////////////////////////////////')
     } else logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NOT PLAYING`)
 

@@ -210,8 +210,8 @@ const run = async () => {
 
       if (isCake) {
         const tx = await preditionContract[betBullOrBear](epoch.toString(), ethers.utils.parseEther(amount), {
-          nonce: strategie.nonce,
-          // nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+          // nonce: strategie.nonce,
+          nonce: provider.getTransactionCount(strategie.generated, 'latest'),
           gasPrice: strategie.gasPrice,
           gasLimit: strategie.gasLimit,
         })
@@ -220,8 +220,8 @@ const run = async () => {
       } else {
         const tx = await preditionContract[betBullOrBear](epoch.toString(), {
           value: ethers.utils.parseEther(amount),
-          nonce: strategie.nonce,
-          // nonce: provider.getTransactionCount(strategie.generated, 'latest'),
+          // nonce: strategie.nonce,
+          nonce: provider.getTransactionCount(strategie.generated, 'latest'),
           gasPrice: strategie.gasPrice,
           gasLimit: strategie.gasLimit,
           // gasPrice: ethers.utils.parseUnits(config.FAST_GAS_PRICE.toString(), 'gwei').toString(),
@@ -280,12 +280,6 @@ const run = async () => {
     // TODO 0.0.4 : Calculate KELLY CRITERION bet value
     // https://dqydj.com/kelly-criterion-bet-calculator/
     const { bullAmount, bearAmount, startTimestamp } = await preditionContract.rounds(epoch)
-
-    if (strategie.plays.length === 0) {
-      logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NO USERS PLAYED`)
-      return
-    }
-    strategie.isTryToPlay = true
 
     // players.map(p => {
     //   blocknative.unsubscribe(p.id)
@@ -397,10 +391,25 @@ const run = async () => {
     const kellyCriterionBull = (ratingUp * averageWinRateBull - (1 - averageWinRateBull)) / ratingUp
     const kellyCriterionBear = (ratingDown * averageWinRateBear - (1 - averageWinRateBear)) / ratingDown
 
-    const bullDivider = ratingUp <= 1.7 ? 3 : ratingUp >= 2 ? 5 : 4
-    const bearDivider = ratingDown <= 1.7 ? 3 : ratingDown >= 2 ? 5 : 4
-    // const bullDivider = ratingUp <= 1.35 ? 3 : ratingUp <= 1.75 ? 2.5 : ratingUp >= 2.1 ? 6 : 3.5
-    // const bearDivider = ratingDown <= 1.35 ? 3 : ratingDown <= 1.75 ? 2.5 : ratingDown >= 2.1 ? 6 : 3.5
+    // const bullDivider = ratingUp <= 1.7 ? 3 : ratingUp >= 2 ? 5 : 4
+    // const bearDivider = ratingDown <= 1.7 ? 3 : ratingDown >= 2 ? 5 : 4
+    let bullDivider = ratingUp <= 1.35 ? 3 : ratingUp <= 1.75 ? 2.5 : ratingUp >= 2.1 ? 6 : 3.5
+    let bearDivider = ratingDown <= 1.35 ? 3 : ratingDown <= 1.75 ? 2.5 : ratingDown >= 2.1 ? 6 : 3.5
+
+    if (
+      totalPlayers > 1 &&
+      betBullCount.length !== betBearCount.length &&
+      (betBullCount.length % betBearCount.length === 0 || betBearCount.length === 0)
+    )
+      // bullDivider -= 1
+      bullDivider -= 0.5
+    else if (
+      totalPlayers > 1 &&
+      betBullCount.length !== betBearCount.length &&
+      (betBearCount.length % betBullCount.length === 0 || betBullCount.length === 0)
+    )
+      // bearDivider -= 1
+      bearDivider -= 0.5
 
     const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
     const kellyBetAmountBear = parseFloat(strategie.startedAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
@@ -457,15 +466,22 @@ const run = async () => {
     //   console.log("//////////////////////////////////////////////////////////")
     // } else
 
+    if (strategie.plays.length === 0) {
+      logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NO USERS PLAYED`)
+      return
+    }
+    strategie.isTryToPlay = true
+
     //TODO GUIGUI WIP
     if (
       (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
       betBullCount.length >= betBearCount.length &&
       // (+isBullBetterAdjusted > +isBearBetterAdjusted ||
-      (+isBullBetter > +isBearBetter ||
+      (Math.round(+isBullBetter) > Math.round(+isBearBetter) ||
         (totalPlayers > 1 &&
           betBullCount.length !== betBearCount.length &&
           betBullCount.length % betBearCount.length === 0)) &&
+      //V0.5 TEST
       (ratingUp <= 2.6 || (totalPlayers > 1 && betBearCount.length === 0))
       // START OLD VERSION
       // // isSecureMode &&
@@ -505,10 +521,11 @@ const run = async () => {
       (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
       betBearCount.length >= betBullCount.length &&
       // (+isBearBetterAdjusted > +isBullBetterAdjusted ||
-      (+isBearBetter > +isBullBetter ||
+      (Math.round(+isBearBetter) > Math.round(+isBullBetter) ||
         (totalPlayers > 1 &&
           betBullCount.length !== betBearCount.length &&
           betBearCount.length % betBullCount.length === 0)) &&
+      //V0.5 TEST
       (ratingDown <= 2.6 || (totalPlayers > 1 && betBullCount.length === 0))
       // START OLD
       // // isSecureMode &&
@@ -721,8 +738,8 @@ const run = async () => {
 
     // TODO v0.0.4
     // const timer = secondsLeftUntilNextEpoch - 7.5
-    const timer = secondsLeftUntilNextEpoch - 8.5
-    // const timer = secondsLeftUntilNextEpoch - 9
+    // const timer = secondsLeftUntilNextEpoch - 8.5
+    const timer = secondsLeftUntilNextEpoch - 9
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
 
@@ -1113,8 +1130,8 @@ const run = async () => {
 
     // TODO v0.0.4 one block = 3000ms
     // const timer = secondsLeftUntilNextEpoch - 7.5
-    const timer = secondsLeftUntilNextEpoch - 8.5
-    // const timer = secondsLeftUntilNextEpoch - 9
+    // const timer = secondsLeftUntilNextEpoch - 8.5
+    const timer = secondsLeftUntilNextEpoch - 9
 
     if (timer <= 15) {
       players.map((p) => {
