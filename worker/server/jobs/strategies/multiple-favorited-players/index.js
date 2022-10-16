@@ -333,8 +333,6 @@ const run = async () => {
     let betBullCount = strategie.plays.filter((p) => p.betBull)
     let betBearCount = strategie.plays.filter((p) => !p.betBull)
 
-    const totalPlayers = betBullCount.length + betBearCount.length
-
     let isBullBetter =
       betBullCount.map((p) => +p.player.winRate).reduce((acc, winRate) => acc + winRate, 0) / betBullCount.length || 0
 
@@ -401,6 +399,8 @@ const run = async () => {
     let bullDivider = ratingUp <= 1.35 ? 3 : ratingUp <= 1.75 ? 2.5 : ratingUp >= 2.1 ? 5.5 : 3.5
     let bearDivider = ratingDown <= 1.35 ? 3 : ratingDown <= 1.75 ? 2.5 : ratingDown >= 2.1 ? 5.5 : 3.5
 
+    const totalPlayers = betBullCount.length + betBearCount.length
+
     let isBullAllAgree = false,
       isBearAllAgree = false
     if (
@@ -430,8 +430,7 @@ const run = async () => {
 
     // logger.info('//////////////////////////      ////////////////////////////////')
 
-    if (strategie.plays.length === 0)
-      return logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NO USERS PLAYED`)
+    if (totalPlayers === 0) return logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NO USERS PLAYED`)
 
     if (
       // totalPlayers > 1 &&
