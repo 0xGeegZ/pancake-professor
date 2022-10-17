@@ -302,8 +302,8 @@ const run = async () => {
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
     // const timer = secondsLeftUntilNextEpoch - 8
-    const timer = secondsLeftUntilNextEpoch - 8.5
-    // const timer = secondsLeftUntilNextEpoch - 9
+    // const timer = secondsLeftUntilNextEpoch - 8.5
+    const timer = secondsLeftUntilNextEpoch - 9
 
     logger.info(
       `********** [ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING (timer ${timer.toFixed(4)}) **********`
@@ -396,8 +396,8 @@ const run = async () => {
 
     // const bullDivider = ratingUp <= 1.7 ? 3 : ratingUp >= 2 ? 5 : 4
     // const bearDivider = ratingDown <= 1.7 ? 3 : ratingDown >= 2 ? 5 : 4
-    let bullDivider = ratingUp <= 1.35 ? 3 : ratingUp <= 1.75 ? 2.5 : ratingUp >= 2.1 ? 5.5 : 3.5
-    let bearDivider = ratingDown <= 1.35 ? 3 : ratingDown <= 1.75 ? 2.5 : ratingDown >= 2.1 ? 5.5 : 3.5
+    let bullDivider = ratingUp <= 1.35 ? 3 : ratingUp <= 1.75 ? 2.5 : ratingUp >= 2.1 ? 5 : 3.5
+    let bearDivider = ratingDown <= 1.35 ? 3 : ratingDown <= 1.75 ? 2.5 : ratingDown >= 2.1 ? 5 : 3.5
 
     const totalPlayers = betBullCount.length + betBearCount.length
 
@@ -406,7 +406,8 @@ const run = async () => {
     if (
       totalPlayers > 1 &&
       betBullCount.length !== betBearCount.length &&
-      (betBullCount.length % betBearCount.length === 0 || betBearCount.length === 0)
+      betBearCount.length === 0
+      // (betBullCount.length !== 0 && betBullCount.length % betBearCount.length === 0) || betBearCount.length === 0)
     ) {
       // bullDivider -= 1
       bullDivider -= 0.5
@@ -414,7 +415,8 @@ const run = async () => {
     } else if (
       totalPlayers > 1 &&
       betBullCount.length !== betBearCount.length &&
-      (betBearCount.length % betBullCount.length === 0 || betBullCount.length === 0)
+      betBullCount.length === 0
+      // ((betBearCount.length !== 0 && betBearCount.length % betBullCount.length === 0) || betBullCount.length === 0)
     ) {
       // bearDivider -= 1
       bearDivider -= 0.5
@@ -430,19 +432,21 @@ const run = async () => {
 
     // logger.info('//////////////////////////      ////////////////////////////////')
 
+    // if (strategie.plays.length === 0)
     if (totalPlayers === 0) return logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] NO USERS PLAYED`)
 
     if (
       // totalPlayers > 1 &&
-      // (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
+      (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
       betBullCount.length >= betBearCount.length &&
       // (+isBullBetterAdjusted > +isBearBetterAdjusted ||
       (Math.round(+isBullBetter) > Math.round(+isBearBetter) ||
         (totalPlayers > 1 &&
           betBullCount.length !== betBearCount.length &&
-          betBullCount.length % betBearCount.length === 0)) &&
-      //V0.5 TEST
-      (ratingUp <= 2.6 || (totalPlayers > 1 && betBearCount.length === 0) || Math.round(+isBullBetter) >= 57)
+          betBullCount.length % betBearCount.length === 0))
+      //      &&
+      // //V0.5 TEST
+      // (ratingUp <= 2.6 || (totalPlayers > 1 && betBearCount.length === 0) || Math.round(+isBullBetter) >= 57)
       // V0.4 LOOKS TO IMPROOVE PERFS
       // ratingUp <= 2.6
       // END
@@ -460,16 +464,17 @@ const run = async () => {
       await betRound({ epoch, betBull: true, betAmount: isBullAllAgree ? kellyBetAmountBull : strategie.betAmount })
       // logger.info('//////////////////////////////////////////////////////////')
     } else if (
-      // (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
+      (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
       // totalPlayers > 1 &&
       betBearCount.length >= betBullCount.length &&
       // (+isBearBetterAdjusted > +isBullBetterAdjusted ||
       (Math.round(+isBearBetter) > Math.round(+isBullBetter) ||
         (totalPlayers > 1 &&
           betBullCount.length !== betBearCount.length &&
-          betBearCount.length % betBullCount.length === 0)) &&
-      //V0.5 TEST
-      (ratingDown <= 2.6 || (totalPlayers > 1 && betBullCount.length === 0) || Math.round(+isBearBetter) >= 57)
+          betBearCount.length % betBullCount.length === 0))
+      //     &&
+      // //V0.5 TEST
+      // (ratingDown <= 2.6 || (totalPlayers > 1 && betBullCount.length === 0) || Math.round(+isBearBetter) >= 57)
       // V0.4 LOOKS TO IMPROOVE PERFS
       // ratingDown <= 2.6
       //END
@@ -516,7 +521,9 @@ const run = async () => {
         strategie.roundsCount
       }:${+epoch}] BULL VARS : ratingUp ${ratingUp}, bullDivider ${bullDivider}, kellyCriterionBull ${(
         kellyCriterionBull * 100
-      ).toFixed(2)}%, averageWinRateBull ${averageWinRateBull}, kellyBetAmountBull ${kellyBetAmountBull}BNB`
+      ).toFixed(
+        2
+      )}%, averageWinRateBull ${averageWinRateBull}, isBullAllAgree ${isBullAllAgree}, kellyBetAmountBull ${kellyBetAmountBull}BNB`
     )
 
     logger.info(
@@ -524,7 +531,9 @@ const run = async () => {
         strategie.roundsCount
       }:${+epoch}] BEAR VARS : ratingDown ${ratingDown}, bearDivider ${bearDivider}, kellyCriterionBear ${(
         kellyCriterionBear * 100
-      ).toFixed(2)}%, averageWinRateBear ${averageWinRateBear}, kellyBetAmountBear ${kellyBetAmountBear}BNB`
+      ).toFixed(
+        2
+      )}%, averageWinRateBear ${averageWinRateBear}, isBearAllAgree ${isBearAllAgree}, kellyBetAmountBear ${kellyBetAmountBear}BNB`
     )
 
     logger.info('//////////////////////////      ////////////////////////////////')

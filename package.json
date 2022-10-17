@@ -88,7 +88,7 @@
     "moment": "^2.29.1",
     "moment-duration-format": "^2.3.2",
     "moment-timezone": "^0.5.33",
-    "next": "12.1.6",
+    "next": "12.3.1",
     "next-connect": "^0.12.2",
     "next-i18next": "11.0.0",
     "next-images": "1.8.4",
