@@ -437,18 +437,21 @@ const run = async () => {
 
     if (
       // totalPlayers > 1 &&
-      (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
+      totalPlayers > 1 &&
+      // (totalPlayers > 1 || Math.round(+isBullBetter) >= 56) &&
       betBullCount.length > betBearCount.length &&
       // betBullCount.length >= betBearCount.length &&
       // +isBullBetterAdjusted > +isBearBetterAdjusted &&
       (Math.round(+isBullBetter) > Math.round(+isBearBetter) ||
         (totalPlayers > 1 &&
           betBullCount.length !== betBearCount.length &&
-          betBullCount.length % betBearCount.length === 0)) &&
-      //V0.5 TEST
-      (ratingUp <= 2.6 ||
-        (totalPlayers > 1 && betBearCount.length === 0 && Math.round(+isBullBetter) >= 56) ||
-        Math.round(+isBullBetter) >= 57)
+          betBullCount.length - betBearCount.length > 1 &&
+          betBullCount.length % betBearCount.length === 0))
+      //     &&
+      // //V0.5 TEST
+      // // (ratingUp <= 2.6 ||
+      // ((totalPlayers > 1 && betBearCount.length === 0 && Math.round(+isBullBetter) >= 56) ||
+      //   Math.round(+isBullBetter) >= 57)
       // V0.4 LOOKS TO IMPROOVE PERFS
       // ratingUp <= 2.6
       // END
@@ -463,27 +466,41 @@ const run = async () => {
       // await betRound({ epoch, betBull: true, betAmount: config.MIN_BET_AMOUNT_BNB })
       // await betRound({ epoch, betBull: true, betAmount: kellyBetAmountBull })
       // await betRound({ epoch, betBull: true, betAmount: strategie.betAmount })
+
+      const betAmountTest = !isBullAllAgree
+        ? strategie.betAmount
+        : totalPlayers === 2
+        ? strategie.betAmount * 1.25
+        : totalPlayers === 3
+        ? strategie.betAmount * 1.35
+        : totalPlayers === 4
+        ? strategie.betAmount * 1.45
+        : strategie.betAmount * 1.55
+
       await betRound({
         epoch,
         betBull: true,
-        betAmount: isBullAllAgree ? strategie.betAmount * 1.5 : strategie.betAmount,
+        betAmount: betAmountTest,
       })
       // await betRound({ epoch, betBull: true, betAmount: isBullAllAgree ? kellyBetAmountBull : strategie.betAmount })
       // logger.info('//////////////////////////////////////////////////////////')
     } else if (
-      (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
+      totalPlayers > 1 &&
+      // (totalPlayers > 1 || Math.round(+isBearBetter) >= 56) &&
       // totalPlayers > 1 &&
       // betBearCount.length >= betBullCount.length &&
       betBearCount.length > betBullCount.length &&
       // +isBearBetterAdjusted > +isBullBetterAdjusted &&
       (Math.round(+isBearBetter) > Math.round(+isBullBetter) ||
         (totalPlayers > 1 &&
-          betBullCount.length !== betBearCount.length &&
-          betBearCount.length % betBullCount.length === 0)) &&
-      //V0.5 TEST
-      (ratingDown <= 2.6 ||
-        (totalPlayers > 1 && betBullCount.length === 0 && Math.round(+isBearBetter) >= 56) ||
-        Math.round(+isBearBetter) >= 57)
+          betBearCount.length !== betBullCount.length &&
+          betBearCount.length - betBullCount.length > 1 &&
+          betBearCount.length % betBullCount.length === 0))
+      //      &&
+      // //V0.5 TEST
+      // // (ratingDown <= 2.6 ||
+      // ((totalPlayers > 1 && betBullCount.length === 0 && Math.round(+isBearBetter) >= 56) ||
+      //   Math.round(+isBearBetter) >= 57)
       // V0.4 LOOKS TO IMPROOVE PERFS
       // ratingDown <= 2.6
       //END
@@ -498,10 +515,21 @@ const run = async () => {
       // await betRound({ epoch, betBull: false, betAmount: config.MIN_BET_AMOUNT_BNB })
       // await betRound({ epoch, betBull: false, betAmount: kellyBetAmountBear })
       // await betRound({ epoch, betBull: false, betAmount: strategie.betAmount })
+
+      const betAmountTest = !isBearAllAgree
+        ? strategie.betAmount
+        : totalPlayers === 2
+        ? strategie.betAmount * 1.25
+        : totalPlayers === 3
+        ? strategie.betAmount * 1.35
+        : totalPlayers === 4
+        ? strategie.betAmount * 1.45
+        : strategie.betAmount * 1.55
+
       await betRound({
         epoch,
         betBull: false,
-        betAmount: isBearAllAgree ? strategie.betAmount * 1.5 : strategie.betAmount,
+        betAmount: betAmountTest,
       })
       // await betRound({ epoch, betBull: false, betAmount: isBearAllAgree ? kellyBetAmountBear : strategie.betAmount })
       // logger.info('//////////////////////////////////////////////////////////')
