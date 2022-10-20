@@ -473,13 +473,15 @@ const run = async () => {
 
       const betAmountTest = !isBullAllAgree
         ? strategie.betAmount
-        : totalPlayers === 2
-        ? strategie.betAmount * 1.25
         : totalPlayers === 3
-        ? strategie.betAmount * 1.35
+        ? strategie.betAmount * 1.25
         : totalPlayers === 4
+        ? strategie.betAmount * 1.35
+        : totalPlayers === 5
         ? strategie.betAmount * 1.45
-        : strategie.betAmount * 1.55
+        : totalPlayers === 6
+        ? strategie.betAmount * 1.55
+        : strategie.betAmount * 1.65
 
       await betRound({
         epoch,
@@ -523,13 +525,15 @@ const run = async () => {
 
       const betAmountTest = !isBearAllAgree
         ? strategie.betAmount
-        : totalPlayers === 2
-        ? strategie.betAmount * 1.25
         : totalPlayers === 3
-        ? strategie.betAmount * 1.35
+        ? strategie.betAmount * 1.25
         : totalPlayers === 4
+        ? strategie.betAmount * 1.35
+        : totalPlayers === 5
         ? strategie.betAmount * 1.45
-        : strategie.betAmount * 1.55
+        : totalPlayers === 6
+        ? strategie.betAmount * 1.55
+        : strategie.betAmount * 1.65
 
       await betRound({
         epoch,
