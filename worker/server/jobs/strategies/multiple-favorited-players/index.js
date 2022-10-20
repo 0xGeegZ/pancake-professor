@@ -403,11 +403,12 @@ const run = async () => {
 
     let isBullAllAgree = false,
       isBearAllAgree = false
+
     if (
       totalPlayers > 1 &&
       betBullCount.length !== betBearCount.length &&
       betBullCount.length - betBearCount.length > 1 &&
-      betBullCount.length % betBearCount.length === 0
+      ((betBullCount.length !== 0 && betBullCount.length % betBearCount.length === 0) || betBearCount.length === 0)
       // (betBullCount.length !== 0 && betBullCount.length % betBearCount.length === 0) || betBearCount.length === 0)
     ) {
       // bullDivider -= 1
@@ -417,7 +418,7 @@ const run = async () => {
       totalPlayers > 1 &&
       betBullCount.length !== betBearCount.length &&
       betBearCount.length - betBullCount.length > 1 &&
-      betBearCount.length % betBullCount.length === 0
+      ((betBearCount.length !== 0 && betBearCount.length % betBullCount.length === 0) || betBullCount.length === 0)
       // ((betBearCount.length !== 0 && betBearCount.length % betBullCount.length === 0) || betBullCount.length === 0)
     ) {
       // bearDivider -= 1
@@ -444,7 +445,8 @@ const run = async () => {
       betBullCount.length > betBearCount.length &&
       // betBullCount.length >= betBearCount.length &&
       // +isBullBetterAdjusted > +isBearBetterAdjusted &&
-      (Math.round(+isBullBetter) > Math.round(+isBearBetter) ||
+      (+isBullBetterAdjusted > +isBearBetterAdjusted ||
+        // (Math.round(+isBullBetter) > Math.round(+isBearBetter) ||
         (totalPlayers > 1 &&
           betBullCount.length !== betBearCount.length &&
           betBullCount.length - betBearCount.length > 1 &&
@@ -493,7 +495,8 @@ const run = async () => {
       // betBearCount.length >= betBullCount.length &&
       betBearCount.length > betBullCount.length &&
       // +isBearBetterAdjusted > +isBullBetterAdjusted &&
-      (Math.round(+isBearBetter) > Math.round(+isBullBetter) ||
+      (+isBearBetterAdjusted > +isBullBetterAdjusted ||
+        // (Math.round(+isBearBetter) > Math.round(+isBullBetter) ||
         (totalPlayers > 1 &&
           betBearCount.length !== betBullCount.length &&
           betBearCount.length - betBullCount.length > 1 &&
