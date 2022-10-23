@@ -484,7 +484,7 @@ const run = async () => {
       // await betRound({ epoch, betBull: true, betAmount: strategie.betAmount })
 
       const betAmountTest =
-        !isBullAllAgree || betBullCount.length - betBearCount.length === 2
+        !isBullAllAgree || betBullCount.length - betBearCount.length <= 2
           ? strategie.betAmount
           : betBullCount.length - betBearCount.length === 3 || betBullCount.length - betBearCount.length === 4
           ? strategie.betAmount * 1.1
@@ -540,7 +540,7 @@ const run = async () => {
       // await betRound({ epoch, betBull: false, betAmount: strategie.betAmount })
 
       const betAmountTest =
-        !isBearAllAgree || betBearCount.length - betBullCount.length === 2
+        !isBearAllAgree || betBearCount.length - betBullCount.length <= 2
           ? strategie.betAmount
           : betBearCount.length - betBullCount.length === 3 || betBearCount.length - betBullCount.length === 4
           ? strategie.betAmount * 1.1
@@ -655,11 +655,11 @@ const run = async () => {
 
       // logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
 
-      // logger.info(
-      //   `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
-      //     2
-      //   )}% winRate and ${player.totalBets} bets.`
-      // )
+      logger.info(
+        `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
+          2
+        )}% winRate and ${player.totalBets} bets.`
+      )
 
       // logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash} `)
     } else if (strategie.isTimeEnded) {
