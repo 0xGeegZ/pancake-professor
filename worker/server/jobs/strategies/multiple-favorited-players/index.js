@@ -477,6 +477,8 @@ const run = async () => {
 
       const betAmountTest = !isBullAllAgree
         ? strategie.betAmount
+        : totalPlayers === 2
+        ? strategie.betAmount * 1.1
         : totalPlayers === 3
         ? strategie.betAmount * 1.15
         : totalPlayers === 4
@@ -533,6 +535,8 @@ const run = async () => {
 
       const betAmountTest = !isBearAllAgree
         ? strategie.betAmount
+        : totalPlayers === 2
+        ? strategie.betAmount * 1.1
         : totalPlayers === 3
         ? strategie.betAmount * 1.15
         : totalPlayers === 4
