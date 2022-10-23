@@ -451,7 +451,7 @@ const run = async () => {
           betBullCount.length !== betBearCount.length &&
           betBullCount.length - betBearCount.length > 1 &&
           betBullCount.length % betBearCount.length === 0)) &&
-      (ratingUp <= 3|| (totalPlayers > 1 && betBearCount.length === 0 ))
+      (ratingUp <= 3 || (totalPlayers > 1 && betBearCount.length === 0))
       //     &&
       // //V0.5 TEST
       // // (ratingUp <= 2.6 ||
@@ -504,7 +504,7 @@ const run = async () => {
           betBearCount.length !== betBullCount.length &&
           betBearCount.length - betBullCount.length > 1 &&
           betBearCount.length % betBullCount.length === 0)) &&
-     ( ratingDown <= 3 || (totalPlayers > 1 && betBullCount.length === 0 )
+      (ratingDown <= 3 || (totalPlayers > 1 && betBullCount.length === 0))
       //      &&
       // //V0.5 TEST
       // // (ratingDown <= 2.6 ||
