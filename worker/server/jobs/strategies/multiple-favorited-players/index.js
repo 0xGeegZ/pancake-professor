@@ -197,6 +197,7 @@ const run = async () => {
       logger.error(`[CLAIM] Claim Tx Error for user ${user.id} and epochs ${claimablesEpochs}`)
       logger.error(error.message)
     }
+    strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
   }
 
   const stopStrategie = async ({ epoch }) => {
@@ -315,7 +316,7 @@ const run = async () => {
       // await setTimeout(timer * 1000)
     }
 
-    if (!strategie.plays.length) {
+    if (!strategie.plays.length || strategie.plays.length > 2) {
       logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING 0.5 SECOND MORE`)
       // TODO V0.4 update HEXLIFY_FAST to HEXLIFY_EXTRA_FAST
       strategie.gasPrice = ethers.utils.parseUnits(config.EXTRA_FAST_GAS_PRICE.toString(), 'gwei').toString()
