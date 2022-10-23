@@ -408,8 +408,8 @@ const run = async () => {
       totalPlayers > 1 &&
       betBullCount.length !== betBearCount.length &&
       betBullCount.length - betBearCount.length > 1 &&
-      betBearCount.length === 0
-      // ((betBullCount.length !== 0 && betBullCount.length % betBearCount.length === 0) || betBearCount.length === 0)
+      // betBearCount.length === 0
+      ((betBullCount.length !== 0 && betBullCount.length % betBearCount.length === 0) || betBearCount.length === 0)
     ) {
       // bullDivider -= 1
       // bullDivider -= 0.5
@@ -418,8 +418,8 @@ const run = async () => {
       totalPlayers > 1 &&
       betBullCount.length !== betBearCount.length &&
       betBearCount.length - betBullCount.length > 1 &&
-      betBullCount.length === 0
-      // ((betBearCount.length !== 0 && betBearCount.length % betBullCount.length === 0) || betBullCount.length === 0)
+      // betBullCount.length === 0
+      ((betBearCount.length !== 0 && betBearCount.length % betBullCount.length === 0) || betBullCount.length === 0)
     ) {
       // bearDivider -= 1
       // bearDivider -= 0.5
@@ -474,14 +474,14 @@ const run = async () => {
       const betAmountTest = !isBullAllAgree
         ? strategie.betAmount
         : totalPlayers === 3
-        ? strategie.betAmount * 1.2
+        ? strategie.betAmount * 1.15
         : totalPlayers === 4
-        ? strategie.betAmount * 1.3
+        ? strategie.betAmount * 1.25
         : totalPlayers === 5
-        ? strategie.betAmount * 1.4
+        ? strategie.betAmount * 1.35
         : totalPlayers === 6
-        ? strategie.betAmount * 1.5
-        : strategie.betAmount * 1.6
+        ? strategie.betAmount * 1.45
+        : strategie.betAmount * 1.55
 
       await betRound({
         epoch,
@@ -526,14 +526,14 @@ const run = async () => {
       const betAmountTest = !isBearAllAgree
         ? strategie.betAmount
         : totalPlayers === 3
-        ? strategie.betAmount * 1.2
+        ? strategie.betAmount * 1.15
         : totalPlayers === 4
-        ? strategie.betAmount * 1.3
+        ? strategie.betAmount * 1.25
         : totalPlayers === 5
-        ? strategie.betAmount * 1.4
+        ? strategie.betAmount * 1.35
         : totalPlayers === 6
-        ? strategie.betAmount * 1.5
-        : strategie.betAmount * 1.6
+        ? strategie.betAmount * 1.45
+        : strategie.betAmount * 1.55
 
       await betRound({
         epoch,
