@@ -295,6 +295,10 @@ const run = async () => {
   const playRound = async ({ epoch }) => {
     // TODO 0.0.4 : Calculate KELLY CRITERION bet value
     // https://dqydj.com/kelly-criterion-bet-calculator/
+
+    strategie.gasPrice = ethers.utils.parseUnits(config.EXTRA_FAST_GAS_PRICE.toString(), 'gwei').toString()
+    strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_EXTRA_FAST)
+
     const { bullAmount, bearAmount, startTimestamp } = await preditionContract.rounds(epoch)
 
     const secondsFromEpoch = new Date().getTime() / 1000 - startTimestamp
@@ -302,9 +306,10 @@ const run = async () => {
 
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
+    // const timer = secondsLeftUntilNextEpoch - 7.5
     // const timer = secondsLeftUntilNextEpoch - 8
-    // const timer = secondsLeftUntilNextEpoch - 8.5
-    const timer = secondsLeftUntilNextEpoch - 9
+    const timer = secondsLeftUntilNextEpoch - 8.5
+    // const timer = secondsLeftUntilNextEpoch - 9
 
     logger.info(
       `********** [ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING (timer ${timer.toFixed(4)}) **********`
@@ -316,13 +321,8 @@ const run = async () => {
       // await setTimeout(timer * 1000)
     }
 
-    if (!strategie.plays.length || strategie.plays.length <= 2) {
-      logger.info(
-        `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING 0.5 SECOND MORE - players:${
-          strategie?.plays?.length || 0
-        }`
-      )
-      // TODO V0.4 update HEXLIFY_FAST to HEXLIFY_EXTRA_FAST
+    if (!strategie.plays.length) {
+      logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING 0.5 SECOND MORE`)
       strategie.gasPrice = ethers.utils.parseUnits(config.EXTRA_FAST_GAS_PRICE.toString(), 'gwei').toString()
       strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_EXTRA_FAST)
       await sleep(500)
@@ -450,7 +450,9 @@ const run = async () => {
       betBullCount.length > betBearCount.length &&
       // betBullCount.length >= betBearCount.length &&
       // (betBullCount.length > betBearCount.length ||
-      //   (betBullCount.length === betBearCount.length && Math.round(+isBullBetter) > Math.round(+isBearBetter))) &&
+      //   (betBullCount.length === betBearCount.length &&
+      //     Math.round(+isBullBetter) >= 58 &&
+      //     Math.round(+isBullBetter) > Math.round(+isBearBetter))) &&
       // +isBullBetterAdjusted > +isBearBetterAdjusted &&
       (+isBullBetterAdjusted > +isBearBetterAdjusted ||
         // +isDifferenceAdjustedEfficient <= 50 ||
@@ -489,8 +491,8 @@ const run = async () => {
           : betBullCount.length - betBearCount.length === 3 || betBullCount.length - betBearCount.length === 4
           ? strategie.betAmount * 1.1
           : betBullCount.length - betBearCount.length === 5 || betBullCount.length - betBearCount.length === 6
-          ? strategie.betAmount * 1.15
-          : strategie.betAmount * 1.25
+          ? strategie.betAmount * 1.2
+          : strategie.betAmount * 1.3
 
       await betRound({
         epoch,
@@ -505,7 +507,9 @@ const run = async () => {
       // totalPlayers > 1 &&
       // betBearCount.length >= betBullCount.length &&
       // (betBearCount.length > betBullCount.length ||
-      //   (betBearCount.length === betBullCount.length && Math.round(+isBearBetter) > Math.round(+isBullBetter))) &&
+      //   (betBearCount.length === betBullCount.length &&
+      //     Math.round(+isBearBetter) >= 58 &&
+      //     Math.round(+isBearBetter) > Math.round(+isBullBetter))) &&
       betBearCount.length > betBullCount.length &&
       // +isBearBetterAdjusted > +isBullBetterAdjusted &&
       (+isBearBetterAdjusted > +isBullBetterAdjusted ||
@@ -545,8 +549,8 @@ const run = async () => {
           : betBearCount.length - betBullCount.length === 3 || betBearCount.length - betBullCount.length === 4
           ? strategie.betAmount * 1.1
           : betBearCount.length - betBullCount.length === 5 || betBearCount.length - betBullCount.length === 6
-          ? strategie.betAmount * 1.15
-          : strategie.betAmount * 1.25
+          ? strategie.betAmount * 1.2
+          : strategie.betAmount * 1.3
 
       await betRound({
         epoch,
