@@ -68,7 +68,7 @@ const loadPlayers = async ({
     // const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12
     const LIMIT_HISTORY_LENGTH = orderBy === 'default' ? 12 * 24 : 12 * 2
 
-    const first = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 250 : 100
+    const first = orderBy === 'default' || orderBy === 'mostActiveLastHour' ? 750 : 500
     // const first = orderBy === 'default' ? 500 : orderBy === 'mostActiveLastHour' ? 1000 : 50
     const firstBets = orderBy === 'default' ? 12 * 24 : orderBy === 'mostActiveLastHour' ? 24 : 1
     const epochGT = orderBy === 'default' ? epoch - 12 * 24 : orderBy === 'mostActiveLastHour' ? epoch - 24 : 1

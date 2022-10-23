@@ -294,26 +294,27 @@ const run = async () => {
   const playRound = async ({ epoch }) => {
     // TODO 0.0.4 : Calculate KELLY CRITERION bet value
     // https://dqydj.com/kelly-criterion-bet-calculator/
-    const { bullAmount, bearAmount, startTimestamp } = await preditionContract.rounds(epoch)
+    // const { bullAmount, bearAmount, startTimestamp } = await preditionContract.rounds(epoch)
 
-    const secondsFromEpoch = new Date().getTime() / 1000 - startTimestamp
-    // const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
+    // const secondsFromEpoch = new Date().getTime() / 1000 - startTimestamp
+    // // const secondsFromEpoch = Math.floor(new Date().getTime() / 1000) - startTimestamp
 
-    const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
+    // const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
-    // const timer = secondsLeftUntilNextEpoch - 8
-    // const timer = secondsLeftUntilNextEpoch - 8.5
-    const timer = secondsLeftUntilNextEpoch - 9
+    // // const timer = secondsLeftUntilNextEpoch - 8
+    // // const timer = secondsLeftUntilNextEpoch - 8.5
+    // const timer = secondsLeftUntilNextEpoch - 9
 
     logger.info(
-      `********** [ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING (timer ${timer.toFixed(4)}) **********`
+      `********** [ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING **********`
+      // `********** [ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING (timer ${timer.toFixed(4)}) **********`
     )
 
-    if (timer > 0) {
-      // logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING until -8.5 seconds`)
-      await sleep(timer * 1000)
-      // await setTimeout(timer * 1000)
-    }
+    // if (timer > 0) {
+    //   // logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING until -8.5 seconds`)
+    //   await sleep(timer * 1000)
+    //   // await setTimeout(timer * 1000)
+    // }
 
     if (!strategie.plays.length) {
       logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING 0.5 SECOND MORE`)
@@ -374,30 +375,30 @@ const run = async () => {
         ? +isBullBetterAdjusted - +isBearBetterAdjusted
         : +isBearBetterAdjusted - +isBullBetterAdjusted
 
-    const ratingUp =
-      (1 + parseFloat(ethers.utils.formatEther(bearAmount)) / parseFloat(ethers.utils.formatEther(bullAmount))).toFixed(
-        2
-      ) || 0
+    // const ratingUp =
+    //   (1 + parseFloat(ethers.utils.formatEther(bearAmount)) / parseFloat(ethers.utils.formatEther(bullAmount))).toFixed(
+    //     2
+    //   ) || 0
 
-    const ratingDown =
-      (1 + parseFloat(ethers.utils.formatEther(bullAmount)) / parseFloat(ethers.utils.formatEther(bearAmount))).toFixed(
-        2
-      ) || 0
+    // const ratingDown =
+    //   (1 + parseFloat(ethers.utils.formatEther(bullAmount)) / parseFloat(ethers.utils.formatEther(bearAmount))).toFixed(
+    //     2
+    //   ) || 0
 
-    const currentWinRate = 0.55
-    const averageWinRateBull = isBullBetter ? isBullBetter / 100 : currentWinRate
-    const averageWinRateBear = isBearBetter ? isBearBetter / 100 : currentWinRate
+    // const currentWinRate = 0.55
+    // const averageWinRateBull = isBullBetter ? isBullBetter / 100 : currentWinRate
+    // const averageWinRateBear = isBearBetter ? isBearBetter / 100 : currentWinRate
 
     // const kellyCriterionBull = (ratingUp * currentWinRate - (1 - currentWinRate)) / ratingUp
     // const kellyCriterionBear = (ratingDown * currentWinRate - (1 - currentWinRate)) / ratingDown
 
-    const kellyCriterionBull = (ratingUp * averageWinRateBull - (1 - averageWinRateBull)) / ratingUp
-    const kellyCriterionBear = (ratingDown * averageWinRateBear - (1 - averageWinRateBear)) / ratingDown
+    // const kellyCriterionBull = (ratingUp * averageWinRateBull - (1 - averageWinRateBull)) / ratingUp
+    // const kellyCriterionBear = (ratingDown * averageWinRateBear - (1 - averageWinRateBear)) / ratingDown
 
     // const bullDivider = ratingUp <= 1.7 ? 3 : ratingUp >= 2 ? 5 : 4
     // const bearDivider = ratingDown <= 1.7 ? 3 : ratingDown >= 2 ? 5 : 4
-    let bullDivider = ratingUp <= 1.35 ? 3 : ratingUp <= 1.75 ? 2.5 : ratingUp >= 2.1 ? 4.5 : 3.5
-    let bearDivider = ratingDown <= 1.35 ? 3 : ratingDown <= 1.75 ? 2.5 : ratingDown >= 2.1 ? 4.5 : 3.5
+    // let bullDivider = ratingUp <= 1.35 ? 3 : ratingUp <= 1.75 ? 2.5 : ratingUp >= 2.1 ? 4.5 : 3.5
+    // let bearDivider = ratingDown <= 1.35 ? 3 : ratingDown <= 1.75 ? 2.5 : ratingDown >= 2.1 ? 4.5 : 3.5
 
     const totalPlayers = betBullCount.length + betBearCount.length
 
@@ -426,8 +427,8 @@ const run = async () => {
       isBearAllAgree = true
     }
     // TODO v0.0.4 check if currentAmount is better than startedAmount
-    const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
-    const kellyBetAmountBear = parseFloat(strategie.startedAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
+    // const kellyBetAmountBull = parseFloat(strategie.startedAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
+    // const kellyBetAmountBear = parseFloat(strategie.startedAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
     // const kellyBetAmountBull = parseFloat(strategie.currentAmount * (kellyCriterionBull / bullDivider)).toFixed(3)
     // const kellyBetAmountBear = parseFloat(strategie.currentAmount * (kellyCriterionBear / bearDivider)).toFixed(3)
 
@@ -440,8 +441,8 @@ const run = async () => {
 
     if (
       // totalPlayers > 1 &&
-      totalPlayers > 1 &&
-      // (totalPlayers > 1 || Math.round(+isBullBetter) >= 58) &&
+      // totalPlayers > 1 &&
+      (totalPlayers > 1 || Math.round(+isBullBetter) >= 58) &&
       betBullCount.length > betBearCount.length &&
       // betBullCount.length >= betBearCount.length &&
       // +isBullBetterAdjusted > +isBearBetterAdjusted &&
@@ -474,14 +475,14 @@ const run = async () => {
       const betAmountTest = !isBullAllAgree
         ? strategie.betAmount
         : totalPlayers === 3
-        ? strategie.betAmount * 1.15
+        ? strategie.betAmount * 1.2
         : totalPlayers === 4
-        ? strategie.betAmount * 1.25
+        ? strategie.betAmount * 1.3
         : totalPlayers === 5
-        ? strategie.betAmount * 1.35
+        ? strategie.betAmount * 1.4
         : totalPlayers === 6
-        ? strategie.betAmount * 1.45
-        : strategie.betAmount * 1.55
+        ? strategie.betAmount * 1.5
+        : strategie.betAmount * 1.6
 
       await betRound({
         epoch,
@@ -491,8 +492,8 @@ const run = async () => {
       // await betRound({ epoch, betBull: true, betAmount: isBullAllAgree ? kellyBetAmountBull : strategie.betAmount })
       // logger.info('//////////////////////////////////////////////////////////')
     } else if (
-      totalPlayers > 1 &&
-      // (totalPlayers > 1 || Math.round(+isBearBetter) >= 58) &&
+      // totalPlayers > 1 &&
+      (totalPlayers > 1 || Math.round(+isBearBetter) >= 58) &&
       // totalPlayers > 1 &&
       // betBearCount.length >= betBullCount.length &&
       betBearCount.length > betBullCount.length &&
@@ -526,14 +527,14 @@ const run = async () => {
       const betAmountTest = !isBearAllAgree
         ? strategie.betAmount
         : totalPlayers === 3
-        ? strategie.betAmount * 1.15
+        ? strategie.betAmount * 1.2
         : totalPlayers === 4
-        ? strategie.betAmount * 1.25
+        ? strategie.betAmount * 1.3
         : totalPlayers === 5
-        ? strategie.betAmount * 1.35
+        ? strategie.betAmount * 1.4
         : totalPlayers === 6
-        ? strategie.betAmount * 1.45
-        : strategie.betAmount * 1.55
+        ? strategie.betAmount * 1.5
+        : strategie.betAmount * 1.6
 
       await betRound({
         epoch,
@@ -567,25 +568,25 @@ const run = async () => {
       )}, isBearBetter ${isBearBetter.toFixed(2)}) --> strategie.betAmount ${strategie.betAmount}`
     )
 
-    logger.info(
-      `[ROUND-${user.id}:${
-        strategie.roundsCount
-      }:${+epoch}] BULL VARS : ratingUp ${ratingUp}, bullDivider ${bullDivider}, kellyCriterionBull ${(
-        kellyCriterionBull * 100
-      ).toFixed(
-        2
-      )}%, averageWinRateBull ${averageWinRateBull}, isBullAllAgree ${isBullAllAgree}, kellyBetAmountBull ${kellyBetAmountBull}BNB`
-    )
+    // logger.info(
+    //   `[ROUND-${user.id}:${
+    //     strategie.roundsCount
+    //   }:${+epoch}] BULL VARS : ratingUp ${ratingUp}, bullDivider ${bullDivider}, kellyCriterionBull ${(
+    //     kellyCriterionBull * 100
+    //   ).toFixed(
+    //     2
+    //   )}%, averageWinRateBull ${averageWinRateBull}, isBullAllAgree ${isBullAllAgree}, kellyBetAmountBull ${kellyBetAmountBull}BNB`
+    // )
 
-    logger.info(
-      `[ROUND-${user.id}:${
-        strategie.roundsCount
-      }:${+epoch}] BEAR VARS : ratingDown ${ratingDown}, bearDivider ${bearDivider}, kellyCriterionBear ${(
-        kellyCriterionBear * 100
-      ).toFixed(
-        2
-      )}%, averageWinRateBear ${averageWinRateBear}, isBearAllAgree ${isBearAllAgree}, kellyBetAmountBear ${kellyBetAmountBear}BNB`
-    )
+    // logger.info(
+    //   `[ROUND-${user.id}:${
+    //     strategie.roundsCount
+    //   }:${+epoch}] BEAR VARS : ratingDown ${ratingDown}, bearDivider ${bearDivider}, kellyCriterionBear ${(
+    //     kellyCriterionBear * 100
+    //   ).toFixed(
+    //     2
+    //   )}%, averageWinRateBear ${averageWinRateBear}, isBearAllAgree ${isBearAllAgree}, kellyBetAmountBear ${kellyBetAmountBear}BNB`
+    // )
 
     logger.info('//////////////////////////      ////////////////////////////////')
 
@@ -640,13 +641,13 @@ const run = async () => {
       strategie.plays.push({ betBull, player })
       strategie.playedHashs.push(transaction.hash)
 
-      // logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
+      logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
 
-      // logger.info(
-      //   `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
-      //     2
-      //   )}% winRate and ${player.totalBets} bets.`
-      // )
+      logger.info(
+        `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
+          2
+        )}% winRate and ${player.totalBets} bets.`
+      )
 
       // logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash} `)
     } else if (strategie.isTimeEnded) {
@@ -700,7 +701,8 @@ const run = async () => {
       `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 10
+    const timer = secondsLeftUntilNextEpoch - 8
+    // const timer = secondsLeftUntilNextEpoch - 10
     // const timer = secondsLeftUntilNextEpoch - 9
 
     logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] Waiting ${timer} seconds to play epoch ${epoch}`)
@@ -816,7 +818,8 @@ const run = async () => {
       }:${+currentEpoch}] time left ${minutesLeft} minuts ${secondsLeft} seconds`
     )
 
-    const timer = secondsLeftUntilNextEpoch - 10
+    const timer = secondsLeftUntilNextEpoch - 8
+    // const timer = secondsLeftUntilNextEpoch - 10
     // const timer = secondsLeftUntilNextEpoch - 9
 
     if (timer <= 20) {
