@@ -303,8 +303,8 @@ const run = async () => {
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
     // const timer = secondsLeftUntilNextEpoch - 8
-    const timer = secondsLeftUntilNextEpoch - 8.5
-    // const timer = secondsLeftUntilNextEpoch - 9
+    // const timer = secondsLeftUntilNextEpoch - 8.5
+    const timer = secondsLeftUntilNextEpoch - 9
 
     logger.info(
       `********** [ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING (timer ${timer.toFixed(4)}) **********`
