@@ -641,7 +641,7 @@ const run = async () => {
       strategie.plays.push({ betBull, player })
       strategie.playedHashs.push(transaction.hash)
 
-      logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
+      // logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
 
       logger.info(
         `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
@@ -649,13 +649,13 @@ const run = async () => {
         )}% winRate and ${player.totalBets} bets.`
       )
 
-      // logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash} `)
+      logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash} `)
     } else if (strategie.isTimeEnded) {
       strategie.isTimeEnded = false
       // TODO v0.0.4 calculate bet amount dynamically and reactivate
       // await betRound({ epoch, betBull, betAmount: strategie.betAmount })
     } else {
-      logger.error(`[LISTEN] Already played transaction hash brow.`)
+      // logger.error(`[LISTEN] Already played transaction hash brow.`)
       return
     }
   }
