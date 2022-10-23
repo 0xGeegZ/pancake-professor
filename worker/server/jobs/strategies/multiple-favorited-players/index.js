@@ -413,8 +413,8 @@ const run = async () => {
       totalPlayers > 1 &&
       betBullCount.length !== betBearCount.length &&
       betBullCount.length - betBearCount.length > 1 &&
-      // betBearCount.length === 0
-      ((betBullCount.length !== 0 && betBullCount.length % betBearCount.length === 0) || betBearCount.length === 0)
+      betBearCount.length === 0
+      // ((betBullCount.length !== 0 && betBullCount.length % betBearCount.length === 0) || betBearCount.length === 0)
     ) {
       // bullDivider -= 1
       // bullDivider -= 0.5
@@ -423,8 +423,8 @@ const run = async () => {
       totalPlayers > 1 &&
       betBullCount.length !== betBearCount.length &&
       betBearCount.length - betBullCount.length > 1 &&
-      // betBullCount.length === 0
-      ((betBearCount.length !== 0 && betBearCount.length % betBullCount.length === 0) || betBullCount.length === 0)
+      betBullCount.length === 0
+      // ((betBearCount.length !== 0 && betBearCount.length % betBullCount.length === 0) || betBullCount.length === 0)
     ) {
       // bearDivider -= 1
       // bearDivider -= 0.5
