@@ -483,19 +483,14 @@ const run = async () => {
       // await betRound({ epoch, betBull: true, betAmount: kellyBetAmountBull })
       // await betRound({ epoch, betBull: true, betAmount: strategie.betAmount })
 
-      const betAmountTest = !isBullAllAgree
-        ? strategie.betAmount
-        : betBullCount.length - betBearCount.length === 2
-        ? strategie.betAmount * 1.05
-        : betBullCount.length - betBearCount.length === 3
-        ? strategie.betAmount * 1.1
-        : betBullCount.length - betBearCount.length === 4
-        ? strategie.betAmount * 1.15
-        : betBullCount.length - betBearCount.length === 5
-        ? strategie.betAmount * 1.2
-        : betBullCount.length - betBearCount.length === 6
-        ? strategie.betAmount * 1.25
-        : strategie.betAmount * 1.3
+      const betAmountTest =
+        !isBullAllAgree || betBullCount.length - betBearCount.length === 2
+          ? strategie.betAmount
+          : betBullCount.length - betBearCount.length === 3 || betBullCount.length - betBearCount.length === 4
+          ? strategie.betAmount * 1.1
+          : betBullCount.length - betBearCount.length === 5 || betBullCount.length - betBearCount.length === 6
+          ? strategie.betAmount * 1.15
+          : strategie.betAmount * 1.25
 
       await betRound({
         epoch,
@@ -544,19 +539,14 @@ const run = async () => {
       // await betRound({ epoch, betBull: false, betAmount: kellyBetAmountBear })
       // await betRound({ epoch, betBull: false, betAmount: strategie.betAmount })
 
-      const betAmountTest = !isBearAllAgree
-        ? strategie.betAmount
-        : betBearCount.length - betBullCount.length === 2
-        ? strategie.betAmount * 1.05
-        : betBearCount.length - betBullCount.length === 3
-        ? strategie.betAmount * 1.1
-        : betBearCount.length - betBullCount.length === 4
-        ? strategie.betAmount * 1.15
-        : betBearCount.length - betBullCount.length === 5
-        ? strategie.betAmount * 1.2
-        : betBearCount.length - betBullCount.length === 6
-        ? strategie.betAmount * 1.25
-        : strategie.betAmount * 1.3
+      const betAmountTest =
+        !isBearAllAgree || betBearCount.length - betBullCount.length === 2
+          ? strategie.betAmount
+          : betBearCount.length - betBullCount.length === 3 || betBearCount.length - betBullCount.length === 4
+          ? strategie.betAmount * 1.1
+          : betBearCount.length - betBullCount.length === 5 || betBearCount.length - betBullCount.length === 6
+          ? strategie.betAmount * 1.15
+          : strategie.betAmount * 1.25
 
       await betRound({
         epoch,
