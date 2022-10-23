@@ -317,7 +317,11 @@ const run = async () => {
     }
 
     if (!strategie.plays.length || strategie.plays.length > 2) {
-      logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING 0.5 SECOND MORE`)
+      logger.info(
+        `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING 0.5 SECOND MORE - players:${
+          strategie?.plays?.length || 0
+        }`
+      )
       // TODO V0.4 update HEXLIFY_FAST to HEXLIFY_EXTRA_FAST
       strategie.gasPrice = ethers.utils.parseUnits(config.EXTRA_FAST_GAS_PRICE.toString(), 'gwei').toString()
       strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_EXTRA_FAST)
