@@ -480,12 +480,12 @@ const run = async () => {
         : totalPlayers === 3
         ? strategie.betAmount * 1.15
         : totalPlayers === 4
-        ? strategie.betAmount * 1.25
+        ? strategie.betAmount * 1.2
         : totalPlayers === 5
-        ? strategie.betAmount * 1.35
+        ? strategie.betAmount * 1.25
         : totalPlayers === 6
-        ? strategie.betAmount * 1.45
-        : strategie.betAmount * 1.55
+        ? strategie.betAmount * 1.3
+        : strategie.betAmount * 1.35
 
       await betRound({
         epoch,
@@ -536,12 +536,12 @@ const run = async () => {
         : totalPlayers === 3
         ? strategie.betAmount * 1.15
         : totalPlayers === 4
-        ? strategie.betAmount * 1.25
+        ? strategie.betAmount * 1.2
         : totalPlayers === 5
-        ? strategie.betAmount * 1.35
+        ? strategie.betAmount * 1.25
         : totalPlayers === 6
-        ? strategie.betAmount * 1.45
-        : strategie.betAmount * 1.55
+        ? strategie.betAmount * 1.3
+        : strategie.betAmount * 1.35
 
       await betRound({
         epoch,
