@@ -408,8 +408,8 @@ const run = async () => {
       totalPlayers > 1 &&
       betBullCount.length !== betBearCount.length &&
       betBullCount.length - betBearCount.length > 1 &&
-      betBearCount.length === 0
-      // ((betBullCount.length !== 0 && betBullCount.length % betBearCount.length === 0) || betBearCount.length === 0)
+      // betBearCount.length === 0
+      ((betBullCount.length !== 0 && betBullCount.length % betBearCount.length === 0) || betBearCount.length === 0)
     ) {
       // bullDivider -= 1
       // bullDivider -= 0.5
@@ -418,8 +418,8 @@ const run = async () => {
       totalPlayers > 1 &&
       betBullCount.length !== betBearCount.length &&
       betBearCount.length - betBullCount.length > 1 &&
-      betBullCount.length === 0
-      // ((betBearCount.length !== 0 && betBearCount.length % betBullCount.length === 0) || betBullCount.length === 0)
+      // betBullCount.length === 0
+      ((betBearCount.length !== 0 && betBearCount.length % betBullCount.length === 0) || betBullCount.length === 0)
     ) {
       // bearDivider -= 1
       // bearDivider -= 0.5
@@ -477,15 +477,15 @@ const run = async () => {
 
       const betAmountTest = !isBullAllAgree
         ? strategie.betAmount
-        : totalPlayers === 2
+        : betBullCount.length - betBearCount.length === 2
         ? strategie.betAmount * 1.1
-        : totalPlayers === 3
+        : betBullCount.length - betBearCount.length === 3
         ? strategie.betAmount * 1.15
-        : totalPlayers === 4
+        : betBullCount.length - betBearCount.length === 4
         ? strategie.betAmount * 1.2
-        : totalPlayers === 5
+        : betBullCount.length - betBearCount.length === 5
         ? strategie.betAmount * 1.25
-        : totalPlayers === 6
+        : betBullCount.length - betBearCount.length === 6
         ? strategie.betAmount * 1.3
         : strategie.betAmount * 1.4
 
@@ -535,15 +535,15 @@ const run = async () => {
 
       const betAmountTest = !isBearAllAgree
         ? strategie.betAmount
-        : totalPlayers === 2
+        : betBearCount.length - betBullCount.length === 2
         ? strategie.betAmount * 1.1
-        : totalPlayers === 3
+        : betBearCount.length - betBullCount.length === 3
         ? strategie.betAmount * 1.15
-        : totalPlayers === 4
+        : betBearCount.length - betBullCount.length === 4
         ? strategie.betAmount * 1.2
-        : totalPlayers === 5
+        : betBearCount.length - betBullCount.length === 5
         ? strategie.betAmount * 1.25
-        : totalPlayers === 6
+        : betBearCount.length - betBullCount.length === 6
         ? strategie.betAmount * 1.3
         : strategie.betAmount * 1.4
 
