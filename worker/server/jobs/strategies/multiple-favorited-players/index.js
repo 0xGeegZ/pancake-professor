@@ -442,10 +442,13 @@ const run = async () => {
       // totalPlayers > 1 &&
       totalPlayers > 1 &&
       // (totalPlayers > 1 || Math.round(+isBullBetter) >= 58) &&
-      // betBullCount.length > betBearCount.length &&
-      betBullCount.length >= betBearCount.length &&
+      betBullCount.length > betBearCount.length &&
+      // betBullCount.length >= betBearCount.length &&
+      // (betBullCount.length > betBearCount.length ||
+      //   (betBullCount.length === betBearCount.length && Math.round(+isBullBetter) > Math.round(+isBearBetter))) &&
       // +isBullBetterAdjusted > +isBearBetterAdjusted &&
       (+isBullBetterAdjusted > +isBearBetterAdjusted ||
+        // +isDifferenceAdjustedEfficient <= 50 ||
         // (Math.round(+isBullBetter) > Math.round(+isBearBetter) ||
         (totalPlayers > 1 &&
           betBullCount.length !== betBearCount.length &&
@@ -500,10 +503,13 @@ const run = async () => {
       totalPlayers > 1 &&
       // (totalPlayers > 1 || Math.round(+isBearBetter) >= 58) &&
       // totalPlayers > 1 &&
-      betBearCount.length >= betBullCount.length &&
-      // betBearCount.length > betBullCount.length &&
+      // betBearCount.length >= betBullCount.length &&
+      // (betBearCount.length > betBullCount.length ||
+      //   (betBearCount.length === betBullCount.length && Math.round(+isBearBetter) > Math.round(+isBullBetter))) &&
+      betBearCount.length > betBullCount.length &&
       // +isBearBetterAdjusted > +isBullBetterAdjusted &&
       (+isBearBetterAdjusted > +isBullBetterAdjusted ||
+        // +isDifferenceAdjustedEfficient <= 50 ||
         // (Math.round(+isBearBetter) > Math.round(+isBullBetter) ||
         (totalPlayers > 1 &&
           betBearCount.length !== betBullCount.length &&
