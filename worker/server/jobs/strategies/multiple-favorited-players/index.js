@@ -316,7 +316,7 @@ const run = async () => {
       // await setTimeout(timer * 1000)
     }
 
-    if (!strategie.plays.length || strategie.plays.length > 2) {
+    if (!strategie.plays.length || strategie.plays.length <= 2) {
       logger.info(
         `[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING 0.5 SECOND MORE - players:${
           strategie?.plays?.length || 0
