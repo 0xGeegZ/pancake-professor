@@ -296,8 +296,8 @@ const run = async () => {
     // TODO 0.0.4 : Calculate KELLY CRITERION bet value
     // https://dqydj.com/kelly-criterion-bet-calculator/
 
-    strategie.gasPrice = ethers.utils.parseUnits(config.EXTRA_FAST_GAS_PRICE.toString(), 'gwei').toString()
-    strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_EXTRA_FAST)
+    // strategie.gasPrice = ethers.utils.parseUnits(config.EXTRA_FAST_GAS_PRICE.toString(), 'gwei').toString()
+    // strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_EXTRA_FAST)
 
     const { bullAmount, bearAmount, startTimestamp } = await preditionContract.rounds(epoch)
 
@@ -308,8 +308,8 @@ const run = async () => {
 
     // const timer = secondsLeftUntilNextEpoch - 7.5
     // const timer = secondsLeftUntilNextEpoch - 8
-    const timer = secondsLeftUntilNextEpoch - 8.5
-    // const timer = secondsLeftUntilNextEpoch - 9
+    // const timer = secondsLeftUntilNextEpoch - 8.5
+    const timer = secondsLeftUntilNextEpoch - 9
 
     logger.info(
       `********** [ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING (timer ${timer.toFixed(4)}) **********`
