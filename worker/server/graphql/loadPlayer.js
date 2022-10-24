@@ -1,4 +1,5 @@
 const { GraphQLClient, gql } = require('graphql-request')
+const { range, finder } = require('../utils/utils')
 
 const graphQLClient = new GraphQLClient(process.env.PANCAKE_PREDICTION_GRAPHQL_ENDPOINT_BNB, {
   mode: 'cors',
@@ -54,6 +55,53 @@ const loadPlayer = async (idPlayer) => {
   return users[0]
 }
 
-module.exports = { loadPlayer }
+const checkLastDayWinrate = (player, lastGame) => {
+  let results = player.bets
+    .map(({ position, round: { epoch, position: final } }) => ({ epoch: +epoch, isWon: position === final }))
+    .sort((a, b) => a.epoch > b.epoch)
+
+  results = results.sort((a, b) => {
+    return +a.epoch - +b.epoch
+  })
+
+  let recentGames = finder(
+    lastGame,
+    results.map((r) => r.epoch)
+  )
+
+  recentGames = recentGames.reduce((a, b) => a + b, 0)
+  player.recentGames = recentGames
+
+  let lastHour = finder(
+    lastGame.slice(Math.max(lastGame.length - 12, 0)),
+    results.map((r) => r.epoch)
+  )
+  lastHour = lastHour.reduce((a, b) => a + b, 0)
+  player.lastHour = lastHour
+
+  // const filteredLastHour = lastGame.slice(Math.max(lastGame.length - 12, 0)).filter((r) => lastGame.includes(r.epoch))
+  // console.log('🚀 ~ file: loadPlayer.js ~ line 83 ~ checkLastDayWinrate ~ filteredLastHour', filteredLastHour)
+  // const wonsLastHour = filteredLastHour.filter((r) => r.isWon)
+  // const winRateLastHour = (wonsLastHour.length * 100) / filteredLastHour.length || 0
+
+  // let lastFive = finder(
+  //   lastGame.slice(Math.max(lastGame.length - 5, 0)),
+  //   results.map((r) => r.epoch)
+  // )
+
+  // lastFive = lastFive.reduce((a, b) => a + b, 0)
+  // player.lastFive = lastFive
+
+  const filtereds = results.filter((r) => lastGame.includes(r.epoch))
+  const wons = filtereds.filter((r) => r.isWon)
+  const winRateRecents = (wons.length * 100) / filtereds.length || 0
+  player.winRateRecents = winRateRecents
+
+  if (!filtereds.length || winRateRecents >= 50.0) {
+    // console.log('🚀 ~ file: loadPlayer.js ~ line 81 ~ checkLastDayWinrate ~ winRateLastHour', winRateLastHour)
+    return player
+  }
+}
+module.exports = { loadPlayer, checkLastDayWinrate }
 
 // export default loadPlayer

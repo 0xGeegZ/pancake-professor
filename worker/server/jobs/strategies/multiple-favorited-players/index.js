@@ -6,8 +6,7 @@ const logger = require('../../../utils/logger')
 
 const { setTimeout } = require('timers/promises')
 
-const { loadPlayer } = require('../../../graphql/loadPlayer')
-const { checkIfPlaying } = require('../../../graphql/loadPlayers')
+const { loadPlayer, checkLastDayWinrate } = require('../../../graphql/loadPlayer')
 
 const { sleep, range, finder } = require('../../../utils/utils')
 const { decrypt } = require('../../../utils/crpyto')
@@ -95,26 +94,11 @@ const run = async () => {
     })
 
     let allFavoritedPlayers = await Promise.all(favorites.map((favorite) => loadPlayer(favorite.player)))
-    console.log('🚀 ~ file: index.js ~ line 101 ~ loadPlayers ~ epoch', +epoch)
 
     const lastGame = [...range(+epoch - 12 * 24, +epoch)]
-    // console.log('🚀 ~ file: index.js ~ line 101 ~ loadPlayers ~ lastGame', lastGame)
 
-    let allFavoritedFilteredPlayers = allFavoritedPlayers.map((p) => checkIfPlaying(p, lastGame))
-
-    allFavoritedFilteredPlayers = allFavoritedFilteredPlayers.filter(Boolean)
-
-    // console.log(
-    //   '🚀 ~ file: index.js ~ line 109 ~ loadPlayers ~ allFavoritedFilteredPlayers',
-    //   allFavoritedFilteredPlayers
-    // )
-    console.log('allFavoritedPlayers', allFavoritedPlayers.length)
-    console.log('allFavoritedFilteredPlayers', allFavoritedFilteredPlayers.length)
-
-    return allFavoritedFilteredPlayers
-    // return allFavoritedPlayers
-
-    // TODO for each player, check performances for last 24H
+    // For each player, check performances for last 24H
+    return allFavoritedPlayers.map((p) => checkLastDayWinrate(p, lastGame)).filter(Boolean)
     // return await Promise.all(favorites.map((favorite) => loadPlayer(favorite.player)))
   }
 
@@ -219,6 +203,7 @@ const run = async () => {
       logger.error(`[CLAIM] Claim Tx Error for user ${user.id} and epochs ${claimablesEpochs}`)
       logger.error(error.message)
     }
+    strategie.nonce = provider.getTransactionCount(strategie.generated, 'latest')
   }
 
   const stopStrategie = async ({ epoch }) => {
@@ -316,6 +301,10 @@ const run = async () => {
   const playRound = async ({ epoch }) => {
     // TODO 0.0.4 : Calculate KELLY CRITERION bet value
     // https://dqydj.com/kelly-criterion-bet-calculator/
+
+    // strategie.gasPrice = ethers.utils.parseUnits(config.EXTRA_FAST_GAS_PRICE.toString(), 'gwei').toString()
+    // strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_EXTRA_FAST)
+
     const { bullAmount, bearAmount, startTimestamp } = await preditionContract.rounds(epoch)
 
     const secondsFromEpoch = new Date().getTime() / 1000 - startTimestamp
@@ -323,6 +312,7 @@ const run = async () => {
 
     const secondsLeftUntilNextEpoch = 5 * 60 - secondsFromEpoch
 
+    // const timer = secondsLeftUntilNextEpoch - 7.5
     // const timer = secondsLeftUntilNextEpoch - 8
     // const timer = secondsLeftUntilNextEpoch - 8.5
     const timer = secondsLeftUntilNextEpoch - 9
@@ -339,7 +329,6 @@ const run = async () => {
 
     if (!strategie.plays.length) {
       logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING 0.5 SECOND MORE`)
-      // TODO V0.4 update HEXLIFY_FAST to HEXLIFY_EXTRA_FAST
       strategie.gasPrice = ethers.utils.parseUnits(config.EXTRA_FAST_GAS_PRICE.toString(), 'gwei').toString()
       strategie.gasLimit = ethers.utils.hexlify(config.HEXLIFY_EXTRA_FAST)
       await sleep(500)
@@ -466,13 +455,22 @@ const run = async () => {
       // (totalPlayers > 1 || Math.round(+isBullBetter) >= 58) &&
       betBullCount.length > betBearCount.length &&
       // betBullCount.length >= betBearCount.length &&
+      // (betBullCount.length > betBearCount.length ||
+      //   (betBullCount.length === betBearCount.length &&
+      //     Math.round(+isBullBetter) >= 58 &&
+      //     Math.round(+isBullBetter) > Math.round(+isBearBetter))) &&
       // +isBullBetterAdjusted > +isBearBetterAdjusted &&
       (+isBullBetterAdjusted > +isBearBetterAdjusted ||
+        // +isDifferenceAdjustedEfficient <= 50 ||
         // (Math.round(+isBullBetter) > Math.round(+isBearBetter) ||
         (totalPlayers > 1 &&
           betBullCount.length !== betBearCount.length &&
           betBullCount.length - betBearCount.length > 1 &&
-          betBullCount.length % betBearCount.length === 0))
+          betBullCount.length % betBearCount.length === 0)) &&
+      (ratingUp <= 3 ||
+        (totalPlayers > 1 &&
+          ((betBullCount.length !== 0 && betBullCount.length % betBearCount.length === 0) ||
+            betBearCount.length === 0)))
       //     &&
       // //V0.5 TEST
       // // (ratingUp <= 2.6 ||
@@ -514,14 +512,23 @@ const run = async () => {
       // (totalPlayers > 1 || Math.round(+isBearBetter) >= 58) &&
       // totalPlayers > 1 &&
       // betBearCount.length >= betBullCount.length &&
+      // (betBearCount.length > betBullCount.length ||
+      //   (betBearCount.length === betBullCount.length &&
+      //     Math.round(+isBearBetter) >= 58 &&
+      //     Math.round(+isBearBetter) > Math.round(+isBullBetter))) &&
       betBearCount.length > betBullCount.length &&
       // +isBearBetterAdjusted > +isBullBetterAdjusted &&
       (+isBearBetterAdjusted > +isBullBetterAdjusted ||
+        // +isDifferenceAdjustedEfficient <= 50 ||
         // (Math.round(+isBearBetter) > Math.round(+isBullBetter) ||
         (totalPlayers > 1 &&
           betBearCount.length !== betBullCount.length &&
           betBearCount.length - betBullCount.length > 1 &&
-          betBearCount.length % betBullCount.length === 0))
+          betBearCount.length % betBullCount.length === 0)) &&
+      (ratingDown <= 3 ||
+        (totalPlayers > 1 &&
+          ((betBearCount.length !== 0 && betBearCount.length % betBullCount.length === 0) ||
+            betBullCount.length === 0)))
       //      &&
       // //V0.5 TEST
       // // (ratingDown <= 2.6 ||
@@ -658,15 +665,20 @@ const run = async () => {
 
       // logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
 
-      // logger.info(
-      //   `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
-      //     2
-      //   )}% winRate and ${player.totalBets} bets.`
-      // )
+      logger.info(
+        `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
+          2
+        )}% winRate and ${player.totalBets} bets.`
+      )
 
       // logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash} `)
     } else if (strategie.isTimeEnded) {
-      strategie.isTimeEnded = false
+      logger.info(
+        `[LISTEN:LAST] PLAYER LATE BET ON ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
+          2
+        )}% winRate and ${player.totalBets} bets.`
+      )
+      // strategie.isTimeEnded = false
       // TODO v0.0.4 calculate bet amount dynamically and reactivate
       // await betRound({ epoch, betBull, betAmount: strategie.betAmount })
     } else {
