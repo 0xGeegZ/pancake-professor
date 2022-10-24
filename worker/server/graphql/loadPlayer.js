@@ -79,8 +79,7 @@ const checkLastDayWinrate = (player, lastGame) => {
   lastHour = lastHour.reduce((a, b) => a + b, 0)
   player.lastHour = lastHour
 
-  // const filteredLastHour = lastGame.slice(Math.max(lastGame.length - 12, 0)).filter((r) => lastGame.includes(r.epoch))
-  // console.log('🚀 ~ file: loadPlayer.js ~ line 83 ~ checkLastDayWinrate ~ filteredLastHour', filteredLastHour)
+  // const filteredLastHour = results.slice(Math.max(lastGame.length - 12, 0)).filter((r) => lastGame.includes(r.epoch))
   // const wonsLastHour = filteredLastHour.filter((r) => r.isWon)
   // const winRateLastHour = (wonsLastHour.length * 100) / filteredLastHour.length || 0
 
@@ -98,7 +97,7 @@ const checkLastDayWinrate = (player, lastGame) => {
   player.winRateRecents = winRateRecents
 
   if (!filtereds.length || winRateRecents >= 50.0) {
-    // console.log('🚀 ~ file: loadPlayer.js ~ line 81 ~ checkLastDayWinrate ~ winRateLastHour', winRateLastHour)
+    // console.log('🚀 ~ winRateLastHour', winRateLastHour, 'filteredLastHour', filteredLastHour.length)
     return player
   }
 }

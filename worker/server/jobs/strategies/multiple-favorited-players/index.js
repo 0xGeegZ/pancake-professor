@@ -314,8 +314,8 @@ const run = async () => {
 
     // const timer = secondsLeftUntilNextEpoch - 7.5
     // const timer = secondsLeftUntilNextEpoch - 8
-    // const timer = secondsLeftUntilNextEpoch - 8.5
-    const timer = secondsLeftUntilNextEpoch - 9
+    const timer = secondsLeftUntilNextEpoch - 8.5
+    // const timer = secondsLeftUntilNextEpoch - 9
 
     logger.info(
       `********** [ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING (timer ${timer.toFixed(4)}) **********`
@@ -451,10 +451,10 @@ const run = async () => {
 
     if (
       // totalPlayers > 1 &&
-      totalPlayers > 1 &&
-      // (totalPlayers > 1 || Math.round(+isBullBetter) >= 58) &&
-      betBullCount.length > betBearCount.length &&
-      // betBullCount.length >= betBearCount.length &&
+      // totalPlayers > 1 &&
+      (totalPlayers > 1 || Math.round(+isBullBetter) >= 58) &&
+      // betBullCount.length > betBearCount.length &&
+      betBullCount.length >= betBearCount.length &&
       // (betBullCount.length > betBearCount.length ||
       //   (betBullCount.length === betBearCount.length &&
       //     Math.round(+isBullBetter) >= 58 &&
@@ -508,15 +508,15 @@ const run = async () => {
       // await betRound({ epoch, betBull: true, betAmount: isBullAllAgree ? kellyBetAmountBull : strategie.betAmount })
       // logger.info('//////////////////////////////////////////////////////////')
     } else if (
-      totalPlayers > 1 &&
-      // (totalPlayers > 1 || Math.round(+isBearBetter) >= 58) &&
       // totalPlayers > 1 &&
-      // betBearCount.length >= betBullCount.length &&
+      (totalPlayers > 1 || Math.round(+isBearBetter) >= 58) &&
+      // totalPlayers > 1 &&
+      betBearCount.length >= betBullCount.length &&
       // (betBearCount.length > betBullCount.length ||
       //   (betBearCount.length === betBullCount.length &&
       //     Math.round(+isBearBetter) >= 58 &&
       //     Math.round(+isBearBetter) > Math.round(+isBullBetter))) &&
-      betBearCount.length > betBullCount.length &&
+      // betBearCount.length > betBullCount.length &&
       // +isBearBetterAdjusted > +isBullBetterAdjusted &&
       (+isBearBetterAdjusted > +isBullBetterAdjusted ||
         // +isDifferenceAdjustedEfficient <= 50 ||
