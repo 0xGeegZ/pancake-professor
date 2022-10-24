@@ -48,7 +48,9 @@ const checkIfPlaying = (player, lastGame) => {
     .map(({ position, round: { epoch, position: final } }) => ({ epoch: +epoch, isWon: position === final }))
     .sort((a, b) => a.epoch > b.epoch)
 
-  results = results.sort((a, b) => +a.epoch - +b.epoch)
+  results = results.sort((a, b) => {
+    return +a.epoch - +b.epoch
+  })
 
   let recentGames = finder(
     lastGame,
@@ -72,6 +74,7 @@ const checkIfPlaying = (player, lastGame) => {
 
   lastFive = lastFive.reduce((a, b) => a + b, 0)
   player.lastFive = lastFive
+  // console.log('🚀 ~ file: loadPlayers.js ~ line 75 ~ checkIfPlaying ~ player.lastFive ', player.lastFive)
 
   const filtereds = results.filter((r) => lastGame.includes(r.epoch))
   const wons = filtereds.filter((r) => r.isWon)
@@ -90,7 +93,17 @@ const checkIfPlaying = (player, lastGame) => {
   // )
 
   // if (recentGames >= lastGame.length / 4) return player
-  if (recentGames >= lastGame.length / 6) return player
+  // console.log(
+  //   '🚀 ~ file: loadPlayers.js ~ line 94 ~ checkIfPlaying ~ recentGames',
+  //   recentGames,
+  //   'lastGame.length',
+  //   lastGame.length,
+  //   'winRateRecents',
+  //   winRateRecents
+  // )
+
+  if (winRateRecents >= 50.0) return player
+  // if (recentGames >= lastGame.length / 6) return player
 
   // return player
 }

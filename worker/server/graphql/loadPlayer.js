@@ -19,7 +19,7 @@ const loadPlayer = async (idPlayer) => {
         winRate
         averageBNB
         netBNB
-        bets(first: 1, orderBy: createdAt, orderDirection: desc) {
+        bets(first: 300, orderBy: createdAt, orderDirection: desc) {
           id
           position
           amount
