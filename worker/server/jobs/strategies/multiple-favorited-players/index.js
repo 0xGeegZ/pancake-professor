@@ -456,7 +456,7 @@ const run = async () => {
       // +isBullBetterAdjusted > +isBearBetterAdjusted &&
       (+isBullBetterAdjusted > +isBearBetterAdjusted ||
         // +isDifferenceAdjustedEfficient <= 50 ||
-        // (Math.round(+isBullBetter) > Math.round(+isBearBetter) ||
+        (Math.round(+isBullBetter) > Math.round(+isBearBetter) ||
         (totalPlayers > 1 &&
           betBullCount.length !== betBearCount.length &&
           betBullCount.length - betBearCount.length > 1 &&
@@ -659,11 +659,11 @@ const run = async () => {
 
       // logger.info(`[LISTEN] Transaction pending detected for player ${player.id} and epoch ${epoch}`)
 
-      logger.info(
-        `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
-          2
-        )}% winRate and ${player.totalBets} bets.`
-      )
+      // logger.info(
+      //   `[LISTEN] Player Betting on ${betBull ? 'BULL' : 'BEAR'} with ${parseFloat(player.winRate).toFixed(
+      //     2
+      //   )}% winRate and ${player.totalBets} bets.`
+      // )
 
       // logger.info(`[LISTEN] Transaction : https://bscscan.com/tx/${transaction.hash} `)
     } else if (strategie.isTimeEnded) {
