@@ -314,8 +314,8 @@ const run = async () => {
 
     // const timer = secondsLeftUntilNextEpoch - 7.5
     // const timer = secondsLeftUntilNextEpoch - 8
-    const timer = secondsLeftUntilNextEpoch - 8.5
-    // const timer = secondsLeftUntilNextEpoch - 9
+    // const timer = secondsLeftUntilNextEpoch - 8.5
+    const timer = secondsLeftUntilNextEpoch - 9
 
     logger.info(
       `********** [ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] PLAYING (timer ${timer.toFixed(4)}) **********`
@@ -337,8 +337,8 @@ const run = async () => {
 
     if (!strategie.plays.length) {
       // transaction should fail almost all the time if enter here
-      logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING ANOTHER 0.5 SECOND MORE`)
-      await sleep(500)
+      logger.info(`[ROUND-${user.id}:${strategie.roundsCount}:${+epoch}] WAITING ANOTHER 1 SECOND MORE`)
+      await sleep(1500)
     }
 
     let betBullCount = strategie.plays.filter((p) => p.betBull)
@@ -453,8 +453,8 @@ const run = async () => {
       // totalPlayers > 1 &&
       // totalPlayers > 1 &&
       (totalPlayers > 1 || Math.round(+isBullBetter) >= 58) &&
-      // betBullCount.length > betBearCount.length &&
-      betBullCount.length >= betBearCount.length &&
+      betBullCount.length > betBearCount.length &&
+      // betBullCount.length >= betBearCount.length &&
       // (betBullCount.length > betBearCount.length ||
       //   (betBullCount.length === betBearCount.length &&
       //     Math.round(+isBullBetter) >= 58 &&
@@ -503,7 +503,8 @@ const run = async () => {
       await betRound({
         epoch,
         betBull: true,
-        betAmount: betAmountTest,
+        // betAmount: betAmountTest,
+        betAmount: config.MIN_BET_AMOUNT_BNB,
       })
       // await betRound({ epoch, betBull: true, betAmount: isBullAllAgree ? kellyBetAmountBull : strategie.betAmount })
       // logger.info('//////////////////////////////////////////////////////////')
@@ -511,12 +512,12 @@ const run = async () => {
       // totalPlayers > 1 &&
       (totalPlayers > 1 || Math.round(+isBearBetter) >= 58) &&
       // totalPlayers > 1 &&
-      betBearCount.length >= betBullCount.length &&
+      // betBearCount.length >= betBullCount.length &&
       // (betBearCount.length > betBullCount.length ||
       //   (betBearCount.length === betBullCount.length &&
       //     Math.round(+isBearBetter) >= 58 &&
       //     Math.round(+isBearBetter) > Math.round(+isBullBetter))) &&
-      // betBearCount.length > betBullCount.length &&
+      betBearCount.length > betBullCount.length &&
       // +isBearBetterAdjusted > +isBullBetterAdjusted &&
       (+isBearBetterAdjusted > +isBullBetterAdjusted ||
         // +isDifferenceAdjustedEfficient <= 50 ||
@@ -561,7 +562,8 @@ const run = async () => {
       await betRound({
         epoch,
         betBull: false,
-        betAmount: betAmountTest,
+        // betAmount: betAmountTest,
+        betAmount: config.MIN_BET_AMOUNT_BNB,
       })
       // await betRound({ epoch, betBull: false, betAmount: isBearAllAgree ? kellyBetAmountBear : strategie.betAmount })
       // logger.info('//////////////////////////////////////////////////////////')
