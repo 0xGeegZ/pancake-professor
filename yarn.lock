@@ -3524,12 +3524,7 @@
   resolved "https://registry.yarnpkg.com/@types/node/-/node-10.17.60.tgz#35f3d6213daed95da7f0f73e75bcc6980e90597b"
   integrity sha512-F0KIgDJfy2nA3zMLmWGKxcH2ZVEtCZXHHdOQs2gSaQ27+lNeEfGxzkIw90aXswATX7AZ33tahPbzy6KAfUreVw==
 
-"@types/node@^14.14.20":
-  version "14.17.27"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-14.17.27.tgz#5054610d37bb5f6e21342d0e6d24c494231f3b85"
-  integrity sha512-94+Ahf9IcaDuJTle/2b+wzvjmutxXAEXU6O81JHblYXUg2BDG+dnBy7VxIPHKAyEEDHzCMQydTJuWvrE+Aanzw==
-
-"@types/node@^14.14.31":
+"@types/node@^14.14.20", "@types/node@^14.14.31":
   version "14.17.32"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-14.17.32.tgz#2ca61c9ef8c77f6fa1733be9e623ceb0d372ad96"
   integrity sha512-JcII3D5/OapPGx+eJ+Ik1SQGyt6WvuqdRfh9jUwL6/iHGjmyOriBDciBUu7lEIBTL2ijxwrR70WUnw5AEDmFvQ==
@@ -10664,10 +10659,10 @@ passport-local@^1.0.0:
   dependencies:
     passport-strategy "1.x.x"
 
-passport-magic-login@1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/passport-magic-login/-/passport-magic-login-1.0.7.tgz#71663952d62936ae0c674acf93da2d9b46541868"
-  integrity sha512-oPltyELjA2cNPnJFfZKf6pZvfb14YNbi/l6PalHUCnCTm8WRT5T51RpOCmAh3dXCsfPdBNp7DaZSE7/F5gOhJA==
+passport-magic-login@1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/passport-magic-login/-/passport-magic-login-1.2.1.tgz#b02e13faec9fa10a251b366b66cdd336b2af1fb1"
+  integrity sha512-D+HNUQorL1Hh2rPi7kFS9cUD1HtBY77raOhp91S3L/1fROEVwa93OQoh6JpKoI/KYRgMgTDW+ZV4PwNaHpFDwA==
   dependencies:
     "@types/node" "^14.14.20"
     jsonwebtoken "^8.5.1"
